@@ -585,6 +585,29 @@ function getEstimateLabel(option: CandidateOption) {
     : option.costBasis.totalLabel;
 }
 
+function getBudgetStatus(option: CandidateOption, budget: number) {
+  const delta = budget - option.estimatedCost;
+
+  if (delta >= 5000) {
+    return {
+      className: "under",
+      label: `低於目前預算 ${formatCurrency(delta)}`,
+    };
+  }
+
+  if (delta >= 0) {
+    return {
+      className: "near",
+      label: `臨界通過，剩 ${formatCurrency(delta)}`,
+    };
+  }
+
+  return {
+    className: "over",
+    label: `超過目前預算 ${formatCurrency(Math.abs(delta))}`,
+  };
+}
+
 function getDirectionCandidate(candidateId?: string) {
   return candidateId ? candidateOptions.find((option) => option.id === candidateId) ?? null : null;
 }
@@ -603,6 +626,10 @@ function evaluateOption(option: CandidateOption, filters: PlannerFilters) {
   } else if (option.mode === "independent" && option.costBasis.readiness === "partial") {
     score -= 8;
     cautions.push(`自由行目前採 2026 團體樣本作參考，需重查 ${option.costBasis.missingItems.join("、")} 後才能下訂。`);
+  }
+
+  if (option.costBasis.readiness === "missing") {
+    cautions.push("價格仍待補完整資料，預算判讀只作提醒。");
   } else if (budgetDelta <= -5000) {
     score += 30;
     reasons.push(`低於預算 ${formatCurrency(Math.abs(budgetDelta))}，有實際緩衝。`);
@@ -748,6 +775,7 @@ export default function Home() {
 
   const bestOption = evaluatedOptions.find((result) => result.status !== "exclude") ?? evaluatedOptions[0];
   const activeCount = evaluatedOptions.filter((result) => result.status !== "exclude").length;
+  const evaluatedById = new Map(evaluatedOptions.map((result) => [result.option.id, result]));
   const selectedDirection =
     directionCategories.find((category) => category.id === selectedDirectionId) ?? directionCategories[0];
   const bestSourceStatus = getSourceStatus(bestOption.option);
@@ -816,7 +844,7 @@ export default function Home() {
             <p className="eyebrow">Source Sync</p>
             <h2>自動匯入資料源</h2>
             <p>
-              網站會把已查核的旅行社與官方來源資料併入下方「適合選項排序」。沒有團名、價格或訂購網址的資料，只保留在來源同步狀態，不進入推薦排序。
+              網站會把已查核的旅行社與官方來源資料併入「候選方向分類」與「決策選項列表」。沒有團名、價格或訂購網址的資料，只保留在來源同步狀態，不進入推薦。
             </p>
           </div>
           <div className="sourceNote">
@@ -841,7 +869,7 @@ export default function Home() {
                 <p>{source.source}</p>
                 <strong>{source.amount}</strong>
                 <div className="sourceStatusGrid">
-                  <span>{sourceState.freshnessLabel}</span>
+                  <span>資料新鮮度：{sourceState.freshnessLabel}</span>
                   <span>{sourceState.safetyLabel}</span>
                   <span>{sourceState.trustLevel}</span>
                 </div>
@@ -892,15 +920,26 @@ export default function Home() {
             <h3>{selectedDirection.title}</h3>
             <p>{selectedDirection.summary}</p>
           </div>
+          <div className="directionBudgetNote">
+            候選方向價格基準：{formatCurrency(filters.budget)}；已匯入方案會以目前預算上限判讀。
+          </div>
           <div className="directionListHeader">旅行團與方案清單</div>
           <div className="directionList">
             {selectedDirection.items.map((item) => {
               const linkedOption = "candidateId" in item ? getDirectionCandidate(item.candidateId) : null;
+              const linkedResult = linkedOption ? evaluatedById.get(linkedOption.id) : null;
+              const budgetStatus = linkedOption ? getBudgetStatus(linkedOption, filters.budget) : null;
 
               return (
                 <article className={`directionItem ${linkedOption ? "linked" : "pending"}`} key={item.name}>
                   <span>{item.status}</span>
                   <h3>{item.name}</h3>
+                  {linkedResult ? (
+                    <div className="directionResultRow">
+                      <span className={`recommendationBadge ${linkedResult.status}`}>{linkedResult.statusLabel}</span>
+                      <small>分數 {linkedResult.score}</small>
+                    </div>
+                  ) : null}
                   <p>{item.condition}</p>
                   {linkedOption ? (
                     <div className="directionTourMeta">
@@ -909,9 +948,62 @@ export default function Home() {
                         {linkedOption.productType}｜{linkedOption.departureWindow}
                       </small>
                       <small>{linkedOption.costBasis.totalLabel}</small>
+                      {budgetStatus ? (
+                        <small className={`directionBudgetBasis ${budgetStatus.className}`}>
+                          以目前預算上限 {formatCurrency(filters.budget)} 判讀：{budgetStatus.label}
+                        </small>
+                      ) : null}
                       <small>資料狀態：{linkedOption.dataState}</small>
                     </div>
                   ) : null}
+                  {linkedOption ? (
+                    <details className="directionInfoDetail">
+                      <summary>查看航班、住宿與價格詳細資訊</summary>
+                      <div className="directionInfoGrid">
+                        <span>
+                          <strong>航班</strong>
+                          {linkedOption.costBasis.flightDetail}
+                        </span>
+                        <span>
+                          <strong>住宿</strong>
+                          {linkedOption.costBasis.hotelDetail}
+                        </span>
+                        <span>
+                          <strong>時間</strong>
+                          {linkedOption.costBasis.scheduleDetail}
+                        </span>
+                        <span>
+                          <strong>價格</strong>
+                          {linkedOption.costBasis.priceDetail}
+                        </span>
+                      </div>
+                      {linkedOption.costBasis.missingItems.length > 0 ? (
+                        <div className="directionUnpublished">
+                          <strong>尚未公布／需重查</strong>
+                          <span>{linkedOption.costBasis.missingItems.join("、")}</span>
+                        </div>
+                      ) : null}
+                    </details>
+                  ) : (
+                    <div className="directionUnpublished">
+                      <strong>詳細資訊</strong>
+                      <span>尚未公布</span>
+                    </div>
+                  )}
+                  {linkedResult ? (
+                    <div className="directionRankingSummary">
+                      <strong>排序理由</strong>
+                      <span>{linkedOption?.rankingSummary}</span>
+                      {[...linkedResult.blockers, ...linkedResult.cautions].length > 0 ? (
+                        <small>{[...linkedResult.blockers, ...linkedResult.cautions].slice(0, 2).join("；")}</small>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <div className="directionRankingSummary">
+                      <strong>排序理由</strong>
+                      <span>尚未公布具體價格、航班、住宿與訂購網址，暫不納入推薦。</span>
+                    </div>
+                  )}
                   {linkedOption?.bookingUrl ? (
                     <a className="directionTourLink" href={linkedOption.bookingUrl} rel="noreferrer" target="_blank">
                       {linkedOption.bookingLabel ?? "訂購網站"}
@@ -926,8 +1018,8 @@ export default function Home() {
 
       <section className="pageSection simulatorSection" id="decision-simulator">
         <div className="sectionHeader">
-          <p className="eyebrow">Decision Simulator</p>
-          <h2>互動決策模擬器</h2>
+          <p className="eyebrow">Decision Options</p>
+          <h2>決策選項列表</h2>
           <p>自行調整預算、旅行型態、極光夜數與風險容忍度，頁面會即時排序適合的選項。</p>
         </div>
 
@@ -1054,6 +1146,10 @@ export default function Home() {
             <div className={`topRecommendation ${bestOption.status}`}>
               <span className="recommendationKicker">目前最適合</span>
               <strong>{bestOption.option.packageName}</strong>
+              <div className="resultCounts">
+                <span>可考慮 {activeCount}</span>
+                <span>排除 {evaluatedOptions.length - activeCount}</span>
+              </div>
               <div className="recommendationMeta">
                 <span>{bestOption.option.productType}</span>
                 <span>{bestOption.option.departureWindow}</span>
@@ -1081,124 +1177,6 @@ export default function Home() {
                 <a href={bestOption.option.guideUrl}>{bestOption.option.guideLabel}</a>
                 <small>{bestOption.option.guideNote}</small>
               </div>
-            </div>
-
-            <div className="resultToolbar">
-              <h3>適合選項排序</h3>
-              <div className="resultCounts">
-                <span>可考慮 {activeCount}</span>
-                <span>排除 {evaluatedOptions.length - activeCount}</span>
-              </div>
-            </div>
-
-            <div className="optionList">
-              {evaluatedOptions.map((result) => (
-                <article className={`optionCard ${result.status}`} key={result.option.id}>
-                  <div className="optionHeader">
-                    <span className={`recommendationBadge ${result.status}`}>{result.statusLabel}</span>
-                    <div>
-                      <h3>{result.option.title}</h3>
-                      <p>{result.option.description}</p>
-                    </div>
-                  </div>
-
-                  <div className="optionMetrics">
-                    <span>
-                      <strong>{getEstimateLabel(result.option)}</strong>
-                      <small>
-                        {result.option.costBasis.readiness === "complete" ||
-                        result.option.costBasis.readiness === "historical"
-                          ? "估算總額"
-                          : "估算狀態"}
-                      </small>
-                    </span>
-                    <span>
-                      <strong>{getAuroraLevelLabel(result.option.auroraLevel)}</strong>
-                      <small>極光夜數規則</small>
-                    </span>
-                    <span>
-                      <strong>{getModeLabel(result.option.mode)}</strong>
-                      <small>旅行型態</small>
-                    </span>
-                    <span>
-                      <strong>{getComfortLabel(result.option.comfort)}</strong>
-                      <small>舒適度</small>
-                    </span>
-                  </div>
-
-                  <div className="estimateGrid">
-                    <span>
-                      <strong>航班</strong>
-                      {result.option.costBasis.flightDetail}
-                    </span>
-                    <span>
-                      <strong>住宿</strong>
-                      {result.option.costBasis.hotelDetail}
-                    </span>
-                    <span>
-                      <strong>時間</strong>
-                      {result.option.costBasis.scheduleDetail}
-                    </span>
-                    <span>
-                      <strong>價格</strong>
-                      {result.option.costBasis.priceDetail}
-                    </span>
-                    {result.option.costBasis.missingItems.length > 0 ? (
-                      <small>需重查：{result.option.costBasis.missingItems.join("、")}</small>
-                    ) : null}
-                  </div>
-
-                  {result.option.sourceName ? (
-                    <div className="sourceInline">
-                      <span>來源：{result.option.sourceName}</span>
-                      <span>查核：{result.option.sourceCheckedAt}</span>
-                      {getSourceStatus(result.option) ? (
-                        <>
-                          <span>資料新鮮度：{getSourceStatus(result.option)?.freshnessLabel}</span>
-                          <span>安全狀態：{getSourceStatus(result.option)?.safetyLabel}</span>
-                        </>
-                      ) : null}
-                      <strong>{result.option.sourceSummary}</strong>
-                    </div>
-                  ) : null}
-
-                  <div className="rankingSummary">
-                    <strong>排序理由：</strong>
-                    <span>{result.option.rankingSummary}</span>
-                  </div>
-
-                  <div className="reasonColumns">
-                    <div>
-                      <strong>符合原因</strong>
-                      <ul className="reasonList">
-                        {result.reasons.slice(0, 3).map((reason) => (
-                          <li key={reason}>{reason}</li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div>
-                      <strong>注意事項</strong>
-                      <ul className={result.blockers.length > 0 ? "blockerList" : "reasonList"}>
-                        {[...result.blockers, ...result.cautions].slice(0, 3).map((item) => (
-                          <li key={item}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  <p className="nextStep">
-                    <strong>下一步：</strong>
-                    {result.option.nextStep}
-                  </p>
-                  {result.option.bookingUrl ? (
-                    <div className="bookingRow">
-                      <a href={result.option.bookingUrl} rel="noreferrer" target="_blank">
-                        {result.option.bookingLabel ?? "訂購網站"}
-                      </a>
-                    </div>
-                  ) : null}
-                </article>
-              ))}
             </div>
           </div>
         </div>

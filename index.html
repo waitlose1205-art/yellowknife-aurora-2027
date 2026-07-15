@@ -425,6 +425,18 @@
         line-height: 1.65;
       }
 
+      .directionBudgetNote {
+        width: fit-content;
+        margin-top: 16px;
+        padding: 8px 12px;
+        border: 1px solid #cfe7df;
+        border-radius: 8px;
+        background: #fbfffe;
+        color: #173331;
+        font-size: 0.9rem;
+        font-weight: 900;
+      }
+
       .directionList {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -468,6 +480,19 @@
         margin-top: 12px;
       }
 
+      .directionResultRow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      .directionResultRow small {
+        color: var(--muted);
+        font-weight: 900;
+      }
+
       .directionItem p {
         margin: 8px 0 0;
         color: var(--muted);
@@ -491,6 +516,91 @@
       .directionTourMeta small {
         color: var(--muted);
         line-height: 1.45;
+      }
+
+      .directionTourMeta .directionBudgetBasis {
+        width: fit-content;
+        padding: 5px 8px;
+        border-radius: 8px;
+        font-weight: 900;
+      }
+
+      .directionBudgetBasis.under {
+        background: #e9f8ef;
+        color: #23743a;
+      }
+
+      .directionBudgetBasis.near {
+        background: #fff6df;
+        color: #8a5b00;
+      }
+
+      .directionBudgetBasis.over {
+        background: #fff0ed;
+        color: #b42318;
+      }
+
+      .directionInfoDetail {
+        margin-top: 12px;
+        border-top: 1px solid #e0ebe8;
+        padding-top: 12px;
+      }
+
+      .directionInfoDetail summary {
+        color: #173331;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 900;
+      }
+
+      .directionInfoGrid {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .directionInfoGrid span,
+      .directionUnpublished {
+        display: grid;
+        gap: 5px;
+        padding: 10px;
+        border-radius: 8px;
+        background: #f8fbfa;
+        color: var(--muted);
+        font-size: 0.86rem;
+        line-height: 1.5;
+      }
+
+      .directionInfoGrid strong,
+      .directionUnpublished strong {
+        color: #173331;
+      }
+
+      .directionUnpublished {
+        margin-top: 12px;
+        border: 1px solid #f3dfb6;
+        background: #fffaf0;
+      }
+
+      .directionRankingSummary {
+        display: grid;
+        gap: 6px;
+        margin-top: 12px;
+        padding: 12px;
+        border: 1px solid #dbe7e4;
+        border-radius: 8px;
+        background: #fff;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.5;
+      }
+
+      .directionRankingSummary strong {
+        color: #173331;
+      }
+
+      .directionRankingSummary small {
+        color: #7a5b00;
       }
 
       .directionTourLink {
@@ -1328,7 +1438,7 @@
             <p class="eyebrow">Source Sync</p>
             <h2>自動匯入資料源</h2>
             <p>
-              網站會把已查核的旅行社與官方來源資料併入下方「適合選項排序」。沒有團名、價格或訂購網址的資料，只保留在來源同步狀態，不進入推薦排序。
+              網站會把已查核的旅行社與官方來源資料併入「候選方向分類」與「決策選項列表」。沒有團名、價格或訂購網址的資料，只保留在來源同步狀態，不進入推薦。
             </p>
           </div>
           <div class="sourceNote">
@@ -1346,7 +1456,7 @@
             <p>Yellowknife Tours</p>
             <strong>CAD 1,490 + 5% GST 起（約 NT$35,698）</strong>
             <div class="sourceStatusGrid">
-              <span>今日查核</span>
+              <span>資料新鮮度：今日查核</span>
               <span>白名單驗證</span>
               <span>官方來源</span>
             </div>
@@ -1364,7 +1474,7 @@
             <p>Yellowknife Tours</p>
             <strong>CAD 2,398 + 5% GST 起（約 NT$57,452）</strong>
             <div class="sourceStatusGrid">
-              <span>今日查核</span>
+              <span>資料新鮮度：今日查核</span>
               <span>白名單驗證</span>
               <span>官方來源</span>
             </div>
@@ -1382,7 +1492,7 @@
             <p>長汎旅遊</p>
             <strong>NT$142,451</strong>
             <div class="sourceStatusGrid">
-              <span>歷史基準，需重查</span>
+              <span>資料新鮮度：歷史基準，需重查</span>
               <span>白名單驗證</span>
               <span>旅行社來源</span>
             </div>
@@ -1400,7 +1510,7 @@
             <p>Air Canada</p>
             <strong>2026/09-12 CAD 318 起（約 NT$7,256）；2027/01-03 CAD 339 起（約 NT$7,735）</strong>
             <div class="sourceStatusGrid">
-              <span>票價高波動，需重查</span>
+              <span>資料新鮮度：票價高波動，需重查</span>
               <span>白名單驗證</span>
               <span>航空官方</span>
             </div>
@@ -1437,8 +1547,8 @@
 
       <section class="pageSection simulatorSection" id="decision-simulator">
         <div class="sectionHeader">
-          <p class="eyebrow">Decision Simulator</p>
-          <h2>互動決策模擬器</h2>
+          <p class="eyebrow">Decision Options</p>
+          <h2>決策選項列表</h2>
           <p>自行調整預算、旅行型態、極光夜數與風險容忍度，頁面會即時排序適合的選項。</p>
         </div>
 
@@ -1510,11 +1620,6 @@
 
           <div class="resultPanel" aria-live="polite">
             <div class="topRecommendation" id="topRecommendation"></div>
-            <div class="resultToolbar">
-              <h3>適合選項排序</h3>
-              <div class="resultCounts" id="resultCounts"></div>
-            </div>
-            <div class="optionList" id="optionList"></div>
           </div>
         </div>
       </section>
@@ -2046,6 +2151,29 @@
           ? formatCurrency(option.estimatedCost)
           : option.costBasis.totalLabel;
 
+      function getBudgetStatus(option, budget) {
+        const delta = budget - option.estimatedCost;
+
+        if (delta >= 5000) {
+          return {
+            className: "under",
+            label: `低於目前預算 ${formatCurrency(delta)}`,
+          };
+        }
+
+        if (delta >= 0) {
+          return {
+            className: "near",
+            label: `臨界通過，剩 ${formatCurrency(delta)}`,
+          };
+        }
+
+        return {
+          className: "over",
+          label: `超過目前預算 ${formatCurrency(Math.abs(delta))}`,
+        };
+      }
+
       function evaluateStaticOption(option) {
         let score = 40;
         const reasons = [];
@@ -2060,6 +2188,10 @@
         } else if (option.mode === "independent" && option.costBasis.readiness === "partial") {
           score -= 8;
           cautions.push(`自由行目前採 2026 團體樣本作參考，需重查 ${option.costBasis.missingItems.join("、")} 後才能下訂。`);
+        }
+
+        if (option.costBasis.readiness === "missing") {
+          cautions.push("價格仍待補完整資料，預算判讀只作提醒。");
         } else if (budgetDelta <= -5000) {
           score += 30;
           reasons.push(`低於預算 ${formatCurrency(Math.abs(budgetDelta))}，有實際緩衝。`);
@@ -2173,12 +2305,17 @@
 
       function renderDirection() {
         const selected = directionCategories.find((category) => category.id === selectedDirectionId) || directionCategories[0];
+        const evaluatedMap = new Map(staticCandidates.map((option) => {
+          const result = evaluateStaticOption(option);
+          return [option.id, result];
+        }));
         const detail = document.getElementById("directionDetail");
         detail.innerHTML = `
           <div class="directionIntro">
             <h3>${selected.title}</h3>
             <p>${selected.summary}</p>
           </div>
+          <div class="directionBudgetNote">候選方向價格基準：${formatCurrency(plannerState.budget)}；已匯入方案會以目前預算上限判讀。</div>
           <div class="directionListHeader">旅行團與方案清單</div>
           <div class="directionList">
             ${selected.items
@@ -2186,11 +2323,21 @@
                 const linkedOption = item.candidateId
                   ? staticCandidates.find((option) => option.id === item.candidateId)
                   : null;
+                const linkedResult = linkedOption ? evaluatedMap.get(linkedOption.id) : null;
+                const budgetStatus = linkedOption ? getBudgetStatus(linkedOption, plannerState.budget) : null;
 
                 return `
                   <article class="directionItem ${linkedOption ? "linked" : "pending"}">
                     <span>${item.status}</span>
                     <h3>${item.name}</h3>
+                    ${
+                      linkedResult
+                        ? `<div class="directionResultRow">
+                            <span class="recommendationBadge ${linkedResult.status}">${linkedResult.statusLabel}</span>
+                            <small>分數 ${linkedResult.score}</small>
+                          </div>`
+                        : ""
+                    }
                     <p>${item.condition}</p>
                     ${
                       linkedOption
@@ -2198,9 +2345,54 @@
                             <strong>${linkedOption.packageName}</strong>
                             <small>${linkedOption.productType}｜${linkedOption.departureWindow}</small>
                             <small>${linkedOption.costBasis.totalLabel}</small>
+                            ${
+                              budgetStatus
+                                ? `<small class="directionBudgetBasis ${budgetStatus.className}">以目前預算上限 ${formatCurrency(plannerState.budget)} 判讀：${budgetStatus.label}</small>`
+                                : ""
+                            }
                             <small>資料狀態：${linkedOption.dataState}</small>
                           </div>`
                         : ""
+                    }
+                    ${
+                      linkedOption
+                        ? `<details class="directionInfoDetail">
+                            <summary>查看航班、住宿與價格詳細資訊</summary>
+                            <div class="directionInfoGrid">
+                              <span><strong>航班</strong>${linkedOption.costBasis.flightDetail}</span>
+                              <span><strong>住宿</strong>${linkedOption.costBasis.hotelDetail}</span>
+                              <span><strong>時間</strong>${linkedOption.costBasis.scheduleDetail}</span>
+                              <span><strong>價格</strong>${linkedOption.costBasis.priceDetail}</span>
+                            </div>
+                            ${
+                              linkedOption.costBasis.missingItems.length > 0
+                                ? `<div class="directionUnpublished">
+                                    <strong>尚未公布／需重查</strong>
+                                    <span>${linkedOption.costBasis.missingItems.join("、")}</span>
+                                  </div>`
+                                : ""
+                            }
+                          </details>`
+                        : `<div class="directionUnpublished">
+                            <strong>詳細資訊</strong>
+                            <span>尚未公布</span>
+                          </div>`
+                    }
+                    ${
+                      linkedResult
+                        ? `<div class="directionRankingSummary">
+                            <strong>排序理由</strong>
+                            <span>${linkedOption ? linkedOption.rankingSummary : ""}</span>
+                            ${
+                              [...linkedResult.blockers, ...linkedResult.cautions].length > 0
+                                ? `<small>${[...linkedResult.blockers, ...linkedResult.cautions].slice(0, 2).join("；")}</small>`
+                                : ""
+                            }
+                          </div>`
+                        : `<div class="directionRankingSummary">
+                            <strong>排序理由</strong>
+                            <span>尚未公布具體價格、航班、住宿與訂購網址，暫不納入推薦。</span>
+                          </div>`
                     }
                     ${
                       linkedOption && linkedOption.bookingUrl
@@ -2240,6 +2432,10 @@
         top.innerHTML = `
           <span class="recommendationKicker">目前最適合</span>
           <strong>${best.option.packageName}</strong>
+          <div class="resultCounts">
+            <span>可考慮 ${activeCount}</span>
+            <span>排除 ${results.length - activeCount}</span>
+          </div>
           <div class="recommendationMeta">
             <span>${best.option.productType}</span>
             <span>${best.option.departureWindow}</span>
@@ -2261,74 +2457,6 @@
             <small>${best.option.guideNote}</small>
           </div>
         `;
-
-        document.getElementById("resultCounts").innerHTML = `
-          <span>可考慮 ${activeCount}</span>
-          <span>排除 ${results.length - activeCount}</span>
-        `;
-
-        document.getElementById("optionList").innerHTML = results
-          .map((result) => {
-            const notes = [...result.blockers, ...result.cautions].slice(0, 3);
-            const reasonItems = result.reasons.slice(0, 3).map((reason) => `<li>${reason}</li>`).join("");
-            const noteItems = notes.map((item) => `<li>${item}</li>`).join("");
-            const sourceStatus = getSourceStatus(result.option);
-
-            return `
-              <article class="optionCard ${result.status}">
-                <div class="optionHeader">
-                  <span class="recommendationBadge ${result.status}">${result.statusLabel}</span>
-                  <div>
-                    <h3>${result.option.title}</h3>
-                    <p>${result.option.description}</p>
-                  </div>
-                </div>
-                <div class="optionMetrics">
-                  <span><strong>${getEstimateLabel(result.option)}</strong><small>${
-                    result.option.costBasis.readiness === "complete" || result.option.costBasis.readiness === "historical"
-                      ? "估算總額"
-                      : "估算狀態"
-                  }</small></span>
-                  <span><strong>${getAuroraLevelLabel(result.option.auroraLevel)}</strong><small>極光夜數規則</small></span>
-                  <span><strong>${getModeLabel(result.option.mode)}</strong><small>旅行型態</small></span>
-                  <span><strong>${getComfortLabel(result.option.comfort)}</strong><small>舒適度</small></span>
-                </div>
-                <div class="estimateGrid">
-                  <span><strong>航班</strong>${result.option.costBasis.flightDetail}</span>
-                  <span><strong>住宿</strong>${result.option.costBasis.hotelDetail}</span>
-                  <span><strong>時間</strong>${result.option.costBasis.scheduleDetail}</span>
-                  <span><strong>價格</strong>${result.option.costBasis.priceDetail}</span>
-                  ${
-                    result.option.costBasis.missingItems.length > 0
-                      ? `<small>需重查：${result.option.costBasis.missingItems.join("、")}</small>`
-                      : ""
-                  }
-                </div>
-                ${
-                  result.option.sourceName
-                    ? `<div class="sourceInline">
-                        <span>來源：${result.option.sourceName}</span>
-                        <span>查核：${result.option.sourceCheckedAt}</span>
-                        ${sourceStatus ? `<span>資料新鮮度：${sourceStatus.freshnessLabel}</span><span>安全狀態：${sourceStatus.safetyLabel}</span>` : ""}
-                        <strong>${result.option.sourceSummary}</strong>
-                      </div>`
-                    : ""
-                }
-                <div class="rankingSummary"><strong>排序理由：</strong><span>${result.option.rankingSummary}</span></div>
-                <div class="reasonColumns">
-                  <div><strong>符合原因</strong><ul class="reasonList">${reasonItems}</ul></div>
-                  <div><strong>注意事項</strong><ul class="${result.blockers.length > 0 ? "blockerList" : "reasonList"}">${noteItems}</ul></div>
-                </div>
-                <p class="nextStep"><strong>下一步：</strong>${result.option.nextStep}</p>
-                ${
-                  result.option.bookingUrl
-                    ? `<div class="bookingRow"><a href="${result.option.bookingUrl}" rel="noreferrer" target="_blank">${result.option.bookingLabel || "訂購網站"}</a></div>`
-                    : ""
-                }
-              </article>
-            `;
-          })
-          .join("");
       }
 
       document.querySelectorAll(".segmentedControl").forEach((group) => {
@@ -2340,22 +2468,26 @@
           plannerState[filter] = filter === "riskTolerance" ? Number(value) : value;
           group.querySelectorAll("button").forEach((item) => item.classList.toggle("active", item === button));
           renderSimulator();
+          renderDirection();
         });
       });
 
       document.getElementById("budgetRange").addEventListener("input", (event) => {
         plannerState.budget = clampBudget(Number(event.target.value));
         renderSimulator();
+        renderDirection();
       });
 
       document.getElementById("budgetNumber").addEventListener("input", (event) => {
         plannerState.budget = clampBudget(Number(event.target.value) || plannerState.budget);
         renderSimulator();
+        renderDirection();
       });
 
       document.getElementById("requireVerified").addEventListener("change", (event) => {
         plannerState.requireVerified = event.target.checked;
         renderSimulator();
+        renderDirection();
       });
 
       document.getElementById("directionChooser").addEventListener("click", (event) => {
