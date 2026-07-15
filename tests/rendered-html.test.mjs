@@ -42,6 +42,9 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /已同步來源商品會自動進入排序/);
   assert.match(html, /自動匯入資料源/);
   assert.match(html, /Yellowknife Tours 5D4N Gold/);
+  assert.match(html, /匯率：1 CAD ≈ NT\$22\.8176/);
+  assert.match(html, /約 NT\$35,698/);
+  assert.match(html, /約 NT\$57,452/);
   assert.match(html, /訂購網站/);
   assert.match(html, /Yellowknife Tours/);
   assert.doesNotMatch(html, /即時查詢入口|全網即時搜尋|開啟主要資料源查詢|查詢此來源/);

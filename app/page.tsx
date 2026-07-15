@@ -60,7 +60,7 @@ const sourceSyncRows = [
     name: "Yellowknife Tours 5D4N Gold",
     source: "Yellowknife Tours",
     status: "已併入排序",
-    amount: "CAD 1,490 + 5% GST 起",
+    amount: "CAD 1,490 + 5% GST 起（約 NT$35,698）",
     bookingUrl: "https://yellowknifetours.com/winter-packages/",
     note: "2026-2027 冬季套裝來源；需另加國際/內陸機票、冬衣、小費與稅費。",
   },
@@ -68,7 +68,7 @@ const sourceSyncRows = [
     name: "Yellowknife Tours 5D4N Diamond",
     source: "Yellowknife Tours",
     status: "已併入排序",
-    amount: "CAD 2,398 + 5% GST 起",
+    amount: "CAD 2,398 + 5% GST 起（約 NT$57,452）",
     bookingUrl: "https://yellowknifetours.com/winter-packages/",
     note: "飯店與活動等級較高，總費用更接近預算上限。",
   },
@@ -84,7 +84,7 @@ const sourceSyncRows = [
     name: "Air Canada YVR-YZF 月份票價",
     source: "Air Canada",
     status: "支援成本估算",
-    amount: "2026/09-12 CAD 318 起；2027/01-03 CAD 339 起",
+    amount: "2026/09-12 CAD 318 起（約 NT$7,256）；2027/01-03 CAD 339 起（約 NT$7,735）",
     bookingUrl: "https://www.aircanada.com/en-ca/flights-from-vancouver-to-yellowknife",
     note: "航班價格會變動；用來修正自由行與當地套裝總額，不單獨列為旅行團。",
   },
@@ -272,14 +272,14 @@ const candidateOptions: CandidateOption[] = [
     dataState: "來源同步",
     guideUrl: "#source-sync",
     guideLabel: "查看來源同步",
-    guideNote: "來源頁列 2026-2027 冬季套裝，Gold 5D4N 雙人房型有 CAD 1,490 + 5% GST 起價；總額仍需加機票與必要費。",
+    guideNote: "來源頁列 2026-2027 冬季套裝，Gold 5D4N 雙人房型有 CAD 1,490 + 5% GST 起價；依 1 CAD≈NT$22.8176 換算約 NT$35,698，總額仍需加機票與必要費。",
     description: "網站自動匯入的可查核來源候選；價格較有機會落在預算內，但不是台灣旅行社全包團。",
     nextStep: "前往訂購網站確認日期、房型、活動內容，再加回國際與內陸機票。",
     bookingUrl: "https://yellowknifetours.com/winter-packages/",
     bookingLabel: "前往 Yellowknife Tours 訂購/詢價",
     sourceName: "Yellowknife Tours",
     sourceCheckedAt: "2026-07-15",
-    sourceSummary: "5D4N Gold Hotel Package；CAD 1,490 + 5% GST 起，未含機票、冬衣、小費。",
+    sourceSummary: "5D4N Gold Hotel Package；CAD 1,490 + 5% GST 起，約 NT$35,698，未含機票、冬衣、小費。",
     importedFromSource: true,
   },
   {
@@ -295,14 +295,14 @@ const candidateOptions: CandidateOption[] = [
     dataState: "來源同步",
     guideUrl: "#source-sync",
     guideLabel: "查看來源同步",
-    guideNote: "來源頁列 Diamond 5D4N 雙人房型有 CAD 2,398 + 5% GST 起價；舒適度較高但總費用貼近預算上限。",
+    guideNote: "來源頁列 Diamond 5D4N 雙人房型有 CAD 2,398 + 5% GST 起價；依 1 CAD≈NT$22.8176 換算約 NT$57,452，舒適度較高但總費用貼近預算上限。",
     description: "網站自動匯入的舒適型來源候選；適合作為自由行舒適基準的實際商品版本。",
     nextStep: "前往訂購網站確認飯店、餐食、活動與可選日期，並重算台幣總額。",
     bookingUrl: "https://yellowknifetours.com/winter-packages/",
     bookingLabel: "前往 Yellowknife Tours 訂購/詢價",
     sourceName: "Yellowknife Tours",
     sourceCheckedAt: "2026-07-15",
-    sourceSummary: "5D4N Diamond Hotel Package；CAD 2,398 + 5% GST 起，未含機票、冬衣、小費。",
+    sourceSummary: "5D4N Diamond Hotel Package；CAD 2,398 + 5% GST 起，約 NT$57,452，未含機票、冬衣、小費。",
     importedFromSource: true,
   },
   {
@@ -612,7 +612,10 @@ export default function Home() {
           </div>
           <div className="sourceNote">
             <strong>同步狀態</strong>
-            <span>已匯入 {candidateOptions.filter((option) => option.importedFromSource).length} 筆可排序候選；查核基準日：2026-07-15。</span>
+            <span>
+              已匯入 {candidateOptions.filter((option) => option.importedFromSource).length} 筆可排序候選；匯率：1 CAD ≈
+              NT$22.8176；查核基準日：2026-07-15。
+            </span>
           </div>
         </div>
 
