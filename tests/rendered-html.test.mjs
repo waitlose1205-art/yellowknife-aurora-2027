@@ -36,6 +36,7 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /A\/B 極光夜數視覺標籤/);
   assert.match(html, /PENDING_2027_RECHECK/);
   assert.doesNotMatch(html, /Backlog|來源老化機制|來源老化監控|預算情報判定|資料匯入檢核|跨目的地模板啟用/);
+  assert.doesNotMatch(html, /下一步行動卡|Next Actions/);
   assert.match(html, /極光旅遊團搜尋範圍/);
   assert.match(html, /9-11 月/);
   assert.match(html, /秋季極光團/);
@@ -50,6 +51,8 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.doesNotMatch(html, /即時查詢入口|全網即時搜尋|開啟主要資料源查詢|查詢此來源/);
   assert.match(html, /候選方向分類/);
   assert.match(html, /可選擇的 A級團體候選方向/);
+  assert.match(html, /自由行候選/);
+  assert.match(html, /旅行團與方案清單/);
   assert.match(html, /台灣旅行社完整極光夜團/);
   assert.match(html, /未匯入具體團名、價格與訂購網址前，不進入排序/);
   assert.doesNotMatch(
@@ -90,7 +93,6 @@ test("keeps the finished site free of starter preview wiring", async () => {
   ]);
 
   assert.match(page, /decisionStatuses/);
-  assert.match(page, /actionCards/);
   assert.match(page, /seasonScopeRows/);
   assert.match(page, /sourceSyncRows/);
   assert.match(page, /importedFromSource/);
@@ -98,6 +100,7 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(page, /DirectionCategoryId/);
   assert.match(page, /directionCategories/);
   assert.match(page, /selectedDirectionId/);
+  assert.match(page, /getDirectionCandidate/);
   assert.match(page, /candidateOptions/);
   assert.match(page, /sourceStatusRegistry/);
   assert.match(page, /costBasis/);
@@ -105,11 +108,17 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(page, /tourName/);
   assert.match(page, /evaluateOption/);
   assert.match(page, /mobileTourCards/);
+  assert.match(page, /自由行候選/);
+  assert.match(page, /B級歷史旅行團/);
+  assert.match(page, /當地套裝，估算待補/);
+  assert.doesNotMatch(page, /actionCards|下一步行動卡|Next Actions/);
   assert.match(css, /\.budgetRow\.green/);
   assert.match(css, /\.scopeGrid/);
   assert.match(css, /\.sourceSyncSection/);
   assert.match(css, /\.directionSection/);
   assert.match(css, /\.directionChooser/);
+  assert.match(css, /\.directionTourMeta/);
+  assert.match(css, /\.directionTourLink/);
   assert.match(css, /\.sourceGrid/);
   assert.match(css, /\.sourceStatusGrid/);
   assert.match(css, /\.estimateGrid/);
@@ -121,6 +130,12 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(css, /\.tourCard\.red/);
   assert.match(staticHtml, /directionCategories/);
   assert.match(staticHtml, /directionDetail/);
+  assert.match(staticHtml, /data-direction="independent"/);
+  assert.match(staticHtml, /directionTourMeta/);
+  assert.match(staticHtml, /自由行候選/);
+  assert.match(staticHtml, /B級歷史旅行團/);
+  assert.match(staticHtml, /當地套裝，估算待補/);
+  assert.doesNotMatch(staticHtml, /下一步行動卡|Next Actions|actionGrid|actionCard/);
   assert.match(staticHtml, /sourceStatusRegistry/);
   assert.match(staticHtml, /costBasis/);
   assert.match(staticHtml, /estimateGrid/);

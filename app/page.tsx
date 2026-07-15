@@ -9,29 +9,6 @@ const decisionStatuses = [
   { label: "策略", value: "團體優先", note: "自由行作比較基準" },
 ];
 
-const actionCards = [
-  {
-    title: "2026 樣本正規化",
-    status: "已完成",
-    standard: "四個已成團樣本完成同口徑比較，含必要費用、夜數、風險與判定。",
-  },
-  {
-    title: "極光季航班重查",
-    status: "待即時查核",
-    standard: "9-11 月秋季與 12-3 月冬季候選都需填入查核日期、票價、轉機、行李與 YZF 抵離時間。",
-  },
-  {
-    title: "團體 vs 自由行成本表",
-    status: "基準完成",
-    standard: "同時列出團體低價樣本、自由行節制型、舒適型、高舒適型與單人情境。",
-  },
-  {
-    title: "極光團商品篩選",
-    status: "規則完成",
-    standard: "任何月份的新商品都必須通過日期、總費用、航班、飯店、補看與延誤條款檢查。",
-  },
-];
-
 const seasonScopeRows = [
   {
     period: "9-11 月",
@@ -299,17 +276,17 @@ const directionCategories = [
       {
         name: "台灣旅行社完整極光夜團",
         condition: "需有明確旅遊團名稱、訂購網址、總團費與 3 個完整極光夜口徑。",
-        status: "待匯入具體商品",
+        status: "尚未匯入具體旅行團",
       },
       {
         name: "9-11 月秋季 A級團體團",
         condition: "需確認秋季團仍包含黃刀鎮極光觀賞，且抵達日不計入完整夜。",
-        status: "優先搜尋方向",
+        status: "待匯入旅行團",
       },
       {
         name: "12-3 月冬季 A級團體團",
         condition: "需同時檢查低溫、航班延誤、飯店與補看規則。",
-        status: "優先搜尋方向",
+        status: "待匯入旅行團",
       },
     ],
   },
@@ -320,14 +297,47 @@ const directionCategories = [
     summary: "B級代表 3 晚可能含抵達日，只能當價格備援，不能宣稱為 3 個完整極光夜。",
     items: [
       {
-        name: "低價團體備援",
-        condition: "總額需低於預算且明確標示夜數算法。",
-        status: "備援方向",
+        candidateId: "group-2026-march",
+        name: "玩美加族~加拿大極光10日",
+        condition: "2026 三月低價團體歷史樣本，B級夜數，可作團體價格底線但不可直接下訂。",
+        status: "B級歷史旅行團",
       },
       {
         name: "促銷團或短天數團",
         condition: "若抵達日被算入極光夜，排序時必須降級。",
-        status: "需人工判讀",
+        status: "待匯入旅行團",
+      },
+    ],
+  },
+  {
+    id: "independent",
+    label: "自由行候選",
+    title: "自由行候選方案",
+    summary: "自由行必須補齊機票航班、住宿飯店、抵離時間與逐項價格；缺任一項時只列為估算待補，不作完整總額。",
+    items: [
+      {
+        candidateId: "source-yktours-gold-5d4n",
+        name: "Yellowknife Tours 5D4N Gold Hotel Package",
+        condition: "當地套裝價已查到，但台灣出發航班、時間與完整必要費仍待補。",
+        status: "當地套裝，估算待補",
+      },
+      {
+        candidateId: "source-yktours-diamond-5d4n",
+        name: "Yellowknife Tours 5D4N Diamond Hotel Package",
+        condition: "舒適型當地套裝價已查到，但尚未構成完整自由行總額。",
+        status: "舒適套裝，估算待補",
+      },
+      {
+        candidateId: "independent-comfort",
+        name: "自由行舒適型雙人基準",
+        condition: "需補齊航班、飯店、抵離時間與逐項價格後才能重新排序。",
+        status: "自由行待補",
+      },
+      {
+        candidateId: "independent-basic",
+        name: "自由行節制型備援",
+        condition: "需先確認低價航班與住宿是否仍保住 A級完整極光夜。",
+        status: "自由行待補",
       },
     ],
   },
@@ -573,6 +583,10 @@ function getEstimateLabel(option: CandidateOption) {
   return option.costBasis.readiness === "complete" || option.costBasis.readiness === "historical"
     ? formatCurrency(option.estimatedCost)
     : option.costBasis.totalLabel;
+}
+
+function getDirectionCandidate(candidateId?: string) {
+  return candidateId ? candidateOptions.find((option) => option.id === candidateId) ?? null : null;
 }
 
 function evaluateOption(option: CandidateOption, filters: PlannerFilters) {
@@ -847,12 +861,12 @@ export default function Home() {
             <p className="eyebrow">Candidate Directions</p>
             <h2>候選方向分類</h2>
             <p>
-              這裡只列尚在追蹤的團體方向。未匯入具體團名、價格與訂購網址前，不進入「適合選項排序」。
+              這裡把 A級團體、B級團體與自由行候選分開。點選分類後，下方會直接列出旅行團或自由行方案。
             </p>
           </div>
           <div className="sourceNote">
             <strong>排序規則</strong>
-            <span>A級、B級是分類條件，不是商品名稱；下方排序只顯示具體可比較選項。</span>
+            <span>A級、B級與自由行是分類條件；具體旅行團或方案需通過資料完整度後才進入排序。</span>
           </div>
         </div>
 
@@ -875,14 +889,34 @@ export default function Home() {
             <h3>{selectedDirection.title}</h3>
             <p>{selectedDirection.summary}</p>
           </div>
+          <div className="directionListHeader">旅行團與方案清單</div>
           <div className="directionList">
-            {selectedDirection.items.map((item) => (
-              <article className="directionItem" key={item.name}>
-                <span>{item.status}</span>
-                <h3>{item.name}</h3>
-                <p>{item.condition}</p>
-              </article>
-            ))}
+            {selectedDirection.items.map((item) => {
+              const linkedOption = "candidateId" in item ? getDirectionCandidate(item.candidateId) : null;
+
+              return (
+                <article className={`directionItem ${linkedOption ? "linked" : "pending"}`} key={item.name}>
+                  <span>{item.status}</span>
+                  <h3>{item.name}</h3>
+                  <p>{item.condition}</p>
+                  {linkedOption ? (
+                    <div className="directionTourMeta">
+                      <strong>{linkedOption.packageName}</strong>
+                      <small>
+                        {linkedOption.productType}｜{linkedOption.departureWindow}
+                      </small>
+                      <small>{linkedOption.costBasis.totalLabel}</small>
+                      <small>資料狀態：{linkedOption.dataState}</small>
+                    </div>
+                  ) : null}
+                  {linkedOption?.bookingUrl ? (
+                    <a className="directionTourLink" href={linkedOption.bookingUrl} rel="noreferrer" target="_blank">
+                      {linkedOption.bookingLabel ?? "訂購網站"}
+                    </a>
+                  ) : null}
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -1164,26 +1198,6 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="pageSection">
-        <div className="sectionHeader">
-          <p className="eyebrow">Next Actions</p>
-          <h2>下一步行動卡</h2>
-        </div>
-        <div className="actionGrid">
-          {actionCards.map((card, index) => (
-            <article className="actionCard" key={card.title}>
-              <span className="stepNumber">{String(index + 1).padStart(2, "0")}</span>
-              <h3>{card.title}</h3>
-              <span className="miniStatus">{card.status}</span>
-              <p>
-                <strong>完成標準：</strong>
-                {card.standard}
-              </p>
-            </article>
-          ))}
         </div>
       </section>
 
