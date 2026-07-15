@@ -104,13 +104,13 @@ const sourceSyncRows = [
     note: "飯店與活動等級較高，總費用更接近預算上限。",
   },
   {
-    name: "長汎 2026 三月低價團樣本",
+    name: "長汎 2026 團體樣本（四出發日）",
     source: "長汎旅遊",
     sourceStatusId: "everfun",
     status: "已併入排序",
-    amount: "NT$142,451",
+    amount: "NT$142,451-165,451",
     bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB",
-    note: "歷史團體基準，不代表目前可下訂，但保留作價格底線。",
+    note: "四筆 2026 團體歷史基準，不代表目前可下訂，但可避免 B級團體只剩單一樣本。",
   },
   {
     name: "Air Canada YVR-YZF 月份票價",
@@ -271,19 +271,22 @@ const directionCategories = [
     id: "group-a",
     label: "A級團體候選方向",
     title: "可選擇的 A級團體候選方向",
-    summary: "A級代表抵達日不計，需保留至少 3 個完整極光夜。這裡只列方向；未匯入具體團名、價格與訂購網址前，不進入排序。",
+    summary: "A級代表抵達日不計，需保留至少 3 個完整極光夜。尚未公告價格的商品會保留在待查候選中，但不可視為可下訂。",
     items: [
       {
+        candidateId: "group-a-taiwan-complete",
         name: "台灣旅行社完整極光夜團",
         condition: "需有明確旅遊團名稱、訂購網址、總團費與 3 個完整極光夜口徑。",
         status: "尚未匯入具體旅行團",
       },
       {
+        candidateId: "group-a-autumn",
         name: "9-11 月秋季 A級團體團",
         condition: "需確認秋季團仍包含黃刀鎮極光觀賞，且抵達日不計入完整夜。",
         status: "待匯入旅行團",
       },
       {
+        candidateId: "group-a-winter",
         name: "12-3 月冬季 A級團體團",
         condition: "需同時檢查低溫、航班延誤、飯店與補看規則。",
         status: "待匯入旅行團",
@@ -294,18 +297,31 @@ const directionCategories = [
     id: "group-b",
     label: "B級團體價格方向",
     title: "B級團體價格方向",
-    summary: "B級代表 3 晚可能含抵達日，只能當價格備援，不能宣稱為 3 個完整極光夜。",
+    summary: "B級代表 3 晚可能含抵達日，只能當價格備援，不能宣稱為 3 個完整極光夜。此分類會列出所有已匯入的 B級團體樣本。",
     items: [
       {
-        candidateId: "group-2026-march",
-        name: "玩美加族~加拿大極光10日",
-        condition: "2026 三月低價團體歷史樣本，B級夜數，可作團體價格底線但不可直接下訂。",
+        candidateId: "group-2026-jan15",
+        name: "玩美加族~加拿大極光10日（2026/01/15）",
+        condition: "2026 一月 B級團體歷史樣本，必要費後接近 NT$150,000。",
         status: "B級歷史旅行團",
       },
       {
-        name: "促銷團或短天數團",
-        condition: "若抵達日被算入極光夜，排序時必須降級。",
-        status: "待匯入旅行團",
+        candidateId: "group-2026-feb12",
+        name: "玩美加族~加拿大極光10日（2026/02/12）",
+        condition: "2026 二月寒假 B級團體歷史樣本，可作旺季價格警戒。",
+        status: "B級歷史旅行團",
+      },
+      {
+        candidateId: "group-2026-feb19",
+        name: "玩美加族~加拿大極光10日（2026/02/19）",
+        condition: "2026 二月 B級團體歷史樣本，必要費後略高於原始預算。",
+        status: "B級歷史旅行團",
+      },
+      {
+        candidateId: "group-2026-march",
+        name: "玩美加族~加拿大極光10日（2026/03/19）",
+        condition: "2026 三月低價團體歷史樣本，B級夜數，可作團體價格底線但不可直接下訂。",
+        status: "B級歷史旅行團",
       },
     ],
   },
@@ -346,6 +362,96 @@ const directionCategories = [
 type DirectionCategoryId = (typeof directionCategories)[number]["id"];
 
 const candidateOptions: CandidateOption[] = [
+  {
+    id: "group-a-taiwan-complete",
+    title: "A級團體待查：台灣旅行社完整極光夜團",
+    packageName: "待查商品：台灣旅行社 3 完整極光夜團",
+    mode: "group",
+    estimatedCost: 0,
+    auroraLevel: "A",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: false,
+    dataState: "待匯入來源",
+    guideUrl: "#pending-2027-recheck",
+    guideLabel: "查看缺資料清單",
+    guideNote: "此項目用來保留 A級團體搜尋方向；未取得旅行社商品前不可下訂。",
+    description: "符合 A級團體方向，但目前缺少正式團名、價格、航班、飯店與訂購頁。",
+    nextStep: "匯入旅行社商品後，比對是否真的有 3 個完整極光夜。",
+    departureWindow: "2027 或 9-11 月待查",
+    productType: "A級團體待查",
+    rankingSummary: "A級團體條件符合目標，但資料尚未公布；只作搜尋方向，不作可下訂推薦。",
+    costBasis: {
+      readiness: "missing",
+      label: "價格尚未公布",
+      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
+      flightDetail: "尚未公布完整航班與班號。",
+      hotelDetail: "尚未公布飯店名稱或同級條件。",
+      scheduleDetail: "尚未公布 YZF 抵達、離開時間與完整極光夜切分。",
+      priceDetail: "尚未公布團費、稅費、小費、保險與必要附加費總額。",
+      missingItems: ["正式旅遊團名稱", "訂購網址", "總團費", "航班", "飯店", "3 個完整極光夜口徑"],
+    },
+  },
+  {
+    id: "group-a-autumn",
+    title: "A級團體待查：9-11 月秋季極光團",
+    packageName: "待查商品：9-11 月秋季 3 完整極光夜團",
+    mode: "group",
+    estimatedCost: 0,
+    auroraLevel: "A",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: false,
+    dataState: "待匯入來源",
+    guideUrl: "#pending-2027-recheck",
+    guideLabel: "查看缺資料清單",
+    guideNote: "秋季極光團也屬本網站重點；需等商品公告後重查。",
+    description: "保留 9-11 月 A級團體搜尋方向，避免只看冬季或只看 2027 年初。",
+    nextStep: "匯入秋季團商品，確認是否仍包含黃刀鎮極光與 3 個完整觀賞夜。",
+    departureWindow: "9-11 月待查",
+    productType: "A級秋季團體待查",
+    rankingSummary: "秋季時間符合搜尋範圍，但目前缺少可查核商品資料。",
+    costBasis: {
+      readiness: "missing",
+      label: "價格尚未公布",
+      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
+      flightDetail: "尚未公布秋季團航班與 YZF 抵離時間。",
+      hotelDetail: "尚未公布秋季團飯店。",
+      scheduleDetail: "尚未公布是否有 3 個完整極光夜，抵達日不得計入 A級夜數。",
+      priceDetail: "尚未公布團費與必要附加費。",
+      missingItems: ["秋季可售日期", "團費", "航班", "飯店", "完整極光夜數", "訂購網址"],
+    },
+  },
+  {
+    id: "group-a-winter",
+    title: "A級團體待查：12-3 月冬季完整極光夜團",
+    packageName: "待查商品：12-3 月冬季 3 完整極光夜團",
+    mode: "group",
+    estimatedCost: 0,
+    auroraLevel: "A",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: false,
+    dataState: "待匯入來源",
+    guideUrl: "#pending-2027-recheck",
+    guideLabel: "查看缺資料清單",
+    guideNote: "冬季團需額外檢查低溫、延誤、補看與飯店位置。",
+    description: "保留冬季 A級團體搜尋方向；正式商品匯入後再與 B級價格團比較。",
+    nextStep: "匯入冬季旅行社商品，確認航班延誤備援與補看規則。",
+    departureWindow: "12-3 月待查",
+    productType: "A級冬季團體待查",
+    rankingSummary: "冬季極光條件可能較強，但沒有價格與航班前不能排序為可下訂商品。",
+    costBasis: {
+      readiness: "missing",
+      label: "價格尚未公布",
+      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
+      flightDetail: "尚未公布冬季團航班、轉機與延誤備援。",
+      hotelDetail: "尚未公布冬季團飯店與保暖動線。",
+      scheduleDetail: "尚未公布 YZF 夜數配置與補看規則。",
+      priceDetail: "尚未公布團費、冬衣、稅費、小費與必要附加費總額。",
+      missingItems: ["冬季可售日期", "航班延誤備援", "飯店", "補看規則", "總費用", "訂購網址"],
+    },
+  },
   {
     id: "source-yktours-gold-5d4n",
     title: "來源匯入：冬季當地套裝低價候選",
@@ -418,6 +524,117 @@ const candidateOptions: CandidateOption[] = [
     sourceName: "Yellowknife Tours",
     sourceCheckedAt: "2026-07-15",
     sourceSummary: "5D4N Diamond Hotel Package；CAD 2,398 + 5% GST 起，約 NT$57,452；自由行總額參考 2026 團體節奏與舒適住宿等級。",
+    importedFromSource: true,
+  },
+  {
+    id: "group-2026-jan15",
+    title: "2026 一月團體樣本",
+    packageName: "歷史樣本：玩美加族~加拿大極光10日（2026/01/15）",
+    mode: "group",
+    estimatedCost: 149451,
+    auroraLevel: "B",
+    riskLevel: 1,
+    comfort: "balanced",
+    verified: true,
+    dataState: "歷史基準",
+    guideUrl: "#historical-baseline",
+    guideLabel: "查看 2026 團體樣本",
+    guideNote: "此項目是 2026 歷史比較基準，不是目前可下訂商品。",
+    description: "B級團體歷史樣本，必要費後接近原始 NT$150,000 預算；預算提高時仍可作價格比較。",
+    nextStep: "作為 B級團體價格樣本；正式下訂前需重查 2027 商品。",
+    departureWindow: "2026/01 歷史樣本",
+    productType: "團體歷史樣本",
+    rankingSummary: "價格接近原始預算、旅行社來源可查；但夜數屬 B級且資料是歷史樣本。",
+    costBasis: {
+      readiness: "historical",
+      label: "歷史團體總額",
+      totalLabel: "歷史必要費後 NT$149,451",
+      flightDetail: "2026 團體樣本含旅行社規劃航段結構；2027 航班仍需重查。",
+      hotelDetail: "黃刀鎮住宿以 Chateau Nova、Explorer Hotel 或同級為方向；實際入住需以當期商品為準。",
+      scheduleDetail: "2026/01/15-01/24 歷史出發日期已知；不可直接套用至 2027。",
+      priceDetail: "以團費、公告小費、ESTA、eTA 等必要費用後估算。",
+      missingItems: ["2027 可售日期", "2027 實際團費", "2027 航班與飯店確認"],
+    },
+    bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26115BR10TA",
+    bookingLabel: "查看長汎旅遊團頁",
+    sourceStatusId: "everfun",
+    sourceName: "長汎旅遊",
+    sourceCheckedAt: "2026-07-15",
+    sourceSummary: "2026 一月團體歷史樣本；只作價格基準，不代表目前仍可售。",
+    importedFromSource: true,
+  },
+  {
+    id: "group-2026-feb12",
+    title: "2026 二月寒假團體樣本",
+    packageName: "歷史樣本：玩美加族~加拿大極光10日（2026/02/12）",
+    mode: "group",
+    estimatedCost: 165451,
+    auroraLevel: "B",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: true,
+    dataState: "歷史基準",
+    guideUrl: "#historical-baseline",
+    guideLabel: "查看 2026 團體樣本",
+    guideNote: "此項目是寒假旺季價格警戒，不是目前可下訂商品。",
+    description: "B級團體寒假歷史樣本，價格較高；預算提高後可納入比較，但仍是歷史資料。",
+    nextStep: "用來檢查旺季團費是否仍在已確認預算內。",
+    departureWindow: "2026/02 歷史樣本",
+    productType: "團體歷史樣本",
+    rankingSummary: "可作旺季價格上緣；但夜數屬 B級，且資料是歷史樣本。",
+    costBasis: {
+      readiness: "historical",
+      label: "歷史團體總額",
+      totalLabel: "歷史必要費後 NT$165,451",
+      flightDetail: "2026 團體樣本含旅行社規劃航段結構；2027 航班仍需重查。",
+      hotelDetail: "黃刀鎮住宿以 Chateau Nova、Explorer Hotel 或同級為方向；實際入住需以當期商品為準。",
+      scheduleDetail: "2026/02/12-02/21 歷史出發日期已知；不可直接套用至 2027。",
+      priceDetail: "以團費、公告小費、ESTA、eTA 等必要費用後估算。",
+      missingItems: ["2027 可售日期", "2027 實際團費", "2027 航班與飯店確認"],
+    },
+    bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26212BR10TA",
+    bookingLabel: "查看長汎旅遊團頁",
+    sourceStatusId: "everfun",
+    sourceName: "長汎旅遊",
+    sourceCheckedAt: "2026-07-15",
+    sourceSummary: "2026 二月寒假團體歷史樣本；只作價格基準，不代表目前仍可售。",
+    importedFromSource: true,
+  },
+  {
+    id: "group-2026-feb19",
+    title: "2026 二月團體樣本",
+    packageName: "歷史樣本：玩美加族~加拿大極光10日（2026/02/19）",
+    mode: "group",
+    estimatedCost: 155451,
+    auroraLevel: "B",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: true,
+    dataState: "歷史基準",
+    guideUrl: "#historical-baseline",
+    guideLabel: "查看 2026 團體樣本",
+    guideNote: "此項目是 2026 歷史比較基準，不是目前可下訂商品。",
+    description: "B級團體歷史樣本，必要費後略高於原始預算；預算提高時可作中高價比較。",
+    nextStep: "作為 B級團體價格樣本；正式下訂前需重查 2027 商品。",
+    departureWindow: "2026/02 歷史樣本",
+    productType: "團體歷史樣本",
+    rankingSummary: "可作二月中高價參考；但夜數屬 B級，且資料是歷史樣本。",
+    costBasis: {
+      readiness: "historical",
+      label: "歷史團體總額",
+      totalLabel: "歷史必要費後 NT$155,451",
+      flightDetail: "2026 團體樣本含旅行社規劃航段結構；2027 航班仍需重查。",
+      hotelDetail: "黃刀鎮住宿以 Chateau Nova、Explorer Hotel 或同級為方向；實際入住需以當期商品為準。",
+      scheduleDetail: "2026/02/19-02/28 歷史出發日期已知；不可直接套用至 2027。",
+      priceDetail: "以團費、公告小費、ESTA、eTA 等必要費用後估算。",
+      missingItems: ["2027 可售日期", "2027 實際團費", "2027 航班與飯店確認"],
+    },
+    bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26219BR10TA",
+    bookingLabel: "查看長汎旅遊團頁",
+    sourceStatusId: "everfun",
+    sourceName: "長汎旅遊",
+    sourceCheckedAt: "2026-07-15",
+    sourceSummary: "2026 二月團體歷史樣本；只作價格基準，不代表目前仍可售。",
     importedFromSource: true,
   },
   {
@@ -584,6 +801,13 @@ function getEstimateLabel(option: CandidateOption) {
 }
 
 function getBudgetStatus(option: CandidateOption, budget: number) {
+  if (option.costBasis.readiness === "missing") {
+    return {
+      className: "unknown",
+      label: "價格尚未公布，預算只作搜尋上限",
+    };
+  }
+
   const delta = budget - option.estimatedCost;
 
   if (delta >= 5000) {
@@ -612,6 +836,22 @@ function getDirectionIdForOption(option: CandidateOption): DirectionCategoryId {
   }
 
   return option.auroraLevel === "A" ? "group-a" : "group-b";
+}
+
+function getDirectionIdForFilters(filters: PlannerFilters, fallback: CandidateOption): DirectionCategoryId {
+  if (filters.preferredMode === "independent") {
+    return "independent";
+  }
+
+  if (filters.preferredMode === "group") {
+    return filters.auroraTarget === "A" ? "group-a" : filters.auroraTarget === "B" ? "group-b" : "group-b";
+  }
+
+  if (filters.auroraTarget === "B") {
+    return "group-b";
+  }
+
+  return getDirectionIdForOption(fallback);
 }
 
 function isSamePlannerFilters(first: PlannerFilters, second: PlannerFilters) {
@@ -663,9 +903,9 @@ function evaluateOption(option: CandidateOption, filters: PlannerFilters) {
   const budgetDelta = option.estimatedCost - filters.budget;
   const sourceStatus = getSourceStatus(option);
 
-  if (option.mode === "independent" && option.costBasis.readiness === "missing") {
+  if (option.costBasis.readiness === "missing") {
     score -= 32;
-    blockers.push(`自由行缺少 ${option.costBasis.missingItems.join("、")}，不能視為完整預算。`);
+    blockers.push(`缺少 ${option.costBasis.missingItems.join("、")}，不能視為完整預算或可下訂商品。`);
   } else if (option.mode === "independent" && option.costBasis.readiness === "partial") {
     score -= 8;
     cautions.push(`自由行目前採 2026 團體樣本作參考，需重查 ${option.costBasis.missingItems.join("、")} 後才能下訂。`);
@@ -823,7 +1063,7 @@ export default function Home() {
   const bestOption = evaluatedOptions.find((result) => result.status !== "exclude") ?? evaluatedOptions[0];
   const activeCount = evaluatedOptions.filter((result) => result.status !== "exclude").length;
   const evaluatedById = new Map(evaluatedOptions.map((result) => [result.option.id, result]));
-  const syncedDirectionId = getDirectionIdForOption(bestOption.option);
+  const syncedDirectionId = getDirectionIdForFilters(filters, bestOption.option);
   const activeDirectionId = selectedDirectionId ?? syncedDirectionId;
   const selectedDirection =
     directionCategories.find((category) => category.id === activeDirectionId) ?? directionCategories[0];

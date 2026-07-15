@@ -50,11 +50,11 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /Yellowknife Tours/);
   assert.doesNotMatch(html, /即時查詢入口|全網即時搜尋|開啟主要資料源查詢|查詢此來源/);
   assert.match(html, /候選方向分類/);
-  assert.match(html, /自由行候選方案/);
+  assert.match(html, /可選擇的 A級團體候選方向/);
   assert.match(html, /自由行候選/);
   assert.match(html, /旅行團與方案清單/);
-  assert.match(html, /Yellowknife Tours 5D4N Gold Hotel Package/);
-  assert.match(html, /當地套裝＋2026參考/);
+  assert.match(html, /台灣旅行社完整極光夜團/);
+  assert.match(html, /價格尚未公布，預算只作搜尋上限/);
   assert.doesNotMatch(
     html,
     /秋冬 A 級團體候選方向|秋冬 B 級團體價格優先方向|待查商品：黃刀鎮 A級完整極光夜團|待查商品：黃刀鎮 B級價格優先團/,
@@ -71,7 +71,8 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /NT\$100,000 - NT\$400,000/);
   assert.match(html, /目前最適合/);
   assert.match(html, /Yellowknife Tours 5D4N Gold/);
-  assert.match(html, /長汎 2026 三月低價團樣本/);
+  assert.match(html, /長汎 2026 團體樣本（四出發日）/);
+  assert.match(html, /已匯入 <!-- -->6<!-- --> 筆可排序候選|已匯入 6 筆可排序候選/);
   assert.match(html, /前往 Yellowknife Tours 訂購\/詢價/);
   assert.doesNotMatch(html, /互動決策模擬器|適合選項排序/);
   assert.match(html, /查核基準日：2026-07-15/);
@@ -130,6 +131,12 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(page, /directionInfoDetail/);
   assert.match(page, /directionRankingSummary/);
   assert.match(page, /getDecisionGates/);
+  assert.match(page, /getDirectionIdForFilters/);
+  assert.match(page, /group-a-taiwan-complete/);
+  assert.match(page, /group-2026-jan15/);
+  assert.match(page, /group-2026-feb12/);
+  assert.match(page, /group-2026-feb19/);
+  assert.match(page, /價格尚未公布，預算只作搜尋上限/);
   assert.match(page, /查看航班、住宿與價格詳細資訊/);
   assert.match(page, /Chateau Nova、Explorer Hotel 或同級/);
   assert.doesNotMatch(page, /尚未填入|估算待補|自由行估算缺/);
@@ -143,6 +150,7 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(css, /\.directionTourMeta/);
   assert.match(css, /\.directionTourLink/);
   assert.match(css, /\.directionBudgetBasis/);
+  assert.match(css, /\.directionBudgetBasis\.unknown/);
   assert.match(css, /\.directionInfoDetail/);
   assert.match(css, /\.directionRankingSummary/);
   assert.match(css, /\.sourceGrid/);
@@ -157,6 +165,11 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(staticHtml, /draftPlannerState/);
   assert.match(staticHtml, /applyPlanner/);
   assert.match(staticHtml, /getDecisionGates/);
+  assert.match(staticHtml, /getDirectionIdForFilters/);
+  assert.match(staticHtml, /group-a-taiwan-complete/);
+  assert.match(staticHtml, /group-2026-jan15/);
+  assert.match(staticHtml, /group-2026-feb12/);
+  assert.match(staticHtml, /group-2026-feb19/);
   assert.match(staticHtml, /directionDetail/);
   assert.match(staticHtml, /data-direction="independent"/);
   assert.match(staticHtml, /directionTourMeta/);

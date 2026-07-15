@@ -553,6 +553,11 @@ h3 {
   color: #b42318;
 }
 
+.directionBudgetBasis.unknown {
+  background: #edf2f7;
+  color: #40515e;
+}
+
 .directionInfoDetail {
   margin-top: 12px;
   border-top: 1px solid #e0ebe8;

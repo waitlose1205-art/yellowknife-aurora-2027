@@ -540,6 +540,11 @@
         color: #b42318;
       }
 
+      .directionBudgetBasis.unknown {
+        background: #edf2f7;
+        color: #40515e;
+      }
+
       .directionInfoDetail {
         margin-top: 12px;
         border-top: 1px solid #e0ebe8;
@@ -1485,7 +1490,7 @@
           </div>
           <div class="sourceNote">
             <strong>同步狀態</strong>
-            <span>已匯入 3 筆可排序候選；匯率：1 CAD ≈ NT$22.8176；查核基準日：2026-07-15。</span>
+            <span>已匯入 6 筆可排序候選；匯率：1 CAD ≈ NT$22.8176；查核基準日：2026-07-15。</span>
           </div>
         </div>
 
@@ -1529,16 +1534,16 @@
           <article class="sourceCard">
             <div class="sourceCardHeader">
               <span>已併入排序</span>
-              <h3>長汎 2026 三月低價團樣本</h3>
+              <h3>長汎 2026 團體樣本（四出發日）</h3>
             </div>
             <p>長汎旅遊</p>
-            <strong>NT$142,451</strong>
+            <strong>NT$142,451-165,451</strong>
             <div class="sourceStatusGrid">
               <span>資料新鮮度：歷史基準，需重查</span>
               <span>白名單驗證</span>
               <span>旅行社來源</span>
             </div>
-            <small>歷史團體基準，不代表目前可下訂，但保留作價格底線。</small>
+            <small>四筆 2026 團體歷史基準，不代表目前可下訂，但可避免 B級團體只剩單一樣本。</small>
             <small>此為 2026 已成團樣本，只可作價格底線，不可視為目前可售。</small>
             <div class="sourceActions">
               <a href="https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB" rel="noreferrer" target="_blank">訂購網站</a>
@@ -1904,19 +1909,22 @@
           id: "group-a",
           label: "A級團體候選方向",
           title: "可選擇的 A級團體候選方向",
-          summary: "A級代表抵達日不計，需保留至少 3 個完整極光夜。這裡只列方向；未匯入具體團名、價格與訂購網址前，不進入排序。",
+          summary: "A級代表抵達日不計，需保留至少 3 個完整極光夜。尚未公告價格的商品會保留在待查候選中，但不可視為可下訂。",
           items: [
             {
+              candidateId: "group-a-taiwan-complete",
               name: "台灣旅行社完整極光夜團",
               condition: "需有明確旅遊團名稱、訂購網址、總團費與 3 個完整極光夜口徑。",
               status: "尚未匯入具體旅行團",
             },
             {
+              candidateId: "group-a-autumn",
               name: "9-11 月秋季 A級團體團",
               condition: "需確認秋季團仍包含黃刀鎮極光觀賞，且抵達日不計入完整夜。",
               status: "待匯入旅行團",
             },
             {
+              candidateId: "group-a-winter",
               name: "12-3 月冬季 A級團體團",
               condition: "需同時檢查低溫、航班延誤、飯店與補看規則。",
               status: "待匯入旅行團",
@@ -1927,18 +1935,31 @@
           id: "group-b",
           label: "B級團體價格方向",
           title: "B級團體價格方向",
-          summary: "B級代表 3 晚可能含抵達日，只能當價格備援，不能宣稱為 3 個完整極光夜。",
+          summary: "B級代表 3 晚可能含抵達日，只能當價格備援，不能宣稱為 3 個完整極光夜。此分類會列出所有已匯入的 B級團體樣本。",
           items: [
             {
-              candidateId: "group-2026-march",
-              name: "玩美加族~加拿大極光10日",
-              condition: "2026 三月低價團體歷史樣本，B級夜數，可作團體價格底線但不可直接下訂。",
+              candidateId: "group-2026-jan15",
+              name: "玩美加族~加拿大極光10日（2026/01/15）",
+              condition: "2026 一月 B級團體歷史樣本，必要費後接近 NT$150,000。",
               status: "B級歷史旅行團",
             },
             {
-              name: "促銷團或短天數團",
-              condition: "若抵達日被算入極光夜，排序時必須降級。",
-              status: "待匯入旅行團",
+              candidateId: "group-2026-feb12",
+              name: "玩美加族~加拿大極光10日（2026/02/12）",
+              condition: "2026 二月寒假 B級團體歷史樣本，可作旺季價格警戒。",
+              status: "B級歷史旅行團",
+            },
+            {
+              candidateId: "group-2026-feb19",
+              name: "玩美加族~加拿大極光10日（2026/02/19）",
+              condition: "2026 二月 B級團體歷史樣本，必要費後略高於原始預算。",
+              status: "B級歷史旅行團",
+            },
+            {
+              candidateId: "group-2026-march",
+              name: "玩美加族~加拿大極光10日（2026/03/19）",
+              condition: "2026 三月低價團體歷史樣本，B級夜數，可作團體價格底線但不可直接下訂。",
+              status: "B級歷史旅行團",
             },
           ],
         },
@@ -1978,209 +1999,410 @@
 
       let selectedDirectionId = null;
 
-      const staticCandidates = [
-        {
-          id: "source-yktours-gold-5d4n",
-          title: "來源匯入：冬季當地套裝低價候選",
-          packageName: "Yellowknife Tours 5D4N Gold Hotel Package",
-          mode: "independent",
-          estimatedCost: 132000,
-          auroraLevel: "A",
-          riskLevel: 2,
-          comfort: "balanced",
-          verified: true,
-          dataState: "來源同步",
-          guideUrl: "#source-sync",
-          guideLabel: "查看來源同步",
-          guideNote: "來源頁列 2026-2027 冬季套裝，Gold 5D4N 雙人房型有 CAD 1,490 + 5% GST 起價；依 1 CAD≈NT$22.8176 換算約 NT$35,698，總額仍需加機票與必要費。",
-          description: "網站自動匯入的可查核來源候選；價格較有機會落在預算內，但不是台灣旅行社全包團。",
-          nextStep: "前往訂購網站確認日期、房型、活動內容，再加回國際與內陸機票。",
-          departureWindow: "12-4 月冬季套裝",
-          productType: "當地套裝",
-          rankingSummary: "價格低於預算、A級完整極光夜、官方來源可查、訂購連結通過白名單驗證；但仍缺完整航班與總額。",
-          costBasis: {
-            readiness: "partial",
-            label: "2026樣本參考估算",
-            totalLabel: "參考總額 NT$132,000；Gold 套裝約 NT$35,698 起，航班與住宿節奏參考 2026 樣本",
-            flightDetail: "參考 2026 團體：台灣長程飛西雅圖、陸路進溫哥華、再接加拿大內陸段至 YZF；自由行可改用 TPE-YVR-YZF 或 YVR 過夜方案。",
-            hotelDetail: "參考 2026 團體住宿等級：Chateau Nova、Explorer Hotel 或同級；此套裝偏 Quality Inn／Nova Inn 等級，正式房型需重查。",
-            scheduleDetail: "參考 2026/03/19-03/28 十日節奏：Day 3 抵達 YZF，Day 4 約 2 小時市區自由；自由行應把抵達夜作緩衝，保留後續 3 個完整極光夜。",
-            priceDetail: "以 Gold 套裝 CAD 1,490 + 5% GST、M2.1 機票區間與 2026 團體必要費結構估算；2027 付款頁需重查。",
-            missingItems: ["2027 正式航班票價", "2027 YZF 抵離時間", "2027 實際房型", "付款頁總額"],
-          },
-          bookingUrl: "https://yellowknifetours.com/winter-packages/",
-          bookingLabel: "前往 Yellowknife Tours 訂購/詢價",
-          sourceStatusId: "yktours",
-          sourceName: "Yellowknife Tours",
-          sourceCheckedAt: "2026-07-15",
-          sourceSummary: "5D4N Gold Hotel Package；CAD 1,490 + 5% GST 起，約 NT$35,698；自由行總額以 2026 團體樣本與航班區間估算。",
-          importedFromSource: true,
-        },
-        {
-          id: "source-yktours-diamond-5d4n",
-          title: "來源匯入：冬季當地套裝舒適候選",
-          packageName: "Yellowknife Tours 5D4N Diamond Hotel Package",
-          mode: "independent",
-          estimatedCost: 155000,
-          auroraLevel: "A",
-          riskLevel: 2,
-          comfort: "comfort",
-          verified: true,
-          dataState: "來源同步",
-          guideUrl: "#source-sync",
-          guideLabel: "查看來源同步",
-          guideNote: "來源頁列 Diamond 5D4N 雙人房型有 CAD 2,398 + 5% GST 起價；依 1 CAD≈NT$22.8176 換算約 NT$57,452，舒適度較高但總費用貼近預算上限。",
-          description: "網站自動匯入的舒適型來源候選；適合作為自由行舒適基準的實際商品版本。",
-          nextStep: "前往訂購網站確認飯店、餐食、活動與可選日期，並重算台幣總額。",
-          departureWindow: "12-4 月冬季套裝",
-          productType: "當地舒適套裝",
-          rankingSummary: "A級完整極光夜與官方來源加分；但自由行完整總額仍需航班、時間與附加費。",
-          costBasis: {
-            readiness: "partial",
-            label: "2026樣本參考估算",
-            totalLabel: "參考總額 NT$135,000-155,000；Diamond 套裝約 NT$57,452 起",
-            flightDetail: "參考 2026 團體航段結構與 M2.1 航班區間；舒適版優先 TPE-YVR 直飛＋YVR 過夜＋隔日 AC 下午班進 YZF。",
-            hotelDetail: "參考 2026 Chateau Nova、Explorer Hotel 或同級；Diamond 版以 Explorer 等級或較佳房型作舒適基準。",
-            scheduleDetail: "參考 2026 十日節奏，但自由行調整為 YVR 緩衝與 YZF 4 晚，確保抵達夜不計後仍有 3 個完整極光夜。",
-            priceDetail: "以 Diamond 套裝 CAD 2,398 + 5% GST、M2.1 機票區間與 2026 必要費結構估算；接近 NT$150,000 時需重查低票價。",
-            missingItems: ["2027 正式航班票價", "2027 實際房型", "YVR 過夜住宿價", "付款頁總額"],
-          },
-          bookingUrl: "https://yellowknifetours.com/winter-packages/",
-          bookingLabel: "前往 Yellowknife Tours 訂購/詢價",
-          sourceStatusId: "yktours",
-          sourceName: "Yellowknife Tours",
-          sourceCheckedAt: "2026-07-15",
-          sourceSummary: "5D4N Diamond Hotel Package；CAD 2,398 + 5% GST 起，約 NT$57,452；自由行總額參考 2026 團體節奏與舒適住宿等級。",
-          importedFromSource: true,
-        },
-        {
-          id: "group-2026-march",
-          title: "2026 三月低價團體樣本",
-          packageName: "歷史樣本：玩美加族~加拿大極光10日（三月低價團）",
-          mode: "group",
-          estimatedCost: 142451,
-          auroraLevel: "B",
-          riskLevel: 1,
-          comfort: "balanced",
-          verified: true,
-          dataState: "歷史基準",
-          guideUrl: "#historical-baseline",
-          guideLabel: "查看 2026 團體樣本",
-          guideNote: "此項目是歷史比較基準，不是 2027 可下訂商品。",
-          description: "目前最乾淨的團體價格基準，低於 NT$150,000 且有緩衝，但不是 2027 可下訂商品。",
-          nextStep: "用來當旅行團報價的對照底線，不能直接下訂。",
-          departureWindow: "2026/03 歷史樣本",
-          productType: "團體歷史樣本",
-          rankingSummary: "價格有緩衝、旅行社來源可查；但夜數屬B級且資料是歷史樣本，因此不能當成目前可下訂商品。",
-          costBasis: {
-            readiness: "historical",
-            label: "歷史團體總額",
-            totalLabel: "歷史必要費後 NT$142,451",
-            flightDetail: "2026 團體樣本含旅行社規劃航段結構；2027 航班仍需重查。",
-            hotelDetail: "黃刀鎮住宿以 Chateau Nova、Explorer Hotel 或同級為方向；實際入住需以當期商品為準。",
-            scheduleDetail: "2026/03/19-03/28 歷史出發日期已知；不可直接套用至 2027。",
-            priceDetail: "以團費、公告小費、ESTA、eTA 等必要費用後估算。",
-            missingItems: ["2027 可售日期", "2027 實際團費", "2027 航班與飯店確認"],
-          },
-          bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB",
-          bookingLabel: "查看長汎旅遊團頁",
-          sourceStatusId: "everfun",
-          sourceName: "長汎旅遊",
-          sourceCheckedAt: "2026-07-15",
-          sourceSummary: "歷史團體樣本；只作價格基準，不代表目前仍可售。",
-          importedFromSource: true,
-        },
-        {
-          id: "independent-comfort",
-          title: "自由行舒適型雙人基準",
-          packageName: "自由行方案：雙人舒適型 3 完整極光夜",
-          mode: "independent",
-          estimatedCost: 132000,
-          auroraLevel: "A",
-          riskLevel: 2,
-          comfort: "comfort",
-          verified: false,
-          dataState: "規劃基準",
-          guideUrl: "#pending-2027-recheck",
-          guideLabel: "查看自由行查核項目",
-          guideNote: "目前採 2026 團體航段、飯店等級與 M2.1 航班價格區間作估算；正式下訂前仍需重查。",
-          description: "保留完整極光夜與較高舒適度，是團體方案的主要比較基準。",
-          nextStep: "重查航班、飯店與極光活動後，與團體總費用並列表。",
-          departureWindow: "2027 參考 2026 三月節奏",
-          productType: "自由行規劃基準",
-          rankingSummary: "A級完整極光夜與舒適度符合需求；航班、飯店與時間先用 2026 團體樣本作參考，正式報價需重查。",
-          costBasis: {
-            readiness: "partial",
-            label: "2026樣本參考估算",
-            totalLabel: "參考區間 NT$108,000-132,000",
-            flightDetail: "參考 2026 團體航段與 M2.1 航班排序：優先 TPE-YVR 直飛或 Air Canada 聯程，YVR 保留過夜或至少 4 小時分票緩衝。",
-            hotelDetail: "參考 2026 Chateau Nova、Explorer Hotel 或同級；自由行舒適型優先指定 Explorer 或 Chateau Nova。",
-            scheduleDetail: "參考 2026/03/19-03/28 十日節奏，但自由行改為抵達夜緩衝＋3 個完整極光夜，避免把抵達日算入 A 級夜數。",
-            priceDetail: "採 M2.1 舒適型雙人區間：機票 NT$42,000-55,000、Gold Explorer 或同級、2 晚 YVR 較佳住宿與必要費。",
-            missingItems: ["2027 航班票價重查", "2027 飯店房價重查", "YZF 抵離時間確認", "活動與保險總額確認"],
-          },
-        },
-        {
-          id: "independent-basic",
-          title: "自由行節制型備援",
-          packageName: "自由行方案：節制型 3 完整極光夜備援",
-          mode: "independent",
-          estimatedCost: 115000,
-          auroraLevel: "A",
-          riskLevel: 3,
-          comfort: "basic",
-          verified: false,
-          dataState: "規劃基準",
-          guideUrl: "#decision-gates",
-          guideLabel: "查看決策門檻",
-          guideNote: "此項目以降低成本為主，但會提高轉機、住宿與現地安排負擔。",
-          description: "最容易壓低總額，但需要承擔更多轉機、飯店與現地安排操作。",
-          nextStep: "只有在願意提高操作負擔時，才納入備援池。",
-          departureWindow: "2027 參考 2026 三月節奏",
-          productType: "自由行節制基準",
-          rankingSummary: "價格有優勢且符合 A級夜數；以 2026 團體航段與飯店等級作參考，但操作風險較高。",
-          costBasis: {
-            readiness: "partial",
-            label: "2026樣本參考估算",
-            totalLabel: "參考區間 NT$95,000-115,000",
-            flightDetail: "參考 2026 團體長旅行鏈作風險基準；節制型可用較低價的 TPE-ICN/YVR 或 TPE-YVR 組合，但仍需保留 YVR 轉機緩衝。",
-            hotelDetail: "參考 2026 同級住宿下限；節制型可接受 Quality Inn／Nova Inn 或同級，但不得犧牲安全與夜間恢復。",
-            scheduleDetail: "參考 2026 Day 3 抵 YZF 的節奏；自由行需確保 YZF 至少 4 晚，抵達夜只當緩衝。",
-            priceDetail: "採 M2.1 節制型雙人區間：機票 NT$36,000-48,000、Gold Quality/Nova、2 晚 YVR 平價住宿與基本餐飲交通。",
-            missingItems: ["2027 低價航班重查", "2027 節制型房價重查", "轉機緩衝確認", "必要費總額確認"],
-          },
-        },
-        {
-          id: "independent-solo",
-          title: "自由行單人舒適型",
-          packageName: "自由行方案：單人舒適型上限警戒",
-          mode: "independent",
-          estimatedCost: 165000,
-          auroraLevel: "A",
-          riskLevel: 3,
-          comfort: "comfort",
-          verified: false,
-          dataState: "高波動估算",
-          guideUrl: "#decision-gates",
-          guideLabel: "查看排除門檻",
-          guideNote: "此項目主要用來提醒單房差與舒適度成本，不作目前主推薦。",
-          description: "單房差與舒適度會明顯推高成本，適合當上限警戒，不適合作為目前主方案。",
-          nextStep: "除非預算提高或找到明確降價來源，否則維持排除。",
-          departureWindow: "2027 參考 2026 三月節奏",
-          productType: "自由行上限警戒",
-          rankingSummary: "A級夜數與舒適度達標；參考 2026 住宿等級後，單房差仍是主要超標來源。",
-          costBasis: {
-            readiness: "partial",
-            label: "2026樣本參考估算",
-            totalLabel: "參考區間 NT$125,000-165,000",
-            flightDetail: "參考 2026 航段結構與 M2.1 單人機票區間；若採分票，YVR 過夜與行李風險需納入。",
-            hotelDetail: "參考 2026 Chateau Nova、Explorer Hotel 或同級；單人版以 Explorer 單人或同級房價作上限警戒。",
-            scheduleDetail: "參考 2026 十日節奏並保留抵達夜緩衝；單人移動需降低深夜抵達與嚴寒步行風險。",
-            priceDetail: "採 M2.1 單人自由行區間：Gold Explorer 單人、溫哥華單人房、機票與必要費，單房差是主要成本來源。",
-            missingItems: ["2027 單人房價重查", "2027 航班票價重查", "YVR 過夜成本確認", "必要費總額確認"],
-          },
-        },
-      ];
+      const staticCandidates = [] = [
+  {
+    id: "group-a-taiwan-complete",
+    title: "A級團體待查：台灣旅行社完整極光夜團",
+    packageName: "待查商品：台灣旅行社 3 完整極光夜團",
+    mode: "group",
+    estimatedCost: 0,
+    auroraLevel: "A",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: false,
+    dataState: "待匯入來源",
+    guideUrl: "#pending-2027-recheck",
+    guideLabel: "查看缺資料清單",
+    guideNote: "此項目用來保留 A級團體搜尋方向；未取得旅行社商品前不可下訂。",
+    description: "符合 A級團體方向，但目前缺少正式團名、價格、航班、飯店與訂購頁。",
+    nextStep: "匯入旅行社商品後，比對是否真的有 3 個完整極光夜。",
+    departureWindow: "2027 或 9-11 月待查",
+    productType: "A級團體待查",
+    rankingSummary: "A級團體條件符合目標，但資料尚未公布；只作搜尋方向，不作可下訂推薦。",
+    costBasis: {
+      readiness: "missing",
+      label: "價格尚未公布",
+      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
+      flightDetail: "尚未公布完整航班與班號。",
+      hotelDetail: "尚未公布飯店名稱或同級條件。",
+      scheduleDetail: "尚未公布 YZF 抵達、離開時間與完整極光夜切分。",
+      priceDetail: "尚未公布團費、稅費、小費、保險與必要附加費總額。",
+      missingItems: ["正式旅遊團名稱", "訂購網址", "總團費", "航班", "飯店", "3 個完整極光夜口徑"],
+    },
+  },
+  {
+    id: "group-a-autumn",
+    title: "A級團體待查：9-11 月秋季極光團",
+    packageName: "待查商品：9-11 月秋季 3 完整極光夜團",
+    mode: "group",
+    estimatedCost: 0,
+    auroraLevel: "A",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: false,
+    dataState: "待匯入來源",
+    guideUrl: "#pending-2027-recheck",
+    guideLabel: "查看缺資料清單",
+    guideNote: "秋季極光團也屬本網站重點；需等商品公告後重查。",
+    description: "保留 9-11 月 A級團體搜尋方向，避免只看冬季或只看 2027 年初。",
+    nextStep: "匯入秋季團商品，確認是否仍包含黃刀鎮極光與 3 個完整觀賞夜。",
+    departureWindow: "9-11 月待查",
+    productType: "A級秋季團體待查",
+    rankingSummary: "秋季時間符合搜尋範圍，但目前缺少可查核商品資料。",
+    costBasis: {
+      readiness: "missing",
+      label: "價格尚未公布",
+      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
+      flightDetail: "尚未公布秋季團航班與 YZF 抵離時間。",
+      hotelDetail: "尚未公布秋季團飯店。",
+      scheduleDetail: "尚未公布是否有 3 個完整極光夜，抵達日不得計入 A級夜數。",
+      priceDetail: "尚未公布團費與必要附加費。",
+      missingItems: ["秋季可售日期", "團費", "航班", "飯店", "完整極光夜數", "訂購網址"],
+    },
+  },
+  {
+    id: "group-a-winter",
+    title: "A級團體待查：12-3 月冬季完整極光夜團",
+    packageName: "待查商品：12-3 月冬季 3 完整極光夜團",
+    mode: "group",
+    estimatedCost: 0,
+    auroraLevel: "A",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: false,
+    dataState: "待匯入來源",
+    guideUrl: "#pending-2027-recheck",
+    guideLabel: "查看缺資料清單",
+    guideNote: "冬季團需額外檢查低溫、延誤、補看與飯店位置。",
+    description: "保留冬季 A級團體搜尋方向；正式商品匯入後再與 B級價格團比較。",
+    nextStep: "匯入冬季旅行社商品，確認航班延誤備援與補看規則。",
+    departureWindow: "12-3 月待查",
+    productType: "A級冬季團體待查",
+    rankingSummary: "冬季極光條件可能較強，但沒有價格與航班前不能排序為可下訂商品。",
+    costBasis: {
+      readiness: "missing",
+      label: "價格尚未公布",
+      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
+      flightDetail: "尚未公布冬季團航班、轉機與延誤備援。",
+      hotelDetail: "尚未公布冬季團飯店與保暖動線。",
+      scheduleDetail: "尚未公布 YZF 夜數配置與補看規則。",
+      priceDetail: "尚未公布團費、冬衣、稅費、小費與必要附加費總額。",
+      missingItems: ["冬季可售日期", "航班延誤備援", "飯店", "補看規則", "總費用", "訂購網址"],
+    },
+  },
+  {
+    id: "source-yktours-gold-5d4n",
+    title: "來源匯入：冬季當地套裝低價候選",
+    packageName: "Yellowknife Tours 5D4N Gold Hotel Package",
+    mode: "independent",
+    estimatedCost: 132000,
+    auroraLevel: "A",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: true,
+    dataState: "來源同步",
+    guideUrl: "#source-sync",
+    guideLabel: "查看來源同步",
+    guideNote: "來源頁列 2026-2027 冬季套裝，Gold 5D4N 雙人房型有 CAD 1,490 + 5% GST 起價；依 1 CAD≈NT$22.8176 換算約 NT$35,698，總額仍需加機票與必要費。",
+    description: "網站自動匯入的可查核來源候選；價格較有機會落在預算內，但不是台灣旅行社全包團。",
+    nextStep: "前往訂購網站確認日期、房型、活動內容，再加回國際與內陸機票。",
+    departureWindow: "12-4 月冬季套裝",
+    productType: "當地套裝",
+    rankingSummary: "價格低於預算、A級完整極光夜、官方來源可查、訂購連結通過白名單驗證。",
+    costBasis: {
+      readiness: "partial",
+      label: "2026樣本參考估算",
+      totalLabel: "參考總額 NT$132,000；Gold 套裝約 NT$35,698 起，航班與住宿節奏參考 2026 樣本",
+      flightDetail: "參考 2026 團體：台灣長程飛西雅圖、陸路進溫哥華、再接加拿大內陸段至 YZF；自由行可改用 TPE-YVR-YZF 或 YVR 過夜方案。",
+      hotelDetail: "參考 2026 團體住宿等級：Chateau Nova、Explorer Hotel 或同級；此套裝偏 Quality Inn／Nova Inn 等級，正式房型需重查。",
+      scheduleDetail: "參考 2026/03/19-03/28 十日節奏：Day 3 抵達 YZF，Day 4 約 2 小時市區自由；自由行應把抵達夜作緩衝，保留後續 3 個完整極光夜。",
+      priceDetail: "以 Gold 套裝 CAD 1,490 + 5% GST、M2.1 機票區間與 2026 團體必要費結構估算；2027 付款頁需重查。",
+      missingItems: ["2027 正式航班票價", "2027 YZF 抵離時間", "2027 實際房型", "付款頁總額"],
+    },
+    bookingUrl: "https://yellowknifetours.com/winter-packages/",
+    bookingLabel: "前往 Yellowknife Tours 訂購/詢價",
+    sourceStatusId: "yktours",
+    sourceName: "Yellowknife Tours",
+    sourceCheckedAt: "2026-07-15",
+    sourceSummary: "5D4N Gold Hotel Package；CAD 1,490 + 5% GST 起，約 NT$35,698；自由行總額以 2026 團體樣本與航班區間估算。",
+    importedFromSource: true,
+  },
+  {
+    id: "source-yktours-diamond-5d4n",
+    title: "來源匯入：冬季當地套裝舒適候選",
+    packageName: "Yellowknife Tours 5D4N Diamond Hotel Package",
+    mode: "independent",
+    estimatedCost: 155000,
+    auroraLevel: "A",
+    riskLevel: 2,
+    comfort: "comfort",
+    verified: true,
+    dataState: "來源同步",
+    guideUrl: "#source-sync",
+    guideLabel: "查看來源同步",
+    guideNote: "來源頁列 Diamond 5D4N 雙人房型有 CAD 2,398 + 5% GST 起價；依 1 CAD≈NT$22.8176 換算約 NT$57,452，舒適度較高但總費用貼近預算上限。",
+    description: "網站自動匯入的舒適型來源候選；適合作為自由行舒適基準的實際商品版本。",
+    nextStep: "前往訂購網站確認飯店、餐食、活動與可選日期，並重算台幣總額。",
+    departureWindow: "12-4 月冬季套裝",
+    productType: "當地舒適套裝",
+    rankingSummary: "A級完整極光夜與官方來源加分，但舒適型總費用接近或超過預算時會降級。",
+    costBasis: {
+      readiness: "partial",
+      label: "2026樣本參考估算",
+      totalLabel: "參考總額 NT$135,000-155,000；Diamond 套裝約 NT$57,452 起",
+      flightDetail: "參考 2026 團體航段結構與 M2.1 航班區間；舒適版優先 TPE-YVR 直飛＋YVR 過夜＋隔日 AC 下午班進 YZF。",
+      hotelDetail: "參考 2026 Chateau Nova、Explorer Hotel 或同級；Diamond 版以 Explorer 等級或較佳房型作舒適基準。",
+      scheduleDetail: "參考 2026 十日節奏，但自由行調整為 YVR 緩衝與 YZF 4 晚，確保抵達夜不計後仍有 3 個完整極光夜。",
+      priceDetail: "以 Diamond 套裝 CAD 2,398 + 5% GST、M2.1 機票區間與 2026 必要費結構估算；接近 NT$150,000 時需重查低票價。",
+      missingItems: ["2027 正式航班票價", "2027 實際房型", "YVR 過夜住宿價", "付款頁總額"],
+    },
+    bookingUrl: "https://yellowknifetours.com/winter-packages/",
+    bookingLabel: "前往 Yellowknife Tours 訂購/詢價",
+    sourceStatusId: "yktours",
+    sourceName: "Yellowknife Tours",
+    sourceCheckedAt: "2026-07-15",
+    sourceSummary: "5D4N Diamond Hotel Package；CAD 2,398 + 5% GST 起，約 NT$57,452；自由行總額參考 2026 團體節奏與舒適住宿等級。",
+    importedFromSource: true,
+  },
+  {
+    id: "group-2026-jan15",
+    title: "2026 一月團體樣本",
+    packageName: "歷史樣本：玩美加族~加拿大極光10日（2026/01/15）",
+    mode: "group",
+    estimatedCost: 149451,
+    auroraLevel: "B",
+    riskLevel: 1,
+    comfort: "balanced",
+    verified: true,
+    dataState: "歷史基準",
+    guideUrl: "#historical-baseline",
+    guideLabel: "查看 2026 團體樣本",
+    guideNote: "此項目是 2026 歷史比較基準，不是目前可下訂商品。",
+    description: "B級團體歷史樣本，必要費後接近原始 NT$150,000 預算；預算提高時仍可作價格比較。",
+    nextStep: "作為 B級團體價格樣本；正式下訂前需重查 2027 商品。",
+    departureWindow: "2026/01 歷史樣本",
+    productType: "團體歷史樣本",
+    rankingSummary: "價格接近原始預算、旅行社來源可查；但夜數屬 B級且資料是歷史樣本。",
+    costBasis: {
+      readiness: "historical",
+      label: "歷史團體總額",
+      totalLabel: "歷史必要費後 NT$149,451",
+      flightDetail: "2026 團體樣本含旅行社規劃航段結構；2027 航班仍需重查。",
+      hotelDetail: "黃刀鎮住宿以 Chateau Nova、Explorer Hotel 或同級為方向；實際入住需以當期商品為準。",
+      scheduleDetail: "2026/01/15-01/24 歷史出發日期已知；不可直接套用至 2027。",
+      priceDetail: "以團費、公告小費、ESTA、eTA 等必要費用後估算。",
+      missingItems: ["2027 可售日期", "2027 實際團費", "2027 航班與飯店確認"],
+    },
+    bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26115BR10TA",
+    bookingLabel: "查看長汎旅遊團頁",
+    sourceStatusId: "everfun",
+    sourceName: "長汎旅遊",
+    sourceCheckedAt: "2026-07-15",
+    sourceSummary: "2026 一月團體歷史樣本；只作價格基準，不代表目前仍可售。",
+    importedFromSource: true,
+  },
+  {
+    id: "group-2026-feb12",
+    title: "2026 二月寒假團體樣本",
+    packageName: "歷史樣本：玩美加族~加拿大極光10日（2026/02/12）",
+    mode: "group",
+    estimatedCost: 165451,
+    auroraLevel: "B",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: true,
+    dataState: "歷史基準",
+    guideUrl: "#historical-baseline",
+    guideLabel: "查看 2026 團體樣本",
+    guideNote: "此項目是寒假旺季價格警戒，不是目前可下訂商品。",
+    description: "B級團體寒假歷史樣本，價格較高；預算提高後可納入比較，但仍是歷史資料。",
+    nextStep: "用來檢查旺季團費是否仍在已確認預算內。",
+    departureWindow: "2026/02 歷史樣本",
+    productType: "團體歷史樣本",
+    rankingSummary: "可作旺季價格上緣；但夜數屬 B級，且資料是歷史樣本。",
+    costBasis: {
+      readiness: "historical",
+      label: "歷史團體總額",
+      totalLabel: "歷史必要費後 NT$165,451",
+      flightDetail: "2026 團體樣本含旅行社規劃航段結構；2027 航班仍需重查。",
+      hotelDetail: "黃刀鎮住宿以 Chateau Nova、Explorer Hotel 或同級為方向；實際入住需以當期商品為準。",
+      scheduleDetail: "2026/02/12-02/21 歷史出發日期已知；不可直接套用至 2027。",
+      priceDetail: "以團費、公告小費、ESTA、eTA 等必要費用後估算。",
+      missingItems: ["2027 可售日期", "2027 實際團費", "2027 航班與飯店確認"],
+    },
+    bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26212BR10TA",
+    bookingLabel: "查看長汎旅遊團頁",
+    sourceStatusId: "everfun",
+    sourceName: "長汎旅遊",
+    sourceCheckedAt: "2026-07-15",
+    sourceSummary: "2026 二月寒假團體歷史樣本；只作價格基準，不代表目前仍可售。",
+    importedFromSource: true,
+  },
+  {
+    id: "group-2026-feb19",
+    title: "2026 二月團體樣本",
+    packageName: "歷史樣本：玩美加族~加拿大極光10日（2026/02/19）",
+    mode: "group",
+    estimatedCost: 155451,
+    auroraLevel: "B",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: true,
+    dataState: "歷史基準",
+    guideUrl: "#historical-baseline",
+    guideLabel: "查看 2026 團體樣本",
+    guideNote: "此項目是 2026 歷史比較基準，不是目前可下訂商品。",
+    description: "B級團體歷史樣本，必要費後略高於原始預算；預算提高時可作中高價比較。",
+    nextStep: "作為 B級團體價格樣本；正式下訂前需重查 2027 商品。",
+    departureWindow: "2026/02 歷史樣本",
+    productType: "團體歷史樣本",
+    rankingSummary: "可作二月中高價參考；但夜數屬 B級，且資料是歷史樣本。",
+    costBasis: {
+      readiness: "historical",
+      label: "歷史團體總額",
+      totalLabel: "歷史必要費後 NT$155,451",
+      flightDetail: "2026 團體樣本含旅行社規劃航段結構；2027 航班仍需重查。",
+      hotelDetail: "黃刀鎮住宿以 Chateau Nova、Explorer Hotel 或同級為方向；實際入住需以當期商品為準。",
+      scheduleDetail: "2026/02/19-02/28 歷史出發日期已知；不可直接套用至 2027。",
+      priceDetail: "以團費、公告小費、ESTA、eTA 等必要費用後估算。",
+      missingItems: ["2027 可售日期", "2027 實際團費", "2027 航班與飯店確認"],
+    },
+    bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26219BR10TA",
+    bookingLabel: "查看長汎旅遊團頁",
+    sourceStatusId: "everfun",
+    sourceName: "長汎旅遊",
+    sourceCheckedAt: "2026-07-15",
+    sourceSummary: "2026 二月團體歷史樣本；只作價格基準，不代表目前仍可售。",
+    importedFromSource: true,
+  },
+  {
+    id: "group-2026-march",
+    title: "2026 三月低價團體樣本",
+    packageName: "歷史樣本：玩美加族~加拿大極光10日（三月低價團）",
+    mode: "group",
+    estimatedCost: 142451,
+    auroraLevel: "B",
+    riskLevel: 1,
+    comfort: "balanced",
+    verified: true,
+    dataState: "歷史基準",
+    guideUrl: "#historical-baseline",
+    guideLabel: "查看 2026 團體樣本",
+    guideNote: "此項目是歷史比較基準，不是 2027 可下訂商品。",
+    description: "目前最乾淨的團體價格基準，低於 NT$150,000 且有緩衝，但不是 2027 可下訂商品。",
+    nextStep: "用來當旅行團報價的對照底線，不能直接下訂。",
+    departureWindow: "2026/03 歷史樣本",
+    productType: "團體歷史樣本",
+    rankingSummary: "價格有緩衝、旅行社來源可查；但夜數屬B級且資料是歷史樣本，因此不能當成目前可下訂商品。",
+    costBasis: {
+      readiness: "historical",
+      label: "歷史團體總額",
+      totalLabel: "歷史必要費後 NT$142,451",
+      flightDetail: "2026 團體樣本含旅行社規劃航段結構；2027 航班仍需重查。",
+      hotelDetail: "黃刀鎮住宿以 Chateau Nova、Explorer Hotel 或同級為方向；實際入住需以當期商品為準。",
+      scheduleDetail: "2026/03/19-03/28 歷史出發日期已知；不可直接套用至 2027。",
+      priceDetail: "以團費、公告小費、ESTA、eTA 等必要費用後估算。",
+      missingItems: ["2027 可售日期", "2027 實際團費", "2027 航班與飯店確認"],
+    },
+    bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB",
+    bookingLabel: "查看長汎旅遊團頁",
+    sourceStatusId: "everfun",
+    sourceName: "長汎旅遊",
+    sourceCheckedAt: "2026-07-15",
+    sourceSummary: "歷史團體樣本；只作價格基準，不代表目前仍可售。",
+    importedFromSource: true,
+  },
+  {
+    id: "independent-comfort",
+    title: "自由行舒適型雙人基準",
+    packageName: "自由行方案：雙人舒適型 3 完整極光夜",
+    mode: "independent",
+    estimatedCost: 132000,
+    auroraLevel: "A",
+    riskLevel: 2,
+    comfort: "comfort",
+    verified: false,
+    dataState: "規劃基準",
+    guideUrl: "#pending-2027-recheck",
+    guideLabel: "查看自由行查核項目",
+    guideNote: "目前採 2026 團體航段、飯店等級與 M2.1 航班價格區間作估算；正式下訂前仍需重查。",
+    description: "保留完整極光夜與較高舒適度，是團體方案的主要比較基準。",
+    nextStep: "重查航班、飯店與極光活動後，與團體總費用並列表。",
+    departureWindow: "2027 參考 2026 三月節奏",
+    productType: "自由行規劃基準",
+    rankingSummary: "A級完整極光夜與舒適度符合需求；航班、飯店與時間先用 2026 團體樣本作參考，正式報價需重查。",
+    costBasis: {
+      readiness: "partial",
+      label: "2026樣本參考估算",
+      totalLabel: "參考區間 NT$108,000-132,000",
+      flightDetail: "參考 2026 團體航段與 M2.1 航班排序：優先 TPE-YVR 直飛或 Air Canada 聯程，YVR 保留過夜或至少 4 小時分票緩衝。",
+      hotelDetail: "參考 2026 Chateau Nova、Explorer Hotel 或同級；自由行舒適型優先指定 Explorer 或 Chateau Nova。",
+      scheduleDetail: "參考 2026/03/19-03/28 十日節奏，但自由行改為抵達夜緩衝＋3 個完整極光夜，避免把抵達日算入 A 級夜數。",
+      priceDetail: "採 M2.1 舒適型雙人區間：機票 NT$42,000-55,000、Gold Explorer 或同級、2 晚 YVR 較佳住宿與必要費。",
+      missingItems: ["2027 航班票價重查", "2027 飯店房價重查", "YZF 抵離時間確認", "活動與保險總額確認"],
+    },
+  },
+  {
+    id: "independent-basic",
+    title: "自由行節制型備援",
+    packageName: "自由行方案：節制型 3 完整極光夜備援",
+    mode: "independent",
+    estimatedCost: 115000,
+    auroraLevel: "A",
+    riskLevel: 3,
+    comfort: "basic",
+    verified: false,
+    dataState: "規劃基準",
+    guideUrl: "#decision-gates",
+    guideLabel: "查看決策門檻",
+    guideNote: "此項目以降低成本為主，但會提高轉機、住宿與現地安排負擔。",
+    description: "最容易壓低總額，但需要承擔更多轉機、飯店與現地安排操作。",
+    nextStep: "只有在願意提高操作負擔時，才納入備援池。",
+    departureWindow: "2027 參考 2026 三月節奏",
+    productType: "自由行節制基準",
+    rankingSummary: "價格有優勢且符合 A級夜數；以 2026 團體航段與飯店等級作參考，但操作風險較高。",
+    costBasis: {
+      readiness: "partial",
+      label: "2026樣本參考估算",
+      totalLabel: "參考區間 NT$95,000-115,000",
+      flightDetail: "參考 2026 團體長旅行鏈作風險基準；節制型可用較低價的 TPE-ICN/YVR 或 TPE-YVR 組合，但仍需保留 YVR 轉機緩衝。",
+      hotelDetail: "參考 2026 同級住宿下限；節制型可接受 Quality Inn／Nova Inn 或同級，但不得犧牲安全與夜間恢復。",
+      scheduleDetail: "參考 2026 Day 3 抵 YZF 的節奏；自由行需確保 YZF 至少 4 晚，抵達夜只當緩衝。",
+      priceDetail: "採 M2.1 節制型雙人區間：機票 NT$36,000-48,000、Gold Quality/Nova、2 晚 YVR 平價住宿與基本餐飲交通。",
+      missingItems: ["2027 低價航班重查", "2027 節制型房價重查", "轉機緩衝確認", "必要費總額確認"],
+    },
+  },
+  {
+    id: "independent-solo",
+    title: "自由行單人舒適型",
+    packageName: "自由行方案：單人舒適型上限警戒",
+    mode: "independent",
+    estimatedCost: 165000,
+    auroraLevel: "A",
+    riskLevel: 3,
+    comfort: "comfort",
+    verified: false,
+    dataState: "高波動估算",
+    guideUrl: "#decision-gates",
+    guideLabel: "查看排除門檻",
+    guideNote: "此項目主要用來提醒單房差與舒適度成本，不作目前主推薦。",
+    description: "單房差與舒適度會明顯推高成本，適合當上限警戒，不適合作為目前主方案。",
+    nextStep: "除非預算提高或找到明確降價來源，否則維持排除。",
+    departureWindow: "2027 參考 2026 三月節奏",
+    productType: "自由行上限警戒",
+    rankingSummary: "A級夜數與舒適度達標；參考 2026 住宿等級後，單房差仍是主要超標來源。",
+    costBasis: {
+      readiness: "partial",
+      label: "2026樣本參考估算",
+      totalLabel: "參考區間 NT$125,000-165,000",
+      flightDetail: "參考 2026 航段結構與 M2.1 單人機票區間；若採分票，YVR 過夜與行李風險需納入。",
+      hotelDetail: "參考 2026 Chateau Nova、Explorer Hotel 或同級；單人版以 Explorer 單人或同級房價作上限警戒。",
+      scheduleDetail: "參考 2026 十日節奏並保留抵達夜緩衝；單人移動需降低深夜抵達與嚴寒步行風險。",
+      priceDetail: "採 M2.1 單人自由行區間：Gold Explorer 單人、溫哥華單人房、機票與必要費，單房差是主要成本來源。",
+      missingItems: ["2027 單人房價重查", "2027 航班票價重查", "YVR 過夜成本確認", "必要費總額確認"],
+    },
+  },
+];
 
       const formatCurrency = (value) =>
         `NT$${new Intl.NumberFormat("zh-TW", {
@@ -2198,6 +2420,13 @@
           : option.costBasis.totalLabel;
 
       function getBudgetStatus(option, budget) {
+        if (option.costBasis.readiness === "missing") {
+          return {
+            className: "unknown",
+            label: "價格尚未公布，預算只作搜尋上限",
+          };
+        }
+
         const delta = budget - option.estimatedCost;
 
         if (delta >= 5000) {
@@ -2226,6 +2455,22 @@
         }
 
         return option.auroraLevel === "A" ? "group-a" : "group-b";
+      }
+
+      function getDirectionIdForFilters(filters, fallback) {
+        if (filters.preferredMode === "independent") {
+          return "independent";
+        }
+
+        if (filters.preferredMode === "group") {
+          return filters.auroraTarget === "A" ? "group-a" : filters.auroraTarget === "B" ? "group-b" : "group-b";
+        }
+
+        if (filters.auroraTarget === "B") {
+          return "group-b";
+        }
+
+        return getDirectionIdForOption(fallback);
       }
 
       function isSamePlannerFilters(first, second) {
@@ -2320,9 +2565,9 @@
         const budgetDelta = option.estimatedCost - plannerState.budget;
         const sourceStatus = getSourceStatus(option);
 
-        if (option.mode === "independent" && option.costBasis.readiness === "missing") {
+        if (option.costBasis.readiness === "missing") {
           score -= 32;
-          blockers.push(`自由行缺少 ${option.costBasis.missingItems.join("、")}，不能視為完整預算。`);
+          blockers.push(`缺少 ${option.costBasis.missingItems.join("、")}，不能視為完整預算或可下訂商品。`);
         } else if (option.mode === "independent" && option.costBasis.readiness === "partial") {
           score -= 8;
           cautions.push(`自由行目前採 2026 團體樣本作參考，需重查 ${option.costBasis.missingItems.join("、")} 後才能下訂。`);
@@ -2444,7 +2689,7 @@
       function renderDirection() {
         const results = getEvaluatedResults();
         const best = getBestResult(results);
-        const syncedDirectionId = getDirectionIdForOption(best.option);
+        const syncedDirectionId = getDirectionIdForFilters(plannerState, best.option);
         const activeDirectionId = selectedDirectionId || syncedDirectionId;
         const selected = directionCategories.find((category) => category.id === activeDirectionId) || directionCategories[0];
         const evaluatedMap = new Map(results.map((result) => [result.option.id, result]));
