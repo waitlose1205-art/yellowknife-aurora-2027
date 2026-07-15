@@ -305,7 +305,7 @@ h3 {
 }
 
 .scopeSection,
-.liveSearchSection {
+.sourceSyncSection {
   padding: 28px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -347,61 +347,9 @@ h3 {
   line-height: 1.65;
 }
 
-.liveSearchControls {
-  display: grid;
-  grid-template-columns: minmax(190px, 0.8fr) minmax(220px, 1.2fr) minmax(190px, 0.8fr);
-  gap: 14px;
-  margin-top: 24px;
-}
-
-.liveSearchControls label {
-  display: grid;
-  gap: 8px;
-  color: #173331;
-  font-weight: 900;
-}
-
-.liveSearchControls input,
-.liveSearchControls select {
-  min-height: 46px;
-  width: 100%;
-  padding: 9px 12px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #fbfffe;
-  color: var(--foreground);
-  font: inherit;
-  font-weight: 800;
-}
-
-.queryPreview {
-  display: grid;
-  gap: 8px;
-  margin-top: 18px;
-  padding: 18px;
-  border: 1px solid #cfe7df;
-  border-radius: 8px;
-  background: #eef8f5;
-}
-
-.queryPreview span {
-  color: #31504b;
-  font-size: 0.84rem;
-  font-weight: 900;
-}
-
-.queryPreview strong {
-  color: #10201d;
-  line-height: 1.55;
-}
-
-.queryPreview small {
-  color: var(--muted);
-  line-height: 1.55;
-}
-
-.queryPreview a,
-.sourceActions a {
+.sourceActions a,
+.bookingRow a,
+.recommendationAction .bookingLink {
   width: fit-content;
   min-height: 40px;
   padding: 9px 12px;
@@ -455,6 +403,13 @@ h3 {
   line-height: 1.65;
 }
 
+.sourceCard > strong {
+  display: block;
+  margin-top: 10px;
+  color: #10201d;
+  font-size: 1.08rem;
+}
+
 .sourceCard small {
   display: block;
   margin-top: 10px;
@@ -468,12 +423,6 @@ h3 {
   gap: 8px;
   margin-top: auto;
   padding-top: 18px;
-}
-
-.sourceActions a + a {
-  border: 1px solid #163b38;
-  background: transparent;
-  color: #163b38;
 }
 
 .simulatorSection {
@@ -836,6 +785,28 @@ h3 {
   font-weight: 800;
 }
 
+.sourceInline {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid #cfe7df;
+  border-radius: 8px;
+  background: #eef8f5;
+  color: #31504b;
+  line-height: 1.5;
+}
+
+.sourceInline span {
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.sourceInline strong {
+  color: #10201d;
+  font-size: 0.95rem;
+}
+
 .reasonColumns {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -869,6 +840,10 @@ h3 {
   background: #eef7f4;
   color: #173331;
   line-height: 1.55;
+}
+
+.bookingRow {
+  margin-top: 12px;
 }
 
 .tableSection {
@@ -1044,8 +1019,7 @@ td {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .simulatorShell,
-  .liveSearchControls {
+  .simulatorShell {
     grid-template-columns: 1fr;
   }
 }

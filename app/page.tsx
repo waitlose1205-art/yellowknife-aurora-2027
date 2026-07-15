@@ -55,99 +55,38 @@ const seasonScopeRows = [
   },
 ];
 
-const seasonSearchChoices = [
-  { value: "autumn", label: "9-11 月秋季極光", query: "9月 10月 11月 秋季" },
-  { value: "winter", label: "12-3 月冬季極光", query: "12月 1月 2月 3月 冬季" },
-  { value: "spring", label: "4-6 月延伸觀測", query: "4月 5月 6月 極光" },
-  { value: "all", label: "不限月份", query: "全年 極光 旅行團" },
-] as const;
-
-type SeasonSearchValue = (typeof seasonSearchChoices)[number]["value"];
-
-type LiveSearchFilters = {
-  keyword: string;
-  season: SeasonSearchValue;
-  sourceId: string;
-};
-
-type LiveSource = {
-  id: string;
-  name: string;
-  type: string;
-  domain?: string;
-  directUrl: string;
-  focus: string;
-  check: string;
-};
-
-const defaultLiveSearch: LiveSearchFilters = {
-  keyword: "黃刀鎮 極光 旅行團",
-  season: "autumn",
-  sourceId: "all",
-};
-
-const liveSourceRows: LiveSource[] = [
+const sourceSyncRows = [
   {
-    id: "all",
-    name: "全網即時搜尋",
-    type: "搜尋入口",
-    directUrl: "https://www.google.com/search?q=%E9%BB%83%E5%88%80%E9%8E%AE%20%E6%A5%B5%E5%85%89%20%E6%97%85%E8%A1%8C%E5%9C%98",
-    focus: "跨旅行社搜尋可售商品、月份、團費與行程頁。",
-    check: "先找商品網址，再人工確認夜數、航班、飯店與總費用。",
+    name: "Yellowknife Tours 5D4N Gold",
+    source: "Yellowknife Tours",
+    status: "已併入排序",
+    amount: "CAD 1,490 + 5% GST 起",
+    bookingUrl: "https://yellowknifetours.com/winter-packages/",
+    note: "2026-2027 冬季套裝來源；需另加國際/內陸機票、冬衣、小費與稅費。",
   },
   {
-    id: "travel4u",
-    name: "山富旅遊",
-    type: "台灣旅行社",
-    domain: "www.travel4u.com.tw",
-    directUrl: "https://www.travel4u.com.tw/",
-    focus: "追蹤加拿大、黃刀鎮與極光團體商品。",
-    check: "團費需加回簽證、保險、行李、選位與自費項目。",
+    name: "Yellowknife Tours 5D4N Diamond",
+    source: "Yellowknife Tours",
+    status: "已併入排序",
+    amount: "CAD 2,398 + 5% GST 起",
+    bookingUrl: "https://yellowknifetours.com/winter-packages/",
+    note: "飯店與活動等級較高，總費用更接近預算上限。",
   },
   {
-    id: "lion",
-    name: "雄獅旅遊",
-    type: "台灣旅行社",
-    domain: "travel.liontravel.com",
-    directUrl: "https://travel.liontravel.com/",
-    focus: "比對大型旅行社的黃刀鎮極光團、航班與冬季活動安排。",
-    check: "特別檢查抵離 YZF 時間與早班離境體力風險。",
+    name: "長汎 2026 三月低價團樣本",
+    source: "長汎旅遊",
+    status: "已併入排序",
+    amount: "NT$142,451",
+    bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB",
+    note: "歷史團體基準，不代表目前可下訂，但保留作價格底線。",
   },
   {
-    id: "cola",
-    name: "可樂旅遊",
-    type: "台灣旅行社",
-    domain: "colatour.com.tw",
-    directUrl: "https://www.colatour.com.tw/",
-    focus: "作為價格與同業商品覆蓋度的比對來源。",
-    check: "若價格漂亮，仍需確認是否把抵達日算進完整極光夜。",
-  },
-  {
-    id: "everfun",
-    name: "長汎旅遊",
-    type: "台灣旅行社",
-    domain: "www.everfuntravel.com",
-    directUrl: "https://www.everfuntravel.com/",
-    focus: "延續 2026 樣本來源，追蹤新年度團體商品。",
-    check: "舊樣本只作基準，新商品需重新查核查核日與團號。",
-  },
-  {
-    id: "yellowknife-tours",
-    name: "Yellowknife Tours",
-    type: "當地地接",
-    domain: "yellowknifetours.com",
-    directUrl: "https://yellowknifetours.com/winter-packages/",
-    focus: "查詢冬季套裝、當地飯店、活動與 CAD 報價。",
-    check: "需換算台幣、加 GST、小費、冬衣、國際與內陸機票。",
-  },
-  {
-    id: "air-canada",
-    name: "Air Canada YVR-YZF",
-    type: "航班票價",
-    domain: "www.aircanada.com",
-    directUrl: "https://www.aircanada.com/en-ca/flights-from-vancouver-to-yellowknife",
-    focus: "查 YVR 到 YZF 內陸段月份票價與班表方向。",
-    check: "票價會變動，需保存查核日期與實際航班時間。",
+    name: "Air Canada YVR-YZF 月份票價",
+    source: "Air Canada",
+    status: "支援成本估算",
+    amount: "2026/09-12 CAD 318 起；2027/01-03 CAD 339 起",
+    bookingUrl: "https://www.aircanada.com/en-ca/flights-from-vancouver-to-yellowknife",
+    note: "航班價格會變動；用來修正自由行與當地套裝總額，不單獨列為旅行團。",
   },
 ];
 
@@ -237,6 +176,12 @@ type CandidateOption = {
   guideNote: string;
   description: string;
   nextStep: string;
+  bookingUrl?: string;
+  bookingLabel?: string;
+  sourceName?: string;
+  sourceCheckedAt?: string;
+  sourceSummary?: string;
+  importedFromSource?: boolean;
 };
 
 const budgetRange = {
@@ -315,6 +260,52 @@ const candidateOptions: CandidateOption[] = [
     nextStep: "只作價格備援；若沒有完整 3 個極光夜，不應升為強候選。",
   },
   {
+    id: "source-yktours-gold-5d4n",
+    title: "來源匯入：冬季當地套裝低價候選",
+    packageName: "Yellowknife Tours 5D4N Gold Hotel Package",
+    mode: "independent",
+    estimatedCost: 132000,
+    auroraLevel: "A",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: true,
+    dataState: "來源同步",
+    guideUrl: "#source-sync",
+    guideLabel: "查看來源同步",
+    guideNote: "來源頁列 2026-2027 冬季套裝，Gold 5D4N 雙人房型有 CAD 1,490 + 5% GST 起價；總額仍需加機票與必要費。",
+    description: "網站自動匯入的可查核來源候選；價格較有機會落在預算內，但不是台灣旅行社全包團。",
+    nextStep: "前往訂購網站確認日期、房型、活動內容，再加回國際與內陸機票。",
+    bookingUrl: "https://yellowknifetours.com/winter-packages/",
+    bookingLabel: "前往 Yellowknife Tours 訂購/詢價",
+    sourceName: "Yellowknife Tours",
+    sourceCheckedAt: "2026-07-15",
+    sourceSummary: "5D4N Gold Hotel Package；CAD 1,490 + 5% GST 起，未含機票、冬衣、小費。",
+    importedFromSource: true,
+  },
+  {
+    id: "source-yktours-diamond-5d4n",
+    title: "來源匯入：冬季當地套裝舒適候選",
+    packageName: "Yellowknife Tours 5D4N Diamond Hotel Package",
+    mode: "independent",
+    estimatedCost: 158000,
+    auroraLevel: "A",
+    riskLevel: 2,
+    comfort: "comfort",
+    verified: true,
+    dataState: "來源同步",
+    guideUrl: "#source-sync",
+    guideLabel: "查看來源同步",
+    guideNote: "來源頁列 Diamond 5D4N 雙人房型有 CAD 2,398 + 5% GST 起價；舒適度較高但總費用貼近預算上限。",
+    description: "網站自動匯入的舒適型來源候選；適合作為自由行舒適基準的實際商品版本。",
+    nextStep: "前往訂購網站確認飯店、餐食、活動與可選日期，並重算台幣總額。",
+    bookingUrl: "https://yellowknifetours.com/winter-packages/",
+    bookingLabel: "前往 Yellowknife Tours 訂購/詢價",
+    sourceName: "Yellowknife Tours",
+    sourceCheckedAt: "2026-07-15",
+    sourceSummary: "5D4N Diamond Hotel Package；CAD 2,398 + 5% GST 起，未含機票、冬衣、小費。",
+    importedFromSource: true,
+  },
+  {
     id: "group-2026-march",
     title: "2026 三月低價團體樣本",
     packageName: "歷史樣本：UWP26319BR10TB 三月低價團",
@@ -330,6 +321,12 @@ const candidateOptions: CandidateOption[] = [
     guideNote: "此項目是歷史比較基準，不是 2027 可下訂商品。",
     description: "目前最乾淨的團體價格基準，低於 NT$150,000 且有緩衝，但不是 2027 可下訂商品。",
     nextStep: "用來當旅行團報價的對照底線，不能直接下訂。",
+    bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB",
+    bookingLabel: "查看長汎團號頁",
+    sourceName: "長汎旅遊",
+    sourceCheckedAt: "2026-07-15",
+    sourceSummary: "歷史團體樣本；只作價格基準，不代表目前仍可售。",
+    importedFromSource: true,
   },
   {
     id: "independent-comfort",
@@ -408,26 +405,6 @@ function getComfortLabel(level: Exclude<ComfortLevel, "any">) {
 
 function getAuroraLevelLabel(level: Exclude<AuroraTarget, "either">) {
   return level === "A" ? "A級：3 個完整極光夜" : "B級：3 晚含抵達日";
-}
-
-function getSeasonSearchQuery(season: SeasonSearchValue) {
-  return seasonSearchChoices.find((choice) => choice.value === season)?.query ?? "";
-}
-
-function buildLiveQuery(filters: LiveSearchFilters, source: LiveSource, budget: number) {
-  const sourceTerm = source.id === "all" ? "" : source.name;
-  return [filters.keyword, getSeasonSearchQuery(filters.season), sourceTerm, `預算 ${formatCurrency(budget)}`]
-    .filter(Boolean)
-    .join(" ");
-}
-
-function buildLiveSearchUrl(source: LiveSource, query: string) {
-  if (source.id === "all") {
-    return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-  }
-
-  const siteQuery = source.domain ? `site:${source.domain} ${query}` : query;
-  return `https://www.google.com/search?q=${encodeURIComponent(siteQuery)}`;
 }
 
 function evaluateOption(option: CandidateOption, filters: PlannerFilters) {
@@ -551,9 +528,6 @@ const gates = [
 
 export default function Home() {
   const [filters, setFilters] = useState<PlannerFilters>(defaultPlanner);
-  const [liveSearch, setLiveSearch] = useState<LiveSearchFilters>(defaultLiveSearch);
-  const selectedLiveSource = liveSourceRows.find((source) => source.id === liveSearch.sourceId) ?? liveSourceRows[0];
-  const previewLiveQuery = buildLiveQuery(liveSearch, selectedLiveSource, filters.budget);
 
   const evaluatedOptions = useMemo(
     () =>
@@ -612,8 +586,8 @@ export default function Home() {
             </p>
           </div>
           <div className="sourceNote">
-            <strong>目前搜尋狀態</strong>
-            <span>靜態網站不會自動爬旅行社頁面；商品名稱、價格與網址需查核後匯入候選資料。</span>
+            <strong>目前資料狀態</strong>
+            <span>已同步來源商品會自動進入排序；缺少團名、價格或訂購網址者不列入推薦。</span>
           </div>
         </div>
         <div className="scopeGrid">
@@ -627,92 +601,38 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="pageSection liveSearchSection" id="live-source-query">
+      <section className="pageSection sourceSyncSection" id="source-sync">
         <div className="sectionHeader tableHeader">
           <div>
-            <p className="eyebrow">Live Source Query</p>
-            <h2>即時查詢入口</h2>
+            <p className="eyebrow">Source Sync</p>
+            <h2>自動匯入資料源</h2>
             <p>
-              先選月份範圍、關鍵字與資料源，再開啟旅行社或官方來源查詢。查到商品後，仍需把團名、網址、團費、夜數口徑、航班與飯店人工填入候選資料。
+              網站會把已查核的旅行社與官方來源資料併入下方「適合選項排序」。沒有團名、價格或訂購網址的資料，只保留在來源同步狀態，不進入推薦排序。
             </p>
           </div>
           <div className="sourceNote">
-            <strong>功能狀態</strong>
-            <span>已可查詢外部來源；本頁不會自動保存或宣稱最新售價已查核。</span>
+            <strong>同步狀態</strong>
+            <span>已匯入 {candidateOptions.filter((option) => option.importedFromSource).length} 筆可排序候選；查核基準日：2026-07-15。</span>
           </div>
         </div>
 
-        <div className="liveSearchControls" aria-label="即時查詢條件">
-          <label>
-            <span>月份範圍</span>
-            <select
-              value={liveSearch.season}
-              onChange={(event) =>
-                setLiveSearch((current) => ({ ...current, season: event.target.value as SeasonSearchValue }))
-              }
-            >
-              {seasonSearchChoices.map((choice) => (
-                <option key={choice.value} value={choice.value}>
-                  {choice.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            <span>關鍵字</span>
-            <input
-              value={liveSearch.keyword}
-              onChange={(event) => setLiveSearch((current) => ({ ...current, keyword: event.target.value }))}
-              type="search"
-            />
-          </label>
-          <label>
-            <span>主要資料源</span>
-            <select
-              value={liveSearch.sourceId}
-              onChange={(event) => setLiveSearch((current) => ({ ...current, sourceId: event.target.value }))}
-            >
-              {liveSourceRows.map((source) => (
-                <option key={source.id} value={source.id}>
-                  {source.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        <div className="queryPreview">
-          <span>目前查詢字串</span>
-          <strong>{previewLiveQuery}</strong>
-          <small>會帶入目前預算上限 {formatCurrency(filters.budget)}；可先用下方按鈕開啟即時查詢。</small>
-          <a href={buildLiveSearchUrl(selectedLiveSource, previewLiveQuery)} rel="noreferrer" target="_blank">
-            開啟主要資料源查詢
-          </a>
-        </div>
-
         <div className="sourceGrid">
-          {liveSourceRows.map((source) => {
-            const query = buildLiveQuery(liveSearch, source, filters.budget);
-
-            return (
-              <article className={source.id === liveSearch.sourceId ? "sourceCard active" : "sourceCard"} key={source.id}>
-                <div className="sourceCardHeader">
-                  <span>{source.type}</span>
-                  <h3>{source.name}</h3>
-                </div>
-                <p>{source.focus}</p>
-                <small>{source.check}</small>
-                <div className="sourceActions">
-                  <a href={buildLiveSearchUrl(source, query)} rel="noreferrer" target="_blank">
-                    查詢此來源
-                  </a>
-                  <a href={source.directUrl} rel="noreferrer" target="_blank">
-                    開啟來源
-                  </a>
-                </div>
-              </article>
-            );
-          })}
+          {sourceSyncRows.map((source) => (
+            <article className="sourceCard" key={source.name}>
+              <div className="sourceCardHeader">
+                <span>{source.status}</span>
+                <h3>{source.name}</h3>
+              </div>
+              <p>{source.source}</p>
+              <strong>{source.amount}</strong>
+              <small>{source.note}</small>
+              <div className="sourceActions">
+                <a href={source.bookingUrl} rel="noreferrer" target="_blank">
+                  訂購網站
+                </a>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -850,11 +770,17 @@ export default function Home() {
                 <span>{bestOption.option.title}</span>
                 <span>{bestOption.option.dataState}</span>
                 <span>{getAuroraLevelLabel(bestOption.option.auroraLevel)}</span>
+                {bestOption.option.sourceName ? <span>{bestOption.option.sourceName}</span> : null}
               </div>
               <p>
                 {bestOption.statusLabel}；分數 {bestOption.score}。{bestOption.option.description}
               </p>
               <div className="recommendationAction">
+                {bestOption.option.bookingUrl ? (
+                  <a className="bookingLink" href={bestOption.option.bookingUrl} rel="noreferrer" target="_blank">
+                    {bestOption.option.bookingLabel ?? "訂購網站"}
+                  </a>
+                ) : null}
                 <a href={bestOption.option.guideUrl}>{bestOption.option.guideLabel}</a>
                 <small>{bestOption.option.guideNote}</small>
               </div>
@@ -898,6 +824,14 @@ export default function Home() {
                     </span>
                   </div>
 
+                  {result.option.sourceName ? (
+                    <div className="sourceInline">
+                      <span>來源：{result.option.sourceName}</span>
+                      <span>查核：{result.option.sourceCheckedAt}</span>
+                      <strong>{result.option.sourceSummary}</strong>
+                    </div>
+                  ) : null}
+
                   <div className="reasonColumns">
                     <div>
                       <strong>符合原因</strong>
@@ -921,6 +855,13 @@ export default function Home() {
                     <strong>下一步：</strong>
                     {result.option.nextStep}
                   </p>
+                  {result.option.bookingUrl ? (
+                    <div className="bookingRow">
+                      <a href={result.option.bookingUrl} rel="noreferrer" target="_blank">
+                        {result.option.bookingLabel ?? "訂購網站"}
+                      </a>
+                    </div>
+                  ) : null}
                 </article>
               ))}
             </div>
