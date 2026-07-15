@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>黃刀鎮極光旅 2027 決策儀表板</title>
+    <title>黃刀鎮極光旅決策儀表板</title>
     <meta
       name="description"
-      content="整理黃刀鎮極光旅 2027 的決策狀態、下一步、A/B 極光夜數、團體樣本、待重查項目與決策門檻。"
+      content="整理黃刀鎮極光旅的決策狀態、搜尋範圍、A/B 極光夜數、團體樣本、待重查項目與決策門檻。"
     />
     <style>
       :root {
@@ -275,6 +275,48 @@
         background: #eef7f4;
         color: #173331;
         font-weight: 800;
+      }
+
+      .scopeSection {
+        padding: 28px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 18px 48px rgba(24, 48, 44, 0.08);
+      }
+
+      .scopeGrid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 22px;
+      }
+
+      .scopeCard {
+        min-height: 160px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fbfffe;
+      }
+
+      .scopeCard span {
+        display: inline-flex;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: #e6f6f1;
+        color: #0b6b58;
+        font-size: 0.78rem;
+        font-weight: 900;
+      }
+
+      .scopeCard h3 {
+        margin-top: 14px;
+      }
+
+      .scopeCard p {
+        color: var(--muted);
+        line-height: 1.65;
       }
 
       .simulatorSection {
@@ -692,20 +734,6 @@
         font-size: 0.9rem;
       }
 
-      .backlogSection {
-        background: #fffdf7;
-      }
-
-      .backlogNote {
-        margin: 18px 0 0;
-        padding: 14px 16px;
-        border-left: 4px solid var(--amber);
-        background: #fff8e8;
-        color: #3a2d1b;
-        font-weight: 800;
-        line-height: 1.7;
-      }
-
       .tableWrap {
         width: 100%;
         margin-top: 24px;
@@ -717,134 +745,6 @@
         min-width: 980px;
         border-collapse: collapse;
         font-size: 0.95rem;
-      }
-
-      .backlogTable {
-        min-width: 1080px;
-      }
-
-      .backlogTable td:first-child {
-        min-width: 150px;
-      }
-
-      .agingSection,
-      .enabledSection,
-      .templateSection {
-        background: #fbfffe;
-      }
-
-      .agingTable {
-        min-width: 1040px;
-      }
-
-      .agingTable td:first-child {
-        min-width: 180px;
-      }
-
-      .stageGrid,
-      .enabledGrid,
-      .templateGrid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 14px;
-        margin-top: 22px;
-      }
-
-      .stageCard,
-      .enabledCard {
-        min-height: 190px;
-        padding: 22px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #fff;
-        box-shadow: 0 18px 48px rgba(24, 48, 44, 0.08);
-      }
-
-      .enabledCard {
-        min-height: 210px;
-      }
-
-      .stageCard span,
-      .enabledCard span {
-        display: inline-flex;
-        padding: 5px 10px;
-        border-radius: 999px;
-        background: #e6f6f1;
-        color: #0b6b58;
-        font-size: 0.78rem;
-        font-weight: 900;
-      }
-
-      .enabledCard span {
-        background: #dff7e8;
-        color: #146c43;
-      }
-
-      .stageCard h3,
-      .enabledCard h3 {
-        margin-top: 16px;
-      }
-
-      .stageCard p,
-      .enabledCard p,
-      .ruleItem p,
-      .templateItem span {
-        color: var(--muted);
-        line-height: 1.65;
-      }
-
-      .stageCard p,
-      .enabledCard p,
-      .ruleItem p {
-        margin: 12px 0 0;
-      }
-
-      .intelligencePanel {
-        background: #fbfffe;
-      }
-
-      .importPanel {
-        background: #fffdf7;
-      }
-
-      .ruleList {
-        display: grid;
-        gap: 12px;
-        margin-top: 22px;
-      }
-
-      .ruleItem,
-      .templateItem {
-        padding: 16px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #fff;
-      }
-
-      .templateItem {
-        padding: 18px;
-      }
-
-      .ruleItem strong,
-      .ruleItem span,
-      .templateItem strong,
-      .templateItem span {
-        display: block;
-      }
-
-      .ruleItem span {
-        width: fit-content;
-        margin-top: 8px;
-        padding: 4px 9px;
-        border-radius: 999px;
-        background: #e6f6f1;
-        color: #0b6b58;
-        font-size: 0.78rem;
-        font-weight: 900;
-      }
-
-      .templateItem span {
-        margin-top: 8px;
       }
 
       th,
@@ -898,37 +798,6 @@
       .statusPill.red {
         background: #ffd9d6;
         color: #a2362d;
-      }
-
-      .backlogRank {
-        display: inline-flex;
-        min-height: 30px;
-        align-items: center;
-        padding: 5px 10px;
-        border-radius: 999px;
-        font-size: 0.82rem;
-        font-weight: 900;
-        white-space: nowrap;
-      }
-
-      .backlogRank.first {
-        background: #dff7e8;
-        color: #146c43;
-      }
-
-      .backlogRank.second {
-        background: #e6f0ff;
-        color: #25528a;
-      }
-
-      .backlogRank.third {
-        background: #fff0bd;
-        color: #8a5a00;
-      }
-
-      .backlogRank.frozen {
-        background: #eceff1;
-        color: #47545a;
       }
 
       .mobileTourCards {
@@ -985,9 +854,7 @@
       @media (max-width: 980px) {
         .decisionBar,
         .actionGrid,
-        .stageGrid,
-        .enabledGrid,
-        .templateGrid {
+        .scopeGrid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
@@ -1017,9 +884,7 @@
         .summaryBand,
         .contentGrid,
         .actionGrid,
-        .stageGrid,
-        .enabledGrid,
-        .templateGrid,
+        .scopeGrid,
         .badgeGrid {
           grid-template-columns: 1fr;
         }
@@ -1136,12 +1001,11 @@
           <p class="eyebrow">Aurora Intelligence Project - Yellowknife 2027</p>
           <h1>黃刀鎮極光旅決策儀表板</h1>
           <p class="lead">
-            目前是 M2.1 市場實證與重查準備階段，不是最終下訂狀態。所有 2027
-            動態資料在正式付款前都必須重新查核。
+            目前是 M2.1 市場實證與重查準備階段，不是最終下訂狀態。所有旅行團、票價與班表資料在正式付款前都必須重新查核。
           </p>
           <div class="decisionBar" aria-label="決策狀態列">
             <div class="decisionStatus"><span>M2</span><strong>已通過</strong><small>靜態決策基線成立</small></div>
-            <div class="decisionStatus"><span>2027 動態資料</span><strong>待重查</strong><small>不可作最終下訂依據</small></div>
+            <div class="decisionStatus"><span>動態商品資料</span><strong>待重查</strong><small>9-11 月與冬季團都納入</small></div>
             <div class="decisionStatus"><span>預算</span><strong>NT$150,000</strong><small>每人原則上限</small></div>
             <div class="decisionStatus"><span>策略</span><strong>團體優先</strong><small>自由行作比較基準</small></div>
           </div>
@@ -1155,7 +1019,43 @@
         </div>
         <div class="summaryItem">
           <span class="summaryLabel">查核基準</span>
-          <strong>查核基準日：2026-07-15；2027 正式下訂前需重查。</strong>
+          <strong>查核基準日：2026-07-15；正式下訂前需重查旅行團、票價與班表。</strong>
+        </div>
+      </section>
+
+      <section class="pageSection scopeSection">
+        <div class="sectionHeader tableHeader">
+          <div>
+            <p class="eyebrow">Search Scope</p>
+            <h2>極光旅遊團搜尋範圍</h2>
+            <p>本網站不只看 2027 年 1-3 月；9 月、10 月、11 月的秋季極光團，以及冬季極光團，都應納入同一套比較。</p>
+          </div>
+          <div class="sourceNote">
+            <strong>目前搜尋狀態</strong>
+            <span>靜態網站不會自動爬旅行社頁面；商品名稱、價格與網址需查核後匯入候選資料。</span>
+          </div>
+        </div>
+        <div class="scopeGrid">
+          <article class="scopeCard">
+            <span>9-11 月</span>
+            <h3>秋季極光團</h3>
+            <p>同樣是本網站重點；需納入旅行團與自由行比較。</p>
+          </article>
+          <article class="scopeCard">
+            <span>12-3 月</span>
+            <h3>冬季極光團</h3>
+            <p>可搭配雪地活動，但需檢查低溫、體力與延誤風險。</p>
+          </article>
+          <article class="scopeCard">
+            <span>4-6 月</span>
+            <h3>延伸觀測</h3>
+            <p>可保留搜尋，但要確認是否仍屬可販售極光行程。</p>
+          </article>
+          <article class="scopeCard">
+            <span>2027 與其他年份</span>
+            <h3>年份不作唯一限制</h3>
+            <p>只要是可查核的黃刀鎮極光旅行團，就可放入候選。</p>
+          </article>
         </div>
       </section>
 
@@ -1229,7 +1129,7 @@
               <span>只採已查核資料；未重查的 2027 方向自動降級。</span>
             </label>
 
-            <p class="simulatorHint">判定結果是規劃輔助，不會取代 2027 正式查核與下訂前確認。</p>
+            <p class="simulatorHint">判定結果是規劃輔助，不會取代正式查核與下訂前確認。</p>
           </aside>
 
           <div class="resultPanel" aria-live="polite">
@@ -1257,9 +1157,9 @@
           </article>
           <article class="actionCard">
             <span class="stepNumber">02</span>
-            <h3>2027 航班重查</h3>
+            <h3>極光季航班重查</h3>
             <span class="miniStatus">待即時查核</span>
-            <p><strong>完成標準：</strong>15 組候選填入查核日期、官方來源、票價、轉機、行李與 YZF 抵離時間。</p>
+            <p><strong>完成標準：</strong>9-11 月秋季與 12-3 月冬季候選都需填入查核日期、票價、轉機、行李與 YZF 抵離時間。</p>
           </article>
           <article class="actionCard">
             <span class="stepNumber">03</span>
@@ -1269,251 +1169,10 @@
           </article>
           <article class="actionCard">
             <span class="stepNumber">04</span>
-            <h3>2027 商品篩選</h3>
+            <h3>極光團商品篩選</h3>
             <span class="miniStatus">規則完成</span>
-            <p><strong>完成標準：</strong>新商品必須通過日期、總費用、航班、飯店、補看與延誤條款檢查。</p>
+            <p><strong>完成標準：</strong>任何月份的新商品都必須通過日期、總費用、航班、飯店、補看與延誤條款檢查。</p>
           </article>
-        </div>
-      </section>
-
-      <section class="tableSection agingSection">
-        <div class="sectionHeader tableHeader">
-          <div>
-            <p class="eyebrow">Source Aging Spec</p>
-            <h2>來源老化機制準備規格</h2>
-            <p>這是第一優先 Backlog 的準備稿，只定義標籤、觸發點與人工處理方式，不直接覆蓋正式結論。</p>
-          </div>
-          <div class="sourceNote">
-            <strong>目的</strong>
-            <span>避免票價、班表、飯店與商品條款被過期引用。</span>
-          </div>
-        </div>
-        <div class="tableWrap agingTableWrap">
-          <table class="agingTable">
-            <thead>
-              <tr>
-                <th>資料類型</th>
-                <th>老化標籤</th>
-                <th>重查觸發</th>
-                <th>目前處理方式</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>航班票價與可售艙等</strong></td>
-                <td>快照資料；超過 7 天標示需重查</td>
-                <td>下訂前、價格異動、出發前 30 天與 7 天</td>
-                <td>先手動填入官方查核日期與來源，不自動帶入決策。</td>
-              </tr>
-              <tr>
-                <td><strong>航班時刻與轉機時間</strong></td>
-                <td>動態資料；正式付款前必重查</td>
-                <td>航班改時、冬季班表、30/7 天重查</td>
-                <td>以官方航空公司資訊為準，缺 YZF 抵離時間則不得列強候選。</td>
-              </tr>
-              <tr>
-                <td><strong>飯店與團體商品條款</strong></td>
-                <td>發布版本資料；每次修訂需重查</td>
-                <td>商品頁更新、業務書面確認、付款前</td>
-                <td>或同級、補看與取消條款維持 PENDING_2027_RECHECK。</td>
-              </tr>
-              <tr>
-                <td><strong>活動、補看與取消規則</strong></td>
-                <td>任務保護資料；行程定案與出發前重查</td>
-                <td>條款更新、天候政策、出發前 7 天</td>
-                <td>無補看規則不得進入強候選。</td>
-              </tr>
-              <tr>
-                <td><strong>匯率、ESTA、eTA、必要費用</strong></td>
-                <td>計算基準；每次比較需標示日期</td>
-                <td>重新估算、匯率波動、付款前</td>
-                <td>欄位先準備，不啟用自動化抓取。</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="pageSection">
-        <div class="sectionHeader">
-          <p class="eyebrow">Activation Roadmap</p>
-          <h2>Backlog 啟用階段</h2>
-          <p>完整優化層到位後，功能依風險分階段啟用；目前已啟用本地規則與檢核，不把外部動態資料當成已查核結論。</p>
-        </div>
-        <div class="stageGrid">
-          <article class="stageCard">
-            <span>Stage 0</span>
-            <h3>凍結保護</h3>
-            <p>Backlog 只作排序與準備，不改動 M2 架構、不展開未驗證功能。</p>
-          </article>
-          <article class="stageCard">
-            <span>Stage 1</span>
-            <h3>來源老化準備</h3>
-            <p>建立查核日期、有效期、重查觸發與 PENDING 標籤。</p>
-          </article>
-          <article class="stageCard">
-            <span>Stage 2</span>
-            <h3>預算情報準備</h3>
-            <p>把必要費、單房差、匯率與緩衝規則接入判定。</p>
-          </article>
-          <article class="stageCard">
-            <span>Stage 3</span>
-            <h3>匯入與通用化</h3>
-            <p>待官方來源穩定後再接外部匯入，並整理跨目的地模板。</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="pageSection enabledSection">
-        <div class="sectionHeader">
-          <p class="eyebrow">Enabled Backlog Layer</p>
-          <h2>Backlog 功能啟用層</h2>
-          <p>優化層完成後，已自動啟用低風險的本地功能；外部即時資料源仍需正式接入，才可進一步自動更新資料。</p>
-        </div>
-        <div class="enabledGrid">
-          <article class="enabledCard">
-            <span>已啟用</span>
-            <h3>來源老化監控</h3>
-            <p>各類資料會被標成有效、快到期或需重查，避免 2026 或未查核資料被誤當 2027 結論。</p>
-          </article>
-          <article class="enabledCard">
-            <span>已啟用</span>
-            <h3>預算情報判定</h3>
-            <p>依 NT$150,000 上限與緩衝區間，先把候選分成可進、臨界、超標與需拆算。</p>
-          </article>
-          <article class="enabledCard">
-            <span>已啟用</span>
-            <h3>資料匯入檢核</h3>
-            <p>任何新資料都必須先通過來源、日期、幣別、欄位與 YZF 抵離資訊檢查。</p>
-          </article>
-          <article class="enabledCard">
-            <span>模板啟用</span>
-            <h3>跨目的地模板</h3>
-            <p>把任務排序、動態資料、成本模型與決策門檻整理成可複用架構。</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="tableSection agingSection">
-        <div class="sectionHeader tableHeader">
-          <div>
-            <p class="eyebrow">Live Decision Guard</p>
-            <h2>來源老化監控</h2>
-            <p>這裡是已啟用的判定保護層：可用資料可作比較，缺資料一律維持 PENDING，不直接形成下訂建議。</p>
-          </div>
-          <div class="sourceNote">
-            <strong>功能狀態：已啟用</strong>
-            <span>外部即時資料源仍需正式接入。</span>
-          </div>
-        </div>
-        <div class="tableWrap agingTableWrap">
-          <table class="agingTable">
-            <thead>
-              <tr>
-                <th>資料來源</th>
-                <th>最後查核日</th>
-                <th>資料性質</th>
-                <th>目前狀態</th>
-                <th>下一步</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>2026 團體樣本</strong></td>
-                <td>2026-07-15</td>
-                <td>歷史基準</td>
-                <td>可用作比較，不可當 2027 承諾</td>
-                <td>2027 商品發布後重新比對。</td>
-              </tr>
-              <tr>
-                <td><strong>2027 航班票價</strong></td>
-                <td>待即時重查</td>
-                <td>動態資料</td>
-                <td>需重查</td>
-                <td>查核官方航空公司頁面後才能填入候選。</td>
-              </tr>
-              <tr>
-                <td><strong>飯店與團體商品條款</strong></td>
-                <td>待正式發布</td>
-                <td>版本資料</td>
-                <td>PENDING_2027_RECHECK</td>
-                <td>取得飯店、或同級、補看與取消條款後再判定。</td>
-              </tr>
-              <tr>
-                <td><strong>補看、延誤與改目的地規則</strong></td>
-                <td>待正式發布</td>
-                <td>任務保護資料</td>
-                <td>PENDING_2027_RECHECK</td>
-                <td>無補看不得強候選。</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="contentGrid">
-        <article class="panel intelligencePanel">
-          <div class="sectionHeader">
-            <p class="eyebrow">Budget Intelligence</p>
-            <h2>預算情報判定</h2>
-            <p>以 NT$150,000 為原則上限，啟用本地判定規則，先把候選放進正確池子。</p>
-          </div>
-          <div class="ruleList">
-            <div class="ruleItem">
-              <strong>低於 NT$145,000</strong>
-              <span>有緩衝</span>
-              <p>可進強候選池，但仍需通過夜數、航班、飯店與補看規則。</p>
-            </div>
-            <div class="ruleItem">
-              <strong>NT$145,000-150,000</strong>
-              <span>臨界</span>
-              <p>列為條件候選，需確認必要費、匯率、行李與住宿差沒有再推高總額。</p>
-            </div>
-            <div class="ruleItem">
-              <strong>高於 NT$150,000</strong>
-              <span>超標</span>
-              <p>原則排除，除非補看、安全或航班品質有明確不可替代理由。</p>
-            </div>
-            <div class="ruleItem">
-              <strong>單房差或高舒適自由行</strong>
-              <span>高波動</span>
-              <p>獨立計算，不直接拿團體標價比較。</p>
-            </div>
-          </div>
-        </article>
-
-        <article class="panel importPanel">
-          <div class="sectionHeader">
-            <p class="eyebrow">Import Gate</p>
-            <h2>資料匯入檢核</h2>
-            <p>匯入功能先啟用檢核門，不讓新資料直接覆蓋已通過的決策狀態。</p>
-          </div>
-          <ul class="checkList">
-            <li>每筆資料必須有來源網址、查核日期、幣別與欄位名稱。</li>
-            <li>外部資料匯入後先進 PENDING，不直接覆蓋正式結論。</li>
-            <li>票價、班表、飯店、補看規則需分別標記資料類型。</li>
-            <li>任何缺少 YZF 抵離時間的商品，不得自動進入強候選。</li>
-          </ul>
-        </article>
-      </section>
-
-      <section class="tableSection templateSection">
-        <div class="sectionHeader tableHeader">
-          <div>
-            <p class="eyebrow">Reusable Template</p>
-            <h2>跨目的地模板啟用</h2>
-            <p>先把黃刀鎮專案抽成模板，不改變現在的下訂標準。</p>
-          </div>
-          <div class="sourceNote">
-            <strong>功能狀態：模板啟用</strong>
-            <span>目前只複用方法，不套用到其他目的地結論。</span>
-          </div>
-        </div>
-        <div class="templateGrid">
-          <div class="templateItem"><strong>任務排序</strong><span>核心體驗、安全、體力、一般體驗。</span></div>
-          <div class="templateItem"><strong>動態資料</strong><span>票價、班表、住宿、活動、天氣、緊急資訊。</span></div>
-          <div class="templateItem"><strong>成本模型</strong><span>標價、必要費、匯率、保險、住宿差、備用金。</span></div>
-          <div class="templateItem"><strong>決策門檻</strong><span>強候選、條件候選、備援、排除。</span></div>
         </div>
       </section>
 
@@ -1559,7 +1218,7 @@
           </div>
           <div class="sourceNote">
             <strong>查核基準日：2026-07-15</strong>
-            <span>2027 正式下訂前需重查</span>
+            <span>正式下訂前需重查</span>
           </div>
         </div>
         <div class="tableWrap tourTableWrap">
@@ -1664,7 +1323,7 @@
             <p>缺少下列任一資訊時，只能列為待重查，不可作最終下訂判定。</p>
           </div>
           <ul class="checkList">
-            <li>2027 團體商品完整航班與班號</li>
+            <li>旅行團商品完整航班與班號</li>
             <li>實際飯店名稱或同級條件</li>
             <li>YZF 抵達與離開時間</li>
             <li>極光補看、延誤與改目的地規則</li>
@@ -1689,10 +1348,10 @@
 
       <section class="closingPanel">
         <p class="eyebrow">Current Recommendation</p>
-        <h2>先穩住比較基準，再等待 2027 商品公開</h2>
+        <h2>先穩住比較基準，再匯入可查核的極光團商品</h2>
         <p>
           旅行團仍可作為低操作負擔方案，但目前看來自由行舒適型雙人仍是重要基準。
-          任何 2027 團體商品，只要缺少完整日期、團費、航班、YZF 抵離時間、飯店、
+          任何極光旅行團商品，只要缺少完整日期、團費、航班、YZF 抵離時間、飯店、
           極光補看或延誤條款，就先標示為 PENDING_2027_RECHECK。
         </p>
       </section>
@@ -1716,32 +1375,32 @@
       const staticCandidates = [
         {
           id: "group-2027-a",
-          title: "2027 A 級團體候選方向",
-          packageName: "待重查團體：2027 黃刀鎮 A級完整極光夜團",
+          title: "秋冬 A 級團體候選方向",
+          packageName: "待查商品：黃刀鎮 A級完整極光夜團",
           mode: "group",
           estimatedCost: 148000,
           auroraLevel: "A",
           riskLevel: 2,
           comfort: "balanced",
           verified: false,
-          dataState: "2027 待重查",
+          dataState: "商品待查",
           guideUrl: "#pending-2027-recheck",
           guideLabel: "前往 2027 重查清單",
-          guideNote: "此項目尚不是可下訂商品，需先補齊航班、飯店、YZF 抵離與補看規則。",
-          description: "抵達日不計，保留 3 個完整極光夜；適合把團體放第一順位，但要等商品與航班重新查核。",
-          nextStep: "等 2027 商品上架後，先查 YZF 抵離時間、補看規則、飯店與總費用。",
+          guideNote: "此項目尚不是可下訂商品，需先補齊旅行社網址、團費、航班、飯店、YZF 抵離與補看規則。",
+          description: "抵達日不計，保留 3 個完整極光夜；適合把團體放第一順位，9-11 月秋季團與冬季團都可納入。",
+          nextStep: "取得商品網址後，先查團費、YZF 抵離時間、補看規則、飯店與總費用。",
         },
         {
           id: "group-2027-b",
-          title: "2027 B 級團體價格優先方向",
-          packageName: "待重查團體：2027 黃刀鎮 B級價格優先團",
+          title: "秋冬 B 級團體價格優先方向",
+          packageName: "待查商品：黃刀鎮 B級價格優先團",
           mode: "group",
           estimatedCost: 138000,
           auroraLevel: "B",
           riskLevel: 2,
           comfort: "balanced",
           verified: false,
-          dataState: "2027 待重查",
+          dataState: "商品待查",
           guideUrl: "#pending-2027-recheck",
           guideLabel: "前往 2027 重查清單",
           guideNote: "此項目只能作價格備援，需確認是否真的具備 3 個完整極光夜。",
@@ -1763,7 +1422,7 @@
           guideLabel: "查看 2026 團體樣本",
           guideNote: "此項目是歷史比較基準，不是 2027 可下訂商品。",
           description: "目前最乾淨的團體價格基準，低於 NT$150,000 且有緩衝，但不是 2027 可下訂商品。",
-          nextStep: "用來當 2027 團體報價的對照底線，不能直接下訂。",
+          nextStep: "用來當旅行團報價的對照底線，不能直接下訂。",
         },
         {
           id: "independent-comfort",
@@ -1778,9 +1437,9 @@
           dataState: "規劃基準",
           guideUrl: "#pending-2027-recheck",
           guideLabel: "查看自由行查核項目",
-          guideNote: "需重查 2027 航班、住宿、極光活動與總費用後才能作正式比較。",
+          guideNote: "需重查航班、住宿、極光活動與總費用後才能作正式比較。",
           description: "保留完整極光夜與較高舒適度，是團體方案的主要比較基準。",
-          nextStep: "重查 2027 航班、飯店與極光活動後，與團體總費用並列表。",
+          nextStep: "重查航班、飯店與極光活動後，與團體總費用並列表。",
         },
         {
           id: "independent-basic",
@@ -1891,7 +1550,7 @@
           reasons.push("已有查核基準，可作比較。");
         } else if (plannerState.requireVerified) {
           score -= 30;
-          blockers.push("尚未完成 2027 正式重查。");
+          blockers.push("尚未完成商品與動態資料正式重查。");
         } else {
           score -= 4;
           cautions.push("屬於規劃或待重查資料，不可直接下訂。");

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 
 const decisionStatuses = [
   { label: "M2", value: "已通過", note: "靜態決策基線成立" },
-  { label: "2027 動態資料", value: "待重查", note: "不可作最終下訂依據" },
+  { label: "動態商品資料", value: "待重查", note: "9-11 月與冬季團都納入" },
   { label: "預算", value: "NT$150,000", note: "每人原則上限" },
   { label: "策略", value: "團體優先", note: "自由行作比較基準" },
 ];
@@ -16,9 +16,9 @@ const actionCards = [
     standard: "四個已成團樣本完成同口徑比較，含必要費用、夜數、風險與判定。",
   },
   {
-    title: "2027 航班重查",
+    title: "極光季航班重查",
     status: "待即時查核",
-    standard: "15 組候選填入查核日期、官方來源、票價、轉機、行李與 YZF 抵離時間。",
+    standard: "9-11 月秋季與 12-3 月冬季候選都需填入查核日期、票價、轉機、行李與 YZF 抵離時間。",
   },
   {
     title: "團體 vs 自由行成本表",
@@ -26,157 +26,33 @@ const actionCards = [
     standard: "同時列出團體低價樣本、自由行節制型、舒適型、高舒適型與單人情境。",
   },
   {
-    title: "2027 商品篩選",
+    title: "極光團商品篩選",
     status: "規則完成",
-    standard: "新商品必須通過日期、總費用、航班、飯店、補看與延誤條款檢查。",
+    standard: "任何月份的新商品都必須通過日期、總費用、航班、飯店、補看與延誤條款檢查。",
   },
 ];
 
-const agingRules = [
+const seasonScopeRows = [
   {
-    dataType: "航班票價與可售艙等",
-    agingLabel: "快照資料；超過 7 天標示需重查",
-    trigger: "下訂前、價格異動、出發前 30 天與 7 天",
-    handling: "先手動填入查核日、來源、票價與幣別，不自動抓價。",
+    period: "9-11 月",
+    label: "秋季極光團",
+    role: "同樣是本網站重點；需納入旅行團與自由行比較。",
   },
   {
-    dataType: "航班時刻與轉機時間",
-    agingLabel: "動態資料；正式付款前必重查",
-    trigger: "航班改時、航空公司釋出冬季班表、出發前 30 天與 7 天",
-    handling: "以官方航空公司與機場資訊為準，分票行李不可假設直掛。",
+    period: "12-3 月",
+    label: "冬季極光團",
+    role: "可搭配雪地活動，但需檢查低溫、體力與延誤風險。",
   },
   {
-    dataType: "飯店與團體商品條款",
-    agingLabel: "發布版本資料；每次修訂需重查",
-    trigger: "旅行社商品頁更新、業務提供書面補件、付款前",
-    handling: "飯店若只寫或同級，維持 PENDING_2027_RECHECK。",
+    period: "4-6 月",
+    label: "延伸觀測",
+    role: "可保留搜尋，但要確認是否仍屬可販售極光行程。",
   },
   {
-    dataType: "活動、補看與取消規則",
-    agingLabel: "條款資料；行程定案與出發前重查",
-    trigger: "商品條款更新、天候政策變更、出發前 7 天",
-    handling: "若無補看或延誤保護，不得列為強候選。",
+    period: "2027 與其他年份",
+    label: "年份不作唯一限制",
+    role: "只要是可查核的黃刀鎮極光旅行團，就可放入候選。",
   },
-  {
-    dataType: "匯率、ESTA、eTA、必要費用",
-    agingLabel: "計算基準；每次比較需標示日期",
-    trigger: "重新估算總成本、匯率大幅波動、付款前",
-    handling: "先做日期標籤與欄位準備，不啟用進階預算自動化。",
-  },
-];
-
-const activationStages = [
-  {
-    stage: "Stage 0",
-    title: "凍結保護",
-    description: "Backlog 只作排序與準備，不改動 M2 架構、不展開功能。",
-  },
-  {
-    stage: "Stage 1",
-    title: "來源老化準備",
-    description: "建立查核日、資料類型、有效期、重查觸發與 PENDING 標籤。",
-  },
-  {
-    stage: "Stage 2",
-    title: "預算情報準備",
-    description: "等第一批即時重查完成後，再加入緩衝、匯率與必要費用判讀。",
-  },
-  {
-    stage: "Stage 3",
-    title: "匯入與通用化",
-    description: "只有在欄位與來源穩定後，才評估自動匯入與跨目的地引擎。",
-  },
-];
-
-const enabledFeatures = [
-  {
-    title: "來源老化監控",
-    status: "已啟用",
-    detail: "把各類資料標成有效、快到期或需重查，避免過期資訊被拿來下訂。",
-  },
-  {
-    title: "預算情報判定",
-    status: "已啟用",
-    detail: "依必要費用後總額判斷有緩衝、臨界或超標，先用本機規則運作。",
-  },
-  {
-    title: "資料匯入檢核",
-    status: "已啟用",
-    detail: "啟用資料欄位檢核與人工匯入門檻，尚未連接外部即時抓取。",
-  },
-  {
-    title: "跨目的地模板",
-    status: "模板啟用",
-    detail: "把黃刀鎮決策欄位抽成可複用模板，但不改動目前專案核心架構。",
-  },
-];
-
-const agingMonitor = [
-  {
-    source: "2026 團體樣本",
-    lastChecked: "2026-07-15",
-    freshness: "歷史基準",
-    status: "可用作比較，不可當 2027 承諾",
-    action: "2027 商品發布後重新比對。",
-  },
-  {
-    source: "2027 航班票價",
-    lastChecked: "待即時重查",
-    freshness: "動態資料",
-    status: "需重查",
-    action: "查核官方航空公司頁面後才能進入候選。",
-  },
-  {
-    source: "飯店與團體商品條款",
-    lastChecked: "待正式發布",
-    freshness: "版本資料",
-    status: "PENDING_2027_RECHECK",
-    action: "取得飯店名稱、或同級條件與取消條款。",
-  },
-  {
-    source: "補看、延誤與改目的地規則",
-    lastChecked: "待正式發布",
-    freshness: "任務保護資料",
-    status: "PENDING_2027_RECHECK",
-    action: "沒有補看或重新進入 YZF 機制時不得列強候選。",
-  },
-];
-
-const budgetIntelligence = [
-  {
-    item: "低於 NT$145,000",
-    signal: "有緩衝",
-    decision: "可進強候選池，但仍需檢查夜數與延誤保護。",
-  },
-  {
-    item: "NT$145,000-150,000",
-    signal: "臨界",
-    decision: "只能條件候選；需補上保險、行李、匯率與備用金。",
-  },
-  {
-    item: "高於 NT$150,000",
-    signal: "超標",
-    decision: "原則排除，除非使用者明確解除預算限制。",
-  },
-  {
-    item: "單房差或高舒適自由行",
-    signal: "高波動",
-    decision: "獨立計算，不混入雙人舒適型基準。",
-  },
-];
-
-const importChecks = [
-  "每筆資料必須有來源網址、查核日期、幣別與欄位名稱。",
-  "外部資料匯入後先進 PENDING，不直接覆蓋正式結論。",
-  "票價、班表、飯店、補看規則需分別標記資料類型。",
-  "任何缺少 YZF 抵離時間的商品，不得自動進入強候選。",
-];
-
-const destinationTemplate = [
-  ["任務排序", "核心體驗、安全、體力、一般體驗"],
-  ["動態資料", "票價、班表、住宿、活動、天氣、緊急資訊"],
-  ["成本模型", "標價、必要費、匯率、保險、住宿差、備用金"],
-  ["決策門檻", "強候選、條件候選、備援、排除"],
 ];
 
 const auroraLevels = [
@@ -310,32 +186,32 @@ const comfortChoices = [
 const candidateOptions: CandidateOption[] = [
   {
     id: "group-2027-a",
-    title: "2027 A 級團體候選方向",
-    packageName: "待重查團體：2027 黃刀鎮 A級完整極光夜團",
+    title: "秋冬 A 級團體候選方向",
+    packageName: "待查商品：黃刀鎮 A級完整極光夜團",
     mode: "group",
     estimatedCost: 148000,
     auroraLevel: "A",
     riskLevel: 2,
     comfort: "balanced",
     verified: false,
-    dataState: "2027 待重查",
+    dataState: "商品待查",
     guideUrl: "#pending-2027-recheck",
     guideLabel: "前往 2027 重查清單",
-    guideNote: "此項目尚不是可下訂商品，需先補齊航班、飯店、YZF 抵離與補看規則。",
-    description: "抵達日不計，保留 3 個完整極光夜；適合把團體放第一順位，但要等商品與航班重新查核。",
-    nextStep: "等 2027 商品上架後，先查 YZF 抵離時間、補看規則、飯店與總費用。",
+    guideNote: "此項目尚不是可下訂商品，需先補齊旅行社網址、團費、航班、飯店、YZF 抵離與補看規則。",
+    description: "抵達日不計，保留 3 個完整極光夜；適合把團體放第一順位，9-11 月秋季團與冬季團都可納入。",
+    nextStep: "取得商品網址後，先查團費、YZF 抵離時間、補看規則、飯店與總費用。",
   },
   {
     id: "group-2027-b",
-    title: "2027 B 級團體價格優先方向",
-    packageName: "待重查團體：2027 黃刀鎮 B級價格優先團",
+    title: "秋冬 B 級團體價格優先方向",
+    packageName: "待查商品：黃刀鎮 B級價格優先團",
     mode: "group",
     estimatedCost: 138000,
     auroraLevel: "B",
     riskLevel: 2,
     comfort: "balanced",
     verified: false,
-    dataState: "2027 待重查",
+    dataState: "商品待查",
     guideUrl: "#pending-2027-recheck",
     guideLabel: "前往 2027 重查清單",
     guideNote: "此項目只能作價格備援，需確認是否真的具備 3 個完整極光夜。",
@@ -357,7 +233,7 @@ const candidateOptions: CandidateOption[] = [
     guideLabel: "查看 2026 團體樣本",
     guideNote: "此項目是歷史比較基準，不是 2027 可下訂商品。",
     description: "目前最乾淨的團體價格基準，低於 NT$150,000 且有緩衝，但不是 2027 可下訂商品。",
-    nextStep: "用來當 2027 團體報價的對照底線，不能直接下訂。",
+    nextStep: "用來當旅行團報價的對照底線，不能直接下訂。",
   },
   {
     id: "independent-comfort",
@@ -372,9 +248,9 @@ const candidateOptions: CandidateOption[] = [
     dataState: "規劃基準",
     guideUrl: "#pending-2027-recheck",
     guideLabel: "查看自由行查核項目",
-    guideNote: "需重查 2027 航班、住宿、極光活動與總費用後才能作正式比較。",
+    guideNote: "需重查航班、住宿、極光活動與總費用後才能作正式比較。",
     description: "保留完整極光夜與較高舒適度，是團體方案的主要比較基準。",
-    nextStep: "重查 2027 航班、飯店與極光活動後，與團體總費用並列表。",
+    nextStep: "重查航班、飯店與極光活動後，與團體總費用並列表。",
   },
   {
     id: "independent-basic",
@@ -499,7 +375,7 @@ function evaluateOption(option: CandidateOption, filters: PlannerFilters) {
     reasons.push("已有查核基準，可作比較。");
   } else if (filters.requireVerified) {
     score -= 30;
-    blockers.push("尚未完成 2027 正式重查。");
+    blockers.push("尚未完成商品與動態資料正式重查。");
   } else {
     score -= 4;
     cautions.push("屬於規劃或待重查資料，不可直接下訂。");
@@ -542,7 +418,7 @@ function evaluateOption(option: CandidateOption, filters: PlannerFilters) {
 }
 
 const pendingItems = [
-  "2027 團體商品完整航班與班號",
+  "旅行團商品完整航班與班號",
   "實際飯店名稱或同級條件",
   "YZF 抵達與離開時間",
   "極光補看、延誤與改目的地規則",
@@ -582,8 +458,7 @@ export default function Home() {
           <p className="eyebrow">Aurora Intelligence Project - Yellowknife 2027</p>
           <h1>黃刀鎮極光旅決策儀表板</h1>
           <p className="lead">
-            目前是 M2.1 市場實證與重查準備階段，不是最終下訂狀態。所有 2027
-            動態資料在正式付款前都必須重新查核。
+            目前是 M2.1 市場實證與重查準備階段，不是最終下訂狀態。所有旅行團、票價與班表資料在正式付款前都必須重新查核。
           </p>
           <div className="decisionBar" aria-label="決策狀態列">
             {decisionStatuses.map((item) => (
@@ -604,7 +479,32 @@ export default function Home() {
         </div>
         <div className="summaryItem">
           <span className="summaryLabel">查核基準</span>
-          <strong>查核基準日：2026-07-15；2027 正式下訂前需重查。</strong>
+          <strong>查核基準日：2026-07-15；正式下訂前需重查旅行團、票價與班表。</strong>
+        </div>
+      </section>
+
+      <section className="pageSection scopeSection">
+        <div className="sectionHeader tableHeader">
+          <div>
+            <p className="eyebrow">Search Scope</p>
+            <h2>極光旅遊團搜尋範圍</h2>
+            <p>
+              本網站不只看 2027 年 1-3 月；9 月、10 月、11 月的秋季極光團，以及冬季極光團，都應納入同一套比較。
+            </p>
+          </div>
+          <div className="sourceNote">
+            <strong>目前搜尋狀態</strong>
+            <span>靜態網站不會自動爬旅行社頁面；商品名稱、價格與網址需查核後匯入候選資料。</span>
+          </div>
+        </div>
+        <div className="scopeGrid">
+          {seasonScopeRows.map((item) => (
+            <article className="scopeCard" key={item.period}>
+              <span>{item.period}</span>
+              <h3>{item.label}</h3>
+              <p>{item.role}</p>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -731,7 +631,7 @@ export default function Home() {
               <span>只採已查核資料；未重查的 2027 方向自動降級。</span>
             </label>
 
-            <p className="simulatorHint">判定結果是規劃輔助，不會取代 2027 正式查核與下訂前確認。</p>
+            <p className="simulatorHint">判定結果是規劃輔助，不會取代正式查核與下訂前確認。</p>
           </aside>
 
           <div className="resultPanel" aria-live="polite">
@@ -840,176 +740,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="tableSection agingSection">
-        <div className="sectionHeader tableHeader">
-          <div>
-            <p className="eyebrow">Source Aging Spec</p>
-            <h2>來源老化機制準備規格</h2>
-            <p>
-              這是第一優先 Backlog 的準備稿，只定義標籤、觸發點與人工處理方式，不啟用自動化。
-            </p>
-          </div>
-          <div className="sourceNote">
-            <strong>目的</strong>
-            <span>避免過期票價、班表、飯店與條款被誤用</span>
-          </div>
-        </div>
-        <div className="tableWrap agingTableWrap">
-          <table className="agingTable">
-            <thead>
-              <tr>
-                <th>資料類型</th>
-                <th>老化標籤</th>
-                <th>重查觸發</th>
-                <th>目前處理方式</th>
-              </tr>
-            </thead>
-            <tbody>
-              {agingRules.map((rule) => (
-                <tr key={rule.dataType}>
-                  <td>
-                    <strong>{rule.dataType}</strong>
-                  </td>
-                  <td>{rule.agingLabel}</td>
-                  <td>{rule.trigger}</td>
-                  <td>{rule.handling}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section className="pageSection">
-        <div className="sectionHeader">
-          <p className="eyebrow">Activation Roadmap</p>
-          <h2>Backlog 啟用階段</h2>
-          <p>全部 Backlog 優化到位後，仍依階段啟用；現在停在 Stage 1 的準備狀態。</p>
-        </div>
-        <div className="stageGrid">
-          {activationStages.map((stage) => (
-            <article className="stageCard" key={stage.stage}>
-              <span>{stage.stage}</span>
-              <h3>{stage.title}</h3>
-              <p>{stage.description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="pageSection enabledSection">
-        <div className="sectionHeader">
-          <p className="eyebrow">Enabled Backlog Layer</p>
-          <h2>Backlog 功能啟用層</h2>
-          <p>
-            優化層完成後，已啟用本機判讀功能；外部即時資料源仍需正式接入與人工確認。
-          </p>
-        </div>
-        <div className="enabledGrid">
-          {enabledFeatures.map((feature) => (
-            <article className="enabledCard" key={feature.title}>
-              <span>{feature.status}</span>
-              <h3>{feature.title}</h3>
-              <p>{feature.detail}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="tableSection agingSection">
-        <div className="sectionHeader tableHeader">
-          <div>
-            <p className="eyebrow">Live Decision Guard</p>
-            <h2>來源老化監控</h2>
-            <p>此表已作為頁面判讀功能啟用，用來阻止過期或缺欄位資料被升級為結論。</p>
-          </div>
-          <div className="sourceNote">
-            <strong>功能狀態：已啟用</strong>
-            <span>本機規則判讀；未連接外部自動抓取</span>
-          </div>
-        </div>
-        <div className="tableWrap agingTableWrap">
-          <table className="agingTable">
-            <thead>
-              <tr>
-                <th>資料來源</th>
-                <th>最後查核</th>
-                <th>資料層級</th>
-                <th>目前狀態</th>
-                <th>下一步動作</th>
-              </tr>
-            </thead>
-            <tbody>
-              {agingMonitor.map((item) => (
-                <tr key={item.source}>
-                  <td>
-                    <strong>{item.source}</strong>
-                  </td>
-                  <td>{item.lastChecked}</td>
-                  <td>{item.freshness}</td>
-                  <td>{item.status}</td>
-                  <td>{item.action}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section className="contentGrid">
-        <article className="panel intelligencePanel">
-          <div className="sectionHeader">
-            <p className="eyebrow">Budget Intelligence</p>
-            <h2>預算情報判定</h2>
-            <p>以 NT$150,000 為硬上限，先啟用本機判定規則。</p>
-          </div>
-          <div className="ruleList">
-            {budgetIntelligence.map((rule) => (
-              <div className="ruleItem" key={rule.item}>
-                <strong>{rule.item}</strong>
-                <span>{rule.signal}</span>
-                <p>{rule.decision}</p>
-              </div>
-            ))}
-          </div>
-        </article>
-
-        <article className="panel importPanel">
-          <div className="sectionHeader">
-            <p className="eyebrow">Import Gate</p>
-            <h2>資料匯入檢核</h2>
-            <p>自動即時資料匯入先啟用檢核層，不直接抓取或覆蓋正式結論。</p>
-          </div>
-          <ul className="checkList">
-            {importChecks.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </article>
-      </section>
-
-      <section className="tableSection templateSection">
-        <div className="sectionHeader tableHeader">
-          <div>
-            <p className="eyebrow">Reusable Template</p>
-            <h2>跨目的地模板啟用</h2>
-            <p>只啟用模板抽象，不把其他目的地帶入目前黃刀鎮決策。</p>
-          </div>
-          <div className="sourceNote">
-            <strong>功能狀態：模板啟用</strong>
-            <span>目前仍以黃刀鎮專案為唯一決策面</span>
-          </div>
-        </div>
-        <div className="templateGrid">
-          {destinationTemplate.map(([label, body]) => (
-            <div className="templateItem" key={label}>
-              <strong>{label}</strong>
-              <span>{body}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
       <section className="contentGrid">
         <article className="panel warningPanel">
           <div className="sectionHeader">
@@ -1052,7 +782,7 @@ export default function Home() {
           </div>
           <div className="sourceNote">
             <strong>查核基準日：2026-07-15</strong>
-            <span>2027 正式下訂前需重查</span>
+            <span>正式下訂前需重查</span>
           </div>
         </div>
         <div className="tableWrap tourTableWrap">
@@ -1149,10 +879,10 @@ export default function Home() {
 
       <section className="closingPanel">
         <p className="eyebrow">Current Recommendation</p>
-        <h2>先穩住比較基準，再等待 2027 商品公開</h2>
+        <h2>先穩住比較基準，再匯入可查核的極光團商品</h2>
         <p>
           旅行團仍可作為低操作負擔方案，但目前看來自由行舒適型雙人仍是重要基準。
-          任何 2027 團體商品，只要缺少完整日期、團費、航班、YZF 抵離時間、飯店、
+          任何極光旅行團商品，只要缺少完整日期、團費、航班、YZF 抵離時間、飯店、
           極光補看或延誤條款，就先標示為 PENDING_2027_RECHECK。
         </p>
       </section>
