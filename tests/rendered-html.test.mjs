@@ -35,9 +35,9 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /決策狀態列/);
   assert.match(html, /A\/B 極光夜數視覺標籤/);
   assert.match(html, /PENDING_2027_RECHECK/);
-  assert.match(html, /Backlog 處理順序/);
+  assert.doesNotMatch(html, /Backlog 處理順序/);
+  assert.doesNotMatch(html, /第一優先；準備啟用/);
   assert.match(html, /來源老化機制/);
-  assert.match(html, /第一優先；準備啟用/);
   assert.match(html, /Backlog 功能啟用層/);
   assert.match(html, /來源老化監控/);
   assert.match(html, /預算情報判定/);
@@ -46,7 +46,10 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /外部即時資料源仍需正式接入/);
   assert.match(html, /互動決策模擬器/);
   assert.match(html, /預算上限/);
+  assert.match(html, /NT\$100,000 - NT\$400,000/);
   assert.match(html, /目前最適合/);
+  assert.match(html, /待重查團體：2027 黃刀鎮 A級完整極光夜團/);
+  assert.match(html, /前往 2027 重查清單/);
   assert.match(html, /適合選項排序/);
   assert.match(html, /查核基準日：2026-07-15/);
   assert.match(html, /手機版團體樣本卡片/);
@@ -63,7 +66,6 @@ test("keeps the finished site free of starter preview wiring", async () => {
 
   assert.match(page, /decisionStatuses/);
   assert.match(page, /actionCards/);
-  assert.match(page, /backlogRows/);
   assert.match(page, /enabledFeatures/);
   assert.match(page, /agingMonitor/);
   assert.match(page, /budgetIntelligence/);

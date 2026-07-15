@@ -362,6 +362,13 @@ h3 {
   font-weight: 800;
 }
 
+.rangeHint {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
 .controlTitle {
   color: #173331;
   font-weight: 900;
@@ -472,7 +479,7 @@ h3 {
   background: #fff0ee;
 }
 
-.topRecommendation span {
+.topRecommendation .recommendationKicker {
   display: block;
   color: var(--muted);
   font-size: 0.84rem;
@@ -490,6 +497,47 @@ h3 {
   margin: 10px 0 0;
   color: #2e4742;
   line-height: 1.65;
+}
+
+.recommendationMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.recommendationMeta span {
+  padding: 5px 9px;
+  border: 1px solid rgba(22, 59, 56, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #24413d;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.recommendationAction {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.recommendationAction a {
+  width: fit-content;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 14px;
+  border-radius: 8px;
+  background: #163b38;
+  color: #fff;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.recommendationAction small {
+  color: #3c5550;
+  line-height: 1.45;
 }
 
 .resultToolbar {

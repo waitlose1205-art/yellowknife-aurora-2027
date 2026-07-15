@@ -32,41 +32,6 @@ const actionCards = [
   },
 ];
 
-const backlogRows = [
-  {
-    item: "來源老化機制",
-    purpose: "替票價、班表、飯店、商品條款標示查核日、有效期與重查觸發，避免過期資訊被誤用。",
-    condition: "當航班與商品進入即時重查，且資料表已具備查核日期、來源與重查欄位後啟用。",
-    status: "第一優先；準備啟用",
-    next: "先定義老化規則與標籤，不做自動化功能。",
-    rankClass: "first",
-  },
-  {
-    item: "進階預算情報",
-    purpose: "納入匯率、必要費、保險、行李、YVR 住宿與單房差，判斷預算緩衝是否足夠。",
-    condition: "來源老化機制穩定後，且至少已有一組團體與自由行價格完成重查。",
-    status: "第二優先；維持凍結",
-    next: "先保留成本欄位與判讀口徑，不做自動計算。",
-    rankClass: "second",
-  },
-  {
-    item: "自動即時資料匯入",
-    purpose: "降低人工複製票價、班表與商品資料的錯誤風險。",
-    condition: "官方來源結構穩定，且來源老化規則與資料欄位都已確定。",
-    status: "第三優先；維持凍結",
-    next: "先用手動重查模板收斂欄位，再評估匯入方式。",
-    rankClass: "third",
-  },
-  {
-    item: "跨目的地通用引擎",
-    purpose: "把黃刀鎮專案方法擴展到其他目的地或其他旅遊決策。",
-    condition: "黃刀鎮專案完成下訂決策，且 M2.1 到後續決策流程已驗證可複用。",
-    status: "最後；維持凍結",
-    next: "只保留概念，不投入實作。",
-    rankClass: "frozen",
-  },
-];
-
 const agingRules = [
   {
     dataType: "航班票價與可售艙等",
@@ -287,6 +252,7 @@ type PlannerFilters = {
 type CandidateOption = {
   id: string;
   title: string;
+  packageName: string;
   mode: Exclude<TravelMode, "either">;
   estimatedCost: number;
   auroraLevel: Exclude<AuroraTarget, "either">;
@@ -294,8 +260,17 @@ type CandidateOption = {
   comfort: Exclude<ComfortLevel, "any">;
   verified: boolean;
   dataState: string;
+  guideUrl: string;
+  guideLabel: string;
+  guideNote: string;
   description: string;
   nextStep: string;
+};
+
+const budgetRange = {
+  min: 100000,
+  max: 400000,
+  step: 10000,
 };
 
 const defaultPlanner: PlannerFilters = {
@@ -336,6 +311,7 @@ const candidateOptions: CandidateOption[] = [
   {
     id: "group-2027-a",
     title: "2027 A 級團體候選方向",
+    packageName: "待重查團體：2027 黃刀鎮 A級完整極光夜團",
     mode: "group",
     estimatedCost: 148000,
     auroraLevel: "A",
@@ -343,12 +319,16 @@ const candidateOptions: CandidateOption[] = [
     comfort: "balanced",
     verified: false,
     dataState: "2027 待重查",
+    guideUrl: "#pending-2027-recheck",
+    guideLabel: "前往 2027 重查清單",
+    guideNote: "此項目尚不是可下訂商品，需先補齊航班、飯店、YZF 抵離與補看規則。",
     description: "抵達日不計，保留 3 個完整極光夜；適合把團體放第一順位，但要等商品與航班重新查核。",
     nextStep: "等 2027 商品上架後，先查 YZF 抵離時間、補看規則、飯店與總費用。",
   },
   {
     id: "group-2027-b",
     title: "2027 B 級團體價格優先方向",
+    packageName: "待重查團體：2027 黃刀鎮 B級價格優先團",
     mode: "group",
     estimatedCost: 138000,
     auroraLevel: "B",
@@ -356,12 +336,16 @@ const candidateOptions: CandidateOption[] = [
     comfort: "balanced",
     verified: false,
     dataState: "2027 待重查",
+    guideUrl: "#pending-2027-recheck",
+    guideLabel: "前往 2027 重查清單",
+    guideNote: "此項目只能作價格備援，需確認是否真的具備 3 個完整極光夜。",
     description: "以 3 晚含抵達日為前提，價格較容易留出緩衝，但極光夜數可能被高估。",
     nextStep: "只作價格備援；若沒有完整 3 個極光夜，不應升為強候選。",
   },
   {
     id: "group-2026-march",
     title: "2026 三月低價團體樣本",
+    packageName: "歷史樣本：UWP26319BR10TB 三月低價團",
     mode: "group",
     estimatedCost: 142451,
     auroraLevel: "B",
@@ -369,12 +353,16 @@ const candidateOptions: CandidateOption[] = [
     comfort: "balanced",
     verified: true,
     dataState: "歷史基準",
+    guideUrl: "#historical-baseline",
+    guideLabel: "查看 2026 團體樣本",
+    guideNote: "此項目是歷史比較基準，不是 2027 可下訂商品。",
     description: "目前最乾淨的團體價格基準，低於 NT$150,000 且有緩衝，但不是 2027 可下訂商品。",
     nextStep: "用來當 2027 團體報價的對照底線，不能直接下訂。",
   },
   {
     id: "independent-comfort",
     title: "自由行舒適型雙人基準",
+    packageName: "自由行方案：雙人舒適型 3 完整極光夜",
     mode: "independent",
     estimatedCost: 148000,
     auroraLevel: "A",
@@ -382,12 +370,16 @@ const candidateOptions: CandidateOption[] = [
     comfort: "comfort",
     verified: false,
     dataState: "規劃基準",
+    guideUrl: "#pending-2027-recheck",
+    guideLabel: "查看自由行查核項目",
+    guideNote: "需重查 2027 航班、住宿、極光活動與總費用後才能作正式比較。",
     description: "保留完整極光夜與較高舒適度，是團體方案的主要比較基準。",
     nextStep: "重查 2027 航班、飯店與極光活動後，與團體總費用並列表。",
   },
   {
     id: "independent-basic",
     title: "自由行節制型備援",
+    packageName: "自由行方案：節制型 3 完整極光夜備援",
     mode: "independent",
     estimatedCost: 132000,
     auroraLevel: "A",
@@ -395,12 +387,16 @@ const candidateOptions: CandidateOption[] = [
     comfort: "basic",
     verified: false,
     dataState: "規劃基準",
+    guideUrl: "#decision-gates",
+    guideLabel: "查看決策門檻",
+    guideNote: "此項目以降低成本為主，但會提高轉機、住宿與現地安排負擔。",
     description: "最容易壓低總額，但需要承擔更多轉機、飯店與現地安排操作。",
     nextStep: "只有在願意提高操作負擔時，才納入備援池。",
   },
   {
     id: "independent-solo",
     title: "自由行單人舒適型",
+    packageName: "自由行方案：單人舒適型上限警戒",
     mode: "independent",
     estimatedCost: 175000,
     auroraLevel: "A",
@@ -408,6 +404,9 @@ const candidateOptions: CandidateOption[] = [
     comfort: "comfort",
     verified: false,
     dataState: "高波動估算",
+    guideUrl: "#decision-gates",
+    guideLabel: "查看排除門檻",
+    guideNote: "此項目主要用來提醒單房差與舒適度成本，不作目前主推薦。",
     description: "單房差與舒適度會明顯推高成本，適合當上限警戒，不適合作為目前主方案。",
     nextStep: "除非預算提高或找到明確降價來源，否則維持排除。",
   },
@@ -421,6 +420,10 @@ const currencyFormatter = new Intl.NumberFormat("zh-TW", {
 
 function formatCurrency(value: number) {
   return currencyFormatter.format(value);
+}
+
+function clampBudget(value: number) {
+  return Math.min(budgetRange.max, Math.max(budgetRange.min, value));
 }
 
 function getModeLabel(mode: CandidateOption["mode"]) {
@@ -621,27 +624,31 @@ export default function Home() {
               </div>
               <input
                 aria-label="預算上限"
-                max="190000"
-                min="120000"
+                max={budgetRange.max}
+                min={budgetRange.min}
                 onChange={(event) =>
-                  setFilters((current) => ({ ...current, budget: Number(event.target.value) }))
+                  setFilters((current) => ({ ...current, budget: clampBudget(Number(event.target.value)) }))
                 }
-                step="5000"
+                step={budgetRange.step}
                 type="range"
                 value={filters.budget}
               />
               <input
                 aria-label="直接輸入預算"
                 className="budgetNumber"
-                max="250000"
-                min="100000"
+                max={budgetRange.max}
+                min={budgetRange.min}
                 onChange={(event) =>
-                  setFilters((current) => ({ ...current, budget: Number(event.target.value) || current.budget }))
+                  setFilters((current) => ({
+                    ...current,
+                    budget: clampBudget(Number(event.target.value) || current.budget),
+                  }))
                 }
-                step="1000"
+                step={budgetRange.step}
                 type="number"
                 value={filters.budget}
               />
+              <span className="rangeHint">可選區間：NT$100,000 - NT$400,000</span>
             </div>
 
             <div className="controlGroup">
@@ -729,11 +736,20 @@ export default function Home() {
 
           <div className="resultPanel" aria-live="polite">
             <div className={`topRecommendation ${bestOption.status}`}>
-              <span>目前最適合</span>
-              <strong>{bestOption.option.title}</strong>
+              <span className="recommendationKicker">目前最適合</span>
+              <strong>{bestOption.option.packageName}</strong>
+              <div className="recommendationMeta">
+                <span>{bestOption.option.title}</span>
+                <span>{bestOption.option.dataState}</span>
+                <span>{getAuroraLevelLabel(bestOption.option.auroraLevel)}</span>
+              </div>
               <p>
                 {bestOption.statusLabel}；分數 {bestOption.score}。{bestOption.option.description}
               </p>
+              <div className="recommendationAction">
+                <a href={bestOption.option.guideUrl}>{bestOption.option.guideLabel}</a>
+                <small>{bestOption.option.guideNote}</small>
+              </div>
             </div>
 
             <div className="resultToolbar">
@@ -821,53 +837,6 @@ export default function Home() {
               </p>
             </article>
           ))}
-        </div>
-      </section>
-
-      <section className="tableSection backlogSection">
-        <div className="sectionHeader tableHeader">
-          <div>
-            <p className="eyebrow">Frozen Backlog</p>
-            <h2>Backlog 處理順序</h2>
-            <p>
-              Backlog 目前不直接全部啟用；頁面只呈現如何著手與何時啟用。
-            </p>
-          </div>
-          <div className="sourceNote">
-            <strong>凍結原則維持</strong>
-            <span>第一個可準備啟用：知識層級／來源自動老化機制</span>
-          </div>
-        </div>
-        <p className="backlogNote">
-          目前只先準備「啟用條件」與「下一步」，不展開實作。來源老化機制優先，是因為它最能避免過期票價、班表、飯店資訊被誤用。
-        </p>
-        <div className="tableWrap backlogTableWrap">
-          <table className="backlogTable">
-            <thead>
-              <tr>
-                <th>Backlog 項目</th>
-                <th>目的</th>
-                <th>啟用條件</th>
-                <th>目前狀態</th>
-                <th>下一步</th>
-              </tr>
-            </thead>
-            <tbody>
-              {backlogRows.map((row) => (
-                <tr key={row.item}>
-                  <td>
-                    <strong>{row.item}</strong>
-                  </td>
-                  <td>{row.purpose}</td>
-                  <td>{row.condition}</td>
-                  <td>
-                    <span className={`backlogRank ${row.rankClass}`}>{row.status}</span>
-                  </td>
-                  <td>{row.next}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       </section>
 
@@ -1072,7 +1041,7 @@ export default function Home() {
         </article>
       </section>
 
-      <section className="tableSection">
+      <section className="tableSection" id="historical-baseline">
         <div className="sectionHeader tableHeader">
           <div>
             <p className="eyebrow">Historical Baseline</p>
@@ -1149,7 +1118,7 @@ export default function Home() {
       </section>
 
       <section className="contentGrid">
-        <article className="panel pendingPanel">
+        <article className="panel pendingPanel" id="pending-2027-recheck">
           <div className="sectionHeader">
             <p className="eyebrow">PENDING_2027_RECHECK</p>
             <h2>尚不可下結論</h2>
@@ -1162,7 +1131,7 @@ export default function Home() {
           </ul>
         </article>
 
-        <article className="panel">
+        <article className="panel" id="decision-gates">
           <div className="sectionHeader">
             <p className="eyebrow">Decision Gates</p>
             <h2>決策門檻區</h2>

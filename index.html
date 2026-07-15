@@ -340,6 +340,13 @@
         font-weight: 800;
       }
 
+      .rangeHint {
+        color: var(--muted);
+        font-size: 0.84rem;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+
       .controlTitle {
         color: #173331;
         font-weight: 900;
@@ -442,7 +449,7 @@
         background: #fff0ee;
       }
 
-      .topRecommendation span {
+      .topRecommendation .recommendationKicker {
         display: block;
         color: var(--muted);
         font-size: 0.84rem;
@@ -460,6 +467,47 @@
         margin: 10px 0 0;
         color: #2e4742;
         line-height: 1.65;
+      }
+
+      .recommendationMeta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .recommendationMeta span {
+        padding: 5px 9px;
+        border: 1px solid rgba(22, 59, 56, 0.14);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        color: #24413d;
+        font-size: 0.8rem;
+        font-weight: 900;
+      }
+
+      .recommendationAction {
+        display: grid;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .recommendationAction a {
+        width: fit-content;
+        min-height: 40px;
+        display: inline-flex;
+        align-items: center;
+        padding: 9px 14px;
+        border-radius: 8px;
+        background: #163b38;
+        color: #fff;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .recommendationAction small {
+        color: #3c5550;
+        line-height: 1.45;
       }
 
       .resultToolbar {
@@ -1125,8 +1173,9 @@
                 <span>預算上限</span>
                 <strong id="budgetLabel">NT$150,000</strong>
               </div>
-              <input aria-label="預算上限" id="budgetRange" max="190000" min="120000" step="5000" type="range" value="150000" />
-              <input aria-label="直接輸入預算" class="budgetNumber" id="budgetNumber" max="250000" min="100000" step="1000" type="number" value="150000" />
+              <input aria-label="預算上限" id="budgetRange" max="400000" min="100000" step="10000" type="range" value="150000" />
+              <input aria-label="直接輸入預算" class="budgetNumber" id="budgetNumber" max="400000" min="100000" step="10000" type="number" value="150000" />
+              <span class="rangeHint">可選區間：NT$100,000 - NT$400,000</span>
             </div>
 
             <div class="controlGroup">
@@ -1224,66 +1273,6 @@
             <span class="miniStatus">規則完成</span>
             <p><strong>完成標準：</strong>新商品必須通過日期、總費用、航班、飯店、補看與延誤條款檢查。</p>
           </article>
-        </div>
-      </section>
-
-      <section class="tableSection backlogSection">
-        <div class="sectionHeader tableHeader">
-          <div>
-            <p class="eyebrow">Frozen Backlog</p>
-            <h2>Backlog 處理順序</h2>
-            <p>Backlog 目前不直接全部啟用；頁面只呈現如何著手與何時啟用。</p>
-          </div>
-          <div class="sourceNote">
-            <strong>凍結原則維持</strong>
-            <span>第一個可準備啟用：知識層級／來源自動老化機制</span>
-          </div>
-        </div>
-        <p class="backlogNote">
-          目前只先準備「啟用條件」與「下一步」，不展開實作。來源老化機制優先，是因為它最能避免過期票價、班表、飯店資訊被誤用。
-        </p>
-        <div class="tableWrap">
-          <table class="backlogTable">
-            <thead>
-              <tr>
-                <th>Backlog 項目</th>
-                <th>目的</th>
-                <th>啟用條件</th>
-                <th>目前狀態</th>
-                <th>下一步</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>來源老化機制</strong></td>
-                <td>替票價、班表、飯店、商品條款標示查核日、有效期與重查觸發，避免過期資訊被誤用。</td>
-                <td>當航班與商品進入即時重查，且資料表已具備查核日期、來源與重查欄位後啟用。</td>
-                <td><span class="backlogRank first">第一優先；準備啟用</span></td>
-                <td>先定義老化規則與標籤，不做自動化功能。</td>
-              </tr>
-              <tr>
-                <td><strong>進階預算情報</strong></td>
-                <td>納入匯率、必要費、保險、行李、YVR 住宿與單房差，判斷預算緩衝是否足夠。</td>
-                <td>來源老化機制穩定後，且至少已有一組團體與自由行價格完成重查。</td>
-                <td><span class="backlogRank second">第二優先；維持凍結</span></td>
-                <td>先保留成本欄位與判讀口徑，不做自動計算。</td>
-              </tr>
-              <tr>
-                <td><strong>自動即時資料匯入</strong></td>
-                <td>降低人工複製票價、班表與商品資料的錯誤風險。</td>
-                <td>官方來源結構穩定，且來源老化規則與資料欄位都已確定。</td>
-                <td><span class="backlogRank third">第三優先；維持凍結</span></td>
-                <td>先用手動重查模板收斂欄位，再評估匯入方式。</td>
-              </tr>
-              <tr>
-                <td><strong>跨目的地通用引擎</strong></td>
-                <td>把黃刀鎮專案方法擴展到其他目的地或其他旅遊決策。</td>
-                <td>黃刀鎮專案完成下訂決策，且 M2.1 到後續決策流程已驗證可複用。</td>
-                <td><span class="backlogRank frozen">最後；維持凍結</span></td>
-                <td>只保留概念，不投入實作。</td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </section>
 
@@ -1561,7 +1550,7 @@
         </article>
       </section>
 
-      <section class="tableSection">
+      <section class="tableSection" id="historical-baseline">
         <div class="sectionHeader tableHeader">
           <div>
             <p class="eyebrow">Historical Baseline</p>
@@ -1668,7 +1657,7 @@
       </section>
 
       <section class="contentGrid">
-        <article class="panel">
+        <article class="panel" id="pending-2027-recheck">
           <div class="sectionHeader">
             <p class="eyebrow">PENDING_2027_RECHECK</p>
             <h2>尚不可下結論</h2>
@@ -1684,7 +1673,7 @@
           </ul>
         </article>
 
-        <article class="panel">
+        <article class="panel" id="decision-gates">
           <div class="sectionHeader">
             <p class="eyebrow">Decision Gates</p>
             <h2>決策門檻區</h2>
@@ -1718,10 +1707,17 @@
         requireVerified: false,
       };
 
+      const budgetRange = {
+        min: 100000,
+        max: 400000,
+        step: 10000,
+      };
+
       const staticCandidates = [
         {
           id: "group-2027-a",
           title: "2027 A 級團體候選方向",
+          packageName: "待重查團體：2027 黃刀鎮 A級完整極光夜團",
           mode: "group",
           estimatedCost: 148000,
           auroraLevel: "A",
@@ -1729,12 +1725,16 @@
           comfort: "balanced",
           verified: false,
           dataState: "2027 待重查",
+          guideUrl: "#pending-2027-recheck",
+          guideLabel: "前往 2027 重查清單",
+          guideNote: "此項目尚不是可下訂商品，需先補齊航班、飯店、YZF 抵離與補看規則。",
           description: "抵達日不計，保留 3 個完整極光夜；適合把團體放第一順位，但要等商品與航班重新查核。",
           nextStep: "等 2027 商品上架後，先查 YZF 抵離時間、補看規則、飯店與總費用。",
         },
         {
           id: "group-2027-b",
           title: "2027 B 級團體價格優先方向",
+          packageName: "待重查團體：2027 黃刀鎮 B級價格優先團",
           mode: "group",
           estimatedCost: 138000,
           auroraLevel: "B",
@@ -1742,12 +1742,16 @@
           comfort: "balanced",
           verified: false,
           dataState: "2027 待重查",
+          guideUrl: "#pending-2027-recheck",
+          guideLabel: "前往 2027 重查清單",
+          guideNote: "此項目只能作價格備援，需確認是否真的具備 3 個完整極光夜。",
           description: "以 3 晚含抵達日為前提，價格較容易留出緩衝，但極光夜數可能被高估。",
           nextStep: "只作價格備援；若沒有完整 3 個極光夜，不應升為強候選。",
         },
         {
           id: "group-2026-march",
           title: "2026 三月低價團體樣本",
+          packageName: "歷史樣本：UWP26319BR10TB 三月低價團",
           mode: "group",
           estimatedCost: 142451,
           auroraLevel: "B",
@@ -1755,12 +1759,16 @@
           comfort: "balanced",
           verified: true,
           dataState: "歷史基準",
+          guideUrl: "#historical-baseline",
+          guideLabel: "查看 2026 團體樣本",
+          guideNote: "此項目是歷史比較基準，不是 2027 可下訂商品。",
           description: "目前最乾淨的團體價格基準，低於 NT$150,000 且有緩衝，但不是 2027 可下訂商品。",
           nextStep: "用來當 2027 團體報價的對照底線，不能直接下訂。",
         },
         {
           id: "independent-comfort",
           title: "自由行舒適型雙人基準",
+          packageName: "自由行方案：雙人舒適型 3 完整極光夜",
           mode: "independent",
           estimatedCost: 148000,
           auroraLevel: "A",
@@ -1768,12 +1776,16 @@
           comfort: "comfort",
           verified: false,
           dataState: "規劃基準",
+          guideUrl: "#pending-2027-recheck",
+          guideLabel: "查看自由行查核項目",
+          guideNote: "需重查 2027 航班、住宿、極光活動與總費用後才能作正式比較。",
           description: "保留完整極光夜與較高舒適度，是團體方案的主要比較基準。",
           nextStep: "重查 2027 航班、飯店與極光活動後，與團體總費用並列表。",
         },
         {
           id: "independent-basic",
           title: "自由行節制型備援",
+          packageName: "自由行方案：節制型 3 完整極光夜備援",
           mode: "independent",
           estimatedCost: 132000,
           auroraLevel: "A",
@@ -1781,12 +1793,16 @@
           comfort: "basic",
           verified: false,
           dataState: "規劃基準",
+          guideUrl: "#decision-gates",
+          guideLabel: "查看決策門檻",
+          guideNote: "此項目以降低成本為主，但會提高轉機、住宿與現地安排負擔。",
           description: "最容易壓低總額，但需要承擔更多轉機、飯店與現地安排操作。",
           nextStep: "只有在願意提高操作負擔時，才納入備援池。",
         },
         {
           id: "independent-solo",
           title: "自由行單人舒適型",
+          packageName: "自由行方案：單人舒適型上限警戒",
           mode: "independent",
           estimatedCost: 175000,
           auroraLevel: "A",
@@ -1794,6 +1810,9 @@
           comfort: "comfort",
           verified: false,
           dataState: "高波動估算",
+          guideUrl: "#decision-gates",
+          guideLabel: "查看排除門檻",
+          guideNote: "此項目主要用來提醒單房差與舒適度成本，不作目前主推薦。",
           description: "單房差與舒適度會明顯推高成本，適合當上限警戒，不適合作為目前主方案。",
           nextStep: "除非預算提高或找到明確降價來源，否則維持排除。",
         },
@@ -1809,6 +1828,7 @@
       const getModeLabel = (mode) => (mode === "group" ? "團體" : "自由行");
       const getComfortLabel = (level) => (level === "basic" ? "節制" : level === "comfort" ? "舒適" : "平衡");
       const getAuroraLevelLabel = (level) => (level === "A" ? "A級：3 個完整極光夜" : "B級：3 晚含抵達日");
+      const clampBudget = (value) => Math.min(budgetRange.max, Math.max(budgetRange.min, value));
 
       function evaluateStaticOption(option) {
         let score = 40;
@@ -1929,9 +1949,18 @@
         const top = document.getElementById("topRecommendation");
         top.className = `topRecommendation ${best.status}`;
         top.innerHTML = `
-          <span>目前最適合</span>
-          <strong>${best.option.title}</strong>
+          <span class="recommendationKicker">目前最適合</span>
+          <strong>${best.option.packageName}</strong>
+          <div class="recommendationMeta">
+            <span>${best.option.title}</span>
+            <span>${best.option.dataState}</span>
+            <span>${getAuroraLevelLabel(best.option.auroraLevel)}</span>
+          </div>
           <p>${best.statusLabel}；分數 ${best.score}。${best.option.description}</p>
+          <div class="recommendationAction">
+            <a href="${best.option.guideUrl}">${best.option.guideLabel}</a>
+            <small>${best.option.guideNote}</small>
+          </div>
         `;
 
         document.getElementById("resultCounts").innerHTML = `
@@ -1984,12 +2013,12 @@
       });
 
       document.getElementById("budgetRange").addEventListener("input", (event) => {
-        plannerState.budget = Number(event.target.value);
+        plannerState.budget = clampBudget(Number(event.target.value));
         renderSimulator();
       });
 
       document.getElementById("budgetNumber").addEventListener("input", (event) => {
-        plannerState.budget = Number(event.target.value) || plannerState.budget;
+        plannerState.budget = clampBudget(Number(event.target.value) || plannerState.budget);
         renderSimulator();
       });
 
