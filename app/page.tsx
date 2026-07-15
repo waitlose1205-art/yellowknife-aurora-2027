@@ -551,12 +551,10 @@ const candidateOptions: CandidateOption[] = [
 
 const currencyFormatter = new Intl.NumberFormat("zh-TW", {
   maximumFractionDigits: 0,
-  style: "currency",
-  currency: "TWD",
 });
 
 function formatCurrency(value: number) {
-  return currencyFormatter.format(value);
+  return `NT$${currencyFormatter.format(value)}`;
 }
 
 function clampBudget(value: number) {
@@ -606,6 +604,51 @@ function getBudgetStatus(option: CandidateOption, budget: number) {
     className: "over",
     label: `超過目前預算 ${formatCurrency(Math.abs(delta))}`,
   };
+}
+
+function getDirectionIdForOption(option: CandidateOption): DirectionCategoryId {
+  if (option.mode === "independent") {
+    return "independent";
+  }
+
+  return option.auroraLevel === "A" ? "group-a" : "group-b";
+}
+
+function isSamePlannerFilters(first: PlannerFilters, second: PlannerFilters) {
+  return (
+    first.budget === second.budget &&
+    first.preferredMode === second.preferredMode &&
+    first.auroraTarget === second.auroraTarget &&
+    first.riskTolerance === second.riskTolerance &&
+    first.comfort === second.comfort &&
+    first.requireVerified === second.requireVerified
+  );
+}
+
+function rankDirectionItems(
+  items: (typeof directionCategories)[number]["items"],
+  evaluatedById: Map<string, ReturnType<typeof evaluateOption>>,
+) {
+  const statusOrder: Record<ResultStatus, number> = { strong: 0, conditional: 1, backup: 2, exclude: 3 };
+
+  return [...items].sort((first, second) => {
+    const firstResult = "candidateId" in first ? evaluatedById.get(first.candidateId) : null;
+    const secondResult = "candidateId" in second ? evaluatedById.get(second.candidateId) : null;
+
+    if (firstResult && secondResult) {
+      return statusOrder[firstResult.status] - statusOrder[secondResult.status] || secondResult.score - firstResult.score;
+    }
+
+    if (firstResult) {
+      return -1;
+    }
+
+    if (secondResult) {
+      return 1;
+    }
+
+    return 0;
+  });
 }
 
 function getDirectionCandidate(candidateId?: string) {
@@ -751,16 +794,20 @@ const pendingItems = [
   "行李、選位、分票與直掛風險",
 ];
 
-const gates = [
-  ["強候選", "低於 NT$150,000，YZF 夜數清楚，並接近 A 級三個完整極光夜。"],
-  ["條件候選", "價格可接受，但需要明確補看、延誤或 YVR 過夜方案。"],
-  ["備援", "價格、體力或證據信心不足，但仍符合基本安全與轉機上限。"],
-  ["排除", "超預算、轉機過度、核心極光夜無保護，或使用未知 2027 細節作賣點。"],
-];
+function getDecisionGates(budget: number) {
+  return [
+    ["強候選", `低於 ${formatCurrency(budget)}，YZF 夜數清楚，並接近 A 級三個完整極光夜。`],
+    ["條件候選", `價格接近 ${formatCurrency(budget)}，但需要明確補看、延誤或 YVR 過夜方案。`],
+    ["備援", `價格、體力或證據信心不足，但仍未明顯超過 ${formatCurrency(budget)} 的可比較上限。`],
+    ["排除", `超過 ${formatCurrency(budget)}、轉機過度、核心極光夜無保護，或使用未知 2027 細節作賣點。`],
+  ];
+}
 
 export default function Home() {
   const [filters, setFilters] = useState<PlannerFilters>(defaultPlanner);
-  const [selectedDirectionId, setSelectedDirectionId] = useState<DirectionCategoryId>("group-a");
+  const [draftFilters, setDraftFilters] = useState<PlannerFilters>(defaultPlanner);
+  const [selectedDirectionId, setSelectedDirectionId] = useState<DirectionCategoryId | null>(null);
+  const hasPendingChanges = !isSamePlannerFilters(draftFilters, filters);
 
   const evaluatedOptions = useMemo(
     () =>
@@ -776,9 +823,20 @@ export default function Home() {
   const bestOption = evaluatedOptions.find((result) => result.status !== "exclude") ?? evaluatedOptions[0];
   const activeCount = evaluatedOptions.filter((result) => result.status !== "exclude").length;
   const evaluatedById = new Map(evaluatedOptions.map((result) => [result.option.id, result]));
+  const syncedDirectionId = getDirectionIdForOption(bestOption.option);
+  const activeDirectionId = selectedDirectionId ?? syncedDirectionId;
   const selectedDirection =
-    directionCategories.find((category) => category.id === selectedDirectionId) ?? directionCategories[0];
+    directionCategories.find((category) => category.id === activeDirectionId) ?? directionCategories[0];
+  const rankedDirectionItems = rankDirectionItems(selectedDirection.items, evaluatedById);
   const bestSourceStatus = getSourceStatus(bestOption.option);
+  const decisionGates = getDecisionGates(filters.budget);
+  const applyPlannerFilters = () => {
+    setFilters(draftFilters);
+    setSelectedDirectionId(null);
+  };
+  const updateDraftFilters = (updater: (current: PlannerFilters) => PlannerFilters) => {
+    setDraftFilters(updater);
+  };
 
   return (
     <main>
@@ -886,26 +944,205 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="pageSection simulatorSection" id="decision-simulator">
+        <div className="sectionHeader">
+          <p className="eyebrow">Decision Options</p>
+          <h2>決策選項列表</h2>
+          <p>先設定預算、旅行型態、極光夜數與風險容忍度；按下確認並查核後，才更新推薦與候選方向。</p>
+        </div>
+
+        <div className="simulatorShell">
+          <aside className="controlPanel" aria-label="可調整條件">
+            <div className="controlGroup">
+              <div className="controlLabel">
+                <span>預算上限</span>
+                <strong>{formatCurrency(draftFilters.budget)}</strong>
+              </div>
+              <input
+                aria-label="預算上限"
+                max={budgetRange.max}
+                min={budgetRange.min}
+                onChange={(event) =>
+                  updateDraftFilters((current) => ({ ...current, budget: clampBudget(Number(event.target.value)) }))
+                }
+                step={budgetRange.step}
+                type="range"
+                value={draftFilters.budget}
+              />
+              <input
+                aria-label="直接輸入預算"
+                className="budgetNumber"
+                max={budgetRange.max}
+                min={budgetRange.min}
+                onChange={(event) =>
+                  updateDraftFilters((current) => ({
+                    ...current,
+                    budget: clampBudget(Number(event.target.value) || current.budget),
+                  }))
+                }
+                step={budgetRange.step}
+                type="number"
+                value={draftFilters.budget}
+              />
+              <span className="rangeHint">可選區間：NT$100,000 - NT$400,000</span>
+            </div>
+
+            <div className="controlGroup">
+              <span className="controlTitle">旅行型態</span>
+              <div className="segmentedControl">
+                {modeChoices.map((choice) => (
+                  <button
+                    aria-pressed={draftFilters.preferredMode === choice.value}
+                    className={draftFilters.preferredMode === choice.value ? "active" : ""}
+                    key={choice.value}
+                    onClick={() => updateDraftFilters((current) => ({ ...current, preferredMode: choice.value }))}
+                    type="button"
+                  >
+                    {choice.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="controlGroup">
+              <span className="controlTitle">最低極光夜數</span>
+              <div className="segmentedControl auroraControl">
+                {auroraChoices.map((choice) => (
+                  <button
+                    aria-pressed={draftFilters.auroraTarget === choice.value}
+                    className={draftFilters.auroraTarget === choice.value ? "active" : ""}
+                    key={choice.value}
+                    onClick={() => updateDraftFilters((current) => ({ ...current, auroraTarget: choice.value }))}
+                    type="button"
+                  >
+                    <span>{choice.label}</span>
+                    <small>{choice.note}</small>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="controlGroup">
+              <span className="controlTitle">風險容忍度</span>
+              <div className="segmentedControl">
+                {riskChoices.map((choice) => (
+                  <button
+                    aria-pressed={draftFilters.riskTolerance === choice.value}
+                    className={draftFilters.riskTolerance === choice.value ? "active" : ""}
+                    key={choice.value}
+                    onClick={() => updateDraftFilters((current) => ({ ...current, riskTolerance: choice.value }))}
+                    type="button"
+                  >
+                    {choice.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="controlGroup">
+              <span className="controlTitle">舒適程度</span>
+              <div className="segmentedControl comfortControl">
+                {comfortChoices.map((choice) => (
+                  <button
+                    aria-pressed={draftFilters.comfort === choice.value}
+                    className={draftFilters.comfort === choice.value ? "active" : ""}
+                    key={choice.value}
+                    onClick={() => updateDraftFilters((current) => ({ ...current, comfort: choice.value }))}
+                    type="button"
+                  >
+                    {choice.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <label className="toggleRow">
+              <input
+                checked={draftFilters.requireVerified}
+                onChange={(event) =>
+                  updateDraftFilters((current) => ({ ...current, requireVerified: event.target.checked }))
+                }
+                type="checkbox"
+              />
+              <span>只採已查核資料；未重查的 2027 方向自動降級。</span>
+            </label>
+
+            <div className="applyPlannerBox">
+              <button className="applyPlannerButton" onClick={applyPlannerFilters} type="button">
+                確認並查核
+              </button>
+              <span className={`applyPlannerStatus ${hasPendingChanges ? "pending" : "ready"}`}>
+                {hasPendingChanges
+                  ? "條件已修改，尚未查核；下方仍顯示上次確認結果。"
+                  : "條件已確認；下方推薦與候選方向已同步。"}
+              </span>
+            </div>
+
+            <p className="simulatorHint">查核結果是規劃輔助，不會取代正式下訂前確認。</p>
+          </aside>
+
+          <div className="resultPanel" aria-live="polite">
+            <div className={`topRecommendation ${bestOption.status}`}>
+              <span className="recommendationKicker">目前最適合</span>
+              <strong>{bestOption.option.packageName}</strong>
+              <div className="resultCounts">
+                <span>可考慮 {activeCount}</span>
+                <span>排除 {evaluatedOptions.length - activeCount}</span>
+              </div>
+              <div className="recommendationMeta">
+                <span>已確認條件</span>
+                <span>預算基準 {formatCurrency(filters.budget)}</span>
+                <span>{bestOption.option.productType}</span>
+                <span>{bestOption.option.departureWindow}</span>
+                <span>{bestOption.option.title}</span>
+                <span>{bestOption.option.dataState}</span>
+                <span>{bestOption.option.costBasis.label}</span>
+                <span>{getAuroraLevelLabel(bestOption.option.auroraLevel)}</span>
+                {bestOption.option.sourceName ? <span>{bestOption.option.sourceName}</span> : null}
+                {bestSourceStatus ? <span>{bestSourceStatus.safetyLabel}</span> : null}
+                {bestSourceStatus ? <span>{bestSourceStatus.freshnessLabel}</span> : null}
+              </div>
+              <p>
+                {bestOption.statusLabel}；分數 {bestOption.score}。{bestOption.option.description}
+              </p>
+              <div className="rankingSummary">
+                <strong>為什麼這樣排：</strong>
+                <span>{bestOption.option.rankingSummary}</span>
+              </div>
+              <div className="recommendationAction">
+                {bestOption.option.bookingUrl ? (
+                  <a className="bookingLink" href={bestOption.option.bookingUrl} rel="noreferrer" target="_blank">
+                    {bestOption.option.bookingLabel ?? "訂購網站"}
+                  </a>
+                ) : null}
+                <a href={bestOption.option.guideUrl}>{bestOption.option.guideLabel}</a>
+                <small>{bestOption.option.guideNote}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="pageSection directionSection" id="candidate-directions">
         <div className="sectionHeader tableHeader">
           <div>
             <p className="eyebrow">Candidate Directions</p>
             <h2>候選方向分類</h2>
             <p>
-              這裡把 A級團體、B級團體與自由行候選分開。點選分類後，下方會直接列出旅行團或自由行方案。
+              這裡使用上方已確認條件，把 A級團體、B級團體與自由行候選分開。點選分類後，下方會列出旅行團或自由行方案。
             </p>
           </div>
           <div className="sourceNote">
             <strong>排序規則</strong>
-            <span>A級、B級與自由行是分類條件；具體旅行團或方案需通過資料完整度後才進入排序。</span>
+            <span>按下確認並查核後，才會依預算、夜數、型態與風險重新排序。</span>
           </div>
         </div>
 
         <div className="directionChooser" aria-label="候選方向分類選擇">
           {directionCategories.map((category) => (
             <button
-              aria-pressed={selectedDirectionId === category.id}
-              className={selectedDirectionId === category.id ? "active" : ""}
+              aria-pressed={activeDirectionId === category.id}
+              className={activeDirectionId === category.id ? "active" : ""}
               key={category.id}
               onClick={() => setSelectedDirectionId(category.id)}
               type="button"
@@ -921,11 +1158,11 @@ export default function Home() {
             <p>{selectedDirection.summary}</p>
           </div>
           <div className="directionBudgetNote">
-            候選方向價格基準：{formatCurrency(filters.budget)}；已匯入方案會以目前預算上限判讀。
+            已確認價格基準：{formatCurrency(filters.budget)}；候選方向已依上方確認條件重新查核。
           </div>
           <div className="directionListHeader">旅行團與方案清單</div>
           <div className="directionList">
-            {selectedDirection.items.map((item) => {
+            {rankedDirectionItems.map((item) => {
               const linkedOption = "candidateId" in item ? getDirectionCandidate(item.candidateId) : null;
               const linkedResult = linkedOption ? evaluatedById.get(linkedOption.id) : null;
               const budgetStatus = linkedOption ? getBudgetStatus(linkedOption, filters.budget) : null;
@@ -1012,172 +1249,6 @@ export default function Home() {
                 </article>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      <section className="pageSection simulatorSection" id="decision-simulator">
-        <div className="sectionHeader">
-          <p className="eyebrow">Decision Options</p>
-          <h2>決策選項列表</h2>
-          <p>自行調整預算、旅行型態、極光夜數與風險容忍度，頁面會即時排序適合的選項。</p>
-        </div>
-
-        <div className="simulatorShell">
-          <aside className="controlPanel" aria-label="可調整條件">
-            <div className="controlGroup">
-              <div className="controlLabel">
-                <span>預算上限</span>
-                <strong>{formatCurrency(filters.budget)}</strong>
-              </div>
-              <input
-                aria-label="預算上限"
-                max={budgetRange.max}
-                min={budgetRange.min}
-                onChange={(event) =>
-                  setFilters((current) => ({ ...current, budget: clampBudget(Number(event.target.value)) }))
-                }
-                step={budgetRange.step}
-                type="range"
-                value={filters.budget}
-              />
-              <input
-                aria-label="直接輸入預算"
-                className="budgetNumber"
-                max={budgetRange.max}
-                min={budgetRange.min}
-                onChange={(event) =>
-                  setFilters((current) => ({
-                    ...current,
-                    budget: clampBudget(Number(event.target.value) || current.budget),
-                  }))
-                }
-                step={budgetRange.step}
-                type="number"
-                value={filters.budget}
-              />
-              <span className="rangeHint">可選區間：NT$100,000 - NT$400,000</span>
-            </div>
-
-            <div className="controlGroup">
-              <span className="controlTitle">旅行型態</span>
-              <div className="segmentedControl">
-                {modeChoices.map((choice) => (
-                  <button
-                    aria-pressed={filters.preferredMode === choice.value}
-                    className={filters.preferredMode === choice.value ? "active" : ""}
-                    key={choice.value}
-                    onClick={() => setFilters((current) => ({ ...current, preferredMode: choice.value }))}
-                    type="button"
-                  >
-                    {choice.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="controlGroup">
-              <span className="controlTitle">最低極光夜數</span>
-              <div className="segmentedControl auroraControl">
-                {auroraChoices.map((choice) => (
-                  <button
-                    aria-pressed={filters.auroraTarget === choice.value}
-                    className={filters.auroraTarget === choice.value ? "active" : ""}
-                    key={choice.value}
-                    onClick={() => setFilters((current) => ({ ...current, auroraTarget: choice.value }))}
-                    type="button"
-                  >
-                    <span>{choice.label}</span>
-                    <small>{choice.note}</small>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="controlGroup">
-              <span className="controlTitle">風險容忍度</span>
-              <div className="segmentedControl">
-                {riskChoices.map((choice) => (
-                  <button
-                    aria-pressed={filters.riskTolerance === choice.value}
-                    className={filters.riskTolerance === choice.value ? "active" : ""}
-                    key={choice.value}
-                    onClick={() => setFilters((current) => ({ ...current, riskTolerance: choice.value }))}
-                    type="button"
-                  >
-                    {choice.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="controlGroup">
-              <span className="controlTitle">舒適程度</span>
-              <div className="segmentedControl comfortControl">
-                {comfortChoices.map((choice) => (
-                  <button
-                    aria-pressed={filters.comfort === choice.value}
-                    className={filters.comfort === choice.value ? "active" : ""}
-                    key={choice.value}
-                    onClick={() => setFilters((current) => ({ ...current, comfort: choice.value }))}
-                    type="button"
-                  >
-                    {choice.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <label className="toggleRow">
-              <input
-                checked={filters.requireVerified}
-                onChange={(event) =>
-                  setFilters((current) => ({ ...current, requireVerified: event.target.checked }))
-                }
-                type="checkbox"
-              />
-              <span>只採已查核資料；未重查的 2027 方向自動降級。</span>
-            </label>
-
-            <p className="simulatorHint">判定結果是規劃輔助，不會取代正式查核與下訂前確認。</p>
-          </aside>
-
-          <div className="resultPanel" aria-live="polite">
-            <div className={`topRecommendation ${bestOption.status}`}>
-              <span className="recommendationKicker">目前最適合</span>
-              <strong>{bestOption.option.packageName}</strong>
-              <div className="resultCounts">
-                <span>可考慮 {activeCount}</span>
-                <span>排除 {evaluatedOptions.length - activeCount}</span>
-              </div>
-              <div className="recommendationMeta">
-                <span>{bestOption.option.productType}</span>
-                <span>{bestOption.option.departureWindow}</span>
-                <span>{bestOption.option.title}</span>
-                <span>{bestOption.option.dataState}</span>
-                <span>{bestOption.option.costBasis.label}</span>
-                <span>{getAuroraLevelLabel(bestOption.option.auroraLevel)}</span>
-                {bestOption.option.sourceName ? <span>{bestOption.option.sourceName}</span> : null}
-                {bestSourceStatus ? <span>{bestSourceStatus.safetyLabel}</span> : null}
-                {bestSourceStatus ? <span>{bestSourceStatus.freshnessLabel}</span> : null}
-              </div>
-              <p>
-                {bestOption.statusLabel}；分數 {bestOption.score}。{bestOption.option.description}
-              </p>
-              <div className="rankingSummary">
-                <strong>為什麼這樣排：</strong>
-                <span>{bestOption.option.rankingSummary}</span>
-              </div>
-              <div className="recommendationAction">
-                {bestOption.option.bookingUrl ? (
-                  <a className="bookingLink" href={bestOption.option.bookingUrl} rel="noreferrer" target="_blank">
-                    {bestOption.option.bookingLabel ?? "訂購網站"}
-                  </a>
-                ) : null}
-                <a href={bestOption.option.guideUrl}>{bestOption.option.guideLabel}</a>
-                <small>{bestOption.option.guideNote}</small>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -1309,7 +1380,7 @@ export default function Home() {
             <h2>決策門檻區</h2>
           </div>
           <div className="gateList">
-            {gates.map(([label, body]) => (
+            {decisionGates.map(([label, body]) => (
               <div className="gateItem" key={label}>
                 <strong>{label}</strong>
                 <span>{body}</span>

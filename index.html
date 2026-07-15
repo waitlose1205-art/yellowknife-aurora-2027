@@ -765,6 +765,48 @@
         line-height: 1.6;
       }
 
+      .applyPlannerBox {
+        display: grid;
+        gap: 10px;
+        margin-top: 22px;
+      }
+
+      .applyPlannerButton {
+        min-height: 42px;
+        border: 0;
+        border-radius: 8px;
+        background: #163b38;
+        color: #fff;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 900;
+      }
+
+      .applyPlannerButton:hover {
+        background: #0f2e2b;
+      }
+
+      .applyPlannerStatus {
+        display: block;
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-size: 0.86rem;
+        font-weight: 850;
+        line-height: 1.5;
+      }
+
+      .applyPlannerStatus.ready {
+        border: 1px solid #cfe7df;
+        background: #eef8f5;
+        color: #173331;
+      }
+
+      .applyPlannerStatus.pending {
+        border: 1px solid #f0d49a;
+        background: #fff7e5;
+        color: #7a4f00;
+      }
+
       .topRecommendation {
         padding: 20px;
         border-left: 6px solid var(--teal);
@@ -1523,33 +1565,11 @@
         </div>
       </section>
 
-      <section class="pageSection directionSection" id="candidate-directions">
-        <div class="sectionHeader tableHeader">
-          <div>
-            <p class="eyebrow">Candidate Directions</p>
-            <h2>候選方向分類</h2>
-            <p>這裡把 A級團體、B級團體與自由行候選分開。點選分類後，下方會直接列出旅行團或自由行方案。</p>
-          </div>
-          <div class="sourceNote">
-            <strong>排序規則</strong>
-            <span>A級、B級與自由行是分類條件；具體旅行團或方案需通過資料完整度後才進入排序。</span>
-          </div>
-        </div>
-
-        <div class="directionChooser" id="directionChooser" aria-label="候選方向分類選擇">
-          <button class="active" type="button" data-direction="group-a" aria-pressed="true">A級團體候選方向</button>
-          <button type="button" data-direction="group-b" aria-pressed="false">B級團體價格方向</button>
-          <button type="button" data-direction="independent" aria-pressed="false">自由行候選</button>
-        </div>
-
-        <div class="directionDetail" id="directionDetail"></div>
-      </section>
-
       <section class="pageSection simulatorSection" id="decision-simulator">
         <div class="sectionHeader">
           <p class="eyebrow">Decision Options</p>
           <h2>決策選項列表</h2>
-          <p>自行調整預算、旅行型態、極光夜數與風險容忍度，頁面會即時排序適合的選項。</p>
+          <p>先設定預算、旅行型態、極光夜數與風險容忍度；按下確認並查核後，才更新推薦與候選方向。</p>
         </div>
 
         <div class="simulatorShell">
@@ -1615,13 +1635,40 @@
               <span>只採已查核資料；未重查的 2027 方向自動降級。</span>
             </label>
 
-            <p class="simulatorHint">判定結果是規劃輔助，不會取代正式查核與下訂前確認。</p>
+            <div class="applyPlannerBox">
+              <button class="applyPlannerButton" id="applyPlanner" type="button">確認並查核</button>
+              <span class="applyPlannerStatus ready" id="applyPlannerStatus">條件已確認；下方推薦與候選方向已同步。</span>
+            </div>
+
+            <p class="simulatorHint">查核結果是規劃輔助，不會取代正式下訂前確認。</p>
           </aside>
 
           <div class="resultPanel" aria-live="polite">
             <div class="topRecommendation" id="topRecommendation"></div>
           </div>
         </div>
+      </section>
+
+      <section class="pageSection directionSection" id="candidate-directions">
+        <div class="sectionHeader tableHeader">
+          <div>
+            <p class="eyebrow">Candidate Directions</p>
+            <h2>候選方向分類</h2>
+            <p>這裡使用上方已確認條件，把 A級團體、B級團體與自由行候選分開。點選分類後，下方會列出旅行團或自由行方案。</p>
+          </div>
+          <div class="sourceNote">
+            <strong>排序規則</strong>
+            <span>按下確認並查核後，才會依預算、夜數、型態與風險重新排序。</span>
+          </div>
+        </div>
+
+        <div class="directionChooser" id="directionChooser" aria-label="候選方向分類選擇">
+          <button class="active" type="button" data-direction="group-a" aria-pressed="true">A級團體候選方向</button>
+          <button type="button" data-direction="group-b" aria-pressed="false">B級團體價格方向</button>
+          <button type="button" data-direction="independent" aria-pressed="false">自由行候選</button>
+        </div>
+
+        <div class="directionDetail" id="directionDetail"></div>
       </section>
 
       <section class="contentGrid">
@@ -1786,7 +1833,7 @@
             <p class="eyebrow">Decision Gates</p>
             <h2>決策門檻區</h2>
           </div>
-          <div class="gateList">
+          <div class="gateList" id="gateList">
             <div class="gateItem"><strong>強候選</strong><span>低於 NT$150,000，YZF 夜數清楚，並接近 A 級三個完整極光夜。</span></div>
             <div class="gateItem"><strong>條件候選</strong><span>價格可接受，但需要明確補看、延誤或 YVR 過夜方案。</span></div>
             <div class="gateItem"><strong>備援</strong><span>價格、體力或證據信心不足，但仍符合基本安全與轉機上限。</span></div>
@@ -1806,7 +1853,7 @@
       </section>
     </main>
     <script>
-      const plannerState = {
+      let plannerState = {
         budget: 150000,
         preferredMode: "group",
         auroraTarget: "A",
@@ -1814,6 +1861,7 @@
         comfort: "balanced",
         requireVerified: false,
       };
+      let draftPlannerState = { ...plannerState };
 
       const budgetRange = {
         min: 100000,
@@ -1928,7 +1976,7 @@
         },
       ];
 
-      let selectedDirectionId = "group-a";
+      let selectedDirectionId = null;
 
       const staticCandidates = [
         {
@@ -2135,11 +2183,9 @@
       ];
 
       const formatCurrency = (value) =>
-        new Intl.NumberFormat("zh-TW", {
+        `NT$${new Intl.NumberFormat("zh-TW", {
           maximumFractionDigits: 0,
-          style: "currency",
-          currency: "TWD",
-        }).format(value);
+        }).format(value)}`;
 
       const getModeLabel = (mode) => (mode === "group" ? "團體" : "自由行");
       const getComfortLabel = (level) => (level === "basic" ? "節制" : level === "comfort" ? "舒適" : "平衡");
@@ -2172,6 +2218,98 @@
           className: "over",
           label: `超過目前預算 ${formatCurrency(Math.abs(delta))}`,
         };
+      }
+
+      function getDirectionIdForOption(option) {
+        if (option.mode === "independent") {
+          return "independent";
+        }
+
+        return option.auroraLevel === "A" ? "group-a" : "group-b";
+      }
+
+      function isSamePlannerFilters(first, second) {
+        return (
+          first.budget === second.budget &&
+          first.preferredMode === second.preferredMode &&
+          first.auroraTarget === second.auroraTarget &&
+          first.riskTolerance === second.riskTolerance &&
+          first.comfort === second.comfort &&
+          first.requireVerified === second.requireVerified
+        );
+      }
+
+      function getEvaluatedResults() {
+        const order = { strong: 0, conditional: 1, backup: 2, exclude: 3 };
+        return staticCandidates
+          .map(evaluateStaticOption)
+          .sort((a, b) => order[a.status] - order[b.status] || b.score - a.score);
+      }
+
+      function getBestResult(results) {
+        return results.find((result) => result.status !== "exclude") || results[0];
+      }
+
+      function rankDirectionItems(items, evaluatedMap) {
+        const order = { strong: 0, conditional: 1, backup: 2, exclude: 3 };
+        return [...items].sort((first, second) => {
+          const firstResult = first.candidateId ? evaluatedMap.get(first.candidateId) : null;
+          const secondResult = second.candidateId ? evaluatedMap.get(second.candidateId) : null;
+
+          if (firstResult && secondResult) {
+            return order[firstResult.status] - order[secondResult.status] || secondResult.score - firstResult.score;
+          }
+
+          if (firstResult) return -1;
+          if (secondResult) return 1;
+          return 0;
+        });
+      }
+
+      function renderDraftControls() {
+        document.getElementById("budgetLabel").textContent = formatCurrency(draftPlannerState.budget);
+        document.getElementById("budgetRange").value = draftPlannerState.budget;
+        document.getElementById("budgetNumber").value = draftPlannerState.budget;
+        document.getElementById("requireVerified").checked = draftPlannerState.requireVerified;
+
+        document.querySelectorAll(".segmentedControl").forEach((group) => {
+          const filter = group.dataset.filter;
+          group.querySelectorAll("button").forEach((button) => {
+            const value = filter === "riskTolerance" ? Number(button.dataset.value) : button.dataset.value;
+            button.classList.toggle("active", draftPlannerState[filter] === value);
+            button.setAttribute("aria-pressed", String(draftPlannerState[filter] === value));
+          });
+        });
+      }
+
+      function renderApplyStatus() {
+        const status = document.getElementById("applyPlannerStatus");
+        const hasPendingChanges = !isSamePlannerFilters(draftPlannerState, plannerState);
+        status.className = `applyPlannerStatus ${hasPendingChanges ? "pending" : "ready"}`;
+        status.textContent = hasPendingChanges
+          ? "條件已修改，尚未查核；下方仍顯示上次確認結果。"
+          : "條件已確認；下方推薦與候選方向已同步。";
+      }
+
+      function updateDraftPlanner(updater) {
+        draftPlannerState = updater({ ...draftPlannerState });
+        renderDraftControls();
+        renderApplyStatus();
+      }
+
+      function getDecisionGates(budget) {
+        return [
+          ["強候選", `低於 ${formatCurrency(budget)}，YZF 夜數清楚，並接近 A 級三個完整極光夜。`],
+          ["條件候選", `價格接近 ${formatCurrency(budget)}，但需要明確補看、延誤或 YVR 過夜方案。`],
+          ["備援", `價格、體力或證據信心不足，但仍未明顯超過 ${formatCurrency(budget)} 的可比較上限。`],
+          ["排除", `超過 ${formatCurrency(budget)}、轉機過度、核心極光夜無保護，或使用未知 2027 細節作賣點。`],
+        ];
+      }
+
+      function renderDecisionGates() {
+        document.getElementById("gateList").innerHTML = getDecisionGates(plannerState.budget)
+          .map(([label, body]) => `<div class="gateItem"><strong>${label}</strong><span>${body}</span></div>`)
+          .join("");
       }
 
       function evaluateStaticOption(option) {
@@ -2304,21 +2442,23 @@
       }
 
       function renderDirection() {
-        const selected = directionCategories.find((category) => category.id === selectedDirectionId) || directionCategories[0];
-        const evaluatedMap = new Map(staticCandidates.map((option) => {
-          const result = evaluateStaticOption(option);
-          return [option.id, result];
-        }));
+        const results = getEvaluatedResults();
+        const best = getBestResult(results);
+        const syncedDirectionId = getDirectionIdForOption(best.option);
+        const activeDirectionId = selectedDirectionId || syncedDirectionId;
+        const selected = directionCategories.find((category) => category.id === activeDirectionId) || directionCategories[0];
+        const evaluatedMap = new Map(results.map((result) => [result.option.id, result]));
+        const rankedItems = rankDirectionItems(selected.items, evaluatedMap);
         const detail = document.getElementById("directionDetail");
         detail.innerHTML = `
           <div class="directionIntro">
             <h3>${selected.title}</h3>
             <p>${selected.summary}</p>
           </div>
-          <div class="directionBudgetNote">候選方向價格基準：${formatCurrency(plannerState.budget)}；已匯入方案會以目前預算上限判讀。</div>
+          <div class="directionBudgetNote">已確認價格基準：${formatCurrency(plannerState.budget)}；候選方向已依上方確認條件重新查核。</div>
           <div class="directionListHeader">旅行團與方案清單</div>
           <div class="directionList">
-            ${selected.items
+            ${rankedItems
               .map((item) => {
                 const linkedOption = item.candidateId
                   ? staticCandidates.find((option) => option.id === item.candidateId)
@@ -2407,23 +2547,18 @@
         `;
 
         document.querySelectorAll("#directionChooser button").forEach((button) => {
-          const isActive = button.dataset.direction === selected.id;
+          const isActive = button.dataset.direction === activeDirectionId;
           button.classList.toggle("active", isActive);
           button.setAttribute("aria-pressed", String(isActive));
         });
       }
 
       function renderSimulator() {
-        document.getElementById("budgetLabel").textContent = formatCurrency(plannerState.budget);
-        document.getElementById("budgetRange").value = plannerState.budget;
-        document.getElementById("budgetNumber").value = plannerState.budget;
-        document.getElementById("requireVerified").checked = plannerState.requireVerified;
+        renderDraftControls();
+        renderApplyStatus();
 
-        const order = { strong: 0, conditional: 1, backup: 2, exclude: 3 };
-        const results = staticCandidates
-          .map(evaluateStaticOption)
-          .sort((a, b) => order[a.status] - order[b.status] || b.score - a.score);
-        const best = results.find((result) => result.status !== "exclude") || results[0];
+        const results = getEvaluatedResults();
+        const best = getBestResult(results);
         const activeCount = results.filter((result) => result.status !== "exclude").length;
         const bestSourceStatus = getSourceStatus(best.option);
 
@@ -2437,6 +2572,8 @@
             <span>排除 ${results.length - activeCount}</span>
           </div>
           <div class="recommendationMeta">
+            <span>已確認條件</span>
+            <span>預算基準 ${formatCurrency(plannerState.budget)}</span>
             <span>${best.option.productType}</span>
             <span>${best.option.departureWindow}</span>
             <span>${best.option.title}</span>
@@ -2465,29 +2602,31 @@
           if (!button) return;
           const filter = group.dataset.filter;
           const value = button.dataset.value;
-          plannerState[filter] = filter === "riskTolerance" ? Number(value) : value;
-          group.querySelectorAll("button").forEach((item) => item.classList.toggle("active", item === button));
-          renderSimulator();
-          renderDirection();
+          updateDraftPlanner((current) => ({
+            ...current,
+            [filter]: filter === "riskTolerance" ? Number(value) : value,
+          }));
         });
       });
 
       document.getElementById("budgetRange").addEventListener("input", (event) => {
-        plannerState.budget = clampBudget(Number(event.target.value));
-        renderSimulator();
-        renderDirection();
+        updateDraftPlanner((current) => ({ ...current, budget: clampBudget(Number(event.target.value)) }));
       });
 
       document.getElementById("budgetNumber").addEventListener("input", (event) => {
-        plannerState.budget = clampBudget(Number(event.target.value) || plannerState.budget);
-        renderSimulator();
-        renderDirection();
+        updateDraftPlanner((current) => ({ ...current, budget: clampBudget(Number(event.target.value) || current.budget) }));
       });
 
       document.getElementById("requireVerified").addEventListener("change", (event) => {
-        plannerState.requireVerified = event.target.checked;
+        updateDraftPlanner((current) => ({ ...current, requireVerified: event.target.checked }));
+      });
+
+      document.getElementById("applyPlanner").addEventListener("click", () => {
+        plannerState = { ...draftPlannerState };
+        selectedDirectionId = null;
         renderSimulator();
         renderDirection();
+        renderDecisionGates();
       });
 
       document.getElementById("directionChooser").addEventListener("click", (event) => {
@@ -2497,8 +2636,9 @@
         renderDirection();
       });
 
-      renderDirection();
       renderSimulator();
+      renderDirection();
+      renderDecisionGates();
     </script>
   </body>
 </html>

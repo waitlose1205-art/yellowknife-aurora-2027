@@ -50,16 +50,23 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /Yellowknife Tours/);
   assert.doesNotMatch(html, /即時查詢入口|全網即時搜尋|開啟主要資料源查詢|查詢此來源/);
   assert.match(html, /候選方向分類/);
-  assert.match(html, /可選擇的 A級團體候選方向/);
+  assert.match(html, /自由行候選方案/);
   assert.match(html, /自由行候選/);
   assert.match(html, /旅行團與方案清單/);
-  assert.match(html, /台灣旅行社完整極光夜團/);
-  assert.match(html, /未匯入具體團名、價格與訂購網址前，不進入排序/);
+  assert.match(html, /Yellowknife Tours 5D4N Gold Hotel Package/);
+  assert.match(html, /當地套裝＋2026參考/);
   assert.doesNotMatch(
     html,
     /秋冬 A 級團體候選方向|秋冬 B 級團體價格優先方向|待查商品：黃刀鎮 A級完整極光夜團|待查商品：黃刀鎮 B級價格優先團/,
   );
   assert.match(html, /決策選項列表/);
+  assert.ok(
+    html.indexOf('id="decision-simulator"') < html.indexOf('id="candidate-directions"'),
+    "decision options must render before candidate directions",
+  );
+  assert.match(html, /確認並查核/);
+  assert.match(html, /條件已確認；下方推薦與候選方向已同步/);
+  assert.match(html, /已確認條件/);
   assert.match(html, /預算上限/);
   assert.match(html, /NT\$100,000 - NT\$400,000/);
   assert.match(html, /目前最適合/);
@@ -77,10 +84,12 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /航班/);
   assert.match(html, /住宿/);
   assert.match(html, /排序理由/);
-  assert.match(html, /候選方向價格基準/);
+  assert.match(html, /已確認價格基準/);
   assert.match(html, /以目前預算上限/);
   assert.match(html, /尚未公布/);
+  assert.match(html, /低於 NT\$150,000/);
   assert.doesNotMatch(html, /尚未填入|估算待補|自由行估算缺/);
+  assert.doesNotMatch(html, /頁面會即時排序適合的選項|候選方向價格基準/);
   assert.doesNotMatch(html, /<th>團號<\/th>|查看長汎團號頁|歷史樣本：UWP26319BR10TB 三月低價團/);
   assert.match(html, /手機版團體樣本卡片/);
   assert.doesNotMatch(html, /Your site is taking shape|Codex is working|react-loading-skeleton/);
@@ -100,6 +109,8 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(page, /sourceSyncRows/);
   assert.match(page, /importedFromSource/);
   assert.match(page, /useState<PlannerFilters>/);
+  assert.match(page, /draftFilters/);
+  assert.match(page, /applyPlannerFilters/);
   assert.match(page, /DirectionCategoryId/);
   assert.match(page, /directionCategories/);
   assert.match(page, /selectedDirectionId/);
@@ -118,10 +129,11 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(page, /決策選項列表/);
   assert.match(page, /directionInfoDetail/);
   assert.match(page, /directionRankingSummary/);
+  assert.match(page, /getDecisionGates/);
   assert.match(page, /查看航班、住宿與價格詳細資訊/);
   assert.match(page, /Chateau Nova、Explorer Hotel 或同級/);
   assert.doesNotMatch(page, /尚未填入|估算待補|自由行估算缺/);
-  assert.doesNotMatch(page, /互動決策模擬器|適合選項排序/);
+  assert.doesNotMatch(page, /互動決策模擬器|適合選項排序|頁面會即時排序適合的選項|候選方向價格基準/);
   assert.doesNotMatch(page, /actionCards|下一步行動卡|Next Actions/);
   assert.match(css, /\.budgetRow\.green/);
   assert.match(css, /\.scopeGrid/);
@@ -138,8 +150,13 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(css, /\.rankingSummary/);
   assert.match(css, /\.simulatorShell/);
   assert.match(css, /\.segmentedControl/);
+  assert.match(css, /\.applyPlannerButton/);
+  assert.match(css, /\.applyPlannerStatus\.pending/);
   assert.match(css, /\.tourCard\.red/);
   assert.match(staticHtml, /directionCategories/);
+  assert.match(staticHtml, /draftPlannerState/);
+  assert.match(staticHtml, /applyPlanner/);
+  assert.match(staticHtml, /getDecisionGates/);
   assert.match(staticHtml, /directionDetail/);
   assert.match(staticHtml, /data-direction="independent"/);
   assert.match(staticHtml, /directionTourMeta/);
@@ -151,8 +168,13 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(staticHtml, /B級歷史旅行團/);
   assert.match(staticHtml, /當地套裝＋2026參考/);
   assert.match(staticHtml, /決策選項列表/);
+  assert.ok(
+    staticHtml.indexOf('id="decision-simulator"') < staticHtml.indexOf('id="candidate-directions"'),
+    "static decision options must render before candidate directions",
+  );
+  assert.match(staticHtml, /確認並查核/);
   assert.doesNotMatch(staticHtml, /尚未填入|估算待補|自由行估算缺/);
-  assert.doesNotMatch(staticHtml, /下一步行動卡|Next Actions|actionGrid|actionCard|適合選項排序|互動決策模擬器/);
+  assert.doesNotMatch(staticHtml, /下一步行動卡|Next Actions|actionGrid|actionCard|適合選項排序|互動決策模擬器|頁面會即時排序適合的選項|候選方向價格基準/);
   assert.match(staticHtml, /sourceStatusRegistry/);
   assert.match(staticHtml, /costBasis/);
   assert.match(staticHtml, /旅遊團名稱/);

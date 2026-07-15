@@ -773,6 +773,48 @@ h3 {
   line-height: 1.6;
 }
 
+.applyPlannerBox {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.applyPlannerButton {
+  min-height: 42px;
+  border: 0;
+  border-radius: 8px;
+  background: #163b38;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+}
+
+.applyPlannerButton:hover {
+  background: #0f2e2b;
+}
+
+.applyPlannerStatus {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.86rem;
+  font-weight: 850;
+  line-height: 1.5;
+}
+
+.applyPlannerStatus.ready {
+  border: 1px solid #cfe7df;
+  background: #eef8f5;
+  color: #173331;
+}
+
+.applyPlannerStatus.pending {
+  border: 1px solid #f0d49a;
+  background: #fff7e5;
+  color: #7a4f00;
+}
+
 .resultPanel {
   min-width: 0;
 }
