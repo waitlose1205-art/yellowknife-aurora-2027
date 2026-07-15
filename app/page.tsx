@@ -55,6 +55,102 @@ const seasonScopeRows = [
   },
 ];
 
+const seasonSearchChoices = [
+  { value: "autumn", label: "9-11 月秋季極光", query: "9月 10月 11月 秋季" },
+  { value: "winter", label: "12-3 月冬季極光", query: "12月 1月 2月 3月 冬季" },
+  { value: "spring", label: "4-6 月延伸觀測", query: "4月 5月 6月 極光" },
+  { value: "all", label: "不限月份", query: "全年 極光 旅行團" },
+] as const;
+
+type SeasonSearchValue = (typeof seasonSearchChoices)[number]["value"];
+
+type LiveSearchFilters = {
+  keyword: string;
+  season: SeasonSearchValue;
+  sourceId: string;
+};
+
+type LiveSource = {
+  id: string;
+  name: string;
+  type: string;
+  domain?: string;
+  directUrl: string;
+  focus: string;
+  check: string;
+};
+
+const defaultLiveSearch: LiveSearchFilters = {
+  keyword: "黃刀鎮 極光 旅行團",
+  season: "autumn",
+  sourceId: "all",
+};
+
+const liveSourceRows: LiveSource[] = [
+  {
+    id: "all",
+    name: "全網即時搜尋",
+    type: "搜尋入口",
+    directUrl: "https://www.google.com/search?q=%E9%BB%83%E5%88%80%E9%8E%AE%20%E6%A5%B5%E5%85%89%20%E6%97%85%E8%A1%8C%E5%9C%98",
+    focus: "跨旅行社搜尋可售商品、月份、團費與行程頁。",
+    check: "先找商品網址，再人工確認夜數、航班、飯店與總費用。",
+  },
+  {
+    id: "travel4u",
+    name: "山富旅遊",
+    type: "台灣旅行社",
+    domain: "www.travel4u.com.tw",
+    directUrl: "https://www.travel4u.com.tw/",
+    focus: "追蹤加拿大、黃刀鎮與極光團體商品。",
+    check: "團費需加回簽證、保險、行李、選位與自費項目。",
+  },
+  {
+    id: "lion",
+    name: "雄獅旅遊",
+    type: "台灣旅行社",
+    domain: "travel.liontravel.com",
+    directUrl: "https://travel.liontravel.com/",
+    focus: "比對大型旅行社的黃刀鎮極光團、航班與冬季活動安排。",
+    check: "特別檢查抵離 YZF 時間與早班離境體力風險。",
+  },
+  {
+    id: "cola",
+    name: "可樂旅遊",
+    type: "台灣旅行社",
+    domain: "colatour.com.tw",
+    directUrl: "https://www.colatour.com.tw/",
+    focus: "作為價格與同業商品覆蓋度的比對來源。",
+    check: "若價格漂亮，仍需確認是否把抵達日算進完整極光夜。",
+  },
+  {
+    id: "everfun",
+    name: "長汎旅遊",
+    type: "台灣旅行社",
+    domain: "www.everfuntravel.com",
+    directUrl: "https://www.everfuntravel.com/",
+    focus: "延續 2026 樣本來源，追蹤新年度團體商品。",
+    check: "舊樣本只作基準，新商品需重新查核查核日與團號。",
+  },
+  {
+    id: "yellowknife-tours",
+    name: "Yellowknife Tours",
+    type: "當地地接",
+    domain: "yellowknifetours.com",
+    directUrl: "https://yellowknifetours.com/winter-packages/",
+    focus: "查詢冬季套裝、當地飯店、活動與 CAD 報價。",
+    check: "需換算台幣、加 GST、小費、冬衣、國際與內陸機票。",
+  },
+  {
+    id: "air-canada",
+    name: "Air Canada YVR-YZF",
+    type: "航班票價",
+    domain: "www.aircanada.com",
+    directUrl: "https://www.aircanada.com/en-ca/flights-from-vancouver-to-yellowknife",
+    focus: "查 YVR 到 YZF 內陸段月份票價與班表方向。",
+    check: "票價會變動，需保存查核日期與實際航班時間。",
+  },
+];
+
 const auroraLevels = [
   {
     level: "A 級",
@@ -314,6 +410,26 @@ function getAuroraLevelLabel(level: Exclude<AuroraTarget, "either">) {
   return level === "A" ? "A級：3 個完整極光夜" : "B級：3 晚含抵達日";
 }
 
+function getSeasonSearchQuery(season: SeasonSearchValue) {
+  return seasonSearchChoices.find((choice) => choice.value === season)?.query ?? "";
+}
+
+function buildLiveQuery(filters: LiveSearchFilters, source: LiveSource, budget: number) {
+  const sourceTerm = source.id === "all" ? "" : source.name;
+  return [filters.keyword, getSeasonSearchQuery(filters.season), sourceTerm, `預算 ${formatCurrency(budget)}`]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function buildLiveSearchUrl(source: LiveSource, query: string) {
+  if (source.id === "all") {
+    return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+  }
+
+  const siteQuery = source.domain ? `site:${source.domain} ${query}` : query;
+  return `https://www.google.com/search?q=${encodeURIComponent(siteQuery)}`;
+}
+
 function evaluateOption(option: CandidateOption, filters: PlannerFilters) {
   let score = 40;
   const reasons: string[] = [];
@@ -435,6 +551,9 @@ const gates = [
 
 export default function Home() {
   const [filters, setFilters] = useState<PlannerFilters>(defaultPlanner);
+  const [liveSearch, setLiveSearch] = useState<LiveSearchFilters>(defaultLiveSearch);
+  const selectedLiveSource = liveSourceRows.find((source) => source.id === liveSearch.sourceId) ?? liveSourceRows[0];
+  const previewLiveQuery = buildLiveQuery(liveSearch, selectedLiveSource, filters.budget);
 
   const evaluatedOptions = useMemo(
     () =>
@@ -505,6 +624,95 @@ export default function Home() {
               <p>{item.role}</p>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="pageSection liveSearchSection" id="live-source-query">
+        <div className="sectionHeader tableHeader">
+          <div>
+            <p className="eyebrow">Live Source Query</p>
+            <h2>即時查詢入口</h2>
+            <p>
+              先選月份範圍、關鍵字與資料源，再開啟旅行社或官方來源查詢。查到商品後，仍需把團名、網址、團費、夜數口徑、航班與飯店人工填入候選資料。
+            </p>
+          </div>
+          <div className="sourceNote">
+            <strong>功能狀態</strong>
+            <span>已可查詢外部來源；本頁不會自動保存或宣稱最新售價已查核。</span>
+          </div>
+        </div>
+
+        <div className="liveSearchControls" aria-label="即時查詢條件">
+          <label>
+            <span>月份範圍</span>
+            <select
+              value={liveSearch.season}
+              onChange={(event) =>
+                setLiveSearch((current) => ({ ...current, season: event.target.value as SeasonSearchValue }))
+              }
+            >
+              {seasonSearchChoices.map((choice) => (
+                <option key={choice.value} value={choice.value}>
+                  {choice.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <span>關鍵字</span>
+            <input
+              value={liveSearch.keyword}
+              onChange={(event) => setLiveSearch((current) => ({ ...current, keyword: event.target.value }))}
+              type="search"
+            />
+          </label>
+          <label>
+            <span>主要資料源</span>
+            <select
+              value={liveSearch.sourceId}
+              onChange={(event) => setLiveSearch((current) => ({ ...current, sourceId: event.target.value }))}
+            >
+              {liveSourceRows.map((source) => (
+                <option key={source.id} value={source.id}>
+                  {source.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <div className="queryPreview">
+          <span>目前查詢字串</span>
+          <strong>{previewLiveQuery}</strong>
+          <small>會帶入目前預算上限 {formatCurrency(filters.budget)}；可先用下方按鈕開啟即時查詢。</small>
+          <a href={buildLiveSearchUrl(selectedLiveSource, previewLiveQuery)} rel="noreferrer" target="_blank">
+            開啟主要資料源查詢
+          </a>
+        </div>
+
+        <div className="sourceGrid">
+          {liveSourceRows.map((source) => {
+            const query = buildLiveQuery(liveSearch, source, filters.budget);
+
+            return (
+              <article className={source.id === liveSearch.sourceId ? "sourceCard active" : "sourceCard"} key={source.id}>
+                <div className="sourceCardHeader">
+                  <span>{source.type}</span>
+                  <h3>{source.name}</h3>
+                </div>
+                <p>{source.focus}</p>
+                <small>{source.check}</small>
+                <div className="sourceActions">
+                  <a href={buildLiveSearchUrl(source, query)} rel="noreferrer" target="_blank">
+                    查詢此來源
+                  </a>
+                  <a href={source.directUrl} rel="noreferrer" target="_blank">
+                    開啟來源
+                  </a>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
