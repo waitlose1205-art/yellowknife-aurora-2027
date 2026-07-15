@@ -224,41 +224,53 @@ const comfortChoices = [
   { value: "any", label: "不限" },
 ] as const;
 
+const directionCategories = [
+  {
+    id: "group-a",
+    label: "A級團體候選方向",
+    title: "可選擇的 A級團體候選方向",
+    summary: "A級代表抵達日不計，需保留至少 3 個完整極光夜。這裡只列方向；未匯入具體團名、價格與訂購網址前，不進入排序。",
+    items: [
+      {
+        name: "台灣旅行社完整極光夜團",
+        condition: "需有明確團名、團號、訂購網址、總團費與 3 個完整極光夜口徑。",
+        status: "待匯入具體商品",
+      },
+      {
+        name: "9-11 月秋季 A級團體團",
+        condition: "需確認秋季團仍包含黃刀鎮極光觀賞，且抵達日不計入完整夜。",
+        status: "優先搜尋方向",
+      },
+      {
+        name: "12-3 月冬季 A級團體團",
+        condition: "需同時檢查低溫、航班延誤、飯店與補看規則。",
+        status: "優先搜尋方向",
+      },
+    ],
+  },
+  {
+    id: "group-b",
+    label: "B級團體價格方向",
+    title: "B級團體價格方向",
+    summary: "B級代表 3 晚可能含抵達日，只能當價格備援，不能宣稱為 3 個完整極光夜。",
+    items: [
+      {
+        name: "低價團體備援",
+        condition: "總額需低於預算且明確標示夜數算法。",
+        status: "備援方向",
+      },
+      {
+        name: "促銷團或短天數團",
+        condition: "若抵達日被算入極光夜，排序時必須降級。",
+        status: "需人工判讀",
+      },
+    ],
+  },
+] as const;
+
+type DirectionCategoryId = (typeof directionCategories)[number]["id"];
+
 const candidateOptions: CandidateOption[] = [
-  {
-    id: "group-2027-a",
-    title: "秋冬 A 級團體候選方向",
-    packageName: "待查商品：黃刀鎮 A級完整極光夜團",
-    mode: "group",
-    estimatedCost: 148000,
-    auroraLevel: "A",
-    riskLevel: 2,
-    comfort: "balanced",
-    verified: false,
-    dataState: "商品待查",
-    guideUrl: "#pending-2027-recheck",
-    guideLabel: "前往 2027 重查清單",
-    guideNote: "此項目尚不是可下訂商品，需先補齊旅行社網址、團費、航班、飯店、YZF 抵離與補看規則。",
-    description: "抵達日不計，保留 3 個完整極光夜；適合把團體放第一順位，9-11 月秋季團與冬季團都可納入。",
-    nextStep: "取得商品網址後，先查團費、YZF 抵離時間、補看規則、飯店與總費用。",
-  },
-  {
-    id: "group-2027-b",
-    title: "秋冬 B 級團體價格優先方向",
-    packageName: "待查商品：黃刀鎮 B級價格優先團",
-    mode: "group",
-    estimatedCost: 138000,
-    auroraLevel: "B",
-    riskLevel: 2,
-    comfort: "balanced",
-    verified: false,
-    dataState: "商品待查",
-    guideUrl: "#pending-2027-recheck",
-    guideLabel: "前往 2027 重查清單",
-    guideNote: "此項目只能作價格備援，需確認是否真的具備 3 個完整極光夜。",
-    description: "以 3 晚含抵達日為前提，價格較容易留出緩衝，但極光夜數可能被高估。",
-    nextStep: "只作價格備援；若沒有完整 3 個極光夜，不應升為強候選。",
-  },
   {
     id: "source-yktours-gold-5d4n",
     title: "來源匯入：冬季當地套裝低價候選",
@@ -528,6 +540,7 @@ const gates = [
 
 export default function Home() {
   const [filters, setFilters] = useState<PlannerFilters>(defaultPlanner);
+  const [selectedDirectionId, setSelectedDirectionId] = useState<DirectionCategoryId>("group-a");
 
   const evaluatedOptions = useMemo(
     () =>
@@ -542,6 +555,8 @@ export default function Home() {
 
   const bestOption = evaluatedOptions.find((result) => result.status !== "exclude") ?? evaluatedOptions[0];
   const activeCount = evaluatedOptions.filter((result) => result.status !== "exclude").length;
+  const selectedDirection =
+    directionCategories.find((category) => category.id === selectedDirectionId) ?? directionCategories[0];
 
   return (
     <main>
@@ -636,6 +651,52 @@ export default function Home() {
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="pageSection directionSection" id="candidate-directions">
+        <div className="sectionHeader tableHeader">
+          <div>
+            <p className="eyebrow">Candidate Directions</p>
+            <h2>候選方向分類</h2>
+            <p>
+              這裡只列尚在追蹤的團體方向。未匯入具體團名、價格與訂購網址前，不進入「適合選項排序」。
+            </p>
+          </div>
+          <div className="sourceNote">
+            <strong>排序規則</strong>
+            <span>A級、B級是分類條件，不是商品名稱；下方排序只顯示具體可比較選項。</span>
+          </div>
+        </div>
+
+        <div className="directionChooser" aria-label="候選方向分類選擇">
+          {directionCategories.map((category) => (
+            <button
+              aria-pressed={selectedDirectionId === category.id}
+              className={selectedDirectionId === category.id ? "active" : ""}
+              key={category.id}
+              onClick={() => setSelectedDirectionId(category.id)}
+              type="button"
+            >
+              {category.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="directionDetail">
+          <div className="directionIntro">
+            <h3>{selectedDirection.title}</h3>
+            <p>{selectedDirection.summary}</p>
+          </div>
+          <div className="directionList">
+            {selectedDirection.items.map((item) => (
+              <article className="directionItem" key={item.name}>
+                <span>{item.status}</span>
+                <h3>{item.name}</h3>
+                <p>{item.condition}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 

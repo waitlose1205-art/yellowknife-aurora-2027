@@ -305,7 +305,8 @@ h3 {
 }
 
 .scopeSection,
-.sourceSyncSection {
+.sourceSyncSection,
+.directionSection {
   padding: 28px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -423,6 +424,79 @@ h3 {
   gap: 8px;
   margin-top: auto;
   padding-top: 18px;
+}
+
+.directionChooser {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.directionChooser button {
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fbfa;
+  color: #24413d;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+}
+
+.directionChooser button.active {
+  border-color: #163b38;
+  background: #163b38;
+  color: #fff;
+}
+
+.directionDetail {
+  margin-top: 16px;
+  padding: 20px;
+  border: 1px solid #cfe7df;
+  border-radius: 8px;
+  background: #eef8f5;
+}
+
+.directionIntro p {
+  margin: 10px 0 0;
+  color: #31504b;
+  line-height: 1.65;
+}
+
+.directionList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.directionItem {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.directionItem span {
+  display: inline-flex;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #e6f6f1;
+  color: #0b6b58;
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.directionItem h3 {
+  margin-top: 12px;
+}
+
+.directionItem p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.6;
 }
 
 .simulatorSection {
@@ -1015,7 +1089,8 @@ td {
   .decisionBar,
   .actionGrid,
   .scopeGrid,
-  .sourceGrid {
+  .sourceGrid,
+  .directionList {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1041,6 +1116,8 @@ td {
   .actionGrid,
   .scopeGrid,
   .sourceGrid,
+  .directionChooser,
+  .directionList,
   .badgeGrid {
     grid-template-columns: 1fr;
   }

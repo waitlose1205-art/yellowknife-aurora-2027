@@ -278,7 +278,8 @@
       }
 
       .scopeSection,
-      .sourceSyncSection {
+      .sourceSyncSection,
+      .directionSection {
         padding: 28px;
         border: 1px solid var(--line);
         border-radius: 8px;
@@ -396,6 +397,79 @@
         gap: 8px;
         margin-top: auto;
         padding-top: 18px;
+      }
+
+      .directionChooser {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 22px;
+      }
+
+      .directionChooser button {
+        min-height: 46px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #f8fbfa;
+        color: #24413d;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 900;
+      }
+
+      .directionChooser button.active {
+        border-color: #163b38;
+        background: #163b38;
+        color: #fff;
+      }
+
+      .directionDetail {
+        margin-top: 16px;
+        padding: 20px;
+        border: 1px solid #cfe7df;
+        border-radius: 8px;
+        background: #eef8f5;
+      }
+
+      .directionIntro p {
+        margin: 10px 0 0;
+        color: #31504b;
+        line-height: 1.65;
+      }
+
+      .directionList {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .directionItem {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .directionItem span {
+        display: inline-flex;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: #e6f6f1;
+        color: #0b6b58;
+        font-size: 0.76rem;
+        font-weight: 900;
+      }
+
+      .directionItem h3 {
+        margin-top: 12px;
+      }
+
+      .directionItem p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        line-height: 1.6;
       }
 
       .simulatorSection {
@@ -960,7 +1034,8 @@
         .decisionBar,
         .actionGrid,
         .scopeGrid,
-        .sourceGrid {
+        .sourceGrid,
+        .directionList {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
@@ -992,6 +1067,8 @@
         .actionGrid,
         .scopeGrid,
         .sourceGrid,
+        .directionChooser,
+        .directionList,
         .badgeGrid {
           grid-template-columns: 1fr;
         }
@@ -1231,6 +1308,27 @@
             </div>
           </article>
         </div>
+      </section>
+
+      <section class="pageSection directionSection" id="candidate-directions">
+        <div class="sectionHeader tableHeader">
+          <div>
+            <p class="eyebrow">Candidate Directions</p>
+            <h2>候選方向分類</h2>
+            <p>這裡只列尚在追蹤的團體方向。未匯入具體團名、價格與訂購網址前，不進入「適合選項排序」。</p>
+          </div>
+          <div class="sourceNote">
+            <strong>排序規則</strong>
+            <span>A級、B級是分類條件，不是商品名稱；下方排序只顯示具體可比較選項。</span>
+          </div>
+        </div>
+
+        <div class="directionChooser" id="directionChooser" aria-label="候選方向分類選擇">
+          <button class="active" type="button" data-direction="group-a" aria-pressed="true">A級團體候選方向</button>
+          <button type="button" data-direction="group-b" aria-pressed="false">B級團體價格方向</button>
+        </div>
+
+        <div class="directionDetail" id="directionDetail"></div>
       </section>
 
       <section class="pageSection simulatorSection" id="decision-simulator">
@@ -1546,41 +1644,53 @@
         step: 10000,
       };
 
+      const directionCategories = [
+        {
+          id: "group-a",
+          label: "A級團體候選方向",
+          title: "可選擇的 A級團體候選方向",
+          summary: "A級代表抵達日不計，需保留至少 3 個完整極光夜。這裡只列方向；未匯入具體團名、價格與訂購網址前，不進入排序。",
+          items: [
+            {
+              name: "台灣旅行社完整極光夜團",
+              condition: "需有明確團名、團號、訂購網址、總團費與 3 個完整極光夜口徑。",
+              status: "待匯入具體商品",
+            },
+            {
+              name: "9-11 月秋季 A級團體團",
+              condition: "需確認秋季團仍包含黃刀鎮極光觀賞，且抵達日不計入完整夜。",
+              status: "優先搜尋方向",
+            },
+            {
+              name: "12-3 月冬季 A級團體團",
+              condition: "需同時檢查低溫、航班延誤、飯店與補看規則。",
+              status: "優先搜尋方向",
+            },
+          ],
+        },
+        {
+          id: "group-b",
+          label: "B級團體價格方向",
+          title: "B級團體價格方向",
+          summary: "B級代表 3 晚可能含抵達日，只能當價格備援，不能宣稱為 3 個完整極光夜。",
+          items: [
+            {
+              name: "低價團體備援",
+              condition: "總額需低於預算且明確標示夜數算法。",
+              status: "備援方向",
+            },
+            {
+              name: "促銷團或短天數團",
+              condition: "若抵達日被算入極光夜，排序時必須降級。",
+              status: "需人工判讀",
+            },
+          ],
+        },
+      ];
+
+      let selectedDirectionId = "group-a";
+
       const staticCandidates = [
-        {
-          id: "group-2027-a",
-          title: "秋冬 A 級團體候選方向",
-          packageName: "待查商品：黃刀鎮 A級完整極光夜團",
-          mode: "group",
-          estimatedCost: 148000,
-          auroraLevel: "A",
-          riskLevel: 2,
-          comfort: "balanced",
-          verified: false,
-          dataState: "商品待查",
-          guideUrl: "#pending-2027-recheck",
-          guideLabel: "前往 2027 重查清單",
-          guideNote: "此項目尚不是可下訂商品，需先補齊旅行社網址、團費、航班、飯店、YZF 抵離與補看規則。",
-          description: "抵達日不計，保留 3 個完整極光夜；適合把團體放第一順位，9-11 月秋季團與冬季團都可納入。",
-          nextStep: "取得商品網址後，先查團費、YZF 抵離時間、補看規則、飯店與總費用。",
-        },
-        {
-          id: "group-2027-b",
-          title: "秋冬 B 級團體價格優先方向",
-          packageName: "待查商品：黃刀鎮 B級價格優先團",
-          mode: "group",
-          estimatedCost: 138000,
-          auroraLevel: "B",
-          riskLevel: 2,
-          comfort: "balanced",
-          verified: false,
-          dataState: "商品待查",
-          guideUrl: "#pending-2027-recheck",
-          guideLabel: "前往 2027 重查清單",
-          guideNote: "此項目只能作價格備援，需確認是否真的具備 3 個完整極光夜。",
-          description: "以 3 晚含抵達日為前提，價格較容易留出緩衝，但極光夜數可能被高估。",
-          nextStep: "只作價格備援；若沒有完整 3 個極光夜，不應升為強候選。",
-        },
         {
           id: "source-yktours-gold-5d4n",
           title: "來源匯入：冬季當地套裝低價候選",
@@ -1818,6 +1928,36 @@
         };
       }
 
+      function renderDirection() {
+        const selected = directionCategories.find((category) => category.id === selectedDirectionId) || directionCategories[0];
+        const detail = document.getElementById("directionDetail");
+        detail.innerHTML = `
+          <div class="directionIntro">
+            <h3>${selected.title}</h3>
+            <p>${selected.summary}</p>
+          </div>
+          <div class="directionList">
+            ${selected.items
+              .map(
+                (item) => `
+                  <article class="directionItem">
+                    <span>${item.status}</span>
+                    <h3>${item.name}</h3>
+                    <p>${item.condition}</p>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+        `;
+
+        document.querySelectorAll("#directionChooser button").forEach((button) => {
+          const isActive = button.dataset.direction === selected.id;
+          button.classList.toggle("active", isActive);
+          button.setAttribute("aria-pressed", String(isActive));
+        });
+      }
+
       function renderSimulator() {
         document.getElementById("budgetLabel").textContent = formatCurrency(plannerState.budget);
         document.getElementById("budgetRange").value = plannerState.budget;
@@ -1928,6 +2068,14 @@
         renderSimulator();
       });
 
+      document.getElementById("directionChooser").addEventListener("click", (event) => {
+        const button = event.target.closest("button");
+        if (!button) return;
+        selectedDirectionId = button.dataset.direction;
+        renderDirection();
+      });
+
+      renderDirection();
       renderSimulator();
     </script>
   </body>

@@ -48,6 +48,14 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /訂購網站/);
   assert.match(html, /Yellowknife Tours/);
   assert.doesNotMatch(html, /即時查詢入口|全網即時搜尋|開啟主要資料源查詢|查詢此來源/);
+  assert.match(html, /候選方向分類/);
+  assert.match(html, /可選擇的 A級團體候選方向/);
+  assert.match(html, /台灣旅行社完整極光夜團/);
+  assert.match(html, /未匯入具體團名、價格與訂購網址前，不進入排序/);
+  assert.doesNotMatch(
+    html,
+    /秋冬 A 級團體候選方向|秋冬 B 級團體價格優先方向|待查商品：黃刀鎮 A級完整極光夜團|待查商品：黃刀鎮 B級價格優先團/,
+  );
   assert.match(html, /互動決策模擬器/);
   assert.match(html, /預算上限/);
   assert.match(html, /NT\$100,000 - NT\$400,000/);
@@ -61,11 +69,12 @@ test("server-renders the Yellowknife decision dashboard", async () => {
 });
 
 test("keeps the finished site free of starter preview wiring", async () => {
-  const [page, layout, css, packageJson] = await Promise.all([
+  const [page, layout, css, packageJson, staticHtml] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../index.html", import.meta.url), "utf8"),
   ]);
 
   assert.match(page, /decisionStatuses/);
@@ -74,20 +83,31 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(page, /sourceSyncRows/);
   assert.match(page, /importedFromSource/);
   assert.match(page, /useState<PlannerFilters>/);
+  assert.match(page, /DirectionCategoryId/);
+  assert.match(page, /directionCategories/);
+  assert.match(page, /selectedDirectionId/);
   assert.match(page, /candidateOptions/);
   assert.match(page, /evaluateOption/);
   assert.match(page, /mobileTourCards/);
   assert.match(css, /\.budgetRow\.green/);
   assert.match(css, /\.scopeGrid/);
   assert.match(css, /\.sourceSyncSection/);
+  assert.match(css, /\.directionSection/);
+  assert.match(css, /\.directionChooser/);
   assert.match(css, /\.sourceGrid/);
   assert.match(css, /\.bookingRow/);
   assert.match(css, /\.simulatorShell/);
   assert.match(css, /\.segmentedControl/);
   assert.match(css, /\.optionCard\.strong/);
   assert.match(css, /\.tourCard\.red/);
+  assert.match(staticHtml, /directionCategories/);
+  assert.match(staticHtml, /directionDetail/);
   assert.match(layout, /黃刀鎮極光旅決策儀表板/);
   assert.doesNotMatch(page, /Backlog|enabledFeatures|agingMonitor|budgetIntelligence|destinationTemplate/);
+  assert.doesNotMatch(
+    `${page}\n${staticHtml}`,
+    /秋冬 A 級團體候選方向|秋冬 B 級團體價格優先方向|待查商品：黃刀鎮 A級完整極光夜團|待查商品：黃刀鎮 B級價格優先團|group-2027-a|group-2027-b/,
+  );
   assert.doesNotMatch(css, /backlogRank|enabledGrid|templateGrid|ruleItem/);
   assert.doesNotMatch(page, /SkeletonPreview|codex-preview|_sites-preview/);
   assert.doesNotMatch(layout, /codex-preview|_sites-preview/);
