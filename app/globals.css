@@ -848,6 +848,11 @@ h3 {
   background: #f0f7fb;
 }
 
+.topRecommendation.pending {
+  border-left-color: #64748b;
+  background: #f8fafc;
+}
+
 .topRecommendation.exclude {
   border-left-color: #c24137;
   background: #fff0ee;
@@ -964,6 +969,10 @@ h3 {
   border-left-color: #245c73;
 }
 
+.optionCard.pending {
+  border-left-color: #64748b;
+}
+
 .optionCard.exclude {
   border-left-color: #c24137;
   opacity: 0.78;
@@ -1006,6 +1015,11 @@ h3 {
 .recommendationBadge.backup {
   background: #e6f0ff;
   color: #25528a;
+}
+
+.recommendationBadge.pending {
+  background: #e2e8f0;
+  color: #334155;
 }
 
 .recommendationBadge.exclude {
@@ -1066,6 +1080,99 @@ h3 {
   padding-top: 8px;
   border-top: 1px solid #dbe7e4;
   font-weight: 900;
+}
+
+.flightOptionList,
+.hotelRateList {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.flightOptionList > strong,
+.hotelRateList > strong {
+  color: #173331;
+}
+
+.flightOptionCard {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #dbe7e4;
+  border-radius: 8px;
+  background: #fbfffe;
+}
+
+.flightOptionCard > span {
+  width: 32px;
+  height: 32px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #163b38;
+  color: #fff;
+  font-weight: 900;
+}
+
+.flightOptionCard strong,
+.flightOptionCard small,
+.flightOptionCard p {
+  display: block;
+}
+
+.flightOptionCard p {
+  margin: 6px 0;
+  color: #31504b;
+  line-height: 1.5;
+}
+
+.flightOptionCard small {
+  margin-top: 4px;
+  color: #536a65;
+  line-height: 1.45;
+}
+
+.flightOptionCard a {
+  width: fit-content;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 8px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: #e6f6f1;
+  color: #0b6b58;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.hotelRateList {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.hotelRateList > strong {
+  grid-column: 1 / -1;
+}
+
+.hotelRateCard {
+  display: grid;
+  gap: 5px;
+  padding: 12px;
+  border: 1px solid #dbe7e4;
+  border-radius: 8px;
+  background: #fbfffe;
+  color: #31504b;
+  line-height: 1.45;
+}
+
+.hotelRateCard strong {
+  color: #173331;
+}
+
+.hotelRateCard span,
+.hotelRateCard small {
+  font-size: 0.86rem;
 }
 
 .sourceInline {
@@ -1348,6 +1455,7 @@ td {
   .comfortControl,
   .optionMetrics,
   .estimateGrid,
+  .hotelRateList,
   .reasonColumns {
     grid-template-columns: 1fr;
   }

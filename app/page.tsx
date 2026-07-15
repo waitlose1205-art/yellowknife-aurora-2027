@@ -73,6 +73,150 @@ const sourceStatusRegistry = {
 
 type SourceStatusId = keyof typeof sourceStatusRegistry;
 
+type FlightOption = {
+  priority: number;
+  airline: string;
+  route: string;
+  role: string;
+  recommendedUse: string;
+  riskCheck: string;
+  estimate: string;
+  bookingUrl: string;
+};
+
+type MonthlyHotelEstimate = {
+  month: string;
+  yellowknife: string;
+  vancouver: string;
+  total: string;
+  note: string;
+};
+
+const independentFlightOptions: FlightOption[] = [
+  {
+    priority: 1,
+    airline: "Air Canada 加拿大航空",
+    route: "TPE -> YVR / YEG / YYC / YYZ -> YZF",
+    role: "可直接查台北到黃刀鎮完整行程",
+    recommendedUse: "自由行首選；優先同一張票到底、加拿大境內轉機少、行李可直掛。",
+    riskCheck: "準點率與罷工紀錄需納入風險；冬季至少保留 4 小時以上轉機緩衝或 YVR 過夜。",
+    estimate: "估算機票 NT$48,000-58,000；2027 付款頁需重查。",
+    bookingUrl: "https://www.aircanada.com/en-ca/flights-from-taipei-to-yellowknife",
+  },
+  {
+    priority: 2,
+    airline: "EVA Air 長榮航空",
+    route: "TPE -> YVR / YYZ，再接加拿大境內段",
+    role: "長程直飛品質穩定",
+    recommendedUse: "搭配 Air Canada、WestJet 或 Canadian North；適合舒適型自由行。",
+    riskCheck: "若分開開票，行李直掛、延誤責任與 YVR 過夜成本要獨立確認。",
+    estimate: "估算機票 NT$49,000-57,000 + YVR 住宿。",
+    bookingUrl: "https://flights.evaair.com/en/flights-from-taipei-to-vancouver",
+  },
+  {
+    priority: 3,
+    airline: "China Airlines 中華航空",
+    route: "TPE -> YVR，再接加拿大境內段",
+    role: "長程替代方案",
+    recommendedUse: "價格好時納入；可作 Air Canada 或長榮的替代長程段。",
+    riskCheck: "分開開票會提高行李與誤點風險；不排短轉機。",
+    estimate: "估算機票 NT$46,000-52,000 + YVR 住宿。",
+    bookingUrl: "https://flights.china-airlines.com/en-tw/flights-from-taipei-to-vancouver",
+  },
+  {
+    priority: 4,
+    airline: "WestJet",
+    route: "YYC / YEG -> YZF",
+    role: "加拿大境內價格備援",
+    recommendedUse: "當 Calgary 或 Edmonton 轉機價格明顯較好時才納入。",
+    riskCheck: "曾有罷工與取消航班新聞；冬季不排短轉機，不作唯一方案。",
+    estimate: "估算總機票 NT$44,000-56,000；內陸段需當季重查。",
+    bookingUrl: "https://www.westjet.com/",
+  },
+  {
+    priority: 5,
+    airline: "Canadian North",
+    route: "YEG -> YZF 與北方航線",
+    role: "Edmonton 北方航線備援",
+    recommendedUse: "適合接 Edmonton；作為 Air Canada / WestJet 之外的北方段備案。",
+    riskCheck: "班次與天候變動較大；需查當季班表與行李銜接。",
+    estimate: "估算總機票 NT$48,000-60,000；北方段需重查。",
+    bookingUrl: "https://canadiannorth.com/",
+  },
+  {
+    priority: 6,
+    airline: "Air North",
+    route: "季節性 YVR / YXY / YYZ / YOW -> YZF",
+    role: "季節班備案",
+    recommendedUse: "若剛好有 Vancouver-Yellowknife 季節班，可作有價值備案。",
+    riskCheck: "季節性與班次少是主要風險；不可作唯一方案。",
+    estimate: "估算總機票 NT$46,000-58,000；需確認季節班是否開航。",
+    bookingUrl: "https://www.flyairnorth.com/",
+  },
+  {
+    priority: 7,
+    airline: "STARLUX 星宇航空",
+    route: "TPE -> SEA / SFO / LAX -> Canada -> YZF",
+    role: "價格或哩程備案",
+    recommendedUse: "只在價格或哩程明顯有利時使用；不作主推薦。",
+    riskCheck: "美國轉機段數多，需檢查入境/轉機條件、行李責任與延誤風險。",
+    estimate: "估算機票 NT$52,000-68,000 + 美國轉機成本。",
+    bookingUrl: "https://www.starlux-airlines.com/",
+  },
+];
+
+const independentHotelMonthlyRates: MonthlyHotelEstimate[] = [
+  {
+    month: "9月",
+    yellowknife: "YZF NT$5,000-7,000/晚",
+    vancouver: "YVR NT$4,000-5,800/晚",
+    total: "6 晚房費約 NT$34,000-49,600/房",
+    note: "秋季可列入極光重點；仍需確認可售套裝與接駁。",
+  },
+  {
+    month: "10月",
+    yellowknife: "YZF NT$5,200-7,600/晚",
+    vancouver: "YVR NT$4,100-5,900/晚",
+    total: "6 晚房費約 NT$35,000-50,800/房",
+    note: "秋季與初冬交界，價格常比深冬穩定。",
+  },
+  {
+    month: "11月",
+    yellowknife: "YZF NT$5,800-8,600/晚",
+    vancouver: "YVR NT$4,300-6,300/晚",
+    total: "6 晚房費約 NT$39,800-57,000/房",
+    note: "冬季需求上升前需提早鎖房型。",
+  },
+  {
+    month: "12月",
+    yellowknife: "YZF NT$6,500-9,800/晚",
+    vancouver: "YVR NT$4,800-7,200/晚",
+    total: "6 晚房費約 NT$45,600-68,400/房",
+    note: "假期與冬季活動需求增加，需保留預算緩衝。",
+  },
+  {
+    month: "1月",
+    yellowknife: "YZF NT$6,800-10,500/晚",
+    vancouver: "YVR NT$4,800-7,500/晚",
+    total: "6 晚房費約 NT$46,800-72,000/房",
+    note: "嚴冬月份，住宿與延誤備援都要拉高。",
+  },
+  {
+    month: "2月",
+    yellowknife: "YZF NT$7,200-11,200/晚",
+    vancouver: "YVR NT$5,000-7,800/晚",
+    total: "6 晚房費約 NT$48,800-76,400/房",
+    note: "寒假與旺季警戒，預算上限需重新測試。",
+  },
+  {
+    month: "3月",
+    yellowknife: "YZF NT$6,600-9,800/晚",
+    vancouver: "YVR NT$4,700-7,200/晚",
+    total: "6 晚房費約 NT$45,800-68,400/房",
+    note: "可對照 2026 三月低價團體樣本。",
+  },
+];
+
 type CostBasis = {
   readiness: "complete" | "partial" | "missing" | "historical";
   label: string;
@@ -82,6 +226,8 @@ type CostBasis = {
   scheduleDetail: string;
   priceDetail: string;
   missingItems: string[];
+  flightOptions?: FlightOption[];
+  hotelMonthlyRates?: MonthlyHotelEstimate[];
 };
 
 const sourceSyncRows = [
@@ -107,10 +253,10 @@ const sourceSyncRows = [
     name: "長汎 2026 團體樣本（四出發日）",
     source: "長汎旅遊",
     sourceStatusId: "everfun",
-    status: "已併入排序",
+    status: "僅作歷史基準",
     amount: "NT$142,451-165,451",
     bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB",
-    note: "四筆 2026 團體歷史基準，不代表目前可下訂，但可避免 B級團體只剩單一樣本。",
+    note: "四筆 2026 團體歷史基準，不代表目前可下訂，不進入候選方向或推薦排序。",
   },
   {
     name: "Air Canada YVR-YZF 月份票價",
@@ -186,7 +332,7 @@ const tourRows = [
 type TravelMode = "group" | "independent" | "either";
 type AuroraTarget = "A" | "B" | "either";
 type ComfortLevel = "basic" | "balanced" | "comfort" | "any";
-type ResultStatus = "strong" | "conditional" | "backup" | "exclude";
+type ResultStatus = "strong" | "conditional" | "backup" | "pending" | "exclude";
 
 type PlannerFilters = {
   budget: number;
@@ -297,31 +443,25 @@ const directionCategories = [
     id: "group-b",
     label: "B級團體價格方向",
     title: "B級團體價格方向",
-    summary: "B級代表 3 晚可能含抵達日，只能當價格備援，不能宣稱為 3 個完整極光夜。此分類會列出所有已匯入的 B級團體樣本。",
+    summary: "B級代表 3 晚可能含抵達日，只能當價格備援，不能宣稱為 3 個完整極光夜。此分類只列未來可查核商品方向，已結束的 2026 行程只留在歷史基準表。",
     items: [
       {
-        candidateId: "group-2026-jan15",
-        name: "玩美加族~加拿大極光10日（2026/01/15）",
-        condition: "2026 一月 B級團體歷史樣本，必要費後接近 NT$150,000。",
-        status: "B級歷史旅行團",
+        candidateId: "group-b-price-watch",
+        name: "B級團體價格優先團",
+        condition: "需有未來可售日期、旅遊團名稱、訂購網址、總團費與 3 晚極光口徑。",
+        status: "待匯入旅行團",
       },
       {
-        candidateId: "group-2026-feb12",
-        name: "玩美加族~加拿大極光10日（2026/02/12）",
-        condition: "2026 二月寒假 B級團體歷史樣本，可作旺季價格警戒。",
-        status: "B級歷史旅行團",
+        candidateId: "group-b-autumn-price",
+        name: "9-11 月 B級價格團",
+        condition: "秋季商品若只標示 3 晚極光，需確認是否把抵達日算入。",
+        status: "待匯入旅行團",
       },
       {
-        candidateId: "group-2026-feb19",
-        name: "玩美加族~加拿大極光10日（2026/02/19）",
-        condition: "2026 二月 B級團體歷史樣本，必要費後略高於原始預算。",
-        status: "B級歷史旅行團",
-      },
-      {
-        candidateId: "group-2026-march",
-        name: "玩美加族~加拿大極光10日（2026/03/19）",
-        condition: "2026 三月低價團體歷史樣本，B級夜數，可作團體價格底線但不可直接下訂。",
-        status: "B級歷史旅行團",
+        candidateId: "group-b-winter-price",
+        name: "12-3 月 B級價格團",
+        condition: "冬季價格團需確認 YZF 抵離時間、補看規則與必要費後總額。",
+        status: "待匯入旅行團",
       },
     ],
   },
@@ -453,6 +593,96 @@ const candidateOptions: CandidateOption[] = [
     },
   },
   {
+    id: "group-b-price-watch",
+    title: "B級團體待查：價格優先團",
+    packageName: "待查商品：B級 3 晚價格優先團",
+    mode: "group",
+    estimatedCost: 0,
+    auroraLevel: "B",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: false,
+    dataState: "待匯入來源",
+    guideUrl: "#pending-2027-recheck",
+    guideLabel: "查看缺資料清單",
+    guideNote: "此項目只代表未來可售 B級團體搜尋方向；不能用 2026 已結束行程替代。",
+    description: "保留 B級價格優先搜尋方向，需等未來可售商品匯入後才可比較。",
+    nextStep: "匯入可售旅行團後，比對總團費、訂購網址、YZF 抵離時間與是否含抵達日。",
+    departureWindow: "未來可售日期待查",
+    productType: "B級團體待查",
+    rankingSummary: "B級價格方向可作備援，但目前缺少可售商品資料；不可用已結束行程當候選。",
+    costBasis: {
+      readiness: "missing",
+      label: "價格尚未公布",
+      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
+      flightDetail: "尚未公布未來團體航班與 YZF 抵離時間。",
+      hotelDetail: "尚未公布未來團體飯店或同級條件。",
+      scheduleDetail: "尚未公布 3 晚極光是否含抵達日；需明確標成 B級。",
+      priceDetail: "尚未公布團費、稅費、小費、保險與必要附加費總額。",
+      missingItems: ["未來可售日期", "旅遊團名稱", "訂購網址", "總團費", "航班", "飯店", "B級夜數口徑"],
+    },
+  },
+  {
+    id: "group-b-autumn-price",
+    title: "B級團體待查：9-11 月價格團",
+    packageName: "待查商品：9-11 月 B級價格團",
+    mode: "group",
+    estimatedCost: 0,
+    auroraLevel: "B",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: false,
+    dataState: "待匯入來源",
+    guideUrl: "#pending-2027-recheck",
+    guideLabel: "查看缺資料清單",
+    guideNote: "秋季 B級團可列入重點，但需先確認不是已結束或不可售商品。",
+    description: "保留 9-11 月 B級價格團搜尋方向，適合檢查秋季是否有較低總額。",
+    nextStep: "匯入秋季可售團後，確認 3 晚極光口徑、飯店、航班與訂購頁。",
+    departureWindow: "9-11 月待查",
+    productType: "B級秋季團體待查",
+    rankingSummary: "秋季 B級團可作價格備援；目前缺少可售商品資料。",
+    costBasis: {
+      readiness: "missing",
+      label: "價格尚未公布",
+      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
+      flightDetail: "尚未公布秋季團航班與 YZF 抵離時間。",
+      hotelDetail: "尚未公布秋季團飯店。",
+      scheduleDetail: "尚未公布是否把抵達日算入 3 晚極光。",
+      priceDetail: "尚未公布團費與必要附加費。",
+      missingItems: ["秋季可售日期", "旅遊團名稱", "團費", "航班", "飯店", "訂購網址"],
+    },
+  },
+  {
+    id: "group-b-winter-price",
+    title: "B級團體待查：12-3 月價格團",
+    packageName: "待查商品：12-3 月 B級價格團",
+    mode: "group",
+    estimatedCost: 0,
+    auroraLevel: "B",
+    riskLevel: 2,
+    comfort: "balanced",
+    verified: false,
+    dataState: "待匯入來源",
+    guideUrl: "#pending-2027-recheck",
+    guideLabel: "查看缺資料清單",
+    guideNote: "冬季 B級價格團須額外查低溫、延誤與補看規則。",
+    description: "保留 12-3 月 B級價格團搜尋方向，用來追蹤冬季低價團是否值得列入備援。",
+    nextStep: "匯入冬季可售團後，確認總費用、航班延誤備援、飯店與補看條款。",
+    departureWindow: "12-3 月待查",
+    productType: "B級冬季團體待查",
+    rankingSummary: "冬季 B級團可能有價格優勢，但缺少可售商品資料前不能推薦。",
+    costBasis: {
+      readiness: "missing",
+      label: "價格尚未公布",
+      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
+      flightDetail: "尚未公布冬季團航班、轉機與延誤備援。",
+      hotelDetail: "尚未公布冬季團飯店與保暖動線。",
+      scheduleDetail: "尚未公布 YZF 夜數配置與補看規則。",
+      priceDetail: "尚未公布團費、冬衣、稅費、小費與必要附加費總額。",
+      missingItems: ["冬季可售日期", "航班延誤備援", "飯店", "補看規則", "總費用", "訂購網址"],
+    },
+  },
+  {
     id: "source-yktours-gold-5d4n",
     title: "來源匯入：冬季當地套裝低價候選",
     packageName: "Yellowknife Tours 5D4N Gold Hotel Package",
@@ -480,6 +710,8 @@ const candidateOptions: CandidateOption[] = [
       scheduleDetail: "參考 2026/03/19-03/28 十日節奏：Day 3 抵達 YZF，Day 4 約 2 小時市區自由；自由行應把抵達夜作緩衝，保留後續 3 個完整極光夜。",
       priceDetail: "以 Gold 套裝 CAD 1,490 + 5% GST、M2.1 機票區間與 2026 團體必要費結構估算；2027 付款頁需重查。",
       missingItems: ["2027 正式航班票價", "2027 YZF 抵離時間", "2027 實際房型", "付款頁總額"],
+      flightOptions: independentFlightOptions,
+      hotelMonthlyRates: independentHotelMonthlyRates,
     },
     bookingUrl: "https://yellowknifetours.com/winter-packages/",
     bookingLabel: "前往 Yellowknife Tours 訂購/詢價",
@@ -517,6 +749,8 @@ const candidateOptions: CandidateOption[] = [
       scheduleDetail: "參考 2026 十日節奏，但自由行調整為 YVR 緩衝與 YZF 4 晚，確保抵達夜不計後仍有 3 個完整極光夜。",
       priceDetail: "以 Diamond 套裝 CAD 2,398 + 5% GST、M2.1 機票區間與 2026 必要費結構估算；接近 NT$150,000 時需重查低票價。",
       missingItems: ["2027 正式航班票價", "2027 實際房型", "YVR 過夜住宿價", "付款頁總額"],
+      flightOptions: independentFlightOptions,
+      hotelMonthlyRates: independentHotelMonthlyRates,
     },
     bookingUrl: "https://yellowknifetours.com/winter-packages/",
     bookingLabel: "前往 Yellowknife Tours 訂購/詢價",
@@ -702,6 +936,8 @@ const candidateOptions: CandidateOption[] = [
       scheduleDetail: "參考 2026/03/19-03/28 十日節奏，但自由行改為抵達夜緩衝＋3 個完整極光夜，避免把抵達日算入 A 級夜數。",
       priceDetail: "採 M2.1 舒適型雙人區間：機票 NT$42,000-55,000、Gold Explorer 或同級、2 晚 YVR 較佳住宿與必要費。",
       missingItems: ["2027 航班票價重查", "2027 飯店房價重查", "YZF 抵離時間確認", "活動與保險總額確認"],
+      flightOptions: independentFlightOptions,
+      hotelMonthlyRates: independentHotelMonthlyRates,
     },
   },
   {
@@ -732,6 +968,8 @@ const candidateOptions: CandidateOption[] = [
       scheduleDetail: "參考 2026 Day 3 抵 YZF 的節奏；自由行需確保 YZF 至少 4 晚，抵達夜只當緩衝。",
       priceDetail: "採 M2.1 節制型雙人區間：機票 NT$36,000-48,000、Gold Quality/Nova、2 晚 YVR 平價住宿與基本餐飲交通。",
       missingItems: ["2027 低價航班重查", "2027 節制型房價重查", "轉機緩衝確認", "必要費總額確認"],
+      flightOptions: independentFlightOptions,
+      hotelMonthlyRates: independentHotelMonthlyRates,
     },
   },
   {
@@ -762,6 +1000,8 @@ const candidateOptions: CandidateOption[] = [
       scheduleDetail: "參考 2026 十日節奏並保留抵達夜緩衝；單人移動需降低深夜抵達與嚴寒步行風險。",
       priceDetail: "採 M2.1 單人自由行區間：Gold Explorer 單人、溫哥華單人房、機票與必要費，單房差是主要成本來源。",
       missingItems: ["2027 單人房價重查", "2027 航班票價重查", "YVR 過夜成本確認", "必要費總額確認"],
+      flightOptions: independentFlightOptions,
+      hotelMonthlyRates: independentHotelMonthlyRates,
     },
   },
 ];
@@ -799,6 +1039,22 @@ function getEstimateLabel(option: CandidateOption) {
     ? formatCurrency(option.estimatedCost)
     : option.costBasis.totalLabel;
 }
+
+function isRecommendationOption(option: CandidateOption) {
+  return option.costBasis.readiness !== "historical";
+}
+
+function isActionableStatus(status: ResultStatus) {
+  return status === "strong" || status === "conditional" || status === "backup";
+}
+
+const resultStatusOrder: Record<ResultStatus, number> = {
+  strong: 0,
+  conditional: 1,
+  backup: 2,
+  pending: 3,
+  exclude: 4,
+};
 
 function getBudgetStatus(option: CandidateOption, budget: number) {
   if (option.costBasis.readiness === "missing") {
@@ -869,14 +1125,12 @@ function rankDirectionItems(
   items: (typeof directionCategories)[number]["items"],
   evaluatedById: Map<string, ReturnType<typeof evaluateOption>>,
 ) {
-  const statusOrder: Record<ResultStatus, number> = { strong: 0, conditional: 1, backup: 2, exclude: 3 };
-
   return [...items].sort((first, second) => {
     const firstResult = "candidateId" in first ? evaluatedById.get(first.candidateId) : null;
     const secondResult = "candidateId" in second ? evaluatedById.get(second.candidateId) : null;
 
     if (firstResult && secondResult) {
-      return statusOrder[firstResult.status] - statusOrder[secondResult.status] || secondResult.score - firstResult.score;
+      return resultStatusOrder[firstResult.status] - resultStatusOrder[secondResult.status] || secondResult.score - firstResult.score;
     }
 
     if (firstResult) {
@@ -1002,7 +1256,9 @@ function evaluateOption(option: CandidateOption, filters: PlannerFilters) {
   }
 
   let status: ResultStatus = "exclude";
-  if (blockers.length === 0 && score >= 112) {
+  if (option.costBasis.readiness === "missing") {
+    status = "pending";
+  } else if (blockers.length === 0 && score >= 112) {
     status = "strong";
   } else if (blockers.length === 0 && score >= 88) {
     status = "conditional";
@@ -1011,7 +1267,15 @@ function evaluateOption(option: CandidateOption, filters: PlannerFilters) {
   }
 
   const statusLabel =
-    status === "strong" ? "強候選" : status === "conditional" ? "條件候選" : status === "backup" ? "備援" : "排除";
+    status === "strong"
+      ? "強候選"
+      : status === "conditional"
+        ? "條件候選"
+        : status === "backup"
+          ? "備援"
+          : status === "pending"
+            ? "待查"
+            : "排除";
 
   return {
     option,
@@ -1039,6 +1303,7 @@ function getDecisionGates(budget: number) {
     ["強候選", `低於 ${formatCurrency(budget)}，YZF 夜數清楚，並接近 A 級三個完整極光夜。`],
     ["條件候選", `價格接近 ${formatCurrency(budget)}，但需要明確補看、延誤或 YVR 過夜方案。`],
     ["備援", `價格、體力或證據信心不足，但仍未明顯超過 ${formatCurrency(budget)} 的可比較上限。`],
+    ["待查", "缺少未來可售日期、價格、航班、飯店或訂購網址；只能保留為搜尋方向。"],
     ["排除", `超過 ${formatCurrency(budget)}、轉機過度、核心極光夜無保護，或使用未知 2027 細節作賣點。`],
   ];
 }
@@ -1047,21 +1312,25 @@ export default function Home() {
   const [filters, setFilters] = useState<PlannerFilters>(defaultPlanner);
   const [draftFilters, setDraftFilters] = useState<PlannerFilters>(defaultPlanner);
   const [selectedDirectionId, setSelectedDirectionId] = useState<DirectionCategoryId | null>(null);
+  const [hasConfirmedPlanner, setHasConfirmedPlanner] = useState(false);
   const hasPendingChanges = !isSamePlannerFilters(draftFilters, filters);
+  const needsPlannerCheck = !hasConfirmedPlanner || hasPendingChanges;
 
   const evaluatedOptions = useMemo(
     () =>
       candidateOptions
+        .filter(isRecommendationOption)
         .map((option) => evaluateOption(option, filters))
         .sort((a, b) => {
-          const order: Record<ResultStatus, number> = { strong: 0, conditional: 1, backup: 2, exclude: 3 };
-          return order[a.status] - order[b.status] || b.score - a.score;
+          return resultStatusOrder[a.status] - resultStatusOrder[b.status] || b.score - a.score;
         }),
     [filters],
   );
 
-  const bestOption = evaluatedOptions.find((result) => result.status !== "exclude") ?? evaluatedOptions[0];
-  const activeCount = evaluatedOptions.filter((result) => result.status !== "exclude").length;
+  const bestOption = evaluatedOptions.find((result) => isActionableStatus(result.status)) ?? evaluatedOptions[0];
+  const activeCount = evaluatedOptions.filter((result) => isActionableStatus(result.status)).length;
+  const pendingCount = evaluatedOptions.filter((result) => result.status === "pending").length;
+  const excludeCount = evaluatedOptions.filter((result) => result.status === "exclude").length;
   const evaluatedById = new Map(evaluatedOptions.map((result) => [result.option.id, result]));
   const syncedDirectionId = getDirectionIdForFilters(filters, bestOption.option);
   const activeDirectionId = selectedDirectionId ?? syncedDirectionId;
@@ -1073,6 +1342,7 @@ export default function Home() {
   const applyPlannerFilters = () => {
     setFilters(draftFilters);
     setSelectedDirectionId(null);
+    setHasConfirmedPlanner(true);
   };
   const updateDraftFilters = (updater: (current: PlannerFilters) => PlannerFilters) => {
     setDraftFilters(updater);
@@ -1148,8 +1418,9 @@ export default function Home() {
           <div className="sourceNote">
             <strong>同步狀態</strong>
             <span>
-              已匯入 {candidateOptions.filter((option) => option.importedFromSource).length} 筆可排序候選；匯率：1 CAD ≈
-              NT$22.8176；查核基準日：2026-07-15。
+              已匯入{" "}
+              {candidateOptions.filter((option) => option.importedFromSource && isRecommendationOption(option)).length}{" "}
+              筆可排序候選；2026 已結束行程僅作歷史基準；匯率：1 CAD ≈ NT$22.8176；查核基準日：2026-07-15。
             </span>
           </div>
         </div>
@@ -1311,10 +1582,12 @@ export default function Home() {
               <button className="applyPlannerButton" onClick={applyPlannerFilters} type="button">
                 確認並查核
               </button>
-              <span className={`applyPlannerStatus ${hasPendingChanges ? "pending" : "ready"}`}>
-                {hasPendingChanges
-                  ? "條件已修改，尚未查核；下方仍顯示上次確認結果。"
-                  : "條件已確認；下方推薦與候選方向已同步。"}
+              <span className={`applyPlannerStatus ${needsPlannerCheck ? "pending" : "ready"}`}>
+                {!hasConfirmedPlanner
+                  ? "尚未查核；請先確認條件，才會產生推薦。"
+                  : hasPendingChanges
+                    ? "條件已修改，尚未查核；下方仍顯示上次確認結果。"
+                    : "條件已確認；下方推薦與候選方向已同步。"}
               </span>
             </div>
 
@@ -1322,43 +1595,57 @@ export default function Home() {
           </aside>
 
           <div className="resultPanel" aria-live="polite">
-            <div className={`topRecommendation ${bestOption.status}`}>
-              <span className="recommendationKicker">目前最適合</span>
-              <strong>{bestOption.option.packageName}</strong>
-              <div className="resultCounts">
-                <span>可考慮 {activeCount}</span>
-                <span>排除 {evaluatedOptions.length - activeCount}</span>
+            {!hasConfirmedPlanner ? (
+              <div className="topRecommendation pending">
+                <span className="recommendationKicker">尚未查核</span>
+                <strong>請先設定條件並按「確認並查核」</strong>
+                <div className="resultCounts">
+                  <span>未產生推薦</span>
+                  <span>預算尚未套用</span>
+                </div>
+                <p>目前不顯示最適合選項，避免在未決策價格或條件前誤判。</p>
               </div>
-              <div className="recommendationMeta">
-                <span>已確認條件</span>
-                <span>預算基準 {formatCurrency(filters.budget)}</span>
-                <span>{bestOption.option.productType}</span>
-                <span>{bestOption.option.departureWindow}</span>
-                <span>{bestOption.option.title}</span>
-                <span>{bestOption.option.dataState}</span>
-                <span>{bestOption.option.costBasis.label}</span>
-                <span>{getAuroraLevelLabel(bestOption.option.auroraLevel)}</span>
-                {bestOption.option.sourceName ? <span>{bestOption.option.sourceName}</span> : null}
-                {bestSourceStatus ? <span>{bestSourceStatus.safetyLabel}</span> : null}
-                {bestSourceStatus ? <span>{bestSourceStatus.freshnessLabel}</span> : null}
+            ) : (
+              <div className={`topRecommendation ${bestOption.status}`}>
+                <span className="recommendationKicker">{hasPendingChanges ? "上次確認結果" : "目前最適合"}</span>
+                <strong>{bestOption.option.packageName}</strong>
+                <div className="resultCounts">
+                  <span>可考慮 {activeCount}</span>
+                  <span>待查 {pendingCount}</span>
+                  <span>排除 {excludeCount}</span>
+                </div>
+                <div className="recommendationMeta">
+                  <span>已確認條件</span>
+                  {hasPendingChanges ? <span>有未查核變更</span> : null}
+                  <span>預算基準 {formatCurrency(filters.budget)}</span>
+                  <span>{bestOption.option.productType}</span>
+                  <span>{bestOption.option.departureWindow}</span>
+                  <span>{bestOption.option.title}</span>
+                  <span>{bestOption.option.dataState}</span>
+                  <span>{bestOption.option.costBasis.label}</span>
+                  <span>{getAuroraLevelLabel(bestOption.option.auroraLevel)}</span>
+                  {bestOption.option.sourceName ? <span>{bestOption.option.sourceName}</span> : null}
+                  {bestSourceStatus ? <span>{bestSourceStatus.safetyLabel}</span> : null}
+                  {bestSourceStatus ? <span>{bestSourceStatus.freshnessLabel}</span> : null}
+                </div>
+                <p>
+                  {bestOption.statusLabel}；分數 {bestOption.score}。{bestOption.option.description}
+                </p>
+                <div className="rankingSummary">
+                  <strong>為什麼這樣排：</strong>
+                  <span>{bestOption.option.rankingSummary}</span>
+                </div>
+                <div className="recommendationAction">
+                  {bestOption.option.bookingUrl ? (
+                    <a className="bookingLink" href={bestOption.option.bookingUrl} rel="noreferrer" target="_blank">
+                      {bestOption.option.bookingLabel ?? "訂購網站"}
+                    </a>
+                  ) : null}
+                  <a href={bestOption.option.guideUrl}>{bestOption.option.guideLabel}</a>
+                  <small>{bestOption.option.guideNote}</small>
+                </div>
               </div>
-              <p>
-                {bestOption.statusLabel}；分數 {bestOption.score}。{bestOption.option.description}
-              </p>
-              <div className="rankingSummary">
-                <strong>為什麼這樣排：</strong>
-                <span>{bestOption.option.rankingSummary}</span>
-              </div>
-              <div className="recommendationAction">
-                {bestOption.option.bookingUrl ? (
-                  <a className="bookingLink" href={bestOption.option.bookingUrl} rel="noreferrer" target="_blank">
-                    {bestOption.option.bookingLabel ?? "訂購網站"}
-                  </a>
-                ) : null}
-                <a href={bestOption.option.guideUrl}>{bestOption.option.guideLabel}</a>
-                <small>{bestOption.option.guideNote}</small>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
@@ -1398,7 +1685,11 @@ export default function Home() {
             <p>{selectedDirection.summary}</p>
           </div>
           <div className="directionBudgetNote">
-            已確認價格基準：{formatCurrency(filters.budget)}；候選方向已依上方確認條件重新查核。
+            {!hasConfirmedPlanner
+              ? "尚未確認價格基準；請先在上方按「確認並查核」。"
+              : hasPendingChanges
+                ? `上次確認價格基準：${formatCurrency(filters.budget)}；目前條件尚未重新查核。`
+                : `已確認價格基準：${formatCurrency(filters.budget)}；候選方向已依上方確認條件重新查核。`}
           </div>
           <div className="directionListHeader">旅行團與方案清單</div>
           <div className="directionList">
@@ -1454,6 +1745,40 @@ export default function Home() {
                           {linkedOption.costBasis.priceDetail}
                         </span>
                       </div>
+                      {linkedOption.costBasis.flightOptions ? (
+                        <div className="flightOptionList">
+                          <strong>自由行航班候選</strong>
+                          {linkedOption.costBasis.flightOptions.map((flight) => (
+                            <div className="flightOptionCard" key={flight.airline}>
+                              <span>{flight.priority}</span>
+                              <div>
+                                <strong>{flight.airline}</strong>
+                                <small>{flight.route}</small>
+                                <p>{flight.role}；{flight.recommendedUse}</p>
+                                <small>{flight.estimate}</small>
+                                <small>{flight.riskCheck}</small>
+                                <a href={flight.bookingUrl} rel="noreferrer" target="_blank">
+                                  航空公司查詢
+                                </a>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : null}
+                      {linkedOption.costBasis.hotelMonthlyRates ? (
+                        <div className="hotelRateList">
+                          <strong>自由行住宿月份估算</strong>
+                          {linkedOption.costBasis.hotelMonthlyRates.map((hotel) => (
+                            <div className="hotelRateCard" key={hotel.month}>
+                              <strong>{hotel.month}</strong>
+                              <span>{hotel.yellowknife}</span>
+                              <span>{hotel.vancouver}</span>
+                              <span>{hotel.total}</span>
+                              <small>{hotel.note}</small>
+                            </div>
+                          ))}
+                        </div>
+                      ) : null}
                       {linkedOption.costBasis.missingItems.length > 0 ? (
                         <div className="directionUnpublished">
                           <strong>尚未公布／需重查</strong>
