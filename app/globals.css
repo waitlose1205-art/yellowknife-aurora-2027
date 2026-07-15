@@ -377,6 +377,10 @@ h3 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.auroraControl {
+  grid-template-columns: 1fr;
+}
+
 .segmentedControl button {
   min-height: 42px;
   padding: 8px 10px;
@@ -390,10 +394,26 @@ h3 {
   font-weight: 900;
 }
 
+.segmentedControl button span,
+.segmentedControl button small {
+  display: block;
+}
+
+.segmentedControl button small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
 .segmentedControl button.active {
   border-color: #163b38;
   background: #163b38;
   color: #fff;
+}
+
+.segmentedControl button.active small {
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .toggleRow {

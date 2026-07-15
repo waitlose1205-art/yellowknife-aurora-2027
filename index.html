@@ -355,6 +355,10 @@
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
 
+      .auroraControl {
+        grid-template-columns: 1fr;
+      }
+
       .segmentedControl button {
         min-height: 42px;
         padding: 8px 10px;
@@ -368,10 +372,26 @@
         font-weight: 900;
       }
 
+      .segmentedControl button span,
+      .segmentedControl button small {
+        display: block;
+      }
+
+      .segmentedControl button small {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 0.76rem;
+        line-height: 1.35;
+      }
+
       .segmentedControl button.active {
         border-color: #163b38;
         background: #163b38;
         color: #fff;
+      }
+
+      .segmentedControl button.active small {
+        color: rgba(255, 255, 255, 0.78);
       }
 
       .toggleRow {
@@ -1120,10 +1140,19 @@
 
             <div class="controlGroup">
               <span class="controlTitle">最低極光夜數</span>
-              <div class="segmentedControl" data-filter="auroraTarget">
-                <button class="active" data-value="A" type="button">A 級優先</button>
-                <button data-value="B" type="button">B 級可接受</button>
-                <button data-value="either" type="button">不限夜數</button>
+              <div class="segmentedControl auroraControl" data-filter="auroraTarget">
+                <button class="active" data-value="A" type="button">
+                  <span>A級：至少 3 個完整極光夜</span>
+                  <small>抵達日不計</small>
+                </button>
+                <button data-value="B" type="button">
+                  <span>B級：至少 3 晚</span>
+                  <small>含抵達日</small>
+                </button>
+                <button data-value="either" type="button">
+                  <span>不限夜數</span>
+                  <small>僅作開放比較</small>
+                </button>
               </div>
             </div>
 
@@ -1779,6 +1808,7 @@
 
       const getModeLabel = (mode) => (mode === "group" ? "團體" : "自由行");
       const getComfortLabel = (level) => (level === "basic" ? "節制" : level === "comfort" ? "舒適" : "平衡");
+      const getAuroraLevelLabel = (level) => (level === "A" ? "A級：3 個完整極光夜" : "B級：3 晚含抵達日");
 
       function evaluateStaticOption(option) {
         let score = 40;
@@ -1926,7 +1956,7 @@
                 </div>
                 <div class="optionMetrics">
                   <span><strong>${formatCurrency(result.option.estimatedCost)}</strong><small>估算總額</small></span>
-                  <span><strong>${result.option.auroraLevel} 級</strong><small>極光夜數</small></span>
+                  <span><strong>${getAuroraLevelLabel(result.option.auroraLevel)}</strong><small>極光夜數規則</small></span>
                   <span><strong>${getModeLabel(result.option.mode)}</strong><small>旅行型態</small></span>
                   <span><strong>${getComfortLabel(result.option.comfort)}</strong><small>舒適度</small></span>
                 </div>

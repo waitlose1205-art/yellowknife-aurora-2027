@@ -314,9 +314,9 @@ const modeChoices = [
 ] as const;
 
 const auroraChoices = [
-  { value: "A", label: "A 級優先" },
-  { value: "B", label: "B 級可接受" },
-  { value: "either", label: "不限夜數" },
+  { value: "A", label: "A級：至少 3 個完整極光夜", note: "抵達日不計" },
+  { value: "B", label: "B級：至少 3 晚", note: "含抵達日" },
+  { value: "either", label: "不限夜數", note: "僅作開放比較" },
 ] as const;
 
 const riskChoices = [
@@ -429,6 +429,10 @@ function getModeLabel(mode: CandidateOption["mode"]) {
 
 function getComfortLabel(level: Exclude<ComfortLevel, "any">) {
   return level === "basic" ? "節制" : level === "comfort" ? "舒適" : "平衡";
+}
+
+function getAuroraLevelLabel(level: Exclude<AuroraTarget, "either">) {
+  return level === "A" ? "A級：3 個完整極光夜" : "B級：3 晚含抵達日";
 }
 
 function evaluateOption(option: CandidateOption, filters: PlannerFilters) {
@@ -659,7 +663,7 @@ export default function Home() {
 
             <div className="controlGroup">
               <span className="controlTitle">最低極光夜數</span>
-              <div className="segmentedControl">
+              <div className="segmentedControl auroraControl">
                 {auroraChoices.map((choice) => (
                   <button
                     aria-pressed={filters.auroraTarget === choice.value}
@@ -668,7 +672,8 @@ export default function Home() {
                     onClick={() => setFilters((current) => ({ ...current, auroraTarget: choice.value }))}
                     type="button"
                   >
-                    {choice.label}
+                    <span>{choice.label}</span>
+                    <small>{choice.note}</small>
                   </button>
                 ))}
               </div>
@@ -756,8 +761,8 @@ export default function Home() {
                       <small>估算總額</small>
                     </span>
                     <span>
-                      <strong>{result.option.auroraLevel} 級</strong>
-                      <small>極光夜數</small>
+                      <strong>{getAuroraLevelLabel(result.option.auroraLevel)}</strong>
+                      <small>極光夜數規則</small>
                     </span>
                     <span>
                       <strong>{getModeLabel(result.option.mode)}</strong>
