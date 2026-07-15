@@ -391,6 +391,22 @@
         line-height: 1.55;
       }
 
+      .sourceStatusGrid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 12px;
+      }
+
+      .sourceStatusGrid span {
+        padding: 5px 9px;
+        border-radius: 999px;
+        background: #e6f6f1;
+        color: #0b6b58;
+        font-size: 0.76rem;
+        font-weight: 900;
+      }
+
       .sourceActions {
         display: flex;
         flex-wrap: wrap;
@@ -825,6 +841,36 @@
         font-weight: 800;
       }
 
+      .estimateGrid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+        padding: 14px;
+        border: 1px solid #dbe7e4;
+        border-radius: 8px;
+        background: #fbfffe;
+      }
+
+      .estimateGrid span,
+      .estimateGrid small {
+        color: #31504b;
+        line-height: 1.55;
+      }
+
+      .estimateGrid strong {
+        display: block;
+        color: #173331;
+        font-size: 0.86rem;
+      }
+
+      .estimateGrid small {
+        grid-column: 1 / -1;
+        padding-top: 8px;
+        border-top: 1px solid #dbe7e4;
+        font-weight: 900;
+      }
+
       .sourceInline {
         display: grid;
         gap: 6px;
@@ -845,6 +891,21 @@
       .sourceInline strong {
         color: #10201d;
         font-size: 0.95rem;
+      }
+
+      .rankingSummary {
+        display: grid;
+        gap: 6px;
+        margin-top: 14px;
+        padding: 12px 14px;
+        border-left: 4px solid #245c73;
+        background: #f0f7fb;
+        color: #24413d;
+        line-height: 1.55;
+      }
+
+      .rankingSummary strong {
+        color: #173331;
       }
 
       .reasonColumns {
@@ -1076,6 +1137,7 @@
         .segmentedControl,
         .comfortControl,
         .optionMetrics,
+        .estimateGrid,
         .reasonColumns {
           grid-template-columns: 1fr;
         }
@@ -1266,7 +1328,13 @@
             </div>
             <p>Yellowknife Tours</p>
             <strong>CAD 1,490 + 5% GST 起（約 NT$35,698）</strong>
+            <div class="sourceStatusGrid">
+              <span>今日查核</span>
+              <span>白名單驗證</span>
+              <span>官方來源</span>
+            </div>
             <small>2026-2027 冬季套裝來源；需另加國際/內陸機票、冬衣、小費與稅費。</small>
+            <small>價格、房型與活動內容會變動；正式下訂前需重查。</small>
             <div class="sourceActions">
               <a href="https://yellowknifetours.com/winter-packages/" rel="noreferrer" target="_blank">訂購網站</a>
             </div>
@@ -1278,7 +1346,13 @@
             </div>
             <p>Yellowknife Tours</p>
             <strong>CAD 2,398 + 5% GST 起（約 NT$57,452）</strong>
+            <div class="sourceStatusGrid">
+              <span>今日查核</span>
+              <span>白名單驗證</span>
+              <span>官方來源</span>
+            </div>
             <small>飯店與活動等級較高，總費用更接近預算上限。</small>
+            <small>價格、房型與活動內容會變動；正式下訂前需重查。</small>
             <div class="sourceActions">
               <a href="https://yellowknifetours.com/winter-packages/" rel="noreferrer" target="_blank">訂購網站</a>
             </div>
@@ -1290,7 +1364,13 @@
             </div>
             <p>長汎旅遊</p>
             <strong>NT$142,451</strong>
+            <div class="sourceStatusGrid">
+              <span>歷史基準，需重查</span>
+              <span>白名單驗證</span>
+              <span>旅行社來源</span>
+            </div>
             <small>歷史團體基準，不代表目前可下訂，但保留作價格底線。</small>
+            <small>此為 2026 已成團樣本，只可作價格底線，不可視為目前可售。</small>
             <div class="sourceActions">
               <a href="https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB" rel="noreferrer" target="_blank">訂購網站</a>
             </div>
@@ -1302,7 +1382,13 @@
             </div>
             <p>Air Canada</p>
             <strong>2026/09-12 CAD 318 起（約 NT$7,256）；2027/01-03 CAD 339 起（約 NT$7,735）</strong>
+            <div class="sourceStatusGrid">
+              <span>票價高波動，需重查</span>
+              <span>白名單驗證</span>
+              <span>航空官方</span>
+            </div>
             <small>航班價格會變動；用來修正自由行與當地套裝總額，不單獨列為旅行團。</small>
+            <small>航空票價與艙等會即時變動，只作成本估算支援。</small>
             <div class="sourceActions">
               <a href="https://www.aircanada.com/en-ca/flights-from-vancouver-to-yellowknife" rel="noreferrer" target="_blank">訂購網站</a>
             </div>
@@ -1598,6 +1684,7 @@
             <li>旅行團商品完整航班與班號</li>
             <li>實際飯店名稱或同級條件</li>
             <li>YZF 抵達與離開時間</li>
+            <li>自由行機票航班、住宿飯店、抵離時間與逐項價格</li>
             <li>極光補看、延誤與改目的地規則</li>
             <li>必要附加費後的每人總費用</li>
             <li>行李、選位、分票與直掛風險</li>
@@ -1642,6 +1729,36 @@
         min: 100000,
         max: 400000,
         step: 10000,
+      };
+
+      const sourceStatusRegistry = {
+        yktours: {
+          checkedAt: "2026-07-15",
+          freshnessStatus: "current",
+          freshnessLabel: "今日查核",
+          recheckReason: "價格、房型與活動內容會變動；正式下訂前需重查。",
+          allowedDomain: "yellowknifetours.com",
+          safetyStatus: "verified",
+          safetyLabel: "白名單驗證",
+        },
+        everfun: {
+          checkedAt: "2026-07-15",
+          freshnessStatus: "recheck",
+          freshnessLabel: "歷史基準，需重查",
+          recheckReason: "此為 2026 已成團樣本，只可作價格底線，不可視為目前可售。",
+          allowedDomain: "everfuntravel.com",
+          safetyStatus: "verified",
+          safetyLabel: "白名單驗證",
+        },
+        airCanada: {
+          checkedAt: "2026-07-15",
+          freshnessStatus: "recheck",
+          freshnessLabel: "票價高波動，需重查",
+          recheckReason: "航空票價與艙等會即時變動，只作成本估算支援。",
+          allowedDomain: "aircanada.com",
+          safetyStatus: "verified",
+          safetyLabel: "白名單驗證",
+        },
       };
 
       const directionCategories = [
@@ -1707,8 +1824,22 @@
           guideNote: "來源頁列 2026-2027 冬季套裝，Gold 5D4N 雙人房型有 CAD 1,490 + 5% GST 起價；依 1 CAD≈NT$22.8176 換算約 NT$35,698，總額仍需加機票與必要費。",
           description: "網站自動匯入的可查核來源候選；價格較有機會落在預算內，但不是台灣旅行社全包團。",
           nextStep: "前往訂購網站確認日期、房型、活動內容，再加回國際與內陸機票。",
+          departureWindow: "12-4 月冬季套裝",
+          productType: "當地套裝",
+          rankingSummary: "價格低於預算、A級完整極光夜、官方來源可查、訂購連結通過白名單驗證；但仍缺完整航班與總額。",
+          costBasis: {
+            readiness: "partial",
+            label: "當地套裝價，非完整自由行總額",
+            totalLabel: "套裝約 NT$35,698 起 + 機票等必要費待補",
+            flightDetail: "未含 TPE/YVR/YZF 航班、班號、抵離時間與票價。",
+            hotelDetail: "套裝含 Quality Inn／Nova Inn 等級住宿，實際房型需重查。",
+            scheduleDetail: "5D4N 套裝天數已知；完整台灣出發與抵達時間待補。",
+            priceDetail: "只查到當地套裝 CAD 1,490 + 5% GST 起；機票、冬衣、小費、保險與行李費未完整併入。",
+            missingItems: ["國際與內陸航班", "航班時間", "機票票價", "必要附加費"],
+          },
           bookingUrl: "https://yellowknifetours.com/winter-packages/",
           bookingLabel: "前往 Yellowknife Tours 訂購/詢價",
+          sourceStatusId: "yktours",
           sourceName: "Yellowknife Tours",
           sourceCheckedAt: "2026-07-15",
           sourceSummary: "5D4N Gold Hotel Package；CAD 1,490 + 5% GST 起，約 NT$35,698，未含機票、冬衣、小費。",
@@ -1730,8 +1861,22 @@
           guideNote: "來源頁列 Diamond 5D4N 雙人房型有 CAD 2,398 + 5% GST 起價；依 1 CAD≈NT$22.8176 換算約 NT$57,452，舒適度較高但總費用貼近預算上限。",
           description: "網站自動匯入的舒適型來源候選；適合作為自由行舒適基準的實際商品版本。",
           nextStep: "前往訂購網站確認飯店、餐食、活動與可選日期，並重算台幣總額。",
+          departureWindow: "12-4 月冬季套裝",
+          productType: "當地舒適套裝",
+          rankingSummary: "A級完整極光夜與官方來源加分；但自由行完整總額仍需航班、時間與附加費。",
+          costBasis: {
+            readiness: "partial",
+            label: "當地舒適套裝價，非完整自由行總額",
+            totalLabel: "套裝約 NT$57,452 起 + 機票等必要費待補",
+            flightDetail: "未含 TPE/YVR/YZF 航班、班號、抵離時間與票價。",
+            hotelDetail: "套裝含較高等級飯店方向，實際飯店與房型需重查。",
+            scheduleDetail: "5D4N 套裝天數已知；完整台灣出發與抵達時間待補。",
+            priceDetail: "只查到當地套裝 CAD 2,398 + 5% GST 起；機票、冬衣、小費、保險與行李費未完整併入。",
+            missingItems: ["國際與內陸航班", "航班時間", "機票票價", "必要附加費"],
+          },
           bookingUrl: "https://yellowknifetours.com/winter-packages/",
           bookingLabel: "前往 Yellowknife Tours 訂購/詢價",
+          sourceStatusId: "yktours",
           sourceName: "Yellowknife Tours",
           sourceCheckedAt: "2026-07-15",
           sourceSummary: "5D4N Diamond Hotel Package；CAD 2,398 + 5% GST 起，約 NT$57,452，未含機票、冬衣、小費。",
@@ -1753,8 +1898,22 @@
           guideNote: "此項目是歷史比較基準，不是 2027 可下訂商品。",
           description: "目前最乾淨的團體價格基準，低於 NT$150,000 且有緩衝，但不是 2027 可下訂商品。",
           nextStep: "用來當旅行團報價的對照底線，不能直接下訂。",
+          departureWindow: "2026/03 歷史樣本",
+          productType: "團體歷史樣本",
+          rankingSummary: "價格有緩衝、旅行社來源可查；但夜數屬B級且資料是歷史樣本，因此不能當成目前可下訂商品。",
+          costBasis: {
+            readiness: "historical",
+            label: "歷史團體總額",
+            totalLabel: "歷史必要費後 NT$142,451",
+            flightDetail: "2026 團體樣本含旅行社規劃航段結構；2027 航班仍需重查。",
+            hotelDetail: "黃刀鎮住宿以 Chateau Nova、Explorer Hotel 或同級為方向；實際入住需以當期商品為準。",
+            scheduleDetail: "2026/03/19-03/28 歷史出發日期已知；不可直接套用至 2027。",
+            priceDetail: "以團費、公告小費、ESTA、eTA 等必要費用後估算。",
+            missingItems: ["2027 可售日期", "2027 實際團費", "2027 航班與飯店確認"],
+          },
           bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB",
           bookingLabel: "查看長汎旅遊團頁",
+          sourceStatusId: "everfun",
           sourceName: "長汎旅遊",
           sourceCheckedAt: "2026-07-15",
           sourceSummary: "歷史團體樣本；只作價格基準，不代表目前仍可售。",
@@ -1776,6 +1935,19 @@
           guideNote: "需重查航班、住宿、極光活動與總費用後才能作正式比較。",
           description: "保留完整極光夜與較高舒適度，是團體方案的主要比較基準。",
           nextStep: "重查航班、飯店與極光活動後，與團體總費用並列表。",
+          departureWindow: "2027 待重查",
+          productType: "自由行規劃基準",
+          rankingSummary: "A級完整極光夜與舒適度符合需求，但航班、飯店與活動仍需重新查核。",
+          costBasis: {
+            readiness: "missing",
+            label: "估算待補",
+            totalLabel: "估算待補：缺航班、住宿、時間與價格",
+            flightDetail: "尚未填入台灣出發、轉機、YVR/YZF 內陸航班、班號與票價。",
+            hotelDetail: "尚未填入黃刀鎮飯店名稱、房型、晚數與房價。",
+            scheduleDetail: "尚未填入台灣出發、YZF 抵達、YZF 離開與返台時間。",
+            priceDetail: "尚未把機票、住宿、極光活動、冬衣、小費、保險與行李費拆項加總。",
+            missingItems: ["機票航班", "住宿飯店", "抵離時間", "完整價格"],
+          },
         },
         {
           id: "independent-basic",
@@ -1793,6 +1965,19 @@
           guideNote: "此項目以降低成本為主，但會提高轉機、住宿與現地安排負擔。",
           description: "最容易壓低總額，但需要承擔更多轉機、飯店與現地安排操作。",
           nextStep: "只有在願意提高操作負擔時，才納入備援池。",
+          departureWindow: "2027 待重查",
+          productType: "自由行節制基準",
+          rankingSummary: "價格有優勢且符合A級夜數，但操作風險較高，需安全備援與行程重查。",
+          costBasis: {
+            readiness: "missing",
+            label: "估算待補",
+            totalLabel: "估算待補：缺航班、住宿、時間與價格",
+            flightDetail: "尚未填入低價航班組合、班號、抵離時間與票價。",
+            hotelDetail: "尚未填入節制型飯店名稱、房型、晚數與房價。",
+            scheduleDetail: "尚未填入轉機與抵離時間，無法判斷是否保住完整極光夜。",
+            priceDetail: "尚未把所有必要費用拆項加總，不能宣稱低於預算。",
+            missingItems: ["機票航班", "住宿飯店", "抵離時間", "完整價格"],
+          },
         },
         {
           id: "independent-solo",
@@ -1810,6 +1995,19 @@
           guideNote: "此項目主要用來提醒單房差與舒適度成本，不作目前主推薦。",
           description: "單房差與舒適度會明顯推高成本，適合當上限警戒，不適合作為目前主方案。",
           nextStep: "除非預算提高或找到明確降價來源，否則維持排除。",
+          departureWindow: "2027 待重查",
+          productType: "自由行上限警戒",
+          rankingSummary: "A級夜數與舒適度達標，但單房差與高波動成本讓它在目前預算下不具優先性。",
+          costBasis: {
+            readiness: "missing",
+            label: "估算待補",
+            totalLabel: "估算待補：缺航班、住宿、時間與價格",
+            flightDetail: "尚未填入單人情境的航班、班號、抵離時間與票價。",
+            hotelDetail: "尚未填入單人房飯店名稱、房型、晚數與房價。",
+            scheduleDetail: "尚未填入完整抵離時間，無法確認完整極光夜。",
+            priceDetail: "尚未拆出單房差、機票、活動、保險與必要費用。",
+            missingItems: ["機票航班", "住宿飯店", "抵離時間", "完整價格"],
+          },
         },
       ];
 
@@ -1824,6 +2022,11 @@
       const getComfortLabel = (level) => (level === "basic" ? "節制" : level === "comfort" ? "舒適" : "平衡");
       const getAuroraLevelLabel = (level) => (level === "A" ? "A級：3 個完整極光夜" : "B級：3 晚含抵達日");
       const clampBudget = (value) => Math.min(budgetRange.max, Math.max(budgetRange.min, value));
+      const getSourceStatus = (option) => (option.sourceStatusId ? sourceStatusRegistry[option.sourceStatusId] : null);
+      const getEstimateLabel = (option) =>
+        option.costBasis.readiness === "complete" || option.costBasis.readiness === "historical"
+          ? formatCurrency(option.estimatedCost)
+          : option.costBasis.totalLabel;
 
       function evaluateStaticOption(option) {
         let score = 40;
@@ -1831,8 +2034,12 @@
         const cautions = [];
         const blockers = [];
         const budgetDelta = option.estimatedCost - plannerState.budget;
+        const sourceStatus = getSourceStatus(option);
 
-        if (budgetDelta <= -5000) {
+        if (option.mode === "independent" && option.costBasis.readiness !== "complete") {
+          score -= 32;
+          blockers.push(`自由行估算缺 ${option.costBasis.missingItems.join("、")}，不能視為完整預算。`);
+        } else if (budgetDelta <= -5000) {
           score += 30;
           reasons.push(`低於預算 ${formatCurrency(Math.abs(budgetDelta))}，有實際緩衝。`);
         } else if (budgetDelta <= 0) {
@@ -1890,6 +2097,21 @@
         } else {
           score -= 4;
           cautions.push("屬於規劃或待重查資料，不可直接下訂。");
+        }
+
+        if (sourceStatus) {
+          if (sourceStatus.safetyStatus === "verified") {
+            score += 8;
+            reasons.push(`${sourceStatus.safetyLabel}：${sourceStatus.allowedDomain}`);
+          }
+
+          if (sourceStatus.freshnessStatus === "current") {
+            score += 6;
+            reasons.push(`資料新鮮度：${sourceStatus.freshnessLabel}`);
+          } else {
+            score -= 8;
+            cautions.push(`資料新鮮度：${sourceStatus.freshnessLabel}，${sourceStatus.recheckReason}`);
+          }
         }
 
         if (plannerState.comfort === "any") {
@@ -1970,6 +2192,7 @@
           .sort((a, b) => order[a.status] - order[b.status] || b.score - a.score);
         const best = results.find((result) => result.status !== "exclude") || results[0];
         const activeCount = results.filter((result) => result.status !== "exclude").length;
+        const bestSourceStatus = getSourceStatus(best.option);
 
         const top = document.getElementById("topRecommendation");
         top.className = `topRecommendation ${best.status}`;
@@ -1977,12 +2200,20 @@
           <span class="recommendationKicker">目前最適合</span>
           <strong>${best.option.packageName}</strong>
           <div class="recommendationMeta">
+            <span>${best.option.productType}</span>
+            <span>${best.option.departureWindow}</span>
             <span>${best.option.title}</span>
             <span>${best.option.dataState}</span>
+            <span>${best.option.costBasis.label}</span>
             <span>${getAuroraLevelLabel(best.option.auroraLevel)}</span>
             ${best.option.sourceName ? `<span>${best.option.sourceName}</span>` : ""}
+            ${bestSourceStatus ? `<span>${bestSourceStatus.safetyLabel}</span><span>${bestSourceStatus.freshnessLabel}</span>` : ""}
           </div>
           <p>${best.statusLabel}；分數 ${best.score}。${best.option.description}</p>
+          <div class="rankingSummary">
+            <strong>為什麼這樣排：</strong>
+            <span>${best.option.rankingSummary}</span>
+          </div>
           <div class="recommendationAction">
             ${best.option.bookingUrl ? `<a class="bookingLink" href="${best.option.bookingUrl}" rel="noreferrer" target="_blank">${best.option.bookingLabel || "訂購網站"}</a>` : ""}
             <a href="${best.option.guideUrl}">${best.option.guideLabel}</a>
@@ -2000,6 +2231,7 @@
             const notes = [...result.blockers, ...result.cautions].slice(0, 3);
             const reasonItems = result.reasons.slice(0, 3).map((reason) => `<li>${reason}</li>`).join("");
             const noteItems = notes.map((item) => `<li>${item}</li>`).join("");
+            const sourceStatus = getSourceStatus(result.option);
 
             return `
               <article class="optionCard ${result.status}">
@@ -2011,20 +2243,37 @@
                   </div>
                 </div>
                 <div class="optionMetrics">
-                  <span><strong>${formatCurrency(result.option.estimatedCost)}</strong><small>估算總額</small></span>
+                  <span><strong>${getEstimateLabel(result.option)}</strong><small>${
+                    result.option.costBasis.readiness === "complete" || result.option.costBasis.readiness === "historical"
+                      ? "估算總額"
+                      : "估算狀態"
+                  }</small></span>
                   <span><strong>${getAuroraLevelLabel(result.option.auroraLevel)}</strong><small>極光夜數規則</small></span>
                   <span><strong>${getModeLabel(result.option.mode)}</strong><small>旅行型態</small></span>
                   <span><strong>${getComfortLabel(result.option.comfort)}</strong><small>舒適度</small></span>
+                </div>
+                <div class="estimateGrid">
+                  <span><strong>航班</strong>${result.option.costBasis.flightDetail}</span>
+                  <span><strong>住宿</strong>${result.option.costBasis.hotelDetail}</span>
+                  <span><strong>時間</strong>${result.option.costBasis.scheduleDetail}</span>
+                  <span><strong>價格</strong>${result.option.costBasis.priceDetail}</span>
+                  ${
+                    result.option.costBasis.missingItems.length > 0
+                      ? `<small>待補：${result.option.costBasis.missingItems.join("、")}</small>`
+                      : ""
+                  }
                 </div>
                 ${
                   result.option.sourceName
                     ? `<div class="sourceInline">
                         <span>來源：${result.option.sourceName}</span>
                         <span>查核：${result.option.sourceCheckedAt}</span>
+                        ${sourceStatus ? `<span>資料新鮮度：${sourceStatus.freshnessLabel}</span><span>安全狀態：${sourceStatus.safetyLabel}</span>` : ""}
                         <strong>${result.option.sourceSummary}</strong>
                       </div>`
                     : ""
                 }
+                <div class="rankingSummary"><strong>排序理由：</strong><span>${result.option.rankingSummary}</span></div>
                 <div class="reasonColumns">
                   <div><strong>符合原因</strong><ul class="reasonList">${reasonItems}</ul></div>
                   <div><strong>注意事項</strong><ul class="${result.blockers.length > 0 ? "blockerList" : "reasonList"}">${noteItems}</ul></div>

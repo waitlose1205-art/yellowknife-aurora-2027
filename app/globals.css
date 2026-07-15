@@ -418,6 +418,22 @@ h3 {
   line-height: 1.55;
 }
 
+.sourceStatusGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.sourceStatusGrid span {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #e6f6f1;
+  color: #0b6b58;
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
 .sourceActions {
   display: flex;
   flex-wrap: wrap;
@@ -859,6 +875,36 @@ h3 {
   font-weight: 800;
 }
 
+.estimateGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid #dbe7e4;
+  border-radius: 8px;
+  background: #fbfffe;
+}
+
+.estimateGrid span,
+.estimateGrid small {
+  color: #31504b;
+  line-height: 1.55;
+}
+
+.estimateGrid strong {
+  display: block;
+  color: #173331;
+  font-size: 0.86rem;
+}
+
+.estimateGrid small {
+  grid-column: 1 / -1;
+  padding-top: 8px;
+  border-top: 1px solid #dbe7e4;
+  font-weight: 900;
+}
+
 .sourceInline {
   display: grid;
   gap: 6px;
@@ -879,6 +925,21 @@ h3 {
 .sourceInline strong {
   color: #10201d;
   font-size: 0.95rem;
+}
+
+.rankingSummary {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-left: 4px solid #245c73;
+  background: #f0f7fb;
+  color: #24413d;
+  line-height: 1.55;
+}
+
+.rankingSummary strong {
+  color: #173331;
 }
 
 .reasonColumns {
@@ -1125,6 +1186,7 @@ td {
   .segmentedControl,
   .comfortControl,
   .optionMetrics,
+  .estimateGrid,
   .reasonColumns {
     grid-template-columns: 1fr;
   }
