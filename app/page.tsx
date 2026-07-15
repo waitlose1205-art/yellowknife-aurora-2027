@@ -106,6 +106,7 @@ const auroraLevels = [
 const tourRows = [
   {
     date: "2026/01/15-01/24",
+    tourName: "玩美加族~加拿大極光10日",
     code: "UWP26115BR10TA",
     cost: "NT$149,451",
     buffer: "NT$549",
@@ -116,6 +117,7 @@ const tourRows = [
   },
   {
     date: "2026/02/12-02/21",
+    tourName: "玩美加族~加拿大極光10日",
     code: "UWP26212BR10TA",
     cost: "NT$165,451",
     buffer: "-NT$15,451",
@@ -126,6 +128,7 @@ const tourRows = [
   },
   {
     date: "2026/02/19-02/28",
+    tourName: "玩美加族~加拿大極光10日",
     code: "UWP26219BR10TA",
     cost: "NT$155,451",
     buffer: "-NT$5,451",
@@ -136,6 +139,7 @@ const tourRows = [
   },
   {
     date: "2026/03/19-03/28",
+    tourName: "玩美加族~加拿大極光10日",
     code: "UWP26319BR10TB",
     cost: "NT$142,451",
     buffer: "NT$7,549",
@@ -233,7 +237,7 @@ const directionCategories = [
     items: [
       {
         name: "台灣旅行社完整極光夜團",
-        condition: "需有明確團名、團號、訂購網址、總團費與 3 個完整極光夜口徑。",
+        condition: "需有明確旅遊團名稱、訂購網址、總團費與 3 個完整極光夜口徑。",
         status: "待匯入具體商品",
       },
       {
@@ -320,7 +324,7 @@ const candidateOptions: CandidateOption[] = [
   {
     id: "group-2026-march",
     title: "2026 三月低價團體樣本",
-    packageName: "歷史樣本：UWP26319BR10TB 三月低價團",
+    packageName: "歷史樣本：玩美加族~加拿大極光10日（三月低價團）",
     mode: "group",
     estimatedCost: 142451,
     auroraLevel: "B",
@@ -334,7 +338,7 @@ const candidateOptions: CandidateOption[] = [
     description: "目前最乾淨的團體價格基準，低於 NT$150,000 且有緩衝，但不是 2027 可下訂商品。",
     nextStep: "用來當旅行團報價的對照底線，不能直接下訂。",
     bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB",
-    bookingLabel: "查看長汎團號頁",
+    bookingLabel: "查看長汎旅遊團頁",
     sourceName: "長汎旅遊",
     sourceCheckedAt: "2026-07-15",
     sourceSummary: "歷史團體樣本；只作價格基準，不代表目前仍可售。",
@@ -1003,7 +1007,7 @@ export default function Home() {
             <thead>
               <tr>
                 <th>日期</th>
-                <th>團號</th>
+                <th>旅遊團名稱</th>
                 <th>必要費用後</th>
                 <th>預算餘額</th>
                 <th>夜數</th>
@@ -1015,7 +1019,7 @@ export default function Home() {
               {tourRows.map((row) => (
                 <tr className={`budgetRow ${row.budgetClass}`} key={row.code}>
                   <td>{row.date}</td>
-                  <td>{row.code}</td>
+                  <td>{row.tourName}</td>
                   <td>{row.cost}</td>
                   <td>{row.buffer}</td>
                   <td>
@@ -1035,7 +1039,7 @@ export default function Home() {
             <article className={`tourCard ${row.budgetClass}`} key={row.code}>
               <div>
                 <span className="cardDate">{row.date}</span>
-                <strong>{row.code}</strong>
+                <strong>{row.tourName}</strong>
               </div>
               <dl>
                 <div>

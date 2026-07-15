@@ -64,6 +64,9 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /前往 Yellowknife Tours 訂購\/詢價/);
   assert.match(html, /適合選項排序/);
   assert.match(html, /查核基準日：2026-07-15/);
+  assert.match(html, /旅遊團名稱/);
+  assert.match(html, /玩美加族~加拿大極光10日/);
+  assert.doesNotMatch(html, /<th>團號<\/th>|查看長汎團號頁|歷史樣本：UWP26319BR10TB 三月低價團/);
   assert.match(html, /手機版團體樣本卡片/);
   assert.doesNotMatch(html, /Your site is taking shape|Codex is working|react-loading-skeleton/);
 });
@@ -87,6 +90,7 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(page, /directionCategories/);
   assert.match(page, /selectedDirectionId/);
   assert.match(page, /candidateOptions/);
+  assert.match(page, /tourName/);
   assert.match(page, /evaluateOption/);
   assert.match(page, /mobileTourCards/);
   assert.match(css, /\.budgetRow\.green/);
@@ -102,7 +106,11 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(css, /\.tourCard\.red/);
   assert.match(staticHtml, /directionCategories/);
   assert.match(staticHtml, /directionDetail/);
+  assert.match(staticHtml, /旅遊團名稱/);
+  assert.match(staticHtml, /玩美加族~加拿大極光10日/);
+  assert.match(staticHtml, /歷史樣本：玩美加族~加拿大極光10日（三月低價團）/);
   assert.match(layout, /黃刀鎮極光旅決策儀表板/);
+  assert.doesNotMatch(`${page}\n${staticHtml}`, /<th>團號<\/th>|查看長汎團號頁|歷史樣本：UWP26319BR10TB 三月低價團/);
   assert.doesNotMatch(page, /Backlog|enabledFeatures|agingMonitor|budgetIntelligence|destinationTemplate/);
   assert.doesNotMatch(
     `${page}\n${staticHtml}`,
