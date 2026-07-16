@@ -298,6 +298,10 @@ test("keeps the finished site free of starter preview wiring", async () => {
   );
   assert.match(staticHtml, /確認並查核/);
   assert.match(staticHtml, /尚未查核；請先確認條件，才會產生推薦/);
+  assert.match(staticHtml, /getDirectionContext/);
+  assert.match(staticHtml, /本分類優先項目/);
+  assert.match(staticHtml, /本分類待查項目/);
+  assert.doesNotMatch(staticHtml, /目前最適合/);
   assert.doesNotMatch(staticHtml, /尚未填入|估算待補|自由行估算缺/);
   assert.doesNotMatch(staticHtml, /下一步行動卡|Next Actions|actionGrid|actionCard|適合選項排序|互動決策模擬器|頁面會即時排序適合的選項|候選方向價格基準/);
   assert.doesNotMatch(staticHtml, /<small>分數 \$\{linkedResult\.score\}<\/small>/);

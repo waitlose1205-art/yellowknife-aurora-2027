@@ -1828,17 +1828,29 @@ export default function Home() {
     [filters],
   );
 
-  const bestOption = evaluatedOptions.find((result) => isActionableStatus(result.status)) ?? evaluatedOptions[0];
-  const activeCount = evaluatedOptions.filter((result) => isActionableStatus(result.status)).length;
-  const pendingCount = evaluatedOptions.filter((result) => result.status === "pending").length;
-  const excludeCount = evaluatedOptions.filter((result) => result.status === "exclude").length;
+  const globalBestOption = evaluatedOptions.find((result) => isActionableStatus(result.status)) ?? evaluatedOptions[0];
   const evaluatedById = new Map(evaluatedOptions.map((result) => [result.option.id, result]));
-  const syncedDirectionId = getDirectionIdForFilters(filters, bestOption.option);
+  const syncedDirectionId = getDirectionIdForFilters(filters, globalBestOption.option);
   const activeDirectionId = selectedDirectionId ?? syncedDirectionId;
   const selectedDirection =
     directionCategories.find((category) => category.id === activeDirectionId) ?? directionCategories[0];
   const rankedDirectionItems = rankDirectionItems(selectedDirection.items, evaluatedById);
+  const selectedDirectionResults = rankedDirectionItems
+    .map((item) => ("candidateId" in item ? evaluatedById.get(item.candidateId) : null))
+    .filter((result): result is ReturnType<typeof evaluateOption> => Boolean(result));
+  const bestOption =
+    selectedDirectionResults.find((result) => isActionableStatus(result.status)) ??
+    selectedDirectionResults[0] ??
+    globalBestOption;
+  const activeCount = selectedDirectionResults.filter((result) => isActionableStatus(result.status)).length;
+  const pendingCount = selectedDirectionResults.filter((result) => result.status === "pending").length;
+  const excludeCount = selectedDirectionResults.filter((result) => result.status === "exclude").length;
   const bestSourceStatus = getSourceStatus(bestOption.option);
+  const recommendationKicker = hasPendingChanges
+    ? "上次確認結果"
+    : bestOption.status === "pending"
+      ? "本分類待查項目"
+      : "本分類優先項目";
   const decisionGates = getDecisionGates(filters.budget);
   const applyPlannerFilters = () => {
     setFilters(draftFilters);
@@ -2070,9 +2082,10 @@ export default function Home() {
               </div>
             ) : (
               <div className={`topRecommendation ${bestOption.status}`}>
-                <span className="recommendationKicker">{hasPendingChanges ? "上次確認結果" : "目前最適合"}</span>
+                <span className="recommendationKicker">{recommendationKicker}</span>
                 <strong>{bestOption.option.packageName}</strong>
                 <div className="resultCounts">
+                  <span>{selectedDirection.label}</span>
                   <span>可考慮 {activeCount}</span>
                   <span>待查 {pendingCount}</span>
                   <span>排除 {excludeCount}</span>
@@ -2080,6 +2093,7 @@ export default function Home() {
                 <div className="recommendationMeta">
                   <span>已確認條件</span>
                   {hasPendingChanges ? <span>有未查核變更</span> : null}
+                  <span>目前分類 {selectedDirection.label}</span>
                   <span>預算基準 {formatCurrency(filters.budget)}</span>
                   <span>{bestOption.option.productType}</span>
                   <span>{bestOption.option.departureWindow}</span>

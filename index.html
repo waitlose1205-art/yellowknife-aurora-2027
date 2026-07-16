@@ -3523,6 +3523,33 @@
         return results.find((result) => isActionableStatus(result.status)) || results[0];
       }
 
+      function getDirectionContext(results) {
+        const globalBest = getBestResult(results);
+        const syncedDirectionId = getDirectionIdForFilters(plannerState, globalBest.option);
+        const activeDirectionId = selectedDirectionId || syncedDirectionId;
+        const selected = directionCategories.find((category) => category.id === activeDirectionId) || directionCategories[0];
+        const evaluatedMap = new Map(results.map((result) => [result.option.id, result]));
+        const rankedItems = rankDirectionItems(selected.items, evaluatedMap);
+        const selectedResults = rankedItems
+          .map((item) => (item.candidateId ? evaluatedMap.get(item.candidateId) : null))
+          .filter(Boolean);
+        const best = getBestResult(selectedResults) || globalBest;
+
+        return {
+          activeDirectionId,
+          best,
+          evaluatedMap,
+          rankedItems,
+          selected,
+          selectedResults,
+        };
+      }
+
+      function getRecommendationKicker(hasPendingChanges, best) {
+        if (hasPendingChanges) return "上次確認結果";
+        return best.status === "pending" ? "本分類待查項目" : "本分類優先項目";
+      }
+
       function rankDirectionItems(items, evaluatedMap) {
         return [...items].sort((first, second) => {
           const firstResult = first.candidateId ? evaluatedMap.get(first.candidateId) : null;
@@ -3737,12 +3764,7 @@
 
       function renderDirection() {
         const results = getEvaluatedResults();
-        const best = getBestResult(results);
-        const syncedDirectionId = getDirectionIdForFilters(plannerState, best.option);
-        const activeDirectionId = selectedDirectionId || syncedDirectionId;
-        const selected = directionCategories.find((category) => category.id === activeDirectionId) || directionCategories[0];
-        const evaluatedMap = new Map(results.map((result) => [result.option.id, result]));
-        const rankedItems = rankDirectionItems(selected.items, evaluatedMap);
+        const { activeDirectionId, evaluatedMap, rankedItems, selected } = getDirectionContext(results);
         const hasPendingChanges = !isSamePlannerFilters(draftPlannerState, plannerState);
         const budgetNote = !hasConfirmedPlanner
           ? "尚未確認價格基準；請先在上方按「確認並查核」。"
@@ -3916,10 +3938,10 @@
         renderApplyStatus();
 
         const results = getEvaluatedResults();
-        const best = getBestResult(results);
-        const activeCount = results.filter((result) => isActionableStatus(result.status)).length;
-        const pendingCount = results.filter((result) => result.status === "pending").length;
-        const excludeCount = results.filter((result) => result.status === "exclude").length;
+        const { best, selected, selectedResults } = getDirectionContext(results);
+        const activeCount = selectedResults.filter((result) => isActionableStatus(result.status)).length;
+        const pendingCount = selectedResults.filter((result) => result.status === "pending").length;
+        const excludeCount = selectedResults.filter((result) => result.status === "exclude").length;
         const bestSourceStatus = getSourceStatus(best.option);
         const hasPendingChanges = !isSamePlannerFilters(draftPlannerState, plannerState);
 
@@ -3940,9 +3962,10 @@
 
         top.className = `topRecommendation ${best.status}`;
         top.innerHTML = `
-          <span class="recommendationKicker">${hasPendingChanges ? "上次確認結果" : "目前最適合"}</span>
+          <span class="recommendationKicker">${getRecommendationKicker(hasPendingChanges, best)}</span>
           <strong>${best.option.packageName}</strong>
           <div class="resultCounts">
+            <span>${selected.label}</span>
             <span>可考慮 ${activeCount}</span>
             <span>待查 ${pendingCount}</span>
             <span>排除 ${excludeCount}</span>
@@ -3950,6 +3973,7 @@
           <div class="recommendationMeta">
             <span>已確認條件</span>
             ${hasPendingChanges ? "<span>有未查核變更</span>" : ""}
+            <span>目前分類 ${selected.label}</span>
             <span>預算基準 ${formatCurrency(plannerState.budget)}</span>
             <span>${best.option.productType}</span>
             <span>${best.option.departureWindow}</span>
@@ -4011,6 +4035,7 @@
         const button = event.target.closest("button");
         if (!button) return;
         selectedDirectionId = button.dataset.direction;
+        renderSimulator();
         renderDirection();
       });
 
