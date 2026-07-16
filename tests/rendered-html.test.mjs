@@ -33,7 +33,7 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /黃刀鎮極光旅決策儀表板/);
   assert.match(html, /M2\.1 市場實證與重查準備階段/);
   assert.match(html, /決策狀態列/);
-  assert.match(html, /A\/B 極光夜數視覺標籤/);
+  assert.match(html, /A\/B 極光夜數規則/);
   assert.match(html, /PENDING_2027_RECHECK/);
   assert.doesNotMatch(html, /Backlog|來源老化機制|來源老化監控|預算情報判定|資料匯入檢核|跨目的地模板啟用/);
   assert.doesNotMatch(html, /下一步行動卡|Next Actions/);
@@ -60,11 +60,9 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.doesNotMatch(html, /即時查詢入口|全網即時搜尋|開啟主要資料源查詢|查詢此來源/);
   assert.match(html, /旅行方案候選清單/);
   assert.doesNotMatch(html, /候選方向分類/);
-  assert.match(html, /可選擇的 A級團體候選方向/);
+  assert.match(html, /尚未產生候選清單/);
   assert.match(html, /自由行候選/);
-  assert.match(html, /旅行團與方案清單/);
-  assert.match(html, /東南／雄獅／山富：A級完整夜候選/);
-  assert.match(html, /旅行社候選：東南旅遊／雄獅旅遊／山富旅遊/);
+  assert.doesNotMatch(html, /可選擇的 A級團體候選方向|旅行團與方案清單|東南／雄獅／山富：A級完整夜候選/);
   assert.match(html, /全球極光旅行社查核排序/);
   assert.match(html, /已查 9 家台灣旅行社/);
   assert.match(html, /東南旅遊/);
@@ -84,7 +82,6 @@ test("server-renders the Yellowknife decision dashboard", async () => {
     html.indexOf('id="candidate-directions"') < html.indexOf('id="global-agency-ranking"'),
     "global agency ranking must render below candidate options",
   );
-  assert.match(html, /價格尚未公布，預算只作搜尋上限/);
   assert.doesNotMatch(
     html,
     /秋冬 A 級團體候選方向|秋冬 B 級團體價格優先方向|待查商品：黃刀鎮 A級完整極光夜團|待查商品：黃刀鎮 B級價格優先團/,
@@ -102,6 +99,10 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /NT\$100,000 - NT\$400,000/);
   assert.match(html, /條件必要性與候選影響/);
   assert.match(html, /最低極光夜數/);
+  assert.match(html, /目前選擇會影響/);
+  assert.match(html, /尚未套用：按「確認並查核」後才更新推薦與候選清單/);
+  assert.match(html, /只接受低風險/);
+  assert.match(html, /提高飯店與轉機緩衝/);
   assert.match(html, /A級要求會降級只達 B級的候選/);
   assert.match(html, /未產生推薦/);
   assert.match(html, /長汎 2026 團體樣本（四出發日）/);
@@ -118,11 +119,8 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /自由行已引用 2026 團體航段、住宿與行程節奏作參考/);
   assert.match(html, /航班/);
   assert.match(html, /住宿/);
-  assert.match(html, /排序理由/);
-  assert.match(html, /尚未確認價格基準/);
-  assert.match(html, /以目前預算上限/);
-  assert.match(html, /尚未公布/);
-  assert.match(html, /待查項目不評分/);
+  assert.match(html, /按下「確認並查核」後才顯示旅行團與方案/);
+  assert.match(html, /展開 2026 比較行程/);
   assert.doesNotMatch(html, /recommendationBadge pending[\s\S]{0,120}分數/);
   assert.match(html, /低於 NT\$150,000/);
   assert.doesNotMatch(html, /尚未填入|估算待補|自由行估算缺/);
@@ -232,6 +230,10 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(css, /\.rankingSummary/);
   assert.match(css, /\.simulatorShell/);
   assert.match(css, /\.segmentedControl/);
+  assert.match(css, /\.selectionImpactPreview/);
+  assert.match(css, /\.directionLocked/);
+  assert.match(css, /\.baselineDisclosure/);
+  assert.match(css, /\.compactRuleDisclosure/);
   assert.match(css, /\.applyPlannerButton/);
   assert.match(css, /\.applyPlannerStatus\.pending/);
   assert.match(css, /\.tourCard\.red/);
@@ -249,6 +251,15 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(staticHtml, /山富旅遊/);
   assert.match(staticHtml, /可樂旅遊/);
   assert.match(staticHtml, /plannerImpactRows/);
+  assert.match(staticHtml, /controlChoiceMeta/);
+  assert.match(staticHtml, /selectionImpactPreview/);
+  assert.match(staticHtml, /尚未產生候選清單/);
+  assert.match(staticHtml, /按下「確認並查核」後才顯示旅行團與方案/);
+  assert.match(staticHtml, /短轉機、來源待查、航班不明會明顯降級/);
+  assert.match(staticHtml, /舒適型自由行或較高品質團體會加分/);
+  assert.match(staticHtml, /compactRuleDisclosure/);
+  assert.match(staticHtml, /baselineDisclosure/);
+  assert.match(staticHtml, /展開 2026 比較行程/);
   assert.match(staticHtml, /Source Appendix/);
   assert.match(staticHtml, /ezTravel 美加\/加拿大跟團比對/);
   assert.match(staticHtml, /待查，不併入排序/);

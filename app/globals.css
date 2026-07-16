@@ -209,11 +209,43 @@ h3 {
   background: #fffdf7;
 }
 
+.compactRuleDisclosure summary,
+.baselineDisclosure summary {
+  display: grid;
+  gap: 5px;
+  cursor: pointer;
+  color: #173331;
+  font-weight: 900;
+  list-style: none;
+}
+
+.compactRuleDisclosure summary::-webkit-details-marker,
+.baselineDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.compactRuleDisclosure summary span,
+.baselineDisclosure summary strong {
+  font-size: 1.05rem;
+}
+
+.compactRuleDisclosure summary small,
+.baselineDisclosure summary span {
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
 .badgeGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   margin-top: 24px;
+}
+
+.badgeGrid.compact {
+  margin-top: 14px;
 }
 
 .auroraBadge {
@@ -655,12 +687,32 @@ h3 {
   color: #fff;
 }
 
+.directionChooser button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
 .directionDetail {
   margin-top: 16px;
   padding: 20px;
   border: 1px solid #cfe7df;
   border-radius: 8px;
   background: #eef8f5;
+}
+
+.directionLocked {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border: 1px dashed #adcfc5;
+  border-radius: 8px;
+  background: #fbfffe;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.directionLocked strong {
+  color: #173331;
 }
 
 .directionIntro p {
@@ -1027,6 +1079,38 @@ h3 {
   color: rgba(255, 255, 255, 0.78);
 }
 
+.selectionImpactPreview {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 12px;
+  border: 1px solid #cfe7df;
+  border-radius: 8px;
+  background: #eef8f5;
+  color: #31504b;
+  line-height: 1.45;
+}
+
+.selectionImpactPreview > strong {
+  color: #173331;
+  font-size: 0.92rem;
+}
+
+.selectionImpactPreview span {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 8px;
+}
+
+.selectionImpactPreview b {
+  color: #0b6b58;
+}
+
+.selectionImpactPreview small {
+  color: #7a5b00;
+  font-weight: 900;
+}
+
 .toggleRow {
   display: flex;
   gap: 10px;
@@ -1113,6 +1197,14 @@ h3 {
   cursor: pointer;
   font: inherit;
   font-weight: 900;
+}
+
+.baselineDisclosure {
+  margin-top: 18px;
+}
+
+.baselineDisclosure[open] summary {
+  margin-bottom: 16px;
 }
 
 .applyPlannerButton:hover {

@@ -709,22 +709,22 @@ const modeChoices = [
 ] as const;
 
 const auroraChoices = [
-  { value: "A", label: "A級：至少 3 個完整極光夜", note: "抵達日不計" },
-  { value: "B", label: "B級：至少 3 晚", note: "含抵達日" },
-  { value: "either", label: "不限夜數", note: "僅作開放比較" },
+  { value: "A", label: "A級：至少 3 個完整極光夜", note: "抵達日不計", impact: "確認後優先切到 A級團體或 A級自由行，B級候選會降級。" },
+  { value: "B", label: "B級：至少 3 晚", note: "含抵達日", impact: "確認後切到 B級價格方向，允許 3 晚但標示為待查或備援。" },
+  { value: "either", label: "不限夜數", note: "僅作開放比較", impact: "確認後不以夜數排除候選，只用於開放比價。" },
 ] as const;
 
 const riskChoices = [
-  { value: 1, label: "保守" },
-  { value: 2, label: "平衡" },
-  { value: 3, label: "彈性" },
+  { value: 1, label: "保守", note: "只接受低風險", impact: "短轉機、來源待查、航班不明會明顯降級。" },
+  { value: 2, label: "平衡", note: "可接受可控待查", impact: "保留待查候選，但需要航班與訂購頁補齊。" },
+  { value: 3, label: "彈性", note: "可放寬風險", impact: "保留更多高風險備援，但不代表可直接下訂。" },
 ] as const;
 
 const comfortChoices = [
-  { value: "basic", label: "節制" },
-  { value: "balanced", label: "平衡" },
-  { value: "comfort", label: "舒適" },
-  { value: "any", label: "不限" },
+  { value: "basic", label: "節制", note: "壓低住宿與備援成本", impact: "節制型與低價方案排序較前，舒適度不足會提醒。" },
+  { value: "balanced", label: "平衡", note: "價格與體力折衷", impact: "平衡型方案加分，是目前預設基準。" },
+  { value: "comfort", label: "舒適", note: "提高飯店與轉機緩衝", impact: "舒適型自由行或較高品質團體會加分，節制型降級。" },
+  { value: "any", label: "不限", note: "不以舒適度排序", impact: "舒適度不作主要排序條件，只看價格、夜數與風險。" },
 ] as const;
 
 const plannerImpactRows = [
@@ -1507,6 +1507,10 @@ function getDirectionCandidate(candidateId?: string) {
   return candidateId ? candidateOptions.find((option) => option.id === candidateId) ?? null : null;
 }
 
+function getSelectedChoice<T extends { value: string | number }>(choices: readonly T[], value: T["value"]) {
+  return choices.find((choice) => choice.value === value) ?? choices[0];
+}
+
 function evaluateOption(option: CandidateOption, filters: PlannerFilters) {
   let score = 40;
   const reasons: string[] = [];
@@ -1816,6 +1820,9 @@ export default function Home() {
   const [hasConfirmedPlanner, setHasConfirmedPlanner] = useState(false);
   const hasPendingChanges = !isSamePlannerFilters(draftFilters, filters);
   const needsPlannerCheck = !hasConfirmedPlanner || hasPendingChanges;
+  const selectedAuroraChoice = getSelectedChoice(auroraChoices, draftFilters.auroraTarget);
+  const selectedRiskChoice = getSelectedChoice(riskChoices, draftFilters.riskTolerance);
+  const selectedComfortChoice = getSelectedChoice(comfortChoices, draftFilters.comfort);
 
   const evaluatedOptions = useMemo(
     () =>
@@ -2008,7 +2015,8 @@ export default function Home() {
                     onClick={() => updateDraftFilters((current) => ({ ...current, riskTolerance: choice.value }))}
                     type="button"
                   >
-                    {choice.label}
+                    <span>{choice.label}</span>
+                    <small>{choice.note}</small>
                   </button>
                 ))}
               </div>
@@ -2025,10 +2033,28 @@ export default function Home() {
                     onClick={() => updateDraftFilters((current) => ({ ...current, comfort: choice.value }))}
                     type="button"
                   >
-                    {choice.label}
+                    <span>{choice.label}</span>
+                    <small>{choice.note}</small>
                   </button>
                 ))}
               </div>
+            </div>
+
+            <div className="selectionImpactPreview" aria-live="polite">
+              <strong>目前選擇會影響</strong>
+              <span>
+                <b>夜數</b>
+                {selectedAuroraChoice.impact}
+              </span>
+              <span>
+                <b>風險</b>
+                {selectedRiskChoice.impact}
+              </span>
+              <span>
+                <b>舒適</b>
+                {selectedComfortChoice.impact}
+              </span>
+              <small>{needsPlannerCheck ? "尚未套用：按「確認並查核」後才更新推薦與候選清單。" : "已套用到推薦排序與候選清單。"}</small>
             </div>
 
             <label className="toggleRow">
@@ -2145,8 +2171,10 @@ export default function Home() {
         <div className="directionChooser" aria-label="旅行方案候選清單分類選擇">
           {directionCategories.map((category) => (
             <button
-              aria-pressed={activeDirectionId === category.id}
-              className={activeDirectionId === category.id ? "active" : ""}
+              aria-disabled={!hasConfirmedPlanner}
+              aria-pressed={hasConfirmedPlanner && activeDirectionId === category.id}
+              className={hasConfirmedPlanner && activeDirectionId === category.id ? "active" : ""}
+              disabled={!hasConfirmedPlanner}
               key={category.id}
               onClick={() => setSelectedDirectionId(category.id)}
               type="button"
@@ -2157,20 +2185,25 @@ export default function Home() {
         </div>
 
         <div className="directionDetail">
-          <div className="directionIntro">
-            <h3>{selectedDirection.title}</h3>
-            <p>{selectedDirection.summary}</p>
-          </div>
-          <div className="directionBudgetNote">
-            {!hasConfirmedPlanner
-              ? "尚未確認價格基準；請先在上方按「確認並查核」。"
-              : hasPendingChanges
-                ? `上次確認價格基準：${formatCurrency(filters.budget)}；目前條件尚未重新查核。`
-                : `已確認價格基準：${formatCurrency(filters.budget)}；候選方向已依上方確認條件重新查核。`}
-          </div>
-          <div className="directionListHeader">旅行團與方案清單</div>
-          <div className="directionList">
-            {rankedDirectionItems.map((item) => {
+          {!hasConfirmedPlanner ? (
+            <div className="directionLocked">
+              <strong>尚未產生候選清單</strong>
+              <span>請先在「決策選項列表」設定預算、旅行型態、極光夜數、風險與舒適程度，按下「確認並查核」後才顯示旅行團與方案。</span>
+            </div>
+          ) : (
+            <>
+              <div className="directionIntro">
+                <h3>{selectedDirection.title}</h3>
+                <p>{selectedDirection.summary}</p>
+              </div>
+              <div className="directionBudgetNote">
+                {hasPendingChanges
+                  ? `上次確認價格基準：${formatCurrency(filters.budget)}；目前條件尚未重新查核。`
+                  : `已確認價格基準：${formatCurrency(filters.budget)}；候選方向已依上方確認條件重新查核。`}
+              </div>
+              <div className="directionListHeader">旅行團與方案清單</div>
+              <div className="directionList">
+                {rankedDirectionItems.map((item) => {
               const linkedOption = "candidateId" in item ? getDirectionCandidate(item.candidateId) : null;
               const linkedResult = linkedOption ? evaluatedById.get(linkedOption.id) : null;
               const budgetStatus = linkedOption ? getBudgetStatus(linkedOption, filters.budget) : null;
@@ -2309,8 +2342,10 @@ export default function Home() {
                   ) : null}
                 </article>
               );
-            })}
-          </div>
+                })}
+              </div>
+            </>
+          )}
         </div>
       </section>
 
@@ -2318,19 +2353,21 @@ export default function Home() {
 
       <section className="contentGrid">
         <article className="panel warningPanel">
-          <div className="sectionHeader">
-            <p className="eyebrow">Aurora Nights</p>
-            <h2>A/B 極光夜數視覺標籤</h2>
-          </div>
-          <div className="badgeGrid">
-            {auroraLevels.map((item) => (
-              <div className="auroraBadge" key={item.level}>
-                <span>{item.level}</span>
-                <strong>{item.title}</strong>
-                <p>{item.detail}</p>
-              </div>
-            ))}
-          </div>
+          <details className="compactRuleDisclosure">
+            <summary>
+              <span>A/B 極光夜數規則</span>
+              <small>A級完整夜、B級含抵達日；點選展開。</small>
+            </summary>
+            <div className="badgeGrid compact">
+              {auroraLevels.map((item) => (
+                <div className="auroraBadge" key={item.level}>
+                  <span>{item.level}</span>
+                  <strong>{item.title}</strong>
+                  <p>{item.detail}</p>
+                </div>
+              ))}
+            </div>
+          </details>
         </article>
 
         <article className="panel">
@@ -2361,66 +2398,72 @@ export default function Home() {
             <span>正式下訂前需重查</span>
           </div>
         </div>
-        <div className="tableWrap tourTableWrap">
-          <table>
-            <thead>
-              <tr>
-                <th>日期</th>
-                <th>旅遊團名稱</th>
-                <th>必要費用後</th>
-                <th>預算餘額</th>
-                <th>夜數</th>
-                <th>判定</th>
-                <th>主要風險</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tourRows.map((row) => (
-                <tr className={`budgetRow ${row.budgetClass}`} key={row.code}>
-                  <td>{row.date}</td>
-                  <td>{row.tourName}</td>
-                  <td>{row.cost}</td>
-                  <td>{row.buffer}</td>
-                  <td>
-                    <span className="nightPill">{row.night}</span>
-                  </td>
-                  <td>
-                    <span className={`statusPill ${row.budgetClass}`}>{row.status}</span>
-                  </td>
-                  <td>{row.risk}</td>
+        <details className="baselineDisclosure">
+          <summary>
+            <strong>展開 2026 比較行程</strong>
+            <span>4 筆歷史樣本只作價格與行程節奏比較，不進入目前候選排序。</span>
+          </summary>
+          <div className="tableWrap tourTableWrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>日期</th>
+                  <th>旅遊團名稱</th>
+                  <th>必要費用後</th>
+                  <th>預算餘額</th>
+                  <th>夜數</th>
+                  <th>判定</th>
+                  <th>主要風險</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="mobileTourCards" aria-label="手機版團體樣本卡片">
-          {tourRows.map((row) => (
-            <article className={`tourCard ${row.budgetClass}`} key={row.code}>
-              <div>
-                <span className="cardDate">{row.date}</span>
-                <strong>{row.tourName}</strong>
-              </div>
-              <dl>
+              </thead>
+              <tbody>
+                {tourRows.map((row) => (
+                  <tr className={`budgetRow ${row.budgetClass}`} key={row.code}>
+                    <td>{row.date}</td>
+                    <td>{row.tourName}</td>
+                    <td>{row.cost}</td>
+                    <td>{row.buffer}</td>
+                    <td>
+                      <span className="nightPill">{row.night}</span>
+                    </td>
+                    <td>
+                      <span className={`statusPill ${row.budgetClass}`}>{row.status}</span>
+                    </td>
+                    <td>{row.risk}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="mobileTourCards" aria-label="手機版團體樣本卡片">
+            {tourRows.map((row) => (
+              <article className={`tourCard ${row.budgetClass}`} key={row.code}>
                 <div>
-                  <dt>總額</dt>
-                  <dd>{row.cost}</dd>
+                  <span className="cardDate">{row.date}</span>
+                  <strong>{row.tourName}</strong>
                 </div>
-                <div>
-                  <dt>夜數</dt>
-                  <dd>{row.night}</dd>
-                </div>
-                <div>
-                  <dt>判定</dt>
-                  <dd>{row.status}</dd>
-                </div>
-                <div>
-                  <dt>風險</dt>
-                  <dd>{row.risk}</dd>
-                </div>
-              </dl>
-            </article>
-          ))}
-        </div>
+                <dl>
+                  <div>
+                    <dt>總額</dt>
+                    <dd>{row.cost}</dd>
+                  </div>
+                  <div>
+                    <dt>夜數</dt>
+                    <dd>{row.night}</dd>
+                  </div>
+                  <div>
+                    <dt>判定</dt>
+                    <dd>{row.status}</dd>
+                  </div>
+                  <div>
+                    <dt>風險</dt>
+                    <dd>{row.risk}</dd>
+                  </div>
+                </dl>
+              </article>
+            ))}
+          </div>
+        </details>
       </section>
 
       <section className="contentGrid">

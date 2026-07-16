@@ -214,6 +214,38 @@
         background: #fffdf7;
       }
 
+      .compactRuleDisclosure summary,
+      .baselineDisclosure summary {
+        display: grid;
+        gap: 5px;
+        cursor: pointer;
+        color: #173331;
+        font-weight: 900;
+        list-style: none;
+      }
+
+      .compactRuleDisclosure summary::-webkit-details-marker,
+      .baselineDisclosure summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .compactRuleDisclosure summary span,
+      .baselineDisclosure summary strong {
+        font-size: 1.05rem;
+      }
+
+      .compactRuleDisclosure summary small,
+      .baselineDisclosure summary span {
+        color: var(--muted);
+        font-size: 0.88rem;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+
+      .badgeGrid.compact {
+        margin-top: 14px;
+      }
+
       .auroraBadge {
         padding: 18px;
         border: 1px solid var(--line);
@@ -642,12 +674,32 @@
         color: #fff;
       }
 
+      .directionChooser button:disabled {
+        cursor: not-allowed;
+        opacity: 0.58;
+      }
+
       .directionDetail {
         margin-top: 16px;
         padding: 20px;
         border: 1px solid #cfe7df;
         border-radius: 8px;
         background: #eef8f5;
+      }
+
+      .directionLocked {
+        display: grid;
+        gap: 8px;
+        padding: 18px;
+        border: 1px dashed #adcfc5;
+        border-radius: 8px;
+        background: #fbfffe;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .directionLocked strong {
+        color: #173331;
       }
 
       .directionIntro p {
@@ -1019,6 +1071,38 @@
         color: rgba(255, 255, 255, 0.78);
       }
 
+      .selectionImpactPreview {
+        display: grid;
+        gap: 8px;
+        margin-top: 18px;
+        padding: 12px;
+        border: 1px solid #cfe7df;
+        border-radius: 8px;
+        background: #eef8f5;
+        color: #31504b;
+        line-height: 1.45;
+      }
+
+      .selectionImpactPreview > strong {
+        color: #173331;
+        font-size: 0.92rem;
+      }
+
+      .selectionImpactPreview span {
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr);
+        gap: 8px;
+      }
+
+      .selectionImpactPreview b {
+        color: #0b6b58;
+      }
+
+      .selectionImpactPreview small {
+        color: #7a5b00;
+        font-weight: 900;
+      }
+
       .toggleRow {
         display: flex;
         gap: 10px;
@@ -1109,6 +1193,14 @@
 
       .applyPlannerButton:hover {
         background: #0f2e2b;
+      }
+
+      .baselineDisclosure {
+        margin-top: 18px;
+      }
+
+      .baselineDisclosure[open] summary {
+        margin-bottom: 16px;
       }
 
       .applyPlannerStatus {
@@ -1943,11 +2035,11 @@
               <div class="segmentedControl auroraControl" data-filter="auroraTarget">
                 <button class="active" data-value="A" type="button">
                   <span>A級：至少 3 個完整極光夜</span>
-                  <small>抵達日不計</small>
+                  <small>抵達日不計；B級會降級</small>
                 </button>
                 <button data-value="B" type="button">
                   <span>B級：至少 3 晚</span>
-                  <small>含抵達日</small>
+                  <small>含抵達日；列價格備援</small>
                 </button>
                 <button data-value="either" type="button">
                   <span>不限夜數</span>
@@ -1959,21 +2051,23 @@
             <div class="controlGroup">
               <span class="controlTitle">風險容忍度</span>
               <div class="segmentedControl" data-filter="riskTolerance">
-                <button data-value="1" type="button">保守</button>
-                <button class="active" data-value="2" type="button">平衡</button>
-                <button data-value="3" type="button">彈性</button>
+                <button data-value="1" type="button"><span>保守</span><small>只接受低風險</small></button>
+                <button class="active" data-value="2" type="button"><span>平衡</span><small>可接受可控待查</small></button>
+                <button data-value="3" type="button"><span>彈性</span><small>可放寬風險</small></button>
               </div>
             </div>
 
             <div class="controlGroup">
               <span class="controlTitle">舒適程度</span>
               <div class="segmentedControl comfortControl" data-filter="comfort">
-                <button data-value="basic" type="button">節制</button>
-                <button class="active" data-value="balanced" type="button">平衡</button>
-                <button data-value="comfort" type="button">舒適</button>
-                <button data-value="any" type="button">不限</button>
+                <button data-value="basic" type="button"><span>節制</span><small>壓低住宿成本</small></button>
+                <button class="active" data-value="balanced" type="button"><span>平衡</span><small>價格與體力折衷</small></button>
+                <button data-value="comfort" type="button"><span>舒適</span><small>提高飯店與緩衝</small></button>
+                <button data-value="any" type="button"><span>不限</span><small>不以舒適度排序</small></button>
               </div>
             </div>
+
+            <div class="selectionImpactPreview" aria-live="polite" id="selectionImpactPreview"></div>
 
             <label class="toggleRow">
               <input id="requireVerified" type="checkbox" />
@@ -2042,9 +2136,9 @@
         </div>
 
         <div class="directionChooser" id="directionChooser" aria-label="旅行方案候選清單分類選擇">
-          <button class="active" type="button" data-direction="group-a" aria-pressed="true">A級團體候選方向</button>
-          <button type="button" data-direction="group-b" aria-pressed="false">B級團體價格方向</button>
-          <button type="button" data-direction="independent" aria-pressed="false">自由行候選</button>
+          <button type="button" data-direction="group-a" aria-disabled="true" aria-pressed="false" disabled>A級團體候選方向</button>
+          <button type="button" data-direction="group-b" aria-disabled="true" aria-pressed="false" disabled>B級團體價格方向</button>
+          <button type="button" data-direction="independent" aria-disabled="true" aria-pressed="false" disabled>自由行候選</button>
         </div>
 
         <div class="directionDetail" id="directionDetail"></div>
@@ -2178,22 +2272,24 @@
 
       <section class="contentGrid">
         <article class="panel warningPanel">
-          <div class="sectionHeader">
-            <p class="eyebrow">Aurora Nights</p>
-            <h2>A/B 極光夜數視覺標籤</h2>
-          </div>
-          <div class="badgeGrid">
-            <div class="auroraBadge">
-              <span>A 級</span>
-              <strong>抵達日不計</strong>
-              <p>3 個完整極光夜，最符合核心任務。</p>
+          <details class="compactRuleDisclosure">
+            <summary>
+              <span>A/B 極光夜數規則</span>
+              <small>A級完整夜、B級含抵達日；點選展開。</small>
+            </summary>
+            <div class="badgeGrid compact">
+              <div class="auroraBadge">
+                <span>A 級</span>
+                <strong>抵達日不計</strong>
+                <p>3 個完整極光夜，最符合核心任務。</p>
+              </div>
+              <div class="auroraBadge">
+                <span>B 級</span>
+                <strong>3 晚，含抵達日</strong>
+                <p>可列入比較，但不得說成三個完整夜。</p>
+              </div>
             </div>
-            <div class="auroraBadge">
-              <span>B 級</span>
-              <strong>3 晚，含抵達日</strong>
-              <p>可列入比較，但不得說成三個完整夜。</p>
-            </div>
-          </div>
+          </details>
         </article>
         <article class="panel">
           <div class="sectionHeader">
@@ -2221,8 +2317,13 @@
             <span>正式下訂前需重查</span>
           </div>
         </div>
-        <div class="tableWrap tourTableWrap">
-          <table>
+        <details class="baselineDisclosure">
+          <summary>
+            <strong>展開 2026 比較行程</strong>
+            <span>4 筆歷史樣本只作價格與行程節奏比較，不進入目前候選排序。</span>
+          </summary>
+          <div class="tableWrap tourTableWrap">
+            <table>
             <thead>
               <tr>
                 <th>日期</th>
@@ -2272,10 +2373,10 @@
                 <td>四個樣本中唯一保有合理餘額，但仍需等待 2027 公開資料。</td>
               </tr>
             </tbody>
-          </table>
-        </div>
+            </table>
+          </div>
 
-        <div class="mobileTourCards" aria-label="手機版團體樣本卡片">
+          <div class="mobileTourCards" aria-label="手機版團體樣本卡片">
           <article class="tourCard yellow">
             <div><span class="cardDate">2026/01/15-01/24</span><strong>玩美加族~加拿大極光10日</strong></div>
             <dl>
@@ -2312,7 +2413,8 @@
               <div><dt>風險</dt><dd>四個樣本中唯一保有合理餘額，但仍需等待 2027 公開資料。</dd></div>
             </dl>
           </article>
-        </div>
+          </div>
+        </details>
       </section>
 
       <section class="contentGrid">
@@ -2481,6 +2583,25 @@
         min: 100000,
         max: 400000,
         step: 10000,
+      };
+
+      const controlChoiceMeta = {
+        auroraTarget: {
+          A: "確認後優先切到 A級團體或 A級自由行，B級候選會降級。",
+          B: "確認後切到 B級價格方向，允許 3 晚但標示為待查或備援。",
+          either: "確認後不以夜數排除候選，只用於開放比價。",
+        },
+        riskTolerance: {
+          1: "短轉機、來源待查、航班不明會明顯降級。",
+          2: "保留待查候選，但需要航班與訂購頁補齊。",
+          3: "保留更多高風險備援，但不代表可直接下訂。",
+        },
+        comfort: {
+          basic: "節制型與低價方案排序較前，舒適度不足會提醒。",
+          balanced: "平衡型方案加分，是目前預設基準。",
+          comfort: "舒適型自由行或較高品質團體會加分，節制型降級。",
+          any: "舒適度不作主要排序條件，只看價格、夜數與風險。",
+        },
       };
 
       const plannerImpactRows = [
@@ -3587,6 +3708,22 @@
             button.setAttribute("aria-pressed", String(draftPlannerState[filter] === value));
           });
         });
+
+        renderSelectionImpactPreview();
+      }
+
+      function renderSelectionImpactPreview() {
+        const target = document.getElementById("selectionImpactPreview");
+        const hasPendingChanges = !isSamePlannerFilters(draftPlannerState, plannerState);
+        const needsPlannerCheck = !hasConfirmedPlanner || hasPendingChanges;
+
+        target.innerHTML = `
+          <strong>目前選擇會影響</strong>
+          <span><b>夜數</b>${controlChoiceMeta.auroraTarget[draftPlannerState.auroraTarget]}</span>
+          <span><b>風險</b>${controlChoiceMeta.riskTolerance[draftPlannerState.riskTolerance]}</span>
+          <span><b>舒適</b>${controlChoiceMeta.comfort[draftPlannerState.comfort]}</span>
+          <small>${needsPlannerCheck ? "尚未套用：按「確認並查核」後才更新推薦與候選清單。" : "已套用到推薦排序與候選清單。"}</small>
+        `;
       }
 
       function renderApplyStatus() {
@@ -3766,12 +3903,29 @@
         const results = getEvaluatedResults();
         const { activeDirectionId, evaluatedMap, rankedItems, selected } = getDirectionContext(results);
         const hasPendingChanges = !isSamePlannerFilters(draftPlannerState, plannerState);
-        const budgetNote = !hasConfirmedPlanner
-          ? "尚未確認價格基準；請先在上方按「確認並查核」。"
-          : hasPendingChanges
-            ? `上次確認價格基準：${formatCurrency(plannerState.budget)}；目前條件尚未重新查核。`
-            : `已確認價格基準：${formatCurrency(plannerState.budget)}；候選方向已依上方確認條件重新查核。`;
         const detail = document.getElementById("directionDetail");
+
+        if (!hasConfirmedPlanner) {
+          detail.innerHTML = `
+            <div class="directionLocked">
+              <strong>尚未產生候選清單</strong>
+              <span>請先在「決策選項列表」設定預算、旅行型態、極光夜數、風險與舒適程度，按下「確認並查核」後才顯示旅行團與方案。</span>
+            </div>
+          `;
+
+          document.querySelectorAll("#directionChooser button").forEach((button) => {
+            button.classList.remove("active");
+            button.setAttribute("aria-pressed", "false");
+            button.setAttribute("aria-disabled", "true");
+            button.disabled = true;
+          });
+          return;
+        }
+
+        const budgetNote = hasPendingChanges
+          ? `上次確認價格基準：${formatCurrency(plannerState.budget)}；目前條件尚未重新查核。`
+          : `已確認價格基準：${formatCurrency(plannerState.budget)}；候選方向已依上方確認條件重新查核。`;
+
         detail.innerHTML = `
           <div class="directionIntro">
             <h3>${selected.title}</h3>
@@ -3930,6 +4084,8 @@
           const isActive = button.dataset.direction === activeDirectionId;
           button.classList.toggle("active", isActive);
           button.setAttribute("aria-pressed", String(isActive));
+          button.setAttribute("aria-disabled", "false");
+          button.disabled = false;
         });
       }
 
