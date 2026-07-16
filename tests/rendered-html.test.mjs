@@ -58,11 +58,32 @@ test("server-renders the Yellowknife decision dashboard", async () => {
     "source appendix must render after the closing recommendation",
   );
   assert.doesNotMatch(html, /即時查詢入口|全網即時搜尋|開啟主要資料源查詢|查詢此來源/);
-  assert.match(html, /候選方向分類/);
+  assert.match(html, /旅行方案候選清單/);
+  assert.doesNotMatch(html, /候選方向分類/);
   assert.match(html, /可選擇的 A級團體候選方向/);
   assert.match(html, /自由行候選/);
   assert.match(html, /旅行團與方案清單/);
-  assert.match(html, /台灣旅行社完整極光夜團/);
+  assert.match(html, /東南／雄獅／山富：A級完整夜候選/);
+  assert.match(html, /旅行社候選：東南旅遊／雄獅旅遊／山富旅遊/);
+  assert.match(html, /全球極光旅行社查核排序/);
+  assert.match(html, /已查 9 家台灣旅行社/);
+  assert.match(html, /東南旅遊/);
+  assert.match(html, /雄獅旅遊/);
+  assert.match(html, /山富旅遊/);
+  assert.match(html, /可樂旅遊/);
+  assert.match(html, /五福旅遊/);
+  assert.match(html, /喜鴻旅遊/);
+  assert.match(html, /鳳凰旅遊/);
+  assert.match(html, /可讀最低價 NT\$136,900 起/);
+  assert.match(html, /芬蘭/);
+  assert.match(html, /阿拉斯加/);
+  assert.match(html, /澳洲/);
+  assert.match(html, /agencyDisclosure/);
+  assert.match(html, /點選展開／收合完整排序/);
+  assert.ok(
+    html.indexOf('id="candidate-directions"') < html.indexOf('id="global-agency-ranking"'),
+    "global agency ranking must render below candidate options",
+  );
   assert.match(html, /價格尚未公布，預算只作搜尋上限/);
   assert.doesNotMatch(
     html,
@@ -135,6 +156,21 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(page, /getBudgetStatus/);
   assert.match(page, /candidateOptions/);
   assert.match(page, /sourceStatusRegistry/);
+  assert.match(page, /globalAuroraAgencyRows/);
+  assert.match(page, /GlobalAuroraAgencySection/);
+  assert.match(page, /yellowknifeAgencyCandidates/);
+  assert.match(page, /globalPriorityAgencyCandidates/);
+  assert.match(page, /priceWatchAgencyCandidates/);
+  assert.match(page, /agencyCandidates/);
+  assert.match(page, /旅行社候選：東南旅遊／雄獅旅遊／山富旅遊/);
+  assert.match(page, /雄獅旅遊全球極光專題/);
+  assert.match(page, /東南旅遊追逐極光專題/);
+  assert.match(page, /山富旅遊世界極光專案/);
+  assert.match(page, /liontravel/);
+  assert.match(page, /settour/);
+  assert.match(page, /travel4u/);
+  assert.match(page, /colatour/);
+  assert.match(page, /phoenix/);
   assert.match(page, /ezTravel 美加\/加拿大跟團比對/);
   assert.match(page, /待查，不併入排序/);
   assert.match(page, /plannerImpactRows/);
@@ -180,6 +216,12 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(css, /\.directionSection/);
   assert.match(css, /\.directionChooser/);
   assert.match(css, /\.directionTourMeta/);
+  assert.match(css, /\.globalAgencySection/);
+  assert.match(css, /\.agencyDisclosure/);
+  assert.match(css, /\.agencyDisclosureSummary/);
+  assert.match(css, /\.agencyRankingGrid/);
+  assert.match(css, /\.agencyScoreCard/);
+  assert.match(css, /\.directionAgencyLinks/);
   assert.match(css, /\.directionTourLink/);
   assert.match(css, /\.directionBudgetBasis/);
   assert.match(css, /\.directionBudgetBasis\.unknown/);
@@ -194,6 +236,18 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(css, /\.applyPlannerStatus\.pending/);
   assert.match(css, /\.tourCard\.red/);
   assert.match(staticHtml, /directionCategories/);
+  assert.match(staticHtml, /staticAgencyCandidates/);
+  assert.match(staticHtml, /global-agency-ranking/);
+  assert.match(staticHtml, /全球極光旅行社查核排序/);
+  assert.match(staticHtml, /已查 9 家台灣旅行社/);
+  assert.match(staticHtml, /agencyDisclosure/);
+  assert.match(staticHtml, /點選展開／收合完整排序/);
+  assert.match(staticHtml, /旅行社候選：東南旅遊／雄獅旅遊／山富旅遊/);
+  assert.match(staticHtml, /directionAgencyLinks/);
+  assert.match(staticHtml, /可讀最低價 NT\$136,900 起/);
+  assert.match(staticHtml, /雄獅旅遊/);
+  assert.match(staticHtml, /山富旅遊/);
+  assert.match(staticHtml, /可樂旅遊/);
   assert.match(staticHtml, /plannerImpactRows/);
   assert.match(staticHtml, /Source Appendix/);
   assert.match(staticHtml, /ezTravel 美加\/加拿大跟團比對/);
@@ -233,6 +287,10 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.ok(
     staticHtml.indexOf('id="decision-simulator"') < staticHtml.indexOf('id="candidate-directions"'),
     "static decision options must render before candidate directions",
+  );
+  assert.ok(
+    staticHtml.indexOf('id="candidate-directions"') < staticHtml.indexOf('id="global-agency-ranking"'),
+    "static global agency ranking must render below candidate options",
   );
   assert.ok(
     staticHtml.indexOf('class="closingPanel"') < staticHtml.indexOf('id="source-sync"'),

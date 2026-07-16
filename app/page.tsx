@@ -81,6 +81,90 @@ const sourceStatusRegistry = {
     safetyNote: "旅行社官方網域已列入允許清單；需等具體團名、日期、價格與航班頁面後才顯示為候選。",
     trustLevel: "旅行社來源待查",
   },
+  liontravel: {
+    checkedAt: "2026-07-16",
+    validUntil: "2026-07-17",
+    freshnessStatus: "current",
+    freshnessLabel: "今日查核",
+    recheckReason: "專題頁可讀到冰島、黃刀、芬蘭、北歐等極光商品顯示名稱；價格需進商品頁重查。",
+    allowedDomain: "liontravel.com",
+    safetyStatus: "verified",
+    safetyLabel: "白名單驗證",
+    safetyNote: "旅行社官方網域與極光專題頁已列入允許清單。",
+    trustLevel: "旅行社商品線索",
+  },
+  settour: {
+    checkedAt: "2026-07-16",
+    validUntil: "2026-07-17",
+    freshnessStatus: "current",
+    freshnessLabel: "今日查核",
+    recheckReason: "追逐極光專題可讀到北歐、冰島、黃刀鎮等商品與 minPrice；仍需進商品頁確認日期與航班。",
+    allowedDomain: "settour.com.tw",
+    safetyStatus: "verified",
+    safetyLabel: "白名單驗證",
+    safetyNote: "旅行社官方網域與產品頁已列入允許清單。",
+    trustLevel: "旅行社商品線索",
+  },
+  travel4u: {
+    checkedAt: "2026-07-16",
+    validUntil: "2026-07-17",
+    freshnessStatus: "current",
+    freshnessLabel: "今日查核",
+    recheckReason: "極光專案頁可讀到芬蘭、挪威、冰島、阿拉斯加、黃刀鎮與澳洲極光商品顯示名稱；價格需重查。",
+    allowedDomain: "travel4u.com.tw",
+    safetyStatus: "verified",
+    safetyLabel: "白名單驗證",
+    safetyNote: "旅行社官方網域與極光專案頁已列入允許清單。",
+    trustLevel: "旅行社商品線索",
+  },
+  colatour: {
+    checkedAt: "2026-07-16",
+    validUntil: "2026-07-17",
+    freshnessStatus: "recheck",
+    freshnessLabel: "首頁有線索，搜尋頁受限",
+    recheckReason: "首頁可讀到極光旅行與冰島幸福極光入口；搜尋頁回傳 403，需稍後重查商品頁。",
+    allowedDomain: "colatour.com.tw",
+    safetyStatus: "verified",
+    safetyLabel: "白名單驗證",
+    safetyNote: "旅行社官方網域已列入允許清單；目前只能採首頁線索。",
+    trustLevel: "旅行社入口線索",
+  },
+  lifetour: {
+    checkedAt: "2026-07-16",
+    validUntil: "2026-07-17",
+    freshnessStatus: "recheck",
+    freshnessLabel: "首頁未見極光",
+    recheckReason: "首頁未讀到極光關鍵字；需改用站內搜尋或人工查核商品分類。",
+    allowedDomain: "lifetour.com.tw",
+    safetyStatus: "verified",
+    safetyLabel: "白名單驗證",
+    safetyNote: "旅行社官方網域可讀，但本次首頁未找到極光商品線索。",
+    trustLevel: "待補來源",
+  },
+  besttour: {
+    checkedAt: "2026-07-16",
+    validUntil: "2026-07-17",
+    freshnessStatus: "recheck",
+    freshnessLabel: "首頁未見極光",
+    recheckReason: "首頁未讀到極光關鍵字；需改用站內搜尋或人工查核商品分類。",
+    allowedDomain: "besttour.com.tw",
+    safetyStatus: "verified",
+    safetyLabel: "白名單驗證",
+    safetyNote: "旅行社官方網域可讀，但本次首頁未找到極光商品線索。",
+    trustLevel: "待補來源",
+  },
+  phoenix: {
+    checkedAt: "2026-07-16",
+    validUntil: "2026-07-17",
+    freshnessStatus: "recheck",
+    freshnessLabel: "連線待重查",
+    recheckReason: "本次讀取鳳凰旅遊首頁時 TLS 信任連線失敗；需稍後改用瀏覽器或其他網路環境重查。",
+    allowedDomain: "phoenix.com.tw",
+    safetyStatus: "pending",
+    safetyLabel: "待確認",
+    safetyNote: "尚未成功讀取頁面內容，不能判定是否有極光商品。",
+    trustLevel: "連線待查",
+  },
 } as const;
 
 type SourceStatusId = keyof typeof sourceStatusRegistry;
@@ -288,7 +372,216 @@ const sourceSyncRows = [
     bookingUrl: "https://vacation.eztravel.com.tw/oversea/america-canada-newzealand-australia/",
     note: "比對美加分類與加拿大團頁；未查得黃刀鎮/極光關鍵字。取得具體團名、日期、價格與航班後才進入候選。",
   },
+  {
+    name: "雄獅旅遊全球極光專題",
+    source: "雄獅旅遊",
+    sourceStatusId: "liontravel",
+    status: "已納入旅行社評分",
+    amount: "可讀到冰島、黃刀、芬蘭、北歐等商品顯示名稱；價格需進商品頁",
+    bookingUrl: "https://event.liontravel.com/zh-tw/winter-travel/aurora/index?fr=cg4",
+    note: "專題頁標示 2026-2027 全球賞極光行程，含冰島、挪威/芬蘭、加拿大黃刀鎮等商品線索。",
+  },
+  {
+    name: "東南旅遊追逐極光專題",
+    source: "東南旅遊",
+    sourceStatusId: "settour",
+    status: "已納入旅行社評分",
+    amount: "可讀 minPrice：NT$136,900 起，含北歐與黃刀鎮商品",
+    bookingUrl: "https://www.settour.com.tw/theme/aurora_Season0000008/",
+    note: "專題頁可讀到北歐、冰島、加拿大黃刀鎮等多筆商品，且部分含最低價。",
+  },
+  {
+    name: "山富旅遊世界極光專案",
+    source: "山富旅遊",
+    sourceStatusId: "travel4u",
+    status: "已納入旅行社評分",
+    amount: "可讀到芬蘭、挪威、冰島、阿拉斯加、黃刀鎮與澳洲極光商品顯示名稱",
+    bookingUrl: "https://www.travel4u.com.tw/project/aurora/",
+    note: "專案頁明確列出全球極光目的地與多筆旅行社顯示名稱；價格需重查。",
+  },
+  {
+    name: "可樂旅遊極光入口",
+    source: "可樂旅遊",
+    sourceStatusId: "colatour",
+    status: "入口線索，需重查",
+    amount: "首頁可讀到極光旅行、冰島幸福極光 9/10/11/13 日",
+    bookingUrl: "https://www.colatour.com.tw/",
+    note: "首頁有極光入口；站內搜尋頁回傳 403，暫以入口線索評分。",
+  },
+  {
+    name: "五福旅遊首頁查核",
+    source: "五福旅遊",
+    sourceStatusId: "lifetour",
+    status: "已查，待補商品",
+    amount: "首頁未讀到極光關鍵字",
+    bookingUrl: "https://www.lifetour.com.tw/",
+    note: "仍列入台灣旅行社總表，但本次未取得極光商品線索。",
+  },
+  {
+    name: "喜鴻旅遊首頁查核",
+    source: "喜鴻旅遊",
+    sourceStatusId: "besttour",
+    status: "已查，待補商品",
+    amount: "首頁未讀到極光關鍵字",
+    bookingUrl: "https://www.besttour.com.tw/",
+    note: "仍列入台灣旅行社總表，但本次未取得極光商品線索。",
+  },
+  {
+    name: "鳳凰旅遊連線查核",
+    source: "鳳凰旅遊",
+    sourceStatusId: "phoenix",
+    status: "連線待重查",
+    amount: "TLS 連線失敗，暫無可讀商品",
+    bookingUrl: "https://www.phoenix.com.tw/",
+    note: "本次無法成功讀取頁面內容，先保留為待重查來源。",
+  },
 ] as const;
+
+type GlobalAuroraAgencyRow = {
+  agency: string;
+  sourceStatusId: SourceStatusId;
+  score: number;
+  level: "strong" | "conditional" | "watch" | "pending";
+  destinations: string[];
+  priceLabel: string;
+  evidence: string;
+  productSignals: string[];
+  sourceUrl: string;
+  nextStep: string;
+};
+
+const globalAuroraAgencyRows: GlobalAuroraAgencyRow[] = [
+  {
+    agency: "東南旅遊",
+    sourceStatusId: "settour",
+    score: 92,
+    level: "strong",
+    destinations: ["黃刀鎮", "挪威", "芬蘭", "瑞典", "冰島"],
+    priceLabel: "可讀最低價 NT$136,900 起",
+    evidence: "追逐極光專題可讀到多筆商品與 minPrice，黃刀鎮與北歐商品都有可進入的產品頁。",
+    productSignals: [
+      "玩美加族~黃刀鎮賞極光3晚、美加雙城10日",
+      "微奢/典藏/精選北歐極光屋、破冰船、馴鹿雪橇系列",
+      "加拿大黃刀鎮極光、露易絲湖、洛磯山脈12日",
+    ],
+    sourceUrl: "https://www.settour.com.tw/theme/aurora_Season0000008/",
+    nextStep: "優先進商品頁確認出發日期、航班、飯店與 A/B 極光夜數口徑。",
+  },
+  {
+    agency: "雄獅旅遊",
+    sourceStatusId: "liontravel",
+    score: 86,
+    level: "strong",
+    destinations: ["冰島", "黃刀鎮", "芬蘭", "挪威", "北歐"],
+    priceLabel: "專題頁未直接提供價格",
+    evidence: "2026-2027 全球賞極光專題可讀到大量商品顯示名稱，涵蓋冰島、芬蘭、黃刀與北歐。",
+    productSignals: [
+      "加拿大極光｜黃刀鎮賞極光3晚、溫哥華10日",
+      "特選芬蘭幸福極光10日｜破冰船、極光玻璃屋",
+      "經典冰島夢幻極光10日｜極光船、藍湖溫泉、藍冰洞",
+    ],
+    sourceUrl: "https://event.liontravel.com/zh-tw/winter-travel/aurora/index?fr=cg4",
+    nextStep: "補抓各商品頁價格與可售日期；目前先用旅行社顯示名稱納入評分。",
+  },
+  {
+    agency: "山富旅遊",
+    sourceStatusId: "travel4u",
+    score: 82,
+    level: "conditional",
+    destinations: ["芬蘭", "挪威", "冰島", "阿拉斯加", "黃刀鎮", "澳洲"],
+    priceLabel: "專案頁未直接提供價格",
+    evidence: "世界極光專案頁可讀到芬蘭、羅弗敦、阿拉斯加、加拿大黃刀鎮與澳洲極光商品顯示名稱。",
+    productSignals: [
+      "幸福極光．芬蘭挪威10日",
+      "阿拉斯加幸福極光8日",
+      "加拿大黃刀鎮極光10日／美加黃刀極光炫目10日",
+    ],
+    sourceUrl: "https://www.travel4u.com.tw/project/aurora/",
+    nextStep: "補抓商品頁價格與航班；目的地覆蓋完整，價格欄位仍需重查。",
+  },
+  {
+    agency: "可樂旅遊",
+    sourceStatusId: "colatour",
+    score: 68,
+    level: "watch",
+    destinations: ["冰島"],
+    priceLabel: "搜尋頁 403，價格待重查",
+    evidence: "首頁可讀到極光旅行與冰島幸福極光入口，但站內搜尋頁目前禁止讀取。",
+    productSignals: ["冰島幸福極光 9/10/11/13 日", "極光旅行熱門快搜入口"],
+    sourceUrl: "https://www.colatour.com.tw/",
+    nextStep: "改用瀏覽器或稍後重查站內搜尋結果，取得價格與商品頁。",
+  },
+  {
+    agency: "長汎旅遊",
+    sourceStatusId: "everfun",
+    score: 56,
+    level: "watch",
+    destinations: ["黃刀鎮"],
+    priceLabel: "2026 歷史樣本 NT$142,451-165,451",
+    evidence: "目前保留 2026 已結束黃刀鎮團體樣本，只能作價格基準，不當成可售商品。",
+    productSignals: ["玩美加族~加拿大極光10日歷史樣本", "四筆 2026 出發日比較基準"],
+    sourceUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB",
+    nextStep: "重查是否已有新的可售黃刀鎮或全球極光團。",
+  },
+  {
+    agency: "易遊網",
+    sourceStatusId: "eztravel",
+    score: 48,
+    level: "pending",
+    destinations: ["加拿大"],
+    priceLabel: "未取得極光團價格",
+    evidence: "可讀到美加/加拿大跟團入口與一般加拿大商品，但未讀到黃刀鎮極光團具體商品。",
+    productSignals: ["美加/加拿大跟團入口", "一般加拿大商品頁"],
+    sourceUrl: "https://vacation.eztravel.com.tw/oversea/america-canada-newzealand-australia/",
+    nextStep: "以站內搜尋或分類頁重查黃刀鎮、極光、芬蘭、冰島關鍵字。",
+  },
+  {
+    agency: "五福旅遊",
+    sourceStatusId: "lifetour",
+    score: 34,
+    level: "pending",
+    destinations: ["待查"],
+    priceLabel: "未取得極光團價格",
+    evidence: "首頁本次未讀到極光關鍵字。",
+    productSignals: ["首頁可讀，但無極光線索"],
+    sourceUrl: "https://www.lifetour.com.tw/",
+    nextStep: "重查站內搜尋或歐洲/美加分類頁。",
+  },
+  {
+    agency: "喜鴻旅遊",
+    sourceStatusId: "besttour",
+    score: 34,
+    level: "pending",
+    destinations: ["待查"],
+    priceLabel: "未取得極光團價格",
+    evidence: "首頁本次未讀到極光關鍵字。",
+    productSignals: ["首頁可讀，但無極光線索"],
+    sourceUrl: "https://www.besttour.com.tw/",
+    nextStep: "重查站內搜尋或歐洲/美加分類頁。",
+  },
+  {
+    agency: "鳳凰旅遊",
+    sourceStatusId: "phoenix",
+    score: 28,
+    level: "pending",
+    destinations: ["連線待查"],
+    priceLabel: "TLS 連線失敗",
+    evidence: "本次查核無法建立可信 TLS 連線，未能讀取頁面。",
+    productSignals: ["連線待重查"],
+    sourceUrl: "https://www.phoenix.com.tw/",
+    nextStep: "改用瀏覽器或其他網路環境重查後再給商品分。",
+  },
+];
+
+const globalPrioritySourceIds: SourceStatusId[] = ["settour", "liontravel", "travel4u", "colatour"];
+const priceWatchSourceIds: SourceStatusId[] = ["settour", "colatour", "everfun"];
+const yellowknifeAgencyCandidates = globalAuroraAgencyRows.filter((row) => row.destinations.includes("黃刀鎮"));
+const globalPriorityAgencyCandidates = globalAuroraAgencyRows.filter((row) =>
+  globalPrioritySourceIds.includes(row.sourceStatusId),
+);
+const priceWatchAgencyCandidates = globalAuroraAgencyRows.filter((row) =>
+  priceWatchSourceIds.includes(row.sourceStatusId),
+);
 
 const auroraLevels = [
   {
@@ -391,6 +684,7 @@ type CandidateOption = {
   sourceCheckedAt?: string;
   sourceSummary?: string;
   importedFromSource?: boolean;
+  agencyCandidates?: GlobalAuroraAgencyRow[];
 };
 
 const budgetRange = {
@@ -475,21 +769,21 @@ const directionCategories = [
     items: [
       {
         candidateId: "group-a-taiwan-complete",
-        name: "台灣旅行社完整極光夜團",
-        condition: "需有明確旅遊團名稱、訂購網址、總團費與 3 個完整極光夜口徑。",
-        status: "尚未匯入具體旅行團",
+        name: "東南／雄獅／山富：A級完整夜候選",
+        condition: "可先依旅行社顯示名稱列候選；正式推薦前仍需補齊商品頁、總費用與 3 個完整極光夜口徑。",
+        status: "已列旅行社候選",
       },
       {
         candidateId: "group-a-autumn",
-        name: "9-11 月秋季 A級團體團",
-        condition: "需確認秋季團仍包含黃刀鎮極光觀賞，且抵達日不計入完整夜。",
-        status: "待匯入旅行團",
+        name: "9-11 月全球極光 A級候選",
+        condition: "依旅行社名稱先納入芬蘭、冰島、北歐與黃刀鎮線索；需確認抵達日不計入完整夜。",
+        status: "已列旅行社候選",
       },
       {
         candidateId: "group-a-winter",
-        name: "12-3 月冬季 A級團體團",
-        condition: "需同時檢查低溫、航班延誤、飯店與補看規則。",
-        status: "待匯入旅行團",
+        name: "12-3 月冬季 A級旅行社候選",
+        condition: "依旅行社名稱先列冬季極光來源；需同時檢查低溫、航班延誤、飯店與補看規則。",
+        status: "已列旅行社候選",
       },
     ],
   },
@@ -501,21 +795,21 @@ const directionCategories = [
     items: [
       {
         candidateId: "group-b-price-watch",
-        name: "B級團體價格優先團",
-        condition: "需有未來可售日期、旅遊團名稱、訂購網址、總團費與 3 晚極光口徑。",
-        status: "待匯入旅行團",
+        name: "B級價格優先旅行社候選",
+        condition: "可先依旅行社名稱與可讀價格線索列入；需補未來可售日期、訂購頁、總團費與 3 晚極光口徑。",
+        status: "已列旅行社候選",
       },
       {
         candidateId: "group-b-autumn-price",
-        name: "9-11 月 B級價格團",
-        condition: "秋季商品若只標示 3 晚極光，需確認是否把抵達日算入。",
-        status: "待匯入旅行團",
+        name: "9-11 月 B級價格旅行社候選",
+        condition: "秋季商品若只標示 3 晚極光，需確認是否把抵達日算入；先以旅行社名稱保留候選。",
+        status: "已列旅行社候選",
       },
       {
         candidateId: "group-b-winter-price",
-        name: "12-3 月 B級價格團",
-        condition: "冬季價格團需確認 YZF 抵離時間、補看規則與必要費後總額。",
-        status: "待匯入旅行團",
+        name: "12-3 月 B級價格旅行社候選",
+        condition: "冬季價格團需確認 YZF 抵離時間、補看規則與必要費後總額；先以旅行社名稱保留候選。",
+        status: "已列旅行社候選",
       },
     ],
   },
@@ -558,183 +852,189 @@ type DirectionCategoryId = (typeof directionCategories)[number]["id"];
 const candidateOptions: CandidateOption[] = [
   {
     id: "group-a-taiwan-complete",
-    title: "A級團體待查：台灣旅行社完整極光夜團",
-    packageName: "待查商品：台灣旅行社 3 完整極光夜團",
+    title: "A級團體待查：旅行社完整夜候選",
+    packageName: "旅行社候選：東南旅遊／雄獅旅遊／山富旅遊／長汎旅遊",
     mode: "group",
     estimatedCost: 0,
     auroraLevel: "A",
     riskLevel: 2,
     comfort: "balanced",
     verified: false,
-    dataState: "待匯入來源",
-    guideUrl: "#pending-2027-recheck",
-    guideLabel: "查看缺資料清單",
-    guideNote: "此項目用來保留 A級團體搜尋方向；未取得旅行社商品前不可下訂。",
-    description: "符合 A級團體方向，但目前缺少正式團名、價格、航班、飯店與訂購頁。",
-    nextStep: "匯入旅行社商品後，比對是否真的有 3 個完整極光夜。",
+    dataState: "已列旅行社候選，缺商品細節",
+    guideUrl: "#global-agency-ranking",
+    guideLabel: "查看旅行社排序",
+    guideNote: "此項目可先依旅行社名稱列候選；取得商品頁、價格、航班與夜數口徑後才可下訂。",
+    description: "已查到可列入 A級方向的旅行社來源，但仍缺正式可售商品頁、價格、航班與飯店。",
+    nextStep: "優先深查東南、雄獅、山富的商品頁，確認是否真的有 3 個完整極光夜。",
     departureWindow: "2027 或 9-11 月待查",
-    productType: "A級團體待查",
-    rankingSummary: "A級團體條件符合目標，但資料尚未公布；只作搜尋方向，不作可下訂推薦。",
+    productType: "A級旅行社候選",
+    rankingSummary: "旅行社名稱已可列入候選，但正式商品頁、總費用與 A級夜數尚未補齊；只能作深查排序，不作可下訂推薦。",
     costBasis: {
       readiness: "missing",
       label: "價格尚未公布",
       totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
-      flightDetail: "尚未公布完整航班與班號。",
-      hotelDetail: "尚未公布飯店名稱或同級條件。",
+      flightDetail: "旅行社來源已列候選，但尚未公布可售商品的完整航班與班號。",
+      hotelDetail: "旅行社來源已列候選，但尚未公布可售商品的飯店名稱或同級條件。",
       scheduleDetail: "尚未公布 YZF 抵達、離開時間與完整極光夜切分。",
-      priceDetail: "尚未公布團費、稅費、小費、保險與必要附加費總額。",
-      missingItems: ["正式旅遊團名稱", "訂購網址", "總團費", "航班", "飯店", "3 個完整極光夜口徑"],
+      priceDetail: "東南可讀最低價 NT$136,900 起；其他旅行社需進商品頁補總費用。",
+      missingItems: ["可售商品頁", "訂購網址", "總團費", "航班", "飯店", "3 個完整極光夜口徑"],
     },
+    agencyCandidates: yellowknifeAgencyCandidates,
   },
   {
     id: "group-a-autumn",
-    title: "A級團體待查：9-11 月秋季極光團",
-    packageName: "待查商品：9-11 月秋季 3 完整極光夜團",
+    title: "A級團體待查：9-11 月全球極光旅行社候選",
+    packageName: "旅行社候選：東南旅遊／雄獅旅遊／山富旅遊／可樂旅遊",
     mode: "group",
     estimatedCost: 0,
     auroraLevel: "A",
     riskLevel: 2,
     comfort: "balanced",
     verified: false,
-    dataState: "待匯入來源",
-    guideUrl: "#pending-2027-recheck",
-    guideLabel: "查看缺資料清單",
-    guideNote: "秋季極光團也屬本網站重點；需等商品公告後重查。",
-    description: "保留 9-11 月 A級團體搜尋方向，避免只看冬季或只看 2027 年初。",
-    nextStep: "匯入秋季團商品，確認是否仍包含黃刀鎮極光與 3 個完整觀賞夜。",
+    dataState: "已列旅行社候選，缺秋季商品細節",
+    guideUrl: "#global-agency-ranking",
+    guideLabel: "查看旅行社排序",
+    guideNote: "秋季極光團也屬本網站重點；目前先依旅行社名稱列候選，商品頁需重查。",
+    description: "保留 9-11 月全球極光旅行社候選，避免只看冬季或只看 2027 年初。",
+    nextStep: "深查東南、雄獅、山富與可樂的秋季極光商品，確認是否有 A級完整夜。",
     departureWindow: "9-11 月待查",
-    productType: "A級秋季團體待查",
-    rankingSummary: "秋季時間符合搜尋範圍，但目前缺少可查核商品資料。",
+    productType: "A級秋季旅行社候選",
+    rankingSummary: "秋季時間符合搜尋範圍，且已有旅行社來源名稱；缺商品頁價格與完整夜口徑前仍不可下訂。",
     costBasis: {
       readiness: "missing",
       label: "價格尚未公布",
       totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
-      flightDetail: "尚未公布秋季團航班與 YZF 抵離時間。",
-      hotelDetail: "尚未公布秋季團飯店。",
+      flightDetail: "已列旅行社候選；尚未公布秋季團航班與 YZF 抵離時間。",
+      hotelDetail: "已列旅行社候選；尚未公布秋季團飯店。",
       scheduleDetail: "尚未公布是否有 3 個完整極光夜，抵達日不得計入 A級夜數。",
-      priceDetail: "尚未公布團費與必要附加費。",
-      missingItems: ["秋季可售日期", "團費", "航班", "飯店", "完整極光夜數", "訂購網址"],
+      priceDetail: "東南可讀最低價 NT$136,900 起；其他秋季商品需進來源頁補價。",
+      missingItems: ["秋季可售日期", "商品頁", "團費", "航班", "飯店", "完整極光夜數", "訂購網址"],
     },
+    agencyCandidates: globalPriorityAgencyCandidates,
   },
   {
     id: "group-a-winter",
-    title: "A級團體待查：12-3 月冬季完整極光夜團",
-    packageName: "待查商品：12-3 月冬季 3 完整極光夜團",
+    title: "A級團體待查：12-3 月冬季旅行社候選",
+    packageName: "旅行社候選：東南旅遊／雄獅旅遊／山富旅遊／可樂旅遊",
     mode: "group",
     estimatedCost: 0,
     auroraLevel: "A",
     riskLevel: 2,
     comfort: "balanced",
     verified: false,
-    dataState: "待匯入來源",
-    guideUrl: "#pending-2027-recheck",
-    guideLabel: "查看缺資料清單",
-    guideNote: "冬季團需額外檢查低溫、延誤、補看與飯店位置。",
-    description: "保留冬季 A級團體搜尋方向；正式商品匯入後再與 B級價格團比較。",
-    nextStep: "匯入冬季旅行社商品，確認航班延誤備援與補看規則。",
+    dataState: "已列旅行社候選，缺冬季商品細節",
+    guideUrl: "#global-agency-ranking",
+    guideLabel: "查看旅行社排序",
+    guideNote: "冬季團需額外檢查低溫、延誤、補看與飯店位置；目前先依旅行社名稱列候選。",
+    description: "保留冬季 A級旅行社候選；正式商品頁補齊後再與 B級價格團比較。",
+    nextStep: "深查冬季旅行社商品，確認航班延誤備援與補看規則。",
     departureWindow: "12-3 月待查",
-    productType: "A級冬季團體待查",
-    rankingSummary: "冬季極光條件可能較強，但沒有價格與航班前不能排序為可下訂商品。",
+    productType: "A級冬季旅行社候選",
+    rankingSummary: "冬季極光條件可能較強，且已有旅行社來源名稱；沒有商品頁價格與航班前不能作可下訂推薦。",
     costBasis: {
       readiness: "missing",
       label: "價格尚未公布",
       totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
-      flightDetail: "尚未公布冬季團航班、轉機與延誤備援。",
-      hotelDetail: "尚未公布冬季團飯店與保暖動線。",
+      flightDetail: "已列旅行社候選；尚未公布冬季團航班、轉機與延誤備援。",
+      hotelDetail: "已列旅行社候選；尚未公布冬季團飯店與保暖動線。",
       scheduleDetail: "尚未公布 YZF 夜數配置與補看規則。",
       priceDetail: "尚未公布團費、冬衣、稅費、小費與必要附加費總額。",
-      missingItems: ["冬季可售日期", "航班延誤備援", "飯店", "補看規則", "總費用", "訂購網址"],
+      missingItems: ["冬季可售日期", "商品頁", "航班延誤備援", "飯店", "補看規則", "總費用", "訂購網址"],
     },
+    agencyCandidates: globalPriorityAgencyCandidates,
   },
   {
     id: "group-b-price-watch",
-    title: "B級團體待查：價格優先團",
-    packageName: "待查商品：B級 3 晚價格優先團",
+    title: "B級團體待查：價格優先旅行社候選",
+    packageName: "旅行社候選：東南旅遊／可樂旅遊／長汎旅遊",
     mode: "group",
     estimatedCost: 0,
     auroraLevel: "B",
     riskLevel: 2,
     comfort: "balanced",
     verified: false,
-    dataState: "待匯入來源",
-    guideUrl: "#pending-2027-recheck",
-    guideLabel: "查看缺資料清單",
-    guideNote: "此項目只代表未來可售 B級團體搜尋方向；不能用 2026 已結束行程替代。",
-    description: "保留 B級價格優先搜尋方向，需等未來可售商品匯入後才可比較。",
-    nextStep: "匯入可售旅行團後，比對總團費、訂購網址、YZF 抵離時間與是否含抵達日。",
+    dataState: "已列旅行社候選，缺可售商品細節",
+    guideUrl: "#global-agency-ranking",
+    guideLabel: "查看旅行社排序",
+    guideNote: "此項目只代表未來可售 B級團體搜尋方向；可先依旅行社名稱列候選，但不能用 2026 已結束行程替代。",
+    description: "保留 B級價格優先旅行社候選，需等未來可售商品頁補齊後才可比較。",
+    nextStep: "深查東南、可樂與長汎新商品，比對總團費、訂購網址、YZF 抵離時間與是否含抵達日。",
     departureWindow: "未來可售日期待查",
-    productType: "B級團體待查",
-    rankingSummary: "B級價格方向可作備援，但目前缺少可售商品資料；不可用已結束行程當候選。",
+    productType: "B級旅行社候選",
+    rankingSummary: "B級價格方向可作備援，且已有旅行社來源名稱；目前仍缺可售商品頁與完整費用，不可用已結束行程當候選。",
     costBasis: {
       readiness: "missing",
       label: "價格尚未公布",
       totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
-      flightDetail: "尚未公布未來團體航班與 YZF 抵離時間。",
-      hotelDetail: "尚未公布未來團體飯店或同級條件。",
+      flightDetail: "已列旅行社候選；尚未公布未來團體航班與 YZF 抵離時間。",
+      hotelDetail: "已列旅行社候選；尚未公布未來團體飯店或同級條件。",
       scheduleDetail: "尚未公布 3 晚極光是否含抵達日；需明確標成 B級。",
-      priceDetail: "尚未公布團費、稅費、小費、保險與必要附加費總額。",
-      missingItems: ["未來可售日期", "旅遊團名稱", "訂購網址", "總團費", "航班", "飯店", "B級夜數口徑"],
+      priceDetail: "東南可讀最低價 NT$136,900 起；可樂與長汎需重查新商品價格。",
+      missingItems: ["未來可售日期", "商品頁", "訂購網址", "總團費", "航班", "飯店", "B級夜數口徑"],
     },
+    agencyCandidates: priceWatchAgencyCandidates,
   },
   {
     id: "group-b-autumn-price",
-    title: "B級團體待查：9-11 月價格團",
-    packageName: "待查商品：9-11 月 B級價格團",
+    title: "B級團體待查：9-11 月價格旅行社候選",
+    packageName: "旅行社候選：東南旅遊／可樂旅遊／長汎旅遊",
     mode: "group",
     estimatedCost: 0,
     auroraLevel: "B",
     riskLevel: 2,
     comfort: "balanced",
     verified: false,
-    dataState: "待匯入來源",
-    guideUrl: "#pending-2027-recheck",
-    guideLabel: "查看缺資料清單",
-    guideNote: "秋季 B級團可列入重點，但需先確認不是已結束或不可售商品。",
-    description: "保留 9-11 月 B級價格團搜尋方向，適合檢查秋季是否有較低總額。",
-    nextStep: "匯入秋季可售團後，確認 3 晚極光口徑、飯店、航班與訂購頁。",
+    dataState: "已列旅行社候選，缺秋季價格細節",
+    guideUrl: "#global-agency-ranking",
+    guideLabel: "查看旅行社排序",
+    guideNote: "秋季 B級團可列入重點；目前先依旅行社名稱列候選，需確認不是已結束或不可售商品。",
+    description: "保留 9-11 月 B級價格旅行社候選，適合檢查秋季是否有較低總額。",
+    nextStep: "深查秋季可售團後，確認 3 晚極光口徑、飯店、航班與訂購頁。",
     departureWindow: "9-11 月待查",
-    productType: "B級秋季團體待查",
-    rankingSummary: "秋季 B級團可作價格備援；目前缺少可售商品資料。",
+    productType: "B級秋季旅行社候選",
+    rankingSummary: "秋季 B級團可作價格備援，且已有旅行社來源名稱；目前缺可售商品頁與價格資料。",
     costBasis: {
       readiness: "missing",
       label: "價格尚未公布",
       totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
-      flightDetail: "尚未公布秋季團航班與 YZF 抵離時間。",
-      hotelDetail: "尚未公布秋季團飯店。",
+      flightDetail: "已列旅行社候選；尚未公布秋季團航班與 YZF 抵離時間。",
+      hotelDetail: "已列旅行社候選；尚未公布秋季團飯店。",
       scheduleDetail: "尚未公布是否把抵達日算入 3 晚極光。",
-      priceDetail: "尚未公布團費與必要附加費。",
-      missingItems: ["秋季可售日期", "旅遊團名稱", "團費", "航班", "飯店", "訂購網址"],
+      priceDetail: "東南可讀最低價 NT$136,900 起；其他旅行社秋季價格需重查。",
+      missingItems: ["秋季可售日期", "商品頁", "團費", "航班", "飯店", "訂購網址"],
     },
+    agencyCandidates: priceWatchAgencyCandidates,
   },
   {
     id: "group-b-winter-price",
-    title: "B級團體待查：12-3 月價格團",
-    packageName: "待查商品：12-3 月 B級價格團",
+    title: "B級團體待查：12-3 月價格旅行社候選",
+    packageName: "旅行社候選：東南旅遊／可樂旅遊／長汎旅遊",
     mode: "group",
     estimatedCost: 0,
     auroraLevel: "B",
     riskLevel: 2,
     comfort: "balanced",
     verified: false,
-    dataState: "待匯入來源",
-    guideUrl: "#pending-2027-recheck",
-    guideLabel: "查看缺資料清單",
-    guideNote: "冬季 B級價格團須額外查低溫、延誤與補看規則。",
-    description: "保留 12-3 月 B級價格團搜尋方向，用來追蹤冬季低價團是否值得列入備援。",
-    nextStep: "匯入冬季可售團後，確認總費用、航班延誤備援、飯店與補看條款。",
+    dataState: "已列旅行社候選，缺冬季價格細節",
+    guideUrl: "#global-agency-ranking",
+    guideLabel: "查看旅行社排序",
+    guideNote: "冬季 B級價格團須額外查低溫、延誤與補看規則；目前先依旅行社名稱列候選。",
+    description: "保留 12-3 月 B級價格旅行社候選，用來追蹤冬季低價團是否值得列入備援。",
+    nextStep: "深查冬季可售團後，確認總費用、航班延誤備援、飯店與補看條款。",
     departureWindow: "12-3 月待查",
-    productType: "B級冬季團體待查",
-    rankingSummary: "冬季 B級團可能有價格優勢，但缺少可售商品資料前不能推薦。",
+    productType: "B級冬季旅行社候選",
+    rankingSummary: "冬季 B級團可能有價格優勢，且已有旅行社來源名稱；缺可售商品資料前不能推薦。",
     costBasis: {
       readiness: "missing",
       label: "價格尚未公布",
       totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
-      flightDetail: "尚未公布冬季團航班、轉機與延誤備援。",
-      hotelDetail: "尚未公布冬季團飯店與保暖動線。",
+      flightDetail: "已列旅行社候選；尚未公布冬季團航班、轉機與延誤備援。",
+      hotelDetail: "已列旅行社候選；尚未公布冬季團飯店與保暖動線。",
       scheduleDetail: "尚未公布 YZF 夜數配置與補看規則。",
-      priceDetail: "尚未公布團費、冬衣、稅費、小費與必要附加費總額。",
-      missingItems: ["冬季可售日期", "航班延誤備援", "飯店", "補看規則", "總費用", "訂購網址"],
+      priceDetail: "東南可讀最低價 NT$136,900 起；其他冬季商品需重查價格與必要費。",
+      missingItems: ["冬季可售日期", "商品頁", "航班延誤備援", "飯店", "補看規則", "總費用", "訂購網址"],
     },
+    agencyCandidates: priceWatchAgencyCandidates,
   },
   {
     id: "source-yktours-gold-5d4n",
@@ -1370,6 +1670,89 @@ function getDirectionResultNote(result: ReturnType<typeof evaluateOption>) {
   return result.status === "pending" ? "待查項目不評分" : `分數 ${result.score}`;
 }
 
+function getAgencyLevelLabel(level: GlobalAuroraAgencyRow["level"]) {
+  if (level === "strong") {
+    return "優先查核";
+  }
+
+  if (level === "conditional") {
+    return "條件候選";
+  }
+
+  if (level === "watch") {
+    return "持續追蹤";
+  }
+
+  return "資料待補";
+}
+
+function GlobalAuroraAgencySection() {
+  const sortedRows = [...globalAuroraAgencyRows].sort((first, second) => second.score - first.score);
+
+  return (
+    <section className="pageSection globalAgencySection" id="global-agency-ranking">
+      <details className="agencyDisclosure">
+        <summary className="agencyDisclosureSummary">
+          <div className="sectionHeader tableHeader">
+            <div>
+              <p className="eyebrow">Global Aurora Tour Audit</p>
+              <h2>全球極光旅行社查核排序</h2>
+              <p>
+                先用旅行社顯示名稱建立候選，並依來源可讀性、目的地覆蓋、價格透明度、是否有訂購頁與是否含黃刀鎮/芬蘭等極光商品線索評分。
+              </p>
+            </div>
+            <div className="sourceNote">
+              <strong>查核基準日：2026-07-16</strong>
+              <span>已查 9 家台灣旅行社；點選展開／收合完整排序。</span>
+            </div>
+          </div>
+        </summary>
+
+        <div className="agencyRankingGrid">
+          {sortedRows.map((row) => {
+            const sourceState = sourceStatusRegistry[row.sourceStatusId];
+
+            return (
+              <article className={`agencyScoreCard ${row.level}`} key={row.agency}>
+                <div className="agencyScoreHead">
+                  <div>
+                    <span>{getAgencyLevelLabel(row.level)}</span>
+                    <h3>{row.agency}</h3>
+                  </div>
+                  <strong>{row.score}</strong>
+                </div>
+                <div className="agencyMeta">
+                  <span>{row.priceLabel}</span>
+                  <span>{sourceState.freshnessLabel}</span>
+                  <span>{sourceState.safetyLabel}</span>
+                </div>
+                <p>{row.evidence}</p>
+                <div className="destinationChips">
+                  {row.destinations.map((destination) => (
+                    <span key={destination}>{destination}</span>
+                  ))}
+                </div>
+                <div className="signalList">
+                  <strong>查到的顯示名稱/線索</strong>
+                  {row.productSignals.map((signal) => (
+                    <small key={signal}>{signal}</small>
+                  ))}
+                </div>
+                <div className="agencyAction">
+                  <a href={row.sourceUrl} rel="noreferrer" target="_blank">
+                    前往來源
+                  </a>
+                  <small>{row.nextStep}</small>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </details>
+    </section>
+  );
+}
+
 function SourceSyncSection() {
   const importedCount = candidateOptions.filter(
     (option) => option.importedFromSource && isRecommendationOption(option),
@@ -1388,8 +1771,8 @@ function SourceSyncSection() {
         <div className="sourceNote">
           <strong>末頁查核摘要</strong>
           <span>
-            已匯入 {importedCount} 筆可排序候選；ezTravel 目前只作比對來源；2026 已結束行程僅作歷史基準；匯率：1 CAD ≈
-            NT$22.8176；查核基準日：2026-07-15。
+            已匯入 {importedCount} 筆可排序候選；另已建立 {globalAuroraAgencyRows.length} 家台灣旅行社評分；
+            2026 已結束行程僅作歷史基準；匯率：1 CAD ≈ NT$22.8176。
           </span>
         </div>
       </div>
@@ -1733,8 +2116,8 @@ export default function Home() {
       <section className="pageSection directionSection" id="candidate-directions">
         <div className="sectionHeader tableHeader">
           <div>
-            <p className="eyebrow">Candidate Directions</p>
-            <h2>候選方向分類</h2>
+            <p className="eyebrow">Candidate Options</p>
+            <h2>旅行方案候選清單</h2>
             <p>
               這裡使用上方已確認條件，把 A級團體、B級團體與自由行候選分開。點選分類後，下方會列出旅行團或自由行方案。
             </p>
@@ -1745,7 +2128,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="directionChooser" aria-label="候選方向分類選擇">
+        <div className="directionChooser" aria-label="旅行方案候選清單分類選擇">
           {directionCategories.map((category) => (
             <button
               aria-pressed={activeDirectionId === category.id}
@@ -1802,6 +2185,25 @@ export default function Home() {
                         </small>
                       ) : null}
                       <small>資料狀態：{linkedOption.dataState}</small>
+                    </div>
+                  ) : null}
+                  {linkedOption?.agencyCandidates?.length ? (
+                    <div className="directionAgencyLinks">
+                      <strong>旅行社候選</strong>
+                      {linkedOption.agencyCandidates.map((agency) => {
+                        const agencySourceState = sourceStatusRegistry[agency.sourceStatusId];
+
+                        return (
+                          <a href={agency.sourceUrl} key={agency.agency} rel="noreferrer" target="_blank">
+                            <span>{agency.agency}</span>
+                            <small>{agency.priceLabel}</small>
+                            <small>{agency.destinations.join("、")}</small>
+                            <small>
+                              {agencySourceState.freshnessLabel}｜{agencySourceState.safetyLabel}
+                            </small>
+                          </a>
+                        );
+                      })}
                     </div>
                   ) : null}
                   {linkedOption ? (
@@ -1897,6 +2299,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <GlobalAuroraAgencySection />
 
       <section className="contentGrid">
         <article className="panel warningPanel">
