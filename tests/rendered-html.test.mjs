@@ -41,13 +41,22 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /9-11 月/);
   assert.match(html, /秋季極光團/);
   assert.match(html, /已同步來源商品會自動進入排序/);
-  assert.match(html, /自動匯入資料源/);
+  assert.match(html, /自動匯入資料源摘要/);
+  assert.match(html, /Source Appendix/);
+  assert.match(html, /末頁查核摘要/);
   assert.match(html, /Yellowknife Tours 5D4N Gold/);
   assert.match(html, /匯率：1 CAD ≈ NT\$22\.8176/);
   assert.match(html, /約 NT\$35,698/);
   assert.match(html, /約 NT\$57,452/);
   assert.match(html, /訂購網站/);
   assert.match(html, /Yellowknife Tours/);
+  assert.match(html, /ezTravel 美加\/加拿大跟團比對/);
+  assert.match(html, /待查，不併入排序/);
+  assert.match(html, /今日比對，未入排序/);
+  assert.ok(
+    html.indexOf('class="closingPanel"') < html.indexOf('id="source-sync"'),
+    "source appendix must render after the closing recommendation",
+  );
   assert.doesNotMatch(html, /即時查詢入口|全網即時搜尋|開啟主要資料源查詢|查詢此來源/);
   assert.match(html, /候選方向分類/);
   assert.match(html, /可選擇的 A級團體候選方向/);
@@ -70,6 +79,9 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /目前不顯示最適合選項/);
   assert.match(html, /預算上限/);
   assert.match(html, /NT\$100,000 - NT\$400,000/);
+  assert.match(html, /條件必要性與候選影響/);
+  assert.match(html, /最低極光夜數/);
+  assert.match(html, /A級要求會降級只達 B級的候選/);
   assert.match(html, /未產生推薦/);
   assert.match(html, /長汎 2026 團體樣本（四出發日）/);
   assert.match(html, /已匯入(?:<!-- -->|\s)*2(?:<!-- -->|\s)*筆可排序候選/);
@@ -89,6 +101,8 @@ test("server-renders the Yellowknife decision dashboard", async () => {
   assert.match(html, /尚未確認價格基準/);
   assert.match(html, /以目前預算上限/);
   assert.match(html, /尚未公布/);
+  assert.match(html, /待查項目不評分/);
+  assert.doesNotMatch(html, /recommendationBadge pending[\s\S]{0,120}分數/);
   assert.match(html, /低於 NT\$150,000/);
   assert.doesNotMatch(html, /尚未填入|估算待補|自由行估算缺/);
   assert.doesNotMatch(html, /頁面會即時排序適合的選項|候選方向價格基準/);
@@ -109,6 +123,7 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(page, /decisionStatuses/);
   assert.match(page, /seasonScopeRows/);
   assert.match(page, /sourceSyncRows/);
+  assert.match(page, /SourceSyncSection/);
   assert.match(page, /importedFromSource/);
   assert.match(page, /useState<PlannerFilters>/);
   assert.match(page, /draftFilters/);
@@ -120,6 +135,11 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(page, /getBudgetStatus/);
   assert.match(page, /candidateOptions/);
   assert.match(page, /sourceStatusRegistry/);
+  assert.match(page, /ezTravel 美加\/加拿大跟團比對/);
+  assert.match(page, /待查，不併入排序/);
+  assert.match(page, /plannerImpactRows/);
+  assert.match(page, /getDirectionResultNote/);
+  assert.match(page, /待查項目不評分/);
   assert.match(page, /costBasis/);
   assert.match(page, /自由行目前採 2026 團體樣本作參考/);
   assert.match(page, /tourName/);
@@ -155,6 +175,8 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(css, /\.budgetRow\.green/);
   assert.match(css, /\.scopeGrid/);
   assert.match(css, /\.sourceSyncSection/);
+  assert.match(css, /\.compactSourceSection/);
+  assert.match(css, /\.impactAudit/);
   assert.match(css, /\.directionSection/);
   assert.match(css, /\.directionChooser/);
   assert.match(css, /\.directionTourMeta/);
@@ -172,6 +194,13 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(css, /\.applyPlannerStatus\.pending/);
   assert.match(css, /\.tourCard\.red/);
   assert.match(staticHtml, /directionCategories/);
+  assert.match(staticHtml, /plannerImpactRows/);
+  assert.match(staticHtml, /Source Appendix/);
+  assert.match(staticHtml, /ezTravel 美加\/加拿大跟團比對/);
+  assert.match(staticHtml, /待查，不併入排序/);
+  assert.match(staticHtml, /今日比對，未入排序/);
+  assert.match(staticHtml, /getDirectionResultNote/);
+  assert.match(staticHtml, /待查項目不評分/);
   assert.match(staticHtml, /draftPlannerState/);
   assert.match(staticHtml, /applyPlanner/);
   assert.match(staticHtml, /getDecisionGates/);
@@ -191,6 +220,8 @@ test("keeps the finished site free of starter preview wiring", async () => {
   assert.match(staticHtml, /B級團體待查/);
   assert.match(staticHtml, /當地套裝＋2026參考/);
   assert.match(staticHtml, /決策選項列表/);
+  assert.match(staticHtml, /條件必要性與候選影響/);
+  assert.match(staticHtml, /A級要求會降級只達 B級的候選/);
   assert.match(staticHtml, /hasConfirmedPlanner/);
   assert.match(staticHtml, /isRecommendationOption/);
   assert.match(staticHtml, /isActionableStatus/);
@@ -203,10 +234,15 @@ test("keeps the finished site free of starter preview wiring", async () => {
     staticHtml.indexOf('id="decision-simulator"') < staticHtml.indexOf('id="candidate-directions"'),
     "static decision options must render before candidate directions",
   );
+  assert.ok(
+    staticHtml.indexOf('class="closingPanel"') < staticHtml.indexOf('id="source-sync"'),
+    "static source appendix must render at the page end",
+  );
   assert.match(staticHtml, /確認並查核/);
   assert.match(staticHtml, /尚未查核；請先確認條件，才會產生推薦/);
   assert.doesNotMatch(staticHtml, /尚未填入|估算待補|自由行估算缺/);
   assert.doesNotMatch(staticHtml, /下一步行動卡|Next Actions|actionGrid|actionCard|適合選項排序|互動決策模擬器|頁面會即時排序適合的選項|候選方向價格基準/);
+  assert.doesNotMatch(staticHtml, /<small>分數 \$\{linkedResult\.score\}<\/small>/);
   assert.match(staticHtml, /sourceStatusRegistry/);
   assert.match(staticHtml, /costBasis/);
   assert.match(staticHtml, /旅遊團名稱/);

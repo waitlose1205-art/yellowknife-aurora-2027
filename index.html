@@ -386,6 +386,81 @@
         padding-top: 18px;
       }
 
+      .compactSourceSection {
+        margin-bottom: 42px;
+        padding: 18px;
+        box-shadow: none;
+      }
+
+      .compactSourceSection .sectionHeader h2 {
+        font-size: clamp(1.3rem, 2vw, 1.75rem);
+      }
+
+      .compactSourceSection .sectionHeader p {
+        max-width: 760px;
+        font-size: 0.92rem;
+      }
+
+      .compactSourceSection .sourceNote {
+        padding: 10px 12px;
+      }
+
+      .compactSourceSection .sourceGrid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .compactSourceSection .sourceCard {
+        min-height: 0;
+        padding: 12px;
+        background: #fbfffe;
+      }
+
+      .compactSourceSection .sourceCardHeader span,
+      .compactSourceSection .sourceStatusGrid span {
+        padding: 4px 7px;
+        font-size: 0.68rem;
+      }
+
+      .compactSourceSection .sourceCardHeader h3 {
+        margin-top: 8px;
+        font-size: 0.95rem;
+        line-height: 1.35;
+      }
+
+      .compactSourceSection .sourceCard p {
+        margin-top: 8px;
+        font-size: 0.82rem;
+        line-height: 1.45;
+      }
+
+      .compactSourceSection .sourceCard > strong {
+        margin-top: 8px;
+        font-size: 0.86rem;
+        line-height: 1.45;
+      }
+
+      .compactSourceSection .sourceCard small {
+        margin-top: 8px;
+        font-size: 0.76rem;
+        line-height: 1.45;
+      }
+
+      .compactSourceSection .sourceStatusGrid {
+        margin-top: 9px;
+      }
+
+      .compactSourceSection .sourceActions {
+        padding-top: 10px;
+      }
+
+      .compactSourceSection .sourceActions a {
+        min-height: 32px;
+        padding: 6px 9px;
+        font-size: 0.78rem;
+      }
+
       .directionChooser {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -761,6 +836,54 @@
         height: 18px;
         margin-top: 2px;
         accent-color: var(--teal);
+      }
+
+      .impactAudit {
+        display: grid;
+        gap: 8px;
+        margin-top: 18px;
+        padding: 12px;
+        border: 1px solid #dbe7e4;
+        border-radius: 8px;
+        background: #fbfffe;
+      }
+
+      .impactAudit > strong {
+        color: #173331;
+        font-size: 0.92rem;
+      }
+
+      .impactAudit span {
+        display: grid;
+        grid-template-columns: minmax(86px, 0.7fr) auto minmax(0, 1.7fr);
+        gap: 8px;
+        align-items: start;
+        padding: 8px 0 0;
+        border-top: 1px solid #edf3f1;
+        color: #31504b;
+      }
+
+      .impactAudit span:first-of-type {
+        border-top: 0;
+        padding-top: 2px;
+      }
+
+      .impactAudit b {
+        color: #173331;
+      }
+
+      .impactAudit small {
+        width: fit-content;
+        padding: 3px 7px;
+        border-radius: 999px;
+        background: #e6f6f1;
+        color: #0b6b58;
+        font-weight: 900;
+      }
+
+      .impactAudit em {
+        font-style: normal;
+        line-height: 1.45;
       }
 
       .simulatorHint {
@@ -1418,6 +1541,7 @@
 
         .segmentedControl,
         .comfortControl,
+        .impactAudit span,
         .optionMetrics,
         .estimateGrid,
         .hotelRateList,
@@ -1587,97 +1711,6 @@
         </div>
       </section>
 
-      <section class="pageSection sourceSyncSection" id="source-sync">
-        <div class="sectionHeader tableHeader">
-          <div>
-            <p class="eyebrow">Source Sync</p>
-            <h2>自動匯入資料源</h2>
-            <p>
-              網站會把已查核的旅行社與官方來源資料併入「候選方向分類」與「決策選項列表」。沒有團名、價格或訂購網址的資料，只保留在來源同步狀態，不進入推薦。
-            </p>
-          </div>
-          <div class="sourceNote">
-            <strong>同步狀態</strong>
-            <span>已匯入 2 筆可排序候選；2026 已結束行程僅作歷史基準；匯率：1 CAD ≈ NT$22.8176；查核基準日：2026-07-15。</span>
-          </div>
-        </div>
-
-        <div class="sourceGrid">
-          <article class="sourceCard">
-            <div class="sourceCardHeader">
-            <span>僅作歷史基準</span>
-              <h3>Yellowknife Tours 5D4N Gold</h3>
-            </div>
-            <p>Yellowknife Tours</p>
-            <strong>CAD 1,490 + 5% GST 起（約 NT$35,698）</strong>
-            <div class="sourceStatusGrid">
-              <span>資料新鮮度：今日查核</span>
-              <span>白名單驗證</span>
-              <span>官方來源</span>
-            </div>
-            <small>2026-2027 冬季套裝來源；需另加國際/內陸機票、冬衣、小費與稅費。</small>
-            <small>價格、房型與活動內容會變動；正式下訂前需重查。</small>
-            <div class="sourceActions">
-              <a href="https://yellowknifetours.com/winter-packages/" rel="noreferrer" target="_blank">訂購網站</a>
-            </div>
-          </article>
-          <article class="sourceCard">
-            <div class="sourceCardHeader">
-              <span>已併入排序</span>
-              <h3>Yellowknife Tours 5D4N Diamond</h3>
-            </div>
-            <p>Yellowknife Tours</p>
-            <strong>CAD 2,398 + 5% GST 起（約 NT$57,452）</strong>
-            <div class="sourceStatusGrid">
-              <span>資料新鮮度：今日查核</span>
-              <span>白名單驗證</span>
-              <span>官方來源</span>
-            </div>
-            <small>飯店與活動等級較高，總費用更接近預算上限。</small>
-            <small>價格、房型與活動內容會變動；正式下訂前需重查。</small>
-            <div class="sourceActions">
-              <a href="https://yellowknifetours.com/winter-packages/" rel="noreferrer" target="_blank">訂購網站</a>
-            </div>
-          </article>
-          <article class="sourceCard">
-            <div class="sourceCardHeader">
-              <span>已併入排序</span>
-              <h3>長汎 2026 團體樣本（四出發日）</h3>
-            </div>
-            <p>長汎旅遊</p>
-            <strong>NT$142,451-165,451</strong>
-            <div class="sourceStatusGrid">
-              <span>資料新鮮度：歷史基準，需重查</span>
-              <span>白名單驗證</span>
-              <span>旅行社來源</span>
-            </div>
-            <small>四筆 2026 團體歷史基準，不代表目前可下訂，不進入候選方向或推薦排序。</small>
-            <small>此為 2026 已成團樣本，只可作價格底線，不可視為目前可售。</small>
-            <div class="sourceActions">
-              <a href="https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB" rel="noreferrer" target="_blank">訂購網站</a>
-            </div>
-          </article>
-          <article class="sourceCard">
-            <div class="sourceCardHeader">
-              <span>支援成本估算</span>
-              <h3>Air Canada YVR-YZF 月份票價</h3>
-            </div>
-            <p>Air Canada</p>
-            <strong>2026/09-12 CAD 318 起（約 NT$7,256）；2027/01-03 CAD 339 起（約 NT$7,735）</strong>
-            <div class="sourceStatusGrid">
-              <span>資料新鮮度：票價高波動，需重查</span>
-              <span>白名單驗證</span>
-              <span>航空官方</span>
-            </div>
-            <small>航班價格會變動；用來修正自由行與當地套裝總額，不單獨列為旅行團。</small>
-            <small>航空票價與艙等會即時變動，只作成本估算支援。</small>
-            <div class="sourceActions">
-              <a href="https://www.aircanada.com/en-ca/flights-from-vancouver-to-yellowknife" rel="noreferrer" target="_blank">訂購網站</a>
-            </div>
-          </article>
-        </div>
-      </section>
-
       <section class="pageSection simulatorSection" id="decision-simulator">
         <div class="sectionHeader">
           <p class="eyebrow">Decision Options</p>
@@ -1747,6 +1780,40 @@
               <input id="requireVerified" type="checkbox" />
               <span>只採已查核資料；未重查的 2027 方向自動降級。</span>
             </label>
+
+            <div class="impactAudit" aria-label="條件必要性與候選影響">
+              <strong>條件必要性與候選影響</strong>
+              <span>
+                <b>預算上限</b>
+                <small>必須</small>
+                <em>直接改變低於、臨界、超標與決策門檻；候選判讀以確認後的預算上限為準。</em>
+              </span>
+              <span>
+                <b>旅行型態</b>
+                <small>必須</small>
+                <em>決定預設候選分類，並加權團體或自由行，不會把非偏好型態完全隱藏。</em>
+              </span>
+              <span>
+                <b>最低極光夜數</b>
+                <small>必須</small>
+                <em>A級要求會降級只達 B級的候選；B級要求會保留價格備援。</em>
+              </span>
+              <span>
+                <b>風險容忍度</b>
+                <small>必須</small>
+                <em>航班銜接、資料缺口與來源新鮮度風險高於設定時會降級或排除。</em>
+              </span>
+              <span>
+                <b>舒適程度</b>
+                <small>排序條件</small>
+                <em>影響節制、平衡、舒適方案排序；不是單獨決定是否可下訂的硬門檻。</em>
+              </span>
+              <span>
+                <b>只採已查核資料</b>
+                <small>查核開關</small>
+                <em>開啟後，未完成重查或缺具體旅行團資料的項目只保留為待查方向。</em>
+              </span>
+            </div>
 
             <div class="applyPlannerBox">
               <button class="applyPlannerButton" id="applyPlanner" type="button">確認並查核</button>
@@ -1965,6 +2032,113 @@
           極光補看或延誤條款，就先標示為 PENDING_2027_RECHECK。
         </p>
       </section>
+
+      <section class="pageSection sourceSyncSection compactSourceSection" id="source-sync">
+        <div class="sectionHeader tableHeader">
+          <div>
+            <p class="eyebrow">Source Appendix</p>
+            <h2>自動匯入資料源摘要</h2>
+            <p>此區只作末頁查核附錄，保留來源新鮮度、白名單與訂購連結；主要決策仍以上方候選方向與確認查核結果為準。</p>
+          </div>
+          <div class="sourceNote">
+            <strong>末頁查核摘要</strong>
+            <span>已匯入 2 筆可排序候選；ezTravel 目前只作比對來源；2026 已結束行程僅作歷史基準；匯率：1 CAD ≈ NT$22.8176；查核基準日：2026-07-15。</span>
+          </div>
+        </div>
+
+        <div class="sourceGrid">
+          <article class="sourceCard">
+            <div class="sourceCardHeader">
+              <span>已併入排序</span>
+              <h3>Yellowknife Tours 5D4N Gold</h3>
+            </div>
+            <p>Yellowknife Tours</p>
+            <strong>CAD 1,490 + 5% GST 起（約 NT$35,698）</strong>
+            <div class="sourceStatusGrid">
+              <span>今日查核</span>
+              <span>白名單驗證</span>
+              <span>官方來源</span>
+            </div>
+            <small>2026-2027 冬季套裝來源；需另加國際/內陸機票、冬衣、小費與稅費。</small>
+            <small>價格、房型與活動內容會變動；正式下訂前需重查。</small>
+            <div class="sourceActions">
+              <a href="https://yellowknifetours.com/winter-packages/" rel="noreferrer" target="_blank">訂購網站</a>
+            </div>
+          </article>
+          <article class="sourceCard">
+            <div class="sourceCardHeader">
+              <span>已併入排序</span>
+              <h3>Yellowknife Tours 5D4N Diamond</h3>
+            </div>
+            <p>Yellowknife Tours</p>
+            <strong>CAD 2,398 + 5% GST 起（約 NT$57,452）</strong>
+            <div class="sourceStatusGrid">
+              <span>今日查核</span>
+              <span>白名單驗證</span>
+              <span>官方來源</span>
+            </div>
+            <small>飯店與活動等級較高，總費用更接近預算上限。</small>
+            <small>價格、房型與活動內容會變動；正式下訂前需重查。</small>
+            <div class="sourceActions">
+              <a href="https://yellowknifetours.com/winter-packages/" rel="noreferrer" target="_blank">訂購網站</a>
+            </div>
+          </article>
+          <article class="sourceCard">
+            <div class="sourceCardHeader">
+              <span>僅作歷史基準</span>
+              <h3>長汎 2026 團體樣本（四出發日）</h3>
+            </div>
+            <p>長汎旅遊</p>
+            <strong>NT$142,451-165,451</strong>
+            <div class="sourceStatusGrid">
+              <span>歷史基準，需重查</span>
+              <span>白名單驗證</span>
+              <span>旅行社來源</span>
+            </div>
+            <small>四筆 2026 團體歷史基準，不代表目前可下訂，不進入候選方向或推薦排序。</small>
+            <small>此為 2026 已成團樣本，只可作價格底線，不可視為目前可售。</small>
+            <div class="sourceActions">
+              <a href="https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB" rel="noreferrer" target="_blank">來源頁</a>
+            </div>
+          </article>
+          <article class="sourceCard">
+            <div class="sourceCardHeader">
+              <span>支援成本估算</span>
+              <h3>Air Canada YVR-YZF 月份票價</h3>
+            </div>
+            <p>Air Canada</p>
+            <strong>2026/09-12 CAD 318 起（約 NT$7,256）；2027/01-03 CAD 339 起（約 NT$7,735）</strong>
+            <div class="sourceStatusGrid">
+              <span>票價高波動，需重查</span>
+              <span>白名單驗證</span>
+              <span>航空官方</span>
+            </div>
+            <small>航班價格會變動；用來修正自由行與當地套裝總額，不單獨列為旅行團。</small>
+            <small>航空票價與艙等會即時變動，只作成本估算支援。</small>
+            <div class="sourceActions">
+              <a href="https://www.aircanada.com/en-ca/flights-from-vancouver-to-yellowknife" rel="noreferrer" target="_blank">航空公司查詢</a>
+            </div>
+          </article>
+          <article class="sourceCard">
+            <div class="sourceCardHeader">
+              <span>待查，不併入排序</span>
+              <h3>ezTravel 美加/加拿大跟團比對</h3>
+            </div>
+            <p>ezTravel 易遊網</p>
+            <strong>已見一般加拿大商品；未取得黃刀鎮極光團具體價格</strong>
+            <div class="sourceStatusGrid">
+              <span>今日比對，未入排序</span>
+              <span>白名單驗證</span>
+              <span>旅行社來源待查</span>
+            </div>
+            <small>比對美加分類與加拿大團頁；未查得黃刀鎮/極光關鍵字。取得具體團名、日期、價格與航班後才進入候選。</small>
+            <small>目前只確認 ezTravel 有美加/加拿大跟團入口與一般加拿大商品；未取得黃刀鎮極光團具體頁。</small>
+            <div class="sourceActions">
+              <a href="https://vacation.eztravel.com.tw/oversea/america-canada-newzealand-australia/" rel="noreferrer" target="_blank">比對來源</a>
+            </div>
+          </article>
+        </div>
+      </section>
     </main>
     <script>
       let plannerState = {
@@ -1983,6 +2157,39 @@
         max: 400000,
         step: 10000,
       };
+
+      const plannerImpactRows = [
+        {
+          item: "預算上限",
+          requirement: "必須",
+          impact: "直接改變低於、臨界、超標與決策門檻；候選判讀以確認後的預算上限為準。",
+        },
+        {
+          item: "旅行型態",
+          requirement: "必須",
+          impact: "決定預設候選分類，並加權團體或自由行，不會把非偏好型態完全隱藏。",
+        },
+        {
+          item: "最低極光夜數",
+          requirement: "必須",
+          impact: "A級要求會降級只達 B級的候選；B級要求會保留價格備援。",
+        },
+        {
+          item: "風險容忍度",
+          requirement: "必須",
+          impact: "航班銜接、資料缺口與來源新鮮度風險高於設定時會降級或排除。",
+        },
+        {
+          item: "舒適程度",
+          requirement: "排序條件",
+          impact: "影響節制、平衡、舒適方案排序；不是單獨決定是否可下訂的硬門檻。",
+        },
+        {
+          item: "只採已查核資料",
+          requirement: "查核開關",
+          impact: "開啟後，未完成重查或缺具體旅行團資料的項目只保留為待查方向。",
+        },
+      ];
 
       const sourceStatusRegistry = {
         yktours: {
@@ -2009,6 +2216,15 @@
           freshnessLabel: "票價高波動，需重查",
           recheckReason: "航空票價與艙等會即時變動，只作成本估算支援。",
           allowedDomain: "aircanada.com",
+          safetyStatus: "verified",
+          safetyLabel: "白名單驗證",
+        },
+        eztravel: {
+          checkedAt: "2026-07-16",
+          freshnessStatus: "recheck",
+          freshnessLabel: "今日比對，未入排序",
+          recheckReason: "目前只確認 ezTravel 有美加/加拿大跟團入口與一般加拿大商品；未取得黃刀鎮極光團具體頁。",
+          allowedDomain: "vacation.eztravel.com.tw",
           safetyStatus: "verified",
           safetyLabel: "白名單驗證",
         },
@@ -2833,6 +3049,10 @@
           const secondResult = second.candidateId ? evaluatedMap.get(second.candidateId) : null;
 
           if (firstResult && secondResult) {
+            if (firstResult.status === "pending" && secondResult.status === "pending") {
+              return 0;
+            }
+
             return resultStatusOrder[firstResult.status] - resultStatusOrder[secondResult.status] || secondResult.score - firstResult.score;
           }
 
@@ -2840,6 +3060,10 @@
           if (secondResult) return 1;
           return 0;
         });
+      }
+
+      function getDirectionResultNote(result) {
+        return result.status === "pending" ? "待查項目不評分" : `分數 ${result.score}`;
       }
 
       function renderDraftControls() {
@@ -3070,7 +3294,7 @@
                       linkedResult
                         ? `<div class="directionResultRow">
                             <span class="recommendationBadge ${linkedResult.status}">${linkedResult.statusLabel}</span>
-                            <small>分數 ${linkedResult.score}</small>
+                            <small>${getDirectionResultNote(linkedResult)}</small>
                           </div>`
                         : ""
                     }
@@ -3238,7 +3462,7 @@
             ${best.option.sourceName ? `<span>${best.option.sourceName}</span>` : ""}
             ${bestSourceStatus ? `<span>${bestSourceStatus.safetyLabel}</span><span>${bestSourceStatus.freshnessLabel}</span>` : ""}
           </div>
-          <p>${best.statusLabel}；分數 ${best.score}。${best.option.description}</p>
+          <p>${best.statusLabel}；${getDirectionResultNote(best)}。${best.option.description}</p>
           <div class="rankingSummary">
             <strong>為什麼這樣排：</strong>
             <span>${best.option.rankingSummary}</span>

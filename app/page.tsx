@@ -69,6 +69,18 @@ const sourceStatusRegistry = {
     safetyNote: "航空公司官方網域已列入允許清單。",
     trustLevel: "航空官方",
   },
+  eztravel: {
+    checkedAt: "2026-07-16",
+    validUntil: "2026-07-17",
+    freshnessStatus: "recheck",
+    freshnessLabel: "今日比對，未入排序",
+    recheckReason: "目前只確認 ezTravel 有美加/加拿大跟團入口與一般加拿大商品；未取得黃刀鎮極光團具體頁。",
+    allowedDomain: "vacation.eztravel.com.tw",
+    safetyStatus: "verified",
+    safetyLabel: "白名單驗證",
+    safetyNote: "旅行社官方網域已列入允許清單；需等具體團名、日期、價格與航班頁面後才顯示為候選。",
+    trustLevel: "旅行社來源待查",
+  },
 } as const;
 
 type SourceStatusId = keyof typeof sourceStatusRegistry;
@@ -267,6 +279,15 @@ const sourceSyncRows = [
     bookingUrl: "https://www.aircanada.com/en-ca/flights-from-vancouver-to-yellowknife",
     note: "航班價格會變動；用來修正自由行與當地套裝總額，不單獨列為旅行團。",
   },
+  {
+    name: "ezTravel 美加/加拿大跟團比對",
+    source: "ezTravel 易遊網",
+    sourceStatusId: "eztravel",
+    status: "待查，不併入排序",
+    amount: "已見一般加拿大商品；未取得黃刀鎮極光團具體價格",
+    bookingUrl: "https://vacation.eztravel.com.tw/oversea/america-canada-newzealand-australia/",
+    note: "比對美加分類與加拿大團頁；未查得黃刀鎮/極光關鍵字。取得具體團名、日期、價格與航班後才進入候選。",
+  },
 ] as const;
 
 const auroraLevels = [
@@ -410,6 +431,39 @@ const comfortChoices = [
   { value: "balanced", label: "平衡" },
   { value: "comfort", label: "舒適" },
   { value: "any", label: "不限" },
+] as const;
+
+const plannerImpactRows = [
+  {
+    item: "預算上限",
+    requirement: "必須",
+    impact: "直接改變低於、臨界、超標與決策門檻；候選判讀以確認後的預算上限為準。",
+  },
+  {
+    item: "旅行型態",
+    requirement: "必須",
+    impact: "決定預設候選分類，並加權團體或自由行，不會把非偏好型態完全隱藏。",
+  },
+  {
+    item: "最低極光夜數",
+    requirement: "必須",
+    impact: "A級要求會降級只達 B級的候選；B級要求會保留價格備援。",
+  },
+  {
+    item: "風險容忍度",
+    requirement: "必須",
+    impact: "航班銜接、資料缺口與來源新鮮度風險高於設定時會降級或排除。",
+  },
+  {
+    item: "舒適程度",
+    requirement: "排序條件",
+    impact: "影響節制、平衡、舒適方案排序；不是單獨決定是否可下訂的硬門檻。",
+  },
+  {
+    item: "只採已查核資料",
+    requirement: "查核開關",
+    impact: "開啟後，未完成重查或缺具體旅行團資料的項目只保留為待查方向。",
+  },
 ] as const;
 
 const directionCategories = [
@@ -1130,6 +1184,10 @@ function rankDirectionItems(
     const secondResult = "candidateId" in second ? evaluatedById.get(second.candidateId) : null;
 
     if (firstResult && secondResult) {
+      if (firstResult.status === "pending" && secondResult.status === "pending") {
+        return 0;
+      }
+
       return resultStatusOrder[firstResult.status] - resultStatusOrder[secondResult.status] || secondResult.score - firstResult.score;
     }
 
@@ -1308,6 +1366,66 @@ function getDecisionGates(budget: number) {
   ];
 }
 
+function getDirectionResultNote(result: ReturnType<typeof evaluateOption>) {
+  return result.status === "pending" ? "待查項目不評分" : `分數 ${result.score}`;
+}
+
+function SourceSyncSection() {
+  const importedCount = candidateOptions.filter(
+    (option) => option.importedFromSource && isRecommendationOption(option),
+  ).length;
+
+  return (
+    <section className="pageSection sourceSyncSection compactSourceSection" id="source-sync">
+      <div className="sectionHeader tableHeader">
+        <div>
+          <p className="eyebrow">Source Appendix</p>
+          <h2>自動匯入資料源摘要</h2>
+          <p>
+            此區只作末頁查核附錄，保留來源新鮮度、白名單與訂購連結；主要決策仍以上方候選方向與確認查核結果為準。
+          </p>
+        </div>
+        <div className="sourceNote">
+          <strong>末頁查核摘要</strong>
+          <span>
+            已匯入 {importedCount} 筆可排序候選；ezTravel 目前只作比對來源；2026 已結束行程僅作歷史基準；匯率：1 CAD ≈
+            NT$22.8176；查核基準日：2026-07-15。
+          </span>
+        </div>
+      </div>
+
+      <div className="sourceGrid">
+        {sourceSyncRows.map((source) => {
+          const sourceState = sourceStatusRegistry[source.sourceStatusId];
+
+          return (
+            <article className="sourceCard" key={source.name}>
+              <div className="sourceCardHeader">
+                <span>{source.status}</span>
+                <h3>{source.name}</h3>
+              </div>
+              <p>{source.source}</p>
+              <strong>{source.amount}</strong>
+              <div className="sourceStatusGrid">
+                <span>資料新鮮度：{sourceState.freshnessLabel}</span>
+                <span>{sourceState.safetyLabel}</span>
+                <span>{sourceState.trustLevel}</span>
+              </div>
+              <small>{source.note}</small>
+              <small>{sourceState.recheckReason}</small>
+              <div className="sourceActions">
+                <a href={source.bookingUrl} rel="noreferrer" target="_blank">
+                  訂購網站
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   const [filters, setFilters] = useState<PlannerFilters>(defaultPlanner);
   const [draftFilters, setDraftFilters] = useState<PlannerFilters>(defaultPlanner);
@@ -1403,55 +1521,6 @@ export default function Home() {
               <p>{item.role}</p>
             </article>
           ))}
-        </div>
-      </section>
-
-      <section className="pageSection sourceSyncSection" id="source-sync">
-        <div className="sectionHeader tableHeader">
-          <div>
-            <p className="eyebrow">Source Sync</p>
-            <h2>自動匯入資料源</h2>
-            <p>
-              網站會把已查核的旅行社與官方來源資料併入「候選方向分類」與「決策選項列表」。沒有團名、價格或訂購網址的資料，只保留在來源同步狀態，不進入推薦。
-            </p>
-          </div>
-          <div className="sourceNote">
-            <strong>同步狀態</strong>
-            <span>
-              已匯入{" "}
-              {candidateOptions.filter((option) => option.importedFromSource && isRecommendationOption(option)).length}{" "}
-              筆可排序候選；2026 已結束行程僅作歷史基準；匯率：1 CAD ≈ NT$22.8176；查核基準日：2026-07-15。
-            </span>
-          </div>
-        </div>
-
-        <div className="sourceGrid">
-          {sourceSyncRows.map((source) => {
-            const sourceState = sourceStatusRegistry[source.sourceStatusId];
-
-            return (
-              <article className="sourceCard" key={source.name}>
-                <div className="sourceCardHeader">
-                  <span>{source.status}</span>
-                  <h3>{source.name}</h3>
-                </div>
-                <p>{source.source}</p>
-                <strong>{source.amount}</strong>
-                <div className="sourceStatusGrid">
-                  <span>資料新鮮度：{sourceState.freshnessLabel}</span>
-                  <span>{sourceState.safetyLabel}</span>
-                  <span>{sourceState.trustLevel}</span>
-                </div>
-                <small>{source.note}</small>
-                <small>{sourceState.recheckReason}</small>
-                <div className="sourceActions">
-                  <a href={source.bookingUrl} rel="noreferrer" target="_blank">
-                    訂購網站
-                  </a>
-                </div>
-              </article>
-            );
-          })}
         </div>
       </section>
 
@@ -1578,6 +1647,17 @@ export default function Home() {
               <span>只採已查核資料；未重查的 2027 方向自動降級。</span>
             </label>
 
+            <div className="impactAudit" aria-label="條件必要性與候選影響">
+              <strong>條件必要性與候選影響</strong>
+              {plannerImpactRows.map((row) => (
+                <span key={row.item}>
+                  <b>{row.item}</b>
+                  <small>{row.requirement}</small>
+                  <em>{row.impact}</em>
+                </span>
+              ))}
+            </div>
+
             <div className="applyPlannerBox">
               <button className="applyPlannerButton" onClick={applyPlannerFilters} type="button">
                 確認並查核
@@ -1629,7 +1709,7 @@ export default function Home() {
                   {bestSourceStatus ? <span>{bestSourceStatus.freshnessLabel}</span> : null}
                 </div>
                 <p>
-                  {bestOption.statusLabel}；分數 {bestOption.score}。{bestOption.option.description}
+                  {bestOption.statusLabel}；{getDirectionResultNote(bestOption)}。{bestOption.option.description}
                 </p>
                 <div className="rankingSummary">
                   <strong>為什麼這樣排：</strong>
@@ -1705,7 +1785,7 @@ export default function Home() {
                   {linkedResult ? (
                     <div className="directionResultRow">
                       <span className={`recommendationBadge ${linkedResult.status}`}>{linkedResult.statusLabel}</span>
-                      <small>分數 {linkedResult.score}</small>
+                      <small>{getDirectionResultNote(linkedResult)}</small>
                     </div>
                   ) : null}
                   <p>{item.condition}</p>
@@ -1964,6 +2044,8 @@ export default function Home() {
           極光補看或延誤條款，就先標示為 PENDING_2027_RECHECK。
         </p>
       </section>
+
+      <SourceSyncSection />
     </main>
   );
 }
