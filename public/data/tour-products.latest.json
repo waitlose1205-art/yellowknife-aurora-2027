@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "checkedAt": "2026-07-17",
-  "generatedAt": "2026-07-17T04:04:08.621Z",
+  "generatedAt": "2026-07-17T10:25:30.075Z",
   "sourceFile": "taiwan_aurora_tours_refresh_2026-07-17_nine-agencies.xls",
   "updateMode": "offline-generated-static-json",
   "products": [
@@ -20,7 +20,7 @@
       ],
       "days": 10,
       "auroraNights": 3,
-      "flightSummary": "長榮 BR24/BR23；另列 BR26/BR25 參考航班",
+      "flightSummary": "去程 長榮航空 BR24：桃園國際機場 23:00 → 西雅圖 17:40；回程 長榮航空 BR23：西雅圖 23:30 → 桃園國際機場 04:30+2；實際以行前說明資料為準",
       "itinerarySummary": "山水名勝極光特色住宿///..more建議售價",
       "bookingStatus": "已成團",
       "bookingStatusType": "bookable",
@@ -48,7 +48,7 @@
       ],
       "days": 12,
       "auroraNights": null,
-      "flightSummary": "長榮航空、中華航空、BR；詳細班號仍以商品頁完整行程為準",
+      "flightSummary": "去程 長榮航空 BR071：桃園國際機場 23:25 → 慕尼黑 07:05+1；回程 長榮航空 BR72：慕尼黑 11:30 → 桃園國際機場 06:30+1；實際以行前說明資料為準",
       "itinerarySummary": "自然生態極光特色住宿///..more建議售價",
       "bookingStatus": "已成團",
       "bookingStatusType": "bookable",
@@ -76,7 +76,7 @@
       ],
       "days": 13,
       "auroraNights": null,
-      "flightSummary": "中華航空、長榮航空、CI；詳細班號仍以商品頁完整行程為準",
+      "flightSummary": "去程 中華航空 CI81：桃園國際機場 08:40 → 希斯洛機場 16:55；回程 中華航空 CI82：希斯洛機場 21:15 → 桃園國際機場 18:15+1；實際以行前說明資料為準",
       "itinerarySummary": "自然生態極光特色住宿///..more建議售價",
       "bookingStatus": "已成團",
       "bookingStatusType": "bookable",
@@ -101,7 +101,7 @@
       ],
       "days": 10,
       "auroraNights": null,
-      "flightSummary": "長榮航空；產品名稱可讀航空線索，完整航段需進商品頁確認",
+      "flightSummary": "去程 長榮航空 BR087：桃園國際機場 23:55 → 巴黎戴高樂機場 07:25+1；回程 長榮航空 BR088：巴黎戴高樂機場 11:20 → 桃園國際機場 06:35+1；實際以行前說明資料為準",
       "itinerarySummary": "自然生態極光特色美食///..more建議售價",
       "bookingStatus": "已成團",
       "bookingStatusType": "bookable",
@@ -113,7 +113,7 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
       "id": "山富旅遊-5",
@@ -126,7 +126,7 @@
       ],
       "days": 11,
       "auroraNights": null,
-      "flightSummary": "長榮航空；官方頁可讀航空線索，完整航段需進商品頁確認",
+      "flightSummary": "去程 阿聯酋航空 EK367：桃園國際機場 23:00 → 杜拜 04:55+1；回程 阿聯酋航空 EK167：杜拜 08:40 → 赫爾新基 14:05；實際以行前說明資料為準",
       "itinerarySummary": "自然生態極光特色住宿///..more建議售價",
       "bookingStatus": "已成團",
       "bookingStatusType": "bookable",
@@ -138,7 +138,7 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 94%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
       "id": "山富旅遊-6",
@@ -152,7 +152,7 @@
       ],
       "days": 10,
       "auroraNights": null,
-      "flightSummary": "長榮航空；官方頁可讀航空線索，完整航段需進商品頁確認",
+      "flightSummary": "去程 中華航空 CI061：桃園國際機場 23:10 → 法蘭克福 07:30+1；回程 中華航空 CI062：法蘭克福 11:15 → 桃園國際機場 06:15+1；實際以行前說明資料為準",
       "itinerarySummary": "自然生態極光特色美食///..more建議售價",
       "bookingStatus": "已成團",
       "bookingStatusType": "bookable",
@@ -164,7 +164,7 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
       "id": "山富旅遊-7",
@@ -178,7 +178,7 @@
       ],
       "days": 12,
       "auroraNights": null,
-      "flightSummary": "長榮航空；官方頁可讀航空線索，完整航段需進商品頁確認",
+      "flightSummary": "去程 長榮航空 BR087：桃園國際機場 23:55 → 巴黎戴高樂機場 07:25+1；回程 長榮航空 BR88：巴黎戴高樂機場 11:30 → 桃園國際機場 06:30+1；實際以行前說明資料為準",
       "itinerarySummary": "自然生態極光特色住宿///..more建議售價",
       "bookingStatus": "已成團",
       "bookingStatusType": "bookable",
@@ -190,7 +190,7 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
       "id": "山富旅遊-8",
@@ -204,7 +204,7 @@
       ],
       "days": 10,
       "auroraNights": null,
-      "flightSummary": "長榮航空；官方頁可讀航空線索，完整航段需進商品頁確認",
+      "flightSummary": "去程 星宇航空 JX32：桃園國際機場 20:00 → 西雅圖 15:50；回程 星宇航空 JX31：西雅圖 01:45 → 桃園國際機場 05:10+1；實際以行前說明資料為準",
       "itinerarySummary": "極光溫泉冬季限定///..more建議售價",
       "bookingStatus": "已成團",
       "bookingStatusType": "bookable",
@@ -216,7 +216,7 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 31%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
       "id": "山富旅遊-9",
@@ -229,7 +229,7 @@
       ],
       "days": null,
       "auroraNights": 3,
-      "flightSummary": "長榮航空；官方頁可讀航空線索，完整航段需進商品頁確認",
+      "flightSummary": "去程 長榮航空 BR024：桃園國際機場 23:00 → 西雅圖 17:40；回程 長榮航空 BR025：西雅圖 00:10 → 桃園國際機場 05:20+1；實際以行前說明資料為準",
       "itinerarySummary": "極光溫泉特色美食/建議售價",
       "bookingStatus": "已成團",
       "bookingStatusType": "bookable",
@@ -241,7 +241,7 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 57%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
       "id": "山富旅遊-10",
@@ -255,7 +255,7 @@
       ],
       "days": null,
       "auroraNights": 3,
-      "flightSummary": "長榮航空；官方頁可讀航空線索，完整航段需進商品頁確認",
+      "flightSummary": "去程 長榮航空 BR026：桃園國際機場 23:40 → 西雅圖 19:40；回程 長榮航空 BR025：西雅圖 00:10 → 桃園國際機場 05:20+1；實際以行前說明資料為準",
       "itinerarySummary": "極光溫泉特色美食///..more建議售價",
       "bookingStatus": "已成團",
       "bookingStatusType": "bookable",
@@ -267,7 +267,7 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 48%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
       "id": "山富旅遊-11",
@@ -281,7 +281,7 @@
       ],
       "days": 10,
       "auroraNights": 3,
-      "flightSummary": "長榮航空；官方頁可讀航空線索，完整航段需進商品頁確認",
+      "flightSummary": "去程 長榮航空 BR24：桃園國際機場 23:00 → 西雅圖 18:50；回程 長榮航空 BR23：西雅圖 00:30 → 桃園國際機場 04:10+1；實際以行前說明資料為準",
       "itinerarySummary": "冬季限定極光溫泉///..more建議售價",
       "bookingStatus": "已成團",
       "bookingStatusType": "bookable",
@@ -293,7 +293,7 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 47%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
       "id": "山富旅遊-12",
@@ -308,7 +308,7 @@
       ],
       "days": 12,
       "auroraNights": null,
-      "flightSummary": "JX、長榮航空、中華航空、星宇航空；詳細班號仍以商品頁完整行程為準",
+      "flightSummary": "去程 星宇航空 JX032：桃園國際機場 20:30 → 西雅圖 15:05；回程 星宇航空 JX031：西雅圖 23:45 → 桃園國際機場 04:55+1；實際以行前說明資料為準",
       "itinerarySummary": "山水名勝極光特色住宿///..more建議售價",
       "bookingStatus": "已成團",
       "bookingStatusType": "bookable",
@@ -334,7 +334,7 @@
       ],
       "days": 10,
       "auroraNights": null,
-      "flightSummary": "長榮航空；官方頁可讀航空線索，完整航段需進商品頁確認",
+      "flightSummary": "去程 國泰航空 CX531：桃園國際機場 20:10 → 香港 22:05；回程 卡達航空 QR815：香港 00:25 → DIA 04:50；實際以行前說明資料為準",
       "itinerarySummary": "極光特色住宿冬季限定///..more建議售價",
       "bookingStatus": "已成團",
       "bookingStatusType": "bookable",
@@ -346,37 +346,10 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 92%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
       "id": "山富旅遊-14",
-      "agency": "山富旅遊",
-      "productName": "夢幻極光屋 精選追光熱點 追光前的準備 北歐行程 美加行程 澳洲行程 山富旅遊極光專案｜全方位規劃南北半球追光幸福之旅 ✦ 橫跨南北半球極光的絕佳觀賞地 ✦ 想在澳洲南端的塔斯馬尼亞遇見罕見的粉紫歐若拉 還是渴望北歐、冰島的冬日極地追逐夢幻綠光 或是鎖定阿拉斯加、黃刀鎮高機率觀測點 我們為您規劃多種追光行程和精彩活動！ 立即加入全年度追光計畫，跟著專業團隊輕",
-      "destination": "黃刀鎮",
-      "selectableDates": "11/29、12/13、01/03",
-      "months": [
-        1,
-        11,
-        12
-      ],
-      "days": null,
-      "auroraNights": null,
-      "flightSummary": "長榮航空；官方頁可讀航空線索，完整航段需進商品頁確認",
-      "itinerarySummary": "山富旅遊 行程推薦 回到山富旅遊 鬆出發 收藏橫跨南北半球的幸福光芒。 ✦ 夢幻極光屋 ✦ 極光屋的特色與極致體驗 極光屋（Northern Lights Village）提供了一種神奇的極光體驗方式。 極光屋最引人入勝的特色在於玻璃屋頂的設計。 賞光者可以舒適地躺在溫暖的床上，透過全景玻璃屋頂， 凝視浩瀚的星空，並等待傳說中極光的出現。 無論是繁星點點的夜空，還是絢麗的北極光，都能盡收眼底。 這樣奢侈的幸福，山富旅遊帶著您體驗。 ✦ 南北半球追光熱點 ✦ 澳洲 - 塔斯馬尼亞 獨特的粉紫色彩 不同於北半球常見的翠",
-      "bookingStatus": "已成團",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "NT$149,900",
-      "priceTwd": 149900,
-      "currency": "NTD",
-      "sourceUrl": "https://www.travel4u.com.tw/group/itinerary/NEU08WSBRCDG/",
-      "sourceTitle": "幸福極光﹒芬蘭快閃８日－極光屋１晚、極光區３晚",
-      "sourceVerificationStatus": "mismatch",
-      "sourceVerificationNote": "官方頁標題與商品名稱落差過大；相似度 22%",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "needs-check"
-    },
-    {
-      "id": "山富旅遊-15",
       "agency": "山富旅遊",
       "productName": "羅弗敦仙境極光９日－入住漁屋１晚、生態體驗三合一(捕蟹、尋鷹、鮭魚養殖場)、馴鹿雪橇、纜車、倫敦一日遊、龍蝦漢堡",
       "destination": "芬蘭",
@@ -386,7 +359,7 @@
       ],
       "days": null,
       "auroraNights": null,
-      "flightSummary": "長榮航空；官方頁可讀航空線索，完整航段需進商品頁確認",
+      "flightSummary": "去程 中華航空 CI81：桃園國際機場 08:40 → 希斯洛機場 16:55；回程 中華航空 CI82：希斯洛機場 21:15 → 桃園國際機場 18:15+1；實際以行前說明資料為準",
       "itinerarySummary": "自然生態極光特色住宿///..more建議售價",
       "bookingStatus": "已成團",
       "bookingStatusType": "bookable",
@@ -398,10 +371,10 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 95%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
-      "id": "東南旅遊-16",
+      "id": "東南旅遊-15",
       "agency": "東南旅遊",
       "productName": "【典藏北歐】尋訪極光、冬遊羅浮敦群島、特羅姆瑟、馴鹿農場、雪橇12日",
       "destination": "芬蘭",
@@ -411,7 +384,7 @@
       ],
       "days": 12,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．北極門戶~特羅姆瑟、人間仙境~羅浮敦群島、冰雪酒店 ．紅色.黃色小漁村、阿比斯庫國家公園、維京博物館 ．薩米文化馴鹿農場、斯塔姆松橡皮艇螃蟹之旅、狗拉雪橇",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -426,7 +399,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-17",
+      "id": "東南旅遊-16",
       "agency": "東南旅遊",
       "productName": "【典藏北歐】極光屋保證入住、破冰船、極地特快車、帝王蟹、馴鹿雪橇11日",
       "destination": "芬蘭",
@@ -436,7 +409,7 @@
       ],
       "days": 11,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．保證入住玻璃極光屋~追尋夢幻極光之旅 ．北國必遊~破冰船探險、極地特快車、聖誕老人村 ．芬蘭必玩~馴鹿雪橇、狗拉雪橇、帝王蟹大餐",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -451,7 +424,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-18",
+      "id": "東南旅遊-17",
       "agency": "東南旅遊",
       "productName": "【典藏北歐】極光追尋、滑雪、薩米博物館、雪橇、聖誕老人村、破冰船12日",
       "destination": "芬蘭",
@@ -461,7 +434,7 @@
       ],
       "days": 12,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．冬季北歐~追尋夢幻極光之旅、冰雪世界 ．芬蘭必遊~極地特快車、聖誕老人村、帝王蟹捕撈之旅 ．芬蘭必玩~破冰船探險、馴鹿雪橇、狗拉雪橇",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -476,7 +449,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-19",
+      "id": "東南旅遊-18",
       "agency": "東南旅遊",
       "productName": "【典藏冰島】冬遊尋極光、絕美藍冰洞、金環之旅、藍湖溫泉、倫敦之旅9日",
       "destination": "冰島",
@@ -486,7 +459,7 @@
       ],
       "days": 9,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．此生必去冰與火的國度冰島 ．冬季限定~獨一無二絕美藍冰洞、冰河湖 ．英國~大英博物館、飛越冰島FlyOver",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -501,7 +474,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-20",
+      "id": "東南旅遊-19",
       "agency": "東南旅遊",
       "productName": "【幸福極光】冰島旅遊｜藍湖溫泉．冰川健行．金環．塞納河遊船饗宴10日",
       "destination": "冰島",
@@ -511,7 +484,7 @@
       ],
       "days": 10,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．冰川健行．金環．塞納河遊船饗宴10日 ．冰島～冰火交融的北極島國 ．夢幻幸福極光．冰川健行體驗 ．浪漫塞納河遊船饗宴+歌劇院專人導覽",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -526,7 +499,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-21",
+      "id": "東南旅遊-20",
       "agency": "東南旅遊",
       "productName": "【玩美加族】星辰公主遊輪~阿拉斯加冰河景緻.黃刀精靈極光15日",
       "destination": "黃刀鎮",
@@ -536,7 +509,7 @@
       ],
       "days": 15,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "詳見商品頁",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -551,32 +524,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-22",
-      "agency": "東南旅遊",
-      "productName": "【美麗星世界】星辰公主遊輪｜阿拉斯加冰河雙重奏、黃刀鎮幸福極光15日",
-      "destination": "黃刀鎮",
-      "selectableDates": "02-41、2-86、67-81",
-      "months": [
-        2
-      ],
-      "days": 15,
-      "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
-      "itinerarySummary": "詳見商品頁",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "NT$194,900 起",
-      "priceTwd": 194900,
-      "currency": "NTD",
-      "sourceUrl": "https://tour.settour.com.tw/product/GFG0000035418",
-      "sourceTitle": "【星耀雲頂】高塔Sky Box、世遺古城漫遊、生態農場、溫德姆一晚六日 - 國外團體旅遊",
-      "sourceVerificationStatus": "mismatch",
-      "sourceVerificationNote": "官方頁標題與商品名稱落差過大；相似度 0%",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "needs-check"
-    },
-    {
-      "id": "東南旅遊-23",
+      "id": "東南旅遊-21",
       "agency": "東南旅遊",
       "productName": "【美麗星世界】黃刀極光3晚、城堡飯店、硫磺山纜車、西雅圖太空針塔12日",
       "destination": "黃刀鎮",
@@ -586,7 +534,7 @@
       ],
       "days": 12,
       "auroraNights": 3,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．黃刀鎮三晚極光 ．暢遊三大國家公園 ．黃刀鎮+溫哥華+西雅圖市區漫遊",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -601,7 +549,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-24",
+      "id": "東南旅遊-22",
       "agency": "東南旅遊",
       "productName": "【神采飛羊】微奢北歐、極光屋必住、破冰船探險、極地特快車、帝王蟹11日",
       "destination": "芬蘭",
@@ -613,7 +561,7 @@
       ],
       "days": 11,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．保證入住玻璃極光屋一晚~烏茨約基北極度假村 ．北國必遊~破冰船探險、極地特快車、聖誕老人村 ．芬蘭必玩~馴鹿雪橇、狗拉雪橇、帝王蟹大餐",
       "bookingStatus": "報名",
       "bookingStatusType": "bookable",
@@ -625,10 +573,10 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
-      "id": "東南旅遊-25",
+      "id": "東南旅遊-23",
       "agency": "東南旅遊",
       "productName": "【喜羊迎春】加拿大黃刀鎮極光.露易絲湖城堡飯店.洛磯山脈四大公園12日",
       "destination": "黃刀鎮",
@@ -636,7 +584,7 @@
       "months": [],
       "days": 12,
       "auroraNights": 3,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．黃刀鎮三晚極光+露易絲湖城堡飯店 ．暢遊洛磯山脈四大國家公園 ．黃刀鎮+溫哥華+西雅圖市區漫遊",
       "bookingStatus": "報名",
       "bookingStatusType": "bookable",
@@ -648,10 +596,10 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
-      "id": "東南旅遊-26",
+      "id": "東南旅遊-24",
       "agency": "東南旅遊",
       "productName": "【喜羊迎春】微奢北歐、極光玻璃木屋、極地特快車、帝王蟹、馴鹿雪橇11日",
       "destination": "芬蘭",
@@ -663,7 +611,7 @@
       ],
       "days": 11,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．極光屋保證Kakslauttanen Arctic ．破冰船探險、冰河漂浮、聖誕老人村、北極圈證書 ．帝王蟹大餐、馴鹿雪橇、狗拉雪橇、岩石教堂",
       "bookingStatus": "報名",
       "bookingStatusType": "bookable",
@@ -675,10 +623,10 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
-      "id": "東南旅遊-27",
+      "id": "東南旅遊-25",
       "agency": "東南旅遊",
       "productName": "【喜羊迎春】微奢北歐、雙享極光屋保住、破冰船、聖誕老人村、滑雪樂11日",
       "destination": "芬蘭",
@@ -686,7 +634,7 @@
       "months": [],
       "days": 11,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．保證入住2晚玻璃極光屋~隨意慵懶來一趟光的奇遇 ．破冰船探險+冰河漂浮、極地特快車、聖誕老人村 ．馴鹿雪橇、狗拉雪橇、帝王蟹捕撈之旅、天文館極光秀",
       "bookingStatus": "報名",
       "bookingStatusType": "bookable",
@@ -698,10 +646,10 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
-      "id": "東南旅遊-28",
+      "id": "東南旅遊-26",
       "agency": "東南旅遊",
       "productName": "【華麗歐洲】英荷冰島夢幻極光10日、極光船、藍湖溫泉、藍冰洞、騎冰島馬",
       "destination": "冰島",
@@ -711,7 +659,7 @@
       ],
       "days": 10,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．冰島自然與英荷藝術的完美 ．極光船、藍湖溫泉、藍冰洞探秘、冰島騎行之旅 ．荷蘭藝術寶藏、倫敦經典魅力",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -726,7 +674,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-29",
+      "id": "東南旅遊-27",
       "agency": "東南旅遊",
       "productName": "【超值北歐】極光奇遇趣、冰雪世界、帝王蟹、聖誕老人村、哈士奇牧場10日",
       "destination": "芬蘭",
@@ -736,7 +684,7 @@
       ],
       "days": 10,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．移動式過夜體驗~極地特快車、詩麗雅號豪華遊輪 ．冬遊必訪~帝王蟹捕撈之旅+大餐、伊納麗湖 ．北歐必遊~北極圈證書、凱米教堂、奧盧集市廣場",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -751,7 +699,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-30",
+      "id": "東南旅遊-28",
       "agency": "東南旅遊",
       "productName": "【微奢北歐】極光屋保證入住、破冰船、極地特快車、帝王蟹、馴鹿雪橇11日",
       "destination": "芬蘭",
@@ -761,7 +709,7 @@
       ],
       "days": 11,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．保證入住玻璃極光屋~追尋夢幻極光之旅 ．北國必遊~破冰船探險、極地特快車、聖誕老人村 ．芬蘭必玩~馴鹿雪橇、狗拉雪橇、帝王蟹大餐",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -776,7 +724,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-31",
+      "id": "東南旅遊-29",
       "agency": "東南旅遊",
       "productName": "【精選北歐】極光屋保證入住、極地特快車、馴鹿雪橇、捕撈帝王蟹之旅10日",
       "destination": "芬蘭",
@@ -786,7 +734,7 @@
       ],
       "days": 10,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．保證入住一晚極光玻璃屋、體驗夜臥極地特快車 ．北國必訪~聖誕老人村、薩米博物館、冰雪世界 ．冬遊必玩~馴鹿雪橇、狗拉雪橇、帝王蟹捕撈之旅+大餐",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -801,7 +749,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-32",
+      "id": "東南旅遊-30",
       "agency": "東南旅遊",
       "productName": "【精選北歐】馴鹿雪橇、破冰船、冰雪世界、極地特快車、雙飛共舞極光11日",
       "destination": "芬蘭",
@@ -811,7 +759,7 @@
       ],
       "days": 11,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．冬遊芬蘭、瑞典、挪威~追尋夢幻極光之旅 ．北國必遊~極地特快車、聖誕老人村、波爾沃老城 ．芬蘭必玩~破冰船探險、馴鹿雪橇、冰雪世界",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -826,7 +774,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-33",
+      "id": "東南旅遊-31",
       "agency": "東南旅遊",
       "productName": "【舞動極光】加拿大黃刀鎮極光.露易絲湖城堡飯店.洛磯山脈12日(CI)",
       "destination": "黃刀鎮",
@@ -851,7 +799,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-34",
+      "id": "東南旅遊-32",
       "agency": "東南旅遊",
       "productName": "【舞動極光】加拿大黃刀鎮極光.露易絲湖城堡飯店.洛磯山脈12日(JX)",
       "destination": "黃刀鎮",
@@ -876,7 +824,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-35",
+      "id": "東南旅遊-33",
       "agency": "東南旅遊",
       "productName": "【魅力歐洲】冰島魔幻極光藍冰洞英倫9天",
       "destination": "冰島",
@@ -901,7 +849,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-36",
+      "id": "東南旅遊-34",
       "agency": "東南旅遊",
       "productName": "【魅力歐洲】夢幻北歐、芬蘭賞極光、夢幻極光屋、時尚巴黎12天",
       "destination": "芬蘭",
@@ -911,7 +859,7 @@
       ],
       "days": 12,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．長榮直飛、捕帝王蟹+雪橇車、狗拉雪橇、體驗滑雪 ．雪上摩托車、玻璃極光屋、聖誕老人村、極光星空特快車 ．破冰船+冰河漂浮體驗、巴黎市區酒店",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -926,7 +874,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-37",
+      "id": "東南旅遊-35",
       "agency": "東南旅遊",
       "productName": "【魅力歐洲】繽紛北歐、冰島魔幻冰洞、芬蘭極地秘境、賞極光旗艦14天",
       "destination": "芬蘭",
@@ -936,7 +884,7 @@
       ],
       "days": 14,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "官方商品頁目前未公開完整航班；東南頁面可查產品、價格與日期，班號與航段時間需以行前說明或客服確認",
       "itinerarySummary": "．長榮交叉點、冰島金環三合一、極光遊船、冰洞 ．露天溫泉、捕帝王蟹+雪橇車、玻璃極光屋、聖誕老人村 ．雪上摩托車、破冰船+冰河漂浮體驗、巴黎市區酒店",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -951,7 +899,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-38",
+      "id": "東南旅遊-36",
       "agency": "東南旅遊",
       "productName": "【聰明玩家】加拿大黃刀鎮極光.露易絲湖城堡飯店.洛磯山脈12日(BR)",
       "destination": "黃刀鎮",
@@ -976,7 +924,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-39",
+      "id": "東南旅遊-37",
       "agency": "東南旅遊",
       "productName": "玩美加族～阿拉斯加幸福極光之旅8日",
       "destination": "阿拉斯加",
@@ -999,7 +947,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-40",
+      "id": "東南旅遊-38",
       "agency": "東南旅遊",
       "productName": "玩美加族～阿拉斯加幸福極光金色大地之旅+珍娜河遊船8日",
       "destination": "阿拉斯加",
@@ -1022,7 +970,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-41",
+      "id": "東南旅遊-39",
       "agency": "東南旅遊",
       "productName": "玩美加族~黃刀秋賞極光3晚、玻璃帳篷、卡梅倫瀑布健行、雙城10日",
       "destination": "黃刀鎮",
@@ -1045,7 +993,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-42",
+      "id": "東南旅遊-40",
       "agency": "東南旅遊",
       "productName": "玩美加族~黃刀鎮賞極光3晚、景觀帳篷營地、狗拉雪橇、美加雙城10日",
       "destination": "黃刀鎮",
@@ -1068,7 +1016,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-43",
+      "id": "東南旅遊-41",
       "agency": "東南旅遊",
       "productName": "美麗星世界～阿拉斯加極光(三晚)、極光列車、冰川健行體驗、珍娜溫泉十日",
       "destination": "阿拉斯加",
@@ -1091,7 +1039,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "東南旅遊-44",
+      "id": "東南旅遊-42",
       "agency": "東南旅遊",
       "productName": "TG~【極光追尋】挪威、芬蘭、瑞典極光、帝王蟹、冰湖漂浮、馴鹿雪撬、極",
       "destination": "芬蘭",
@@ -1116,7 +1064,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "雄獅旅遊-45",
+      "id": "雄獅旅遊-43",
       "agency": "雄獅旅遊",
       "productName": "加拿大-冬季旗艦黃刀鎮4日，極光觀賞3晚，三大冰上活動｜四日遊【贈機場接送+送小費】【COACH TOUR】",
       "destination": "黃刀鎮",
@@ -1139,7 +1087,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "雄獅旅遊-46",
+      "id": "雄獅旅遊-44",
       "agency": "雄獅旅遊",
       "productName": "加拿大-秋季旗艦黃刀鎮4日，極光觀賞3晚，瀑布健行｜四日遊【贈機場接送+送小費】【COACH TOUR】",
       "destination": "黃刀鎮",
@@ -1162,7 +1110,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "雄獅旅遊-47",
+      "id": "雄獅旅遊-45",
       "agency": "雄獅旅遊",
       "productName": "加拿大-經典黃刀鎮4日，極光觀賞3晚，安排最佳酒店｜四日遊【贈機場接送+送小費】【COACH TOUR】",
       "destination": "黃刀鎮",
@@ -1185,7 +1133,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "雄獅旅遊-48",
+      "id": "雄獅旅遊-46",
       "agency": "雄獅旅遊",
       "productName": "加拿大極光｜玩美加族~黃刀秋賞極光3晚、玻璃帳篷、卡梅倫瀑布健行、BBQ饗宴、西雅圖太空針塔、溫哥華10日",
       "destination": "黃刀鎮",
@@ -1198,20 +1146,20 @@
       "auroraNights": 3,
       "flightSummary": "長榮航空：桃園機場 23:40 → 西雅圖機場 19:40；長榮航空：西雅圖機場 01:30 → 桃園機場 05:20；去程轉機 1 次、回程轉機 1 次；團號 26AB904BRB-T；TourID 25BRYZFAT",
       "itinerarySummary": "10日；PAK經典玩美加族Chill愛黃刀秋季10日；標籤：自然生態、秘境、早鳥；席位 0/36；成團狀態 已成團/保證出發",
-      "bookingStatus": "席位 0/38；成團狀態 已成團/保證出發",
+      "bookingStatus": "席位 0/36；成團狀態 已成團/保證出發",
       "bookingStatusType": "bookable",
       "priceLabel": "TWD 138,900 起；同業/企業低價 TWD 131,900",
       "priceTwd": 138900,
       "currency": "TWD",
       "sourceUrl": "https://travel.liontravel.com/detail?NormGroupID=4bf649da-cfad-4b03-aee8-78c37f002d42&Origin=LION",
-      "sourceTitle": "加拿大極光｜玩美加族~黃刀秋賞極光3晚、玻璃帳篷、卡梅倫瀑布健行、BBQ饗宴、西雅圖太空針塔、溫哥華１０日(26ABO09BRB-T)-西雅圖",
+      "sourceTitle": "加拿大極光｜玩美加族~黃刀秋賞極光3晚、玻璃帳篷、卡梅倫瀑布健行、BBQ饗宴、西雅圖太空針塔、溫哥華１０日(26AB904BRB-T)-西雅圖",
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-49",
+      "id": "雄獅旅遊-47",
       "agency": "雄獅旅遊",
       "productName": "加拿大極光｜黃刀鎮賞極光3晚、景觀帳篷營地、狗拉雪橇、西雅圖太空針塔、溫哥華10日",
       "destination": "黃刀鎮",
@@ -1237,7 +1185,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-50",
+      "id": "雄獅旅遊-48",
       "agency": "雄獅旅遊",
       "productName": "早鳥省３千》加拿大極光｜三晚秋賞黃刀極光、玻璃帳篷、卡梅倫瀑布健行、BBQ饗宴、溫哥華8日",
       "destination": "黃刀鎮",
@@ -1263,7 +1211,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-51",
+      "id": "雄獅旅遊-49",
       "agency": "雄獅旅遊",
       "productName": "玩樂369經典北歐三國極光11日｜極光船纜車海空雙體驗、北角、帝王蟹、極光玻璃屋",
       "destination": "芬蘭",
@@ -1289,7 +1237,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-52",
+      "id": "雄獅旅遊-50",
       "agency": "雄獅旅遊",
       "productName": "玩樂369經典北歐冰光交響曲10日｜破冰船、極光玻璃屋、聖誕老人見面會",
       "destination": "芬蘭",
@@ -1315,7 +1263,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-53",
+      "id": "雄獅旅遊-51",
       "agency": "雄獅旅遊",
       "productName": "玩樂369經典北歐極光10日｜冰海捕撈大啖帝王蟹、冰旅館體驗、極光玻璃屋、聖誕老人見面會",
       "destination": "芬蘭",
@@ -1341,7 +1289,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-54",
+      "id": "雄獅旅遊-52",
       "agency": "雄獅旅遊",
       "productName": "玩樂369經典北歐極光10日｜破冰船、冰海捕撈大啖帝王蟹、極光玻璃屋、聖誕老人見面會",
       "destination": "芬蘭",
@@ -1367,7 +1315,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-55",
+      "id": "雄獅旅遊-53",
       "agency": "雄獅旅遊",
       "productName": "玩樂369經典北歐夢幻極光11日｜極光狩獵、帝王蟹、極光船、破冰船、極光玻璃屋",
       "destination": "芬蘭",
@@ -1393,7 +1341,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-56",
+      "id": "雄獅旅遊-54",
       "agency": "雄獅旅遊",
       "productName": "玩樂369經典冰島極光10日｜藍湖溫泉、藍冰洞與熔岩秀夢幻交響曲、時尚巴黎遊船饗宴｜高雄來回",
       "destination": "冰島",
@@ -1419,7 +1367,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-57",
+      "id": "雄獅旅遊-55",
       "agency": "雄獅旅遊",
       "productName": "玩樂369經典冰島夢幻極光10日｜極光船、藍湖溫泉、藍冰洞與熔岩秀夢幻交響曲、時尚巴黎",
       "destination": "冰島",
@@ -1445,7 +1393,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-58",
+      "id": "雄獅旅遊-56",
       "agency": "雄獅旅遊",
       "productName": "玩樂369經典冰島夢幻極光10日｜極光船、藍湖溫泉、藍冰洞與熔岩秀夢幻交響曲、時尚米蘭",
       "destination": "冰島",
@@ -1471,7 +1419,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-59",
+      "id": "雄獅旅遊-57",
       "agency": "雄獅旅遊",
       "productName": "玩樂369經典星空璀璨北歐夢幻極光12日｜冰島、芬蘭拉普蘭經典之旅",
       "destination": "芬蘭",
@@ -1498,7 +1446,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-60",
+      "id": "雄獅旅遊-58",
       "agency": "雄獅旅遊",
       "productName": "玩樂369經典羅浮敦阿比斯庫極光追逐11日｜極光船纜車海空雙體驗、北極列車、快艇捕蟹、雪鞋遠足、冰酒店",
       "destination": "芬蘭",
@@ -1524,7 +1472,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-61",
+      "id": "雄獅旅遊-59",
       "agency": "雄獅旅遊",
       "productName": "玩樂369經典羅浮敦阿比斯庫極光追逐11日｜極光船纜車海空雙體驗、北極列車、快艇捕蟹、雪鞋遠足、冰酒店｜BR",
       "destination": "芬蘭",
@@ -1549,7 +1497,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-62",
+      "id": "雄獅旅遊-60",
       "agency": "雄獅旅遊",
       "productName": "迎春折3000｜冰島極光│藍冰洞探秘、藍湖溫泉、冰島設計旅館、火山熔岩隧道、奇幻冰河湖、巴黎漫遊10日",
       "destination": "冰島",
@@ -1575,7 +1523,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-63",
+      "id": "雄獅旅遊-61",
       "agency": "雄獅旅遊",
       "productName": "迎春折3000｜經典北歐極光10日｜破冰船、冰海捕撈大啖帝王蟹、極光玻璃屋、聖誕老人見面會",
       "destination": "芬蘭",
@@ -1600,7 +1548,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-64",
+      "id": "雄獅旅遊-62",
       "agency": "雄獅旅遊",
       "productName": "迎春折3000｜經典北歐極光12日｜極光屋、帝王蟹大餐、破冰船冰海漂浮、雪地體驗、聖誕老人村、北極特快車",
       "destination": "芬蘭",
@@ -1626,7 +1574,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-65",
+      "id": "雄獅旅遊-63",
       "agency": "雄獅旅遊",
       "productName": "迎春折3千｜經典北歐三國極光11日｜極光船纜車海空雙體驗、北角、帝王蟹、極光玻璃屋",
       "destination": "芬蘭",
@@ -1652,7 +1600,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-66",
+      "id": "雄獅旅遊-64",
       "agency": "雄獅旅遊",
       "productName": "迎春折3千｜經典北歐夢幻極光11日｜極光狩獵、帝王蟹、極光船、破冰船、極光玻璃屋",
       "destination": "芬蘭",
@@ -1678,7 +1626,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-67",
+      "id": "雄獅旅遊-65",
       "agency": "雄獅旅遊",
       "productName": "春節折5000｜經典星空璀璨北歐冰島芬蘭極光12日｜冰島、芬蘭拉普蘭經典之旅",
       "destination": "芬蘭",
@@ -1703,7 +1651,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-68",
+      "id": "雄獅旅遊-66",
       "agency": "雄獅旅遊",
       "productName": "春節折5千｜經典北歐夢幻極光11日｜極光狩獵、帝王蟹、極光船、破冰船、極光玻璃屋",
       "destination": "芬蘭",
@@ -1728,7 +1676,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-69",
+      "id": "雄獅旅遊-67",
       "agency": "雄獅旅遊",
       "productName": "特選芬蘭幸福極光10日｜破冰船、雪上活動、極地夜臥火車、極光玻璃屋、聖誕老人見面會",
       "destination": "芬蘭",
@@ -1755,7 +1703,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-70",
+      "id": "雄獅旅遊-68",
       "agency": "雄獅旅遊",
       "productName": "最高省８千》加拿大黃刀洛磯│美麗星世界～黃刀極光3晚、城堡飯店、硫磺山纜車、西雅圖太空針塔12日",
       "destination": "黃刀鎮",
@@ -1782,7 +1730,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-71",
+      "id": "雄獅旅遊-69",
       "agency": "雄獅旅遊",
       "productName": "最高省８千》西雅圖黃刀洛磯│美麗星世界～黃刀極光、卡梅倫瀑布、班夫國家公園硫磺山纜車、西雅圖太空針塔12日",
       "destination": "黃刀鎮",
@@ -1808,7 +1756,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-72",
+      "id": "雄獅旅遊-70",
       "agency": "雄獅旅遊",
       "productName": "華麗歐洲｜英荷冰島夢幻極光10日│極光船、藍湖溫泉、藍冰洞、騎冰島馬、荷蘭藝術寶藏、倫敦經典魅力",
       "destination": "冰島",
@@ -1834,7 +1782,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-73",
+      "id": "雄獅旅遊-71",
       "agency": "雄獅旅遊",
       "productName": "賀歲折5000｜冰島旅遊│幸福極光、藍冰洞探秘、藍湖溫泉、冰島設計旅館、火山熔岩隧道、奇幻冰河湖、巴黎漫遊10日",
       "destination": "冰島",
@@ -1859,7 +1807,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-74",
+      "id": "雄獅旅遊-72",
       "agency": "雄獅旅遊",
       "productName": "璽品北歐極光10日｜北歐絕景、極地體驗、極光狩獵（二晚極光屋）",
       "destination": "芬蘭",
@@ -1885,7 +1833,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "雄獅旅遊-75",
+      "id": "雄獅旅遊-73",
       "agency": "雄獅旅遊",
       "productName": "璽品芬蘭極光北境・米蘭綺想12日｜三晚極光屋",
       "destination": "芬蘭",
@@ -1911,7 +1859,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "可樂旅遊-76",
+      "id": "可樂旅遊-74",
       "agency": "可樂旅遊",
       "productName": "【冰島幸福極光、限量加價商務艙】藍色溫泉湖、雪上摩拖車、黃金線遊輪、五星飯店乙晚10日",
       "destination": "冰島",
@@ -1936,7 +1884,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-77",
+      "id": "可樂旅遊-75",
       "agency": "可樂旅遊",
       "productName": "【吉羊賀歲、預購減3000】阿拉斯加極光、三晚極光旅行、狗拉雪橇體驗、珍娜溫泉泡湯八日",
       "destination": "阿拉斯加",
@@ -1961,7 +1909,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-78",
+      "id": "可樂旅遊-76",
       "agency": "可樂旅遊",
       "productName": "【吉羊賀歲、預購減3000】阿拉斯加極光、玻璃極光屋乙晚、三晚追逐極光、狗拉雪橇體驗、珍娜溫泉泡湯八日",
       "destination": "阿拉斯加",
@@ -1986,7 +1934,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-79",
+      "id": "可樂旅遊-77",
       "agency": "可樂旅遊",
       "productName": "【吉羊賀歲、預購減3000】黃刀鎮極光(三晚)、狗拉雪橇體驗、愛戀溫哥華、浪漫西雅圖10日",
       "destination": "黃刀鎮",
@@ -2011,7 +1959,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-80",
+      "id": "可樂旅遊-78",
       "agency": "可樂旅遊",
       "productName": "【吉羊賀歲、預購減5000】冰島幸福極光、溫泉冰河湖、藍冰洞極光船、金環風景線、香榭巴黎住兩晚10日",
       "destination": "冰島",
@@ -2036,7 +1984,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-81",
+      "id": "可樂旅遊-79",
       "agency": "可樂旅遊",
       "productName": "【吉羊賀歲、預購減5000】芬蘭幸福極光、兩晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日",
       "destination": "芬蘭",
@@ -2061,7 +2009,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-82",
+      "id": "可樂旅遊-80",
       "agency": "可樂旅遊",
       "productName": "【吉羊賀歲、預購減5000】芬蘭幸福極光、兩晚森林極光屋、波羅的海遊輪、星空夜臥火車10日",
       "destination": "芬蘭",
@@ -2086,7 +2034,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-83",
+      "id": "可樂旅遊-81",
       "agency": "可樂旅遊",
       "productName": "【吉羊賀歲、預購減5000】黃刀鎮極光(三晚)、狗拉雪橇體驗、四大國家公園、露易絲湖城堡12日",
       "destination": "黃刀鎮",
@@ -2111,33 +2059,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-84",
-      "agency": "可樂旅遊",
-      "productName": "【芬蘭幸福極光、限量加價商務艙】三晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日",
-      "destination": "芬蘭",
-      "selectableDates": "01/14、01/28、02/11",
-      "months": [
-        1,
-        2
-      ],
-      "days": 11,
-      "auroraNights": 3,
-      "flightSummary": "去程 土耳其航空 TK：2027/01/14 22:00 台北(桃園) → 05:50 伊斯坦堡；回程 土耳其航空 TK：2027/01/24 01:55 伊斯坦堡 → 17:40 台北(桃園)；實際以行前說明資料為準",
-      "itinerarySummary": "///... 看見芬蘭極光從前愛斯基摩人以為是鬼神引導死者靈魂上天堂的火炬，許多民族也有他們不同的極光傳說。年，伽利略以曙光女神奧羅拉之名創造出AURORA BOREALIS一詞。",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "NT$220,900 起",
-      "priceTwd": 220900,
-      "currency": "NTD",
-      "sourceUrl": "https://tour.colatour.com.tw/itinerary?PatternNo=242515",
-      "sourceTitle": "芬蘭幸福極光、限量加價商務艙三晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日 - 國外團體旅遊｜colatour 可樂旅遊",
-      "sourceVerificationStatus": "verified",
-      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
-    },
-    {
-      "id": "可樂旅遊-85",
+      "id": "可樂旅遊-82",
       "agency": "可樂旅遊",
       "productName": "【芬蘭幸福極光、限量加價商務艙】兩晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日",
       "destination": "芬蘭",
@@ -2162,7 +2084,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-86",
+      "id": "可樂旅遊-83",
       "agency": "可樂旅遊",
       "productName": "【芬蘭幸福極光、限量加價商務艙】兩晚極光屋、波羅的海遊輪、聖誕老人村、星空夜臥火車10日",
       "destination": "芬蘭",
@@ -2187,7 +2109,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-87",
+      "id": "可樂旅遊-84",
       "agency": "可樂旅遊",
       "productName": "【芬蘭幸福極光、限量加價商務艙】森林極光樹屋、波羅的海遊輪、聖誕老人村、星空夜臥火車10日",
       "destination": "芬蘭",
@@ -2212,7 +2134,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-88",
+      "id": "可樂旅遊-85",
       "agency": "可樂旅遊",
       "productName": "【限時搶GO冰島】藍湖地熱溫泉、金環風景線、冰島馬秀、Outlet購物去、雙首都自由活動10日",
       "destination": "冰島",
@@ -2237,7 +2159,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-89",
+      "id": "可樂旅遊-86",
       "agency": "可樂旅遊",
       "productName": "【歐洲日送100歐元】冰島幸福極光～藍湖地熱溫泉、冰川健行體驗、金環風景線、三晚慕尼黑住宿10日",
       "destination": "冰島",
@@ -2263,7 +2185,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-90",
+      "id": "可樂旅遊-87",
       "agency": "可樂旅遊",
       "productName": "【雙主題體驗、早鳥享優惠】阿拉斯加極光、黃石深度紀行、五大國家公園、六大私房秘境15日",
       "destination": "阿拉斯加",
@@ -2288,7 +2210,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-91",
+      "id": "可樂旅遊-88",
       "agency": "可樂旅遊",
       "productName": "【雙主題體驗、早鳥享優惠】黃刀鎮極光(三晚)、狗拉雪橇體驗、四大國家公園、露易絲湖城堡11日",
       "destination": "黃刀鎮",
@@ -2314,7 +2236,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-92",
+      "id": "可樂旅遊-89",
       "agency": "可樂旅遊",
       "productName": "【雙主題體驗、早鳥享優惠】黃刀鎮極光(三晚)、狗拉雪橇體驗、四大國家公園、露易絲湖城堡12日",
       "destination": "黃刀鎮",
@@ -2340,7 +2262,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-93",
+      "id": "可樂旅遊-90",
       "agency": "可樂旅遊",
       "productName": "【雙主題體驗、早鳥享優惠】黃刀鎮極光(三晚)、特色極光營地、四大國家公園、兩晚班夫小鎮12日",
       "destination": "黃刀鎮",
@@ -2365,7 +2287,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-94",
+      "id": "可樂旅遊-91",
       "agency": "可樂旅遊",
       "productName": "【雙主題體驗、早鳥享優惠】黃刀鎮極光(三晚)、特色極光營地、四大國家公園、露易絲湖城堡12日",
       "destination": "黃刀鎮",
@@ -2391,7 +2313,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-95",
+      "id": "可樂旅遊-92",
       "agency": "可樂旅遊",
       "productName": "北極圈幸福極光～羅浮敦群島、皮艇捕蟹體驗、馴鹿雪橇纜車、北極圈跨國列車12日",
       "destination": "芬蘭",
@@ -2417,7 +2339,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-96",
+      "id": "可樂旅遊-93",
       "agency": "可樂旅遊",
       "productName": "全球郵輪 台北出發 【美麗星世界、星辰公主號遊輪、早鳥優惠】阿拉斯加冰河雙重奏、白色隘口之旅、西雅圖漫遊趣、黃刀鎮幸福極光15日",
       "destination": "黃刀鎮",
@@ -2442,7 +2364,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-97",
+      "id": "可樂旅遊-94",
       "agency": "可樂旅遊",
       "productName": "全球郵輪 台北出發 【美麗星世界、星辰公主號遊輪、早鳥優惠】阿拉斯加冰河雙重奏、白色隘口之旅、西雅圖漫遊趣、黃刀鎮幸福極光15日",
       "destination": "黃刀鎮",
@@ -2467,30 +2389,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-98",
-      "agency": "可樂旅遊",
-      "productName": "全球郵輪前往全球郵輪館基隆港登船出發限量第三人免費2026暑假航程高雄港出發日本歐洲奢華新河輪全新公主號遊輪航遊東西地中海名人郵輪x北歐",
-      "destination": "芬蘭",
-      "selectableDates": "來源列表未揭露；需進商品頁確認",
-      "months": [],
-      "days": null,
-      "auroraNights": null,
-      "flightSummary": "去程 中華航空 CI：2026/07/30 22:50 台北(桃園) → 07:40 阿姆斯特丹；回程 中華航空 CI：2026/08/07 10:40 阿姆斯特丹 → 06:35 台北(桃園)；實際以行前說明資料為準",
-      "itinerarySummary": "詳見商品頁",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "未揭露",
-      "priceTwd": null,
-      "currency": "NTD",
-      "sourceUrl": "https://tour.colatour.com.tw/itinerary?PatternNo=233815",
-      "sourceTitle": "名人郵輪嘉印號 早鳥享優惠航向冰與火之島、藍湖溫泉、黃金圈鑽石圈雙圈奇景、羊角村水鄉13日 - 國外團體旅遊｜colatour 可樂旅遊",
-      "sourceVerificationStatus": "mismatch",
-      "sourceVerificationNote": "官方頁標題與商品名稱落差過大；相似度 6%",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "needs-check"
-    },
-    {
-      "id": "可樂旅遊-99",
+      "id": "可樂旅遊-95",
       "agency": "可樂旅遊",
       "productName": "冰島幸福極光～溫泉冰河湖、冰川健行體驗、金環風景線、荷比雙城遊13日",
       "destination": "冰島",
@@ -2515,7 +2414,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-100",
+      "id": "可樂旅遊-96",
       "agency": "可樂旅遊",
       "productName": "冰島幸福極光～溫泉冰河湖、藍冰洞探險、金環風景線、荷蘭5D飛行遊船10日",
       "destination": "冰島",
@@ -2540,7 +2439,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-101",
+      "id": "可樂旅遊-97",
       "agency": "可樂旅遊",
       "productName": "冰島幸福極光～溫泉冰河湖、藍冰洞極光船、金環風景線、香榭巴黎住三晚11日",
       "destination": "冰島",
@@ -2566,7 +2465,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-102",
+      "id": "可樂旅遊-98",
       "agency": "可樂旅遊",
       "productName": "冰島幸福極光～藍湖地熱溫泉、冰川健行體驗、金環風景線、冰島首都兩晚10日",
       "destination": "冰島",
@@ -2592,7 +2491,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-103",
+      "id": "可樂旅遊-99",
       "agency": "可樂旅遊",
       "productName": "冰島極光不思議～藍湖地熱溫泉、冰川健行體驗、金環風景線、兩晚住宿巴黎九日",
       "destination": "冰島",
@@ -2618,7 +2517,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-104",
+      "id": "可樂旅遊-100",
       "agency": "可樂旅遊",
       "productName": "冰島極光喜迎春～溫泉冰河湖、藍冰洞極光船、金環風景線、香榭巴黎住兩晚10日",
       "destination": "冰島",
@@ -2643,7 +2542,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-105",
+      "id": "可樂旅遊-101",
       "agency": "可樂旅遊",
       "productName": "玩美加族～阿拉斯加幸福極光之旅8日",
       "destination": "阿拉斯加",
@@ -2668,7 +2567,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-106",
+      "id": "可樂旅遊-102",
       "agency": "可樂旅遊",
       "productName": "玩美加族～黃刀鎮極光(三晚)、卡梅倫瀑布健行、西雅圖太空針塔、溫哥華漫遊10日",
       "destination": "黃刀鎮",
@@ -2693,7 +2592,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-107",
+      "id": "可樂旅遊-103",
       "agency": "可樂旅遊",
       "productName": "玩美加族～黃刀鎮極光(三晚)、狗拉雪橇體驗、西雅圖太空針塔、溫哥華漫遊10日",
       "destination": "黃刀鎮",
@@ -2720,7 +2619,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-108",
+      "id": "可樂旅遊-104",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～三晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日",
       "destination": "芬蘭",
@@ -2731,7 +2630,7 @@
       ],
       "days": 11,
       "auroraNights": 3,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "可樂官方頁目前未公開完整航班；需以商品頁航班區或行前說明確認",
       "itinerarySummary": "///看見芬蘭極光從前愛斯基摩人以為是鬼神引導死者靈魂上天堂的火炬，許多民族也有他們不同的極光傳說。年，伽利略以曙光女神奧羅拉之名創造出AURORA BOREALIS一詞。",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -2746,7 +2645,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-109",
+      "id": "可樂旅遊-105",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～兩晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日",
       "destination": "芬蘭",
@@ -2771,7 +2670,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-110",
+      "id": "可樂旅遊-106",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～兩晚玻璃極光屋、帝王蟹雪橇車、聖誕老人村、冰雪歷險體驗10日",
       "destination": "芬蘭",
@@ -2797,7 +2696,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-111",
+      "id": "可樂旅遊-107",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～兩晚極光屋、波羅的海遊輪、聖誕老人村、星空夜臥火車10日",
       "destination": "芬蘭",
@@ -2824,7 +2723,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-112",
+      "id": "可樂旅遊-108",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～兩晚極光屋、波羅的海遊輪、聖誕老人村、星空夜臥火車九日",
       "destination": "芬蘭",
@@ -2850,7 +2749,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-113",
+      "id": "可樂旅遊-109",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～兩晚極光屋、聖誕老人村、星空夜臥火車、野生動物園10日",
       "destination": "芬蘭",
@@ -2868,14 +2767,14 @@
       "priceTwd": 149900,
       "currency": "NTD",
       "sourceUrl": "https://tour.colatour.com.tw/itinerary?PatternNo=243623",
-      "sourceTitle": "芬蘭幸福極光～兩晚極光屋、聖誕老人村、星空夜臥火車、野生動物園10日 - 國外團體旅遊｜colatour 可樂旅遊",
+      "sourceTitle": "芬蘭幸福極光～兩晚極光屋、聖誕老人村、星空夜臥火車、野生動物園10日",
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-114",
+      "id": "可樂旅遊-110",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～兩晚極光屋、聖誕老人村、星空夜臥火車、野生動物園12日",
       "destination": "芬蘭",
@@ -2900,7 +2799,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-115",
+      "id": "可樂旅遊-111",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～玻璃極光屋、帝王蟹雪橇車、聖誕老人村、冰雪歷險體驗10日",
       "destination": "芬蘭",
@@ -2926,7 +2825,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-116",
+      "id": "可樂旅遊-112",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～玻璃極光屋、帝王蟹雪橇車、聖誕老人村、星空夜臥火車11日",
       "destination": "芬蘭",
@@ -2953,7 +2852,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-117",
+      "id": "可樂旅遊-113",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～玻璃極光屋、聖誕老人村、星空夜臥火車、冰原歷險體驗10日",
       "destination": "芬蘭",
@@ -2979,7 +2878,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-118",
+      "id": "可樂旅遊-114",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～森林極光樹屋、波羅的海遊輪、聖誕老人村、星空夜臥火車10日",
       "destination": "芬蘭",
@@ -2989,7 +2888,7 @@
       ],
       "days": 10,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "可樂官方頁目前未公開完整航班；需以商品頁航班區或行前說明確認",
       "itinerarySummary": "/森林極光樹屋(乙晚)Arctic Treehouse Hotel 極光樹屋(含獨立衛浴設備)：標榜「有機會在房內欣賞極光」為特色，許多人來到北極圈時，都會選擇入住景觀玻璃設計的房型，採用高效隔熱與防霜玻璃設計，即使室外氣溫低至零下度，室內依然能維持舒適溫度。不過極光屬於自然現象，實際能否看見仍需視天氣與太陽活動狀況而定。 本日請攜帶一日小行李袋，考量方便於雪地及樓梯行走，敬請知悉。聖誕老人村(",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -3004,7 +2903,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-119",
+      "id": "可樂旅遊-115",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～森林極光樹屋、破冰船龍蝦裝、聖誕老人村、星空夜臥火車10日",
       "destination": "芬蘭",
@@ -3030,7 +2929,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-120",
+      "id": "可樂旅遊-116",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～聖誕老人村、星空夜臥火車、冰原歷險體驗、乙晚五星飯店10日",
       "destination": "芬蘭",
@@ -3040,7 +2939,7 @@
       ],
       "days": 10,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "可樂官方頁目前未公開完整航班；需以商品頁航班區或行前說明確認",
       "itinerarySummary": "/極地破冰巡航(全程約三小時)船隻是由超過噸重的鋼材打造而成，該船在全速航行時，能穿破毫米的冰層，並且保持每小時公里的速度航行，在衝破厚厚冰層時發出如雷般的巨響。參觀船內設備、聽船員講解破冰原理、登上甲板飽覽壯闊冰海的超真實震撼；貴賓還可換穿防寒救生衣，躍入冰海中享受浮泳的驚奇體驗並可領取破冰船公司頒發的登船證書。聖誕老人村(贈送極圈證書)相傳北緯.度極圈線後就是聖誕老人的國度",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -3055,7 +2954,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-121",
+      "id": "可樂旅遊-117",
       "agency": "可樂旅遊",
       "productName": "芬蘭挪威、幸福極光～帝王蟹雪橇車、極地破冰巡航、冰原歷險體驗、北極圈極光船12日",
       "destination": "芬蘭",
@@ -3081,7 +2980,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-122",
+      "id": "可樂旅遊-118",
       "agency": "可樂旅遊",
       "productName": "芬蘭挪威、幸福極光～海濱別墅極光屋、破冰船帝王蟹、冰原歷險纜車、聖誕老人極光船12日",
       "destination": "芬蘭",
@@ -3106,7 +3005,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-123",
+      "id": "可樂旅遊-119",
       "agency": "可樂旅遊",
       "productName": "芬蘭挪威、幸福極光～海濱別墅極光屋、極地帝王蟹、極圈麥當勞纜車、聖誕老人極光船12日",
       "destination": "芬蘭",
@@ -3132,7 +3031,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-124",
+      "id": "可樂旅遊-120",
       "agency": "可樂旅遊",
       "productName": "芬蘭挪威、幸福極光～極地帝王蟹、極圈麥當勞纜車、聖誕老人極光船12日",
       "destination": "芬蘭",
@@ -3157,7 +3056,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-125",
+      "id": "可樂旅遊-121",
       "agency": "可樂旅遊",
       "productName": "芬蘭極光不思議～極光海濱別墅、聖誕老人村、冰雪體驗動物園、星空夜臥火車八日",
       "destination": "芬蘭",
@@ -3183,7 +3082,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-126",
+      "id": "可樂旅遊-122",
       "agency": "可樂旅遊",
       "productName": "芬蘭極光喜迎春～三晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日",
       "destination": "芬蘭",
@@ -3208,7 +3107,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-127",
+      "id": "可樂旅遊-123",
       "agency": "可樂旅遊",
       "productName": "芬蘭極光喜迎春～兩晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日",
       "destination": "芬蘭",
@@ -3233,7 +3132,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-128",
+      "id": "可樂旅遊-124",
       "agency": "可樂旅遊",
       "productName": "阿拉斯加極光～玻璃極光屋乙晚、三晚追逐極光、狗拉雪橇體驗、珍娜溫泉泡湯八日",
       "destination": "阿拉斯加",
@@ -3259,7 +3158,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-129",
+      "id": "可樂旅遊-125",
       "agency": "可樂旅遊",
       "productName": "美麗星世界～阿拉斯加極光(三晚)、冬季極光列車、冰川健行體驗、珍娜溫泉度假村10日",
       "destination": "阿拉斯加",
@@ -3285,7 +3184,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-130",
+      "id": "可樂旅遊-126",
       "agency": "可樂旅遊",
       "productName": "美麗星世界～黃刀鎮極光(三晚)、三大國家公園、露易絲湖城堡、西雅圖夜未眠12日",
       "destination": "黃刀鎮",
@@ -3311,7 +3210,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-131",
+      "id": "可樂旅遊-127",
       "agency": "可樂旅遊",
       "productName": "華麗美洲、阿拉斯加極光～冬季極光列車、冰川健行體驗、西雅圖城市遊10日",
       "destination": "阿拉斯加",
@@ -3337,7 +3236,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-132",
+      "id": "可樂旅遊-128",
       "agency": "可樂旅遊",
       "productName": "華麗美洲～黃刀鎮極光(三晚)、狗拉雪橇體驗、三大國家公園、溫哥華漫遊11日",
       "destination": "黃刀鎮",
@@ -3363,7 +3262,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-133",
+      "id": "可樂旅遊-129",
       "agency": "可樂旅遊",
       "productName": "舞動的精靈～阿拉斯加極光、三晚極光旅行、狗拉雪橇體驗、珍娜溫泉泡湯八日",
       "destination": "阿拉斯加",
@@ -3389,7 +3288,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-134",
+      "id": "可樂旅遊-130",
       "agency": "可樂旅遊",
       "productName": "舞動的精靈～黃刀鎮極光(三晚)、狗拉雪橇體驗、愛戀溫哥華、浪漫西雅圖10日",
       "destination": "黃刀鎮",
@@ -3415,7 +3314,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-135",
+      "id": "可樂旅遊-131",
       "agency": "可樂旅遊",
       "productName": "舞動的精靈～黃刀鎮極光(三晚)、特色極光營地、愛戀溫哥華、浪漫西雅圖10日",
       "destination": "黃刀鎮",
@@ -3441,7 +3340,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-136",
+      "id": "可樂旅遊-132",
       "agency": "可樂旅遊",
       "productName": "魅力歐洲、繽紛北歐～魔幻冰島、芬蘭極地秘境、賞極光旗艦14日",
       "destination": "芬蘭",
@@ -3467,7 +3366,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-137",
+      "id": "五福旅遊-133",
       "agency": "五福旅遊",
       "productName": "玩美加族 阿拉斯加極光８日~極光小屋、入住珍娜溫泉飯店（長榮航空) 北極村聖誕老人村 費爾班【夜間極光欣賞】",
       "destination": "阿拉斯加",
@@ -3494,7 +3393,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "五福旅遊-138",
+      "id": "五福旅遊-134",
       "agency": "五福旅遊",
       "productName": "玩美加族 阿拉斯加極光金色大地８日~入住珍娜溫泉飯店（長榮航空) 北極村聖誕老人村 費爾班【夜間極光欣賞】",
       "destination": "阿拉斯加",
@@ -3519,7 +3418,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "五福旅遊-139",
+      "id": "五福旅遊-135",
       "agency": "五福旅遊",
       "productName": "玩美加族 Chill愛黃刀極光秋季10日～玻璃帳篷、卡梅倫瀑布健行 黃刀鎮賞極光3晚 BBQ饗宴 西雅圖太空針塔 溫哥華",
       "destination": "黃刀鎮",
@@ -3545,7 +3444,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-140",
+      "id": "五福旅遊-136",
       "agency": "五福旅遊",
       "productName": "芬蘭極光10天-北極特快車、極地探索、聖誕老人村、極光屋住宿 極光屋住宿 聖誕老人村 北極特快車 極地探索 馴鹿牧場之旅 哈士奇拉雪橇",
       "destination": "芬蘭",
@@ -3571,7 +3470,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-141",
+      "id": "五福旅遊-137",
       "agency": "五福旅遊",
       "productName": "美麗星世界 阿拉斯加極光(三晚)、珍娜溫泉度假村10日(星宇航空) 極光小屋三晚 冬季極光列車 冰川健行 珍娜溫泉度假村",
       "destination": "阿拉斯加",
@@ -3597,7 +3496,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "五福旅遊-142",
+      "id": "五福旅遊-138",
       "agency": "五福旅遊",
       "productName": "美麗星世界 星辰公主遊輪～阿拉斯加冰河雙重奏、黃刀鎮幸福極光15日 鮭魚之都~凱契根 伐木工人秀 朱諾 棉田豪冰河",
       "destination": "黃刀鎮",
@@ -3622,7 +3521,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-143",
+      "id": "五福旅遊-139",
       "agency": "五福旅遊",
       "productName": "美麗星世界 尋夢公主遊輪～阿拉斯加冰河三重奏、追逐幸福極光16日 雙景觀火車 丹奈利國家公園",
       "destination": "阿拉斯加",
@@ -3647,7 +3546,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-144",
+      "id": "五福旅遊-140",
       "agency": "五福旅遊",
       "productName": "紐西蘭南極光10日～升等奧克蘭五星酒店一晚、螢火蟲洞 紐航直飛 拉納克城堡 登山纜車 箭鎮",
       "destination": "紐西蘭南極光",
@@ -3674,7 +3573,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-145",
+      "id": "五福旅遊-141",
       "agency": "五福旅遊",
       "productName": "追尋南極光·塔斯馬尼亞+雪墨9日-搖籃山、酒杯灣、童話小鎮 純淨塔斯馬尼亞 雪墨雙城起訖 搖籃山國家公園 十大最美酒杯灣 野生塔州惡魔 德文特河遊船",
       "destination": "紐西蘭南極光",
@@ -3703,7 +3602,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-146",
+      "id": "五福旅遊-142",
       "agency": "五福旅遊",
       "productName": "追尋南極光·塔斯馬尼亞+墨雪9日-搖籃山、酒杯灣、童話小鎮 純淨塔斯馬尼亞 墨雪雙城起訖 搖籃山國家公園 十大最美酒杯灣 野生塔州惡魔 德文特河遊船",
       "destination": "紐西蘭南極光",
@@ -3729,7 +3628,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-147",
+      "id": "五福旅遊-143",
       "agency": "五福旅遊",
       "productName": "華麗美洲 阿拉斯加~冰川健行、極光列車、珍娜溫泉泡湯、西雅圖10日 三晚極光觀測 珍娜溫泉度假村 聖誕老⼈之村 北⽅極地博物館",
       "destination": "阿拉斯加",
@@ -3756,7 +3655,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-148",
+      "id": "五福旅遊-144",
       "agency": "五福旅遊",
       "productName": "魅力歐洲 北歐極光11天－捕帝王蟹、冰上漂浮、玻璃屋、極光特快車、巴黎",
       "destination": "芬蘭",
@@ -3781,7 +3680,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-149",
+      "id": "五福旅遊-145",
       "agency": "五福旅遊",
       "productName": "魅力歐洲 北歐極光11天－捕帝王蟹、冰上漂浮、玻璃屋、詩麗雅號、慕尼黑",
       "destination": "芬蘭",
@@ -3806,7 +3705,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-150",
+      "id": "五福旅遊-146",
       "agency": "五福旅遊",
       "productName": "魅力歐洲 冰島巴黎10日－極光遊船、金環之旅、冰洞、露天溫泉、巴黎",
       "destination": "冰島",
@@ -3832,7 +3731,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-151",
+      "id": "五福旅遊-147",
       "agency": "五福旅遊",
       "productName": "魅力歐洲 冰島英倫9天－極光遊船、金環三合一、冰洞、露天溫泉",
       "destination": "冰島",
@@ -3860,7 +3759,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-152",
+      "id": "五福旅遊-148",
       "agency": "五福旅遊",
       "productName": "魅力歐洲 冰島荷蘭9日－極光遊船、金環之旅、冰洞、露天溫泉、荷蘭",
       "destination": "冰島",
@@ -3888,7 +3787,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-153",
+      "id": "五福旅遊-149",
       "agency": "五福旅遊",
       "productName": "魅力歐洲 璀璨北歐12日－極光列車、極光屋、雪上摩托車、破冰船、慕尼黑",
       "destination": "芬蘭",
@@ -3914,7 +3813,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-154",
+      "id": "五福旅遊-150",
       "agency": "五福旅遊",
       "productName": "魅力歐洲 繽紛北歐14日－冰島、芬蘭極地秘境、賞極光、聖誕老人村、巴黎",
       "destination": "芬蘭",
@@ -3942,109 +3841,117 @@
       "dataStatus": "partial"
     },
     {
-      "id": "喜鴻旅遊-155",
+      "id": "喜鴻旅遊-151",
       "agency": "喜鴻旅遊",
       "productName": "【玩美加族加拿大黃刀鎮１０日】極光3晚、玻璃帳篷、卡梅倫瀑布健行、BBQ饗宴",
       "destination": "黃刀鎮",
-      "selectableDates": "10/17",
+      "selectableDates": "2026/10/17",
       "months": [
         10
       ],
       "days": 10,
       "auroraNights": 3,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "參考航班：去程 長榮航空 BR024，2026/10/17 桃園(TPE) 23:00 → 西雅圖(SEA) 18:40；回程 長榮航空 BR023，2026/10/25 西雅圖(SEA) 00:30 → 桃園(TPE) 04:20+1；實際交通資訊以說明會資料為主",
       "itinerarySummary": "【玩美加族加拿大黃刀鎮１０日】極光3晚、玻璃帳篷、卡梅倫瀑布健行、BBQ饗宴 美洲 加西（溫哥華、黃刀鎮） 選擇日期 10/17 10天 TWD 138,900 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
+      "bookingStatus": "保證出團、可售、可候補",
+      "bookingStatusType": "limited",
       "priceLabel": "TWD 138,900 起",
       "priceTwd": 138900,
       "currency": "TWD",
       "sourceUrl": "https://www.besttour.com.tw/itinerary/CAD10BR261017PAKB",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
+      "sourceTitle": "【玩美加族加拿大黃刀鎮１０日】極光3晚、玻璃帳篷、卡梅倫瀑布健行、BBQ饗宴",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-156",
+      "id": "喜鴻旅遊-152",
       "agency": "喜鴻旅遊",
       "productName": "【玩美加族加拿大黃刀鎮１０日】極光3晚、景觀帳篷營地、狗拉雪橇、太空針塔、溫哥華",
       "destination": "黃刀鎮",
-      "selectableDates": "11/20、12/04、01/15",
+      "selectableDates": "2026/11/20、2026/12/4、2027/1/15、2027/2/4、2027/2/5、2027/2/6、2027/2/26、2027/3/5、2027/3/12、2027/3/18、2027/3/19、2027/3/25",
       "months": [
         1,
+        2,
+        3,
         11,
         12
       ],
       "days": 10,
       "auroraNights": 3,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "參考航班：去程 長榮航空 BR026，2026/11/20 桃園(TPE) 23:40 → 西雅圖(SEA) 18:10；回程 長榮航空 BR025，2026/11/28 西雅圖(SEA) 00:10 → 桃園(TPE) 05:20+1；實際交通資訊以說明會資料為主",
       "itinerarySummary": "【玩美加族加拿大黃刀鎮１０日】極光3晚、景觀帳篷營地、狗拉雪橇、太空針塔、溫哥華 美洲 加西（溫哥華、黃刀鎮） 選擇日期 11/20 12/04 01/15 更多 10天 TWD 136,900 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
+      "bookingStatus": "可售、可候補、保證出團",
+      "bookingStatusType": "limited",
       "priceLabel": "TWD 136,900 起",
       "priceTwd": 136900,
       "currency": "TWD",
       "sourceUrl": "https://www.besttour.com.tw/itinerary/CAD10BR261120PAKA",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
+      "sourceTitle": "【玩美加族加拿大黃刀鎮１０日】極光3晚、景觀帳篷營地、狗拉雪橇、太空針塔、溫哥華",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-157",
+      "id": "喜鴻旅遊-153",
       "agency": "喜鴻旅遊",
       "productName": "【玩美加族阿拉斯加幸福極光之旅８日】 美洲 阿拉斯加",
       "destination": "阿拉斯加",
-      "selectableDates": "09/06、09/20、09/27",
+      "selectableDates": "2026/9/6、2026/9/20、2026/9/27、2026/10/4、2026/10/18、2026/11/8、2026/11/22、2026/12/20、2027/1/10、2027/1/17、2027/1/24、2027/1/31、2027/2/2、2027/2/3、2027/2/7、2027/2/14、2027/2/21、2027/2/28、2027/3/7、2027/3/14",
       "months": [
-        9
+        1,
+        2,
+        3,
+        9,
+        10,
+        11,
+        12
       ],
       "days": null,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "參考航班：去程 長榮航空 BR026，2026/09/06 桃園(TPE) 23:40 → 西雅圖(SEA) 19:40；回程 長榮航空 BR025，2026/09/12 西雅圖(SEA) 01:30 → 桃園(TPE) 05:00+1；實際交通資訊以說明會資料為主",
       "itinerarySummary": "詳見商品頁",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
+      "bookingStatus": "保證出團、可售、可候補",
+      "bookingStatusType": "limited",
       "priceLabel": "TWD 116,900 起",
       "priceTwd": 116900,
       "currency": "TWD",
       "sourceUrl": "https://www.besttour.com.tw/itinerary/AKZ08BR260906PAKC",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
+      "sourceTitle": "【玩美加族阿拉斯加幸福極光之旅８日】金色大地之旅、珍娜河遊船",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 83%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-158",
+      "id": "喜鴻旅遊-154",
       "agency": "喜鴻旅遊",
       "productName": "【玩美加族星辰公主遊輪１５日】阿拉斯加冰河景緻、黃刀精靈極光 遊輪 星辰公主號",
       "destination": "黃刀鎮",
-      "selectableDates": "09/19",
+      "selectableDates": "2026/9/19",
       "months": [
         9
       ],
       "days": 15,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "參考航班：去程 長榮航空 BR024，桃園出發 23:00 → 19:00；回程航班需以商品頁交通方式或行前說明確認",
       "itinerarySummary": "【玩美加族星辰公主遊輪１５日】阿拉斯加冰河景緻、黃刀精靈極光 遊輪 星辰公主號 選擇日期 09/19 15天 TWD 196,900 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
+      "bookingStatus": "保證出團、可售、可候補",
+      "bookingStatusType": "limited",
       "priceLabel": "TWD 196,900 起",
       "priceTwd": 196900,
       "currency": "TWD",
       "sourceUrl": "https://www.besttour.com.tw/itinerary/ACP15BR260919PAKE",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
+      "sourceTitle": "【玩美加族星辰公主遊輪１５日】阿拉斯加冰河景緻、黃刀精靈極光",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-159",
+      "id": "喜鴻旅遊-155",
       "agency": "喜鴻旅遊",
       "productName": "【美麗星世界．阿拉斯加極光１０日】極光列車、冰川健行、珍娜溫泉度假村、三晚極光",
       "destination": "阿拉斯加",
@@ -4054,7 +3961,7 @@
       ],
       "days": 10,
       "auroraNights": 3,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "參考航班：去程 星宇航空 JX32，桃園(TPE) → 西雅圖(SEA)；回程 星宇航空 JX31，西雅圖(SEA) → 桃園(TPE)；此商品為聯營團，公開同款頁面可核對 JX32/JX31，實際日期與時間以喜鴻商品頁或行前說明資料為準",
       "itinerarySummary": "【美麗星世界．阿拉斯加極光１０日】極光列車、冰川健行、珍娜溫泉度假村、三晚極光 美洲 阿拉斯加 選擇日期 10/07 10/14 10/28 更多 10天 TWD 137,900 起",
       "bookingStatus": "來源列表未揭露；需進商品頁確認",
       "bookingStatusType": "needs-check",
@@ -4062,474 +3969,373 @@
       "priceTwd": 137900,
       "currency": "TWD",
       "sourceUrl": "https://www.besttour.com.tw/itinerary/AKZ10JX261007PAKA",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
+      "sourceTitle": "美麗星世界．阿拉斯加極光10日",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
       "dataStatus": "partial"
     },
     {
-      "id": "喜鴻旅遊-160",
+      "id": "喜鴻旅遊-156",
       "agency": "喜鴻旅遊",
       "productName": "【美麗星世界星辰公主號１５日】阿拉斯加冰河雙重奏、白色隘口之旅、黃刀鎮幸福極光 遊輪 星辰公主號",
       "destination": "黃刀鎮",
-      "selectableDates": "09/19",
+      "selectableDates": "2026/9/19",
       "months": [
         9
       ],
       "days": 15,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "參考航班：去程 星宇航空 JX032，2026/09/19 桃園(TPE) 20:10 → 西雅圖(SEA) 16:10；回程 星宇航空 JX031，2026/10/02 西雅圖(SEA) 01:15 → 桃園(TPE) 04:55+1；實際交通資訊以說明會資料為主",
       "itinerarySummary": "【美麗星世界星辰公主號１５日】阿拉斯加冰河雙重奏、白色隘口之旅、黃刀鎮幸福極光 遊輪 星辰公主號 選擇日期 09/19 15天 TWD 194,900 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
+      "bookingStatus": "保證出團、可售、可候補",
+      "bookingStatusType": "limited",
       "priceLabel": "TWD 194,900 起",
       "priceTwd": 194900,
       "currency": "TWD",
       "sourceUrl": "https://www.besttour.com.tw/itinerary/ACP15JX260919PAKA",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
+      "sourceTitle": "【美麗星世界星辰公主號１５日】阿拉斯加冰河雙重奏、白色隘口之旅、黃刀鎮幸福極光",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-161",
+      "id": "喜鴻旅遊-157",
       "agency": "喜鴻旅遊",
       "productName": "【美麗星世界黃刀鎮洛磯１２日】黃刀極光、露易絲湖城堡飯店、硫磺山纜車、西雅圖",
       "destination": "黃刀鎮",
-      "selectableDates": "11/25、01/13、02/02",
+      "selectableDates": "2026/11/25、2027/1/13、2027/2/2、2027/2/3、2027/2/4、2027/2/24、2027/3/3、2027/3/10",
       "months": [
         1,
         2,
+        3,
         11
       ],
       "days": 12,
       "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
+      "flightSummary": "參考航班：去程 星宇航空 JX032，2026/11/25 桃園(TPE) 20:30 → 西雅圖(SEA) 15:05；回程 星宇航空 JX031，2026/12/04 西雅圖(SEA) 23:45 → 桃園(TPE) 04:55+2；實際交通資訊以說明會資料為主",
       "itinerarySummary": "【美麗星世界黃刀鎮洛磯１２日】黃刀極光、露易絲湖城堡飯店、硫磺山纜車、西雅圖 美洲 加西（溫哥華、黃刀鎮） 選擇日期 11/25 01/13 02/02 更多 12天 TWD 168,900 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
+      "bookingStatus": "保證出團、可售、可候補",
+      "bookingStatusType": "limited",
       "priceLabel": "TWD 168,900 起",
       "priceTwd": 168900,
       "currency": "TWD",
       "sourceUrl": "https://www.besttour.com.tw/itinerary/CAD12JX261125PAKA",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
+      "sourceTitle": "【美麗星世界黃刀鎮洛磯１２日】黃刀極光、露易絲湖城堡飯店、硫磺山纜車、西雅圖",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-162",
+      "id": "喜鴻旅遊-158",
       "agency": "喜鴻旅遊",
       "productName": "【經典加拿大黃刀鎮極光１０日】三晚追光、極光營地、卡梅倫瀑布、酒莊品酒、格蘭維爾島",
       "destination": "黃刀鎮",
-      "selectableDates": "09/03、09/12、09/19",
-      "months": [
-        9
-      ],
-      "days": 10,
-      "auroraNights": 3,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
-      "itinerarySummary": "【經典加拿大黃刀鎮極光１０日】三晚追光、極光營地、卡梅倫瀑布、酒莊品酒、格蘭維爾島 美洲 加西（溫哥華、黃刀鎮） 第二人 省$6,000 選擇日期 09/03 09/12 09/19 更多 10天 TWD 149,000 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "TWD 149,000 起",
-      "priceTwd": 149000,
-      "currency": "TWD",
-      "sourceUrl": "https://www.besttour.com.tw/itinerary/CAD10BR260903B",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
-    },
-    {
-      "id": "喜鴻旅遊-163",
-      "agency": "喜鴻旅遊",
-      "productName": "【經典北歐芬蘭極光８日】極光列車、破冰船、極光屋、聖誕老人村、北極漂浮、狗拉雪橇",
-      "destination": "芬蘭",
-      "selectableDates": "11/13、11/20、11/27",
-      "months": [
-        11
-      ],
-      "days": 8,
-      "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
-      "itinerarySummary": "【經典北歐芬蘭極光８日】極光列車、破冰船、極光屋、聖誕老人村、北極漂浮、狗拉雪橇 歐洲 芬蘭 第二人 省$6,000 選擇日期 11/13 11/20 11/27 更多 8天 TWD 148,800 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "TWD 148,800 起",
-      "priceTwd": 148800,
-      "currency": "TWD",
-      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUX08BR261113B",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
-    },
-    {
-      "id": "喜鴻旅遊-164",
-      "agency": "喜鴻旅遊",
-      "productName": "【經典北歐極光１０日】玻璃極光屋、破冰船、聖誕老人村、雪上活動三合一、帝王蟹",
-      "destination": "芬蘭",
-      "selectableDates": "11/05、11/12、11/19",
-      "months": [
-        11
-      ],
-      "days": 10,
-      "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
-      "itinerarySummary": "【經典北歐極光１０日】玻璃極光屋、破冰船、聖誕老人村、雪上活動三合一、帝王蟹 歐洲 瑞典 選擇日期 11/05 11/12 11/19 更多 10天 TWD 178,800 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "TWD 178,800 起",
-      "priceTwd": 178800,
-      "currency": "TWD",
-      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUN10TK261105J",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
-    },
-    {
-      "id": "喜鴻旅遊-165",
-      "agency": "喜鴻旅遊",
-      "productName": "【經典冰島極光１０日】藍湖溫泉、騎乘冰島馬、藍冰洞、冰川健行、間歇泉、小龍蝦餐",
-      "destination": "冰島",
-      "selectableDates": "10/30、11/05、11/19",
-      "months": [
-        10,
-        11
-      ],
-      "days": 10,
-      "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
-      "itinerarySummary": "【經典冰島極光１０日】藍湖溫泉、騎乘冰島馬、藍冰洞、冰川健行、間歇泉、小龍蝦餐 歐洲 冰島 第二人 省$8,000 選擇日期 10/30 11/05 11/19 更多 10天 TWD 175,800 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "TWD 175,800 起",
-      "priceTwd": 175800,
-      "currency": "TWD",
-      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUX10BR261030A",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
-    },
-    {
-      "id": "喜鴻旅遊-166",
-      "agency": "喜鴻旅遊",
-      "productName": "【夢幻加拿大黃刀鎮極光１０日】極光三晚、球體玻璃屋、狗拉雪橇、冰酒品嘗、格蘭維爾島",
-      "destination": "黃刀鎮",
-      "selectableDates": "11/26、12/03、12/10",
-      "months": [
-        11,
-        12
-      ],
-      "days": 10,
-      "auroraNights": 3,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
-      "itinerarySummary": "【夢幻加拿大黃刀鎮極光１０日】極光三晚、球體玻璃屋、狗拉雪橇、冰酒品嘗、格蘭維爾島 美洲 加西（溫哥華、黃刀鎮） 第二人 省$6,000 選擇日期 11/26 12/03 12/10 更多 10天 TWD 143,000 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "TWD 143,000 起",
-      "priceTwd": 143000,
-      "currency": "TWD",
-      "sourceUrl": "https://www.besttour.com.tw/itinerary/CAD10BR261126C",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
-    },
-    {
-      "id": "喜鴻旅遊-167",
-      "agency": "喜鴻旅遊",
-      "productName": "【舞動加拿大育空白馬極光８日】三晚追光、極光營地、野生動物園、極地溫泉、酒莊品酒",
-      "destination": "黃刀鎮",
-      "selectableDates": "12/08、12/22、01/05",
-      "months": [
-        1,
-        12
-      ],
-      "days": 8,
-      "auroraNights": 3,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
-      "itinerarySummary": "【舞動加拿大育空白馬極光８日】三晚追光、極光營地、野生動物園、極地溫泉、酒莊品酒 美洲 加西（溫哥華、黃刀鎮） 第二人 省$6,000 選擇日期 12/08 12/22 01/05 更多 8天 TWD 136,800 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "TWD 136,800 起",
-      "priceTwd": 136800,
-      "currency": "TWD",
-      "sourceUrl": "https://www.besttour.com.tw/itinerary/CAD08BR261208W",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
-    },
-    {
-      "id": "喜鴻旅遊-168",
-      "agency": "喜鴻旅遊",
-      "productName": "【魅力歐洲．冰島巴黎１０日】極光遊船、金環三合一、藍冰洞、露天溫泉、火山岩漿隧道",
-      "destination": "冰島",
-      "selectableDates": "10/25、11/06、11/08",
-      "months": [
-        10,
-        11
-      ],
-      "days": 10,
-      "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
-      "itinerarySummary": "【魅力歐洲．冰島巴黎１０日】極光遊船、金環三合一、藍冰洞、露天溫泉、火山岩漿隧道 歐洲 冰島 選擇日期 10/25 11/06 11/08 更多 10天 TWD 175,900 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "TWD 175,900 起",
-      "priceTwd": 175900,
-      "currency": "TWD",
-      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUX10BR261025PAK",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
-    },
-    {
-      "id": "喜鴻旅遊-169",
-      "agency": "喜鴻旅遊",
-      "productName": "【魅力歐洲．冰島英倫９日】極光遊船、藍冰洞、火山岩漿隧道、露天溫泉、小龍蝦餐、米其林推薦",
-      "destination": "冰島",
-      "selectableDates": "11/07、11/21、12/05",
-      "months": [
-        11,
-        12
-      ],
-      "days": 9,
-      "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
-      "itinerarySummary": "【魅力歐洲．冰島英倫９日】極光遊船、藍冰洞、火山岩漿隧道、露天溫泉、小龍蝦餐、米其林推薦 歐洲 冰島 選擇日期 11/07 11/21 12/05 更多 9天 TWD 179,900 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "TWD 179,900 起",
-      "priceTwd": 179900,
-      "currency": "TWD",
-      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUX09BR261107PAK",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
-    },
-    {
-      "id": "喜鴻旅遊-170",
-      "agency": "喜鴻旅遊",
-      "productName": "【魅力歐洲．遇見歐若拉北歐１１日】玻璃極光屋、捕撈帝王蟹、極光列車、詩麗雅號、巴黎市區酒店",
-      "destination": "芬蘭",
-      "selectableDates": "11/09、11/23",
-      "months": [
-        11
-      ],
-      "days": 11,
-      "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
-      "itinerarySummary": "【魅力歐洲．遇見歐若拉北歐１１日】玻璃極光屋、捕撈帝王蟹、極光列車、詩麗雅號、巴黎市區酒店 歐洲 瑞典 選擇日期 11/09 11/23 11天 TWD 179,900 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "TWD 179,900 起",
-      "priceTwd": 179900,
-      "currency": "TWD",
-      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUN11BR261109PAK",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
-    },
-    {
-      "id": "喜鴻旅遊-171",
-      "agency": "喜鴻旅遊",
-      "productName": "【魅力歐洲．遇見歐若拉北歐１１日】玻璃極光屋、捕撈帝王蟹、極光列車、詩麗雅號、慕尼黑五星酒店",
-      "destination": "芬蘭",
-      "selectableDates": "11/01、11/15",
-      "months": [
-        11
-      ],
-      "days": 11,
-      "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
-      "itinerarySummary": "【魅力歐洲．遇見歐若拉北歐１１日】玻璃極光屋、捕撈帝王蟹、極光列車、詩麗雅號、慕尼黑五星酒店 歐洲 瑞典 選擇日期 11/01 11/15 11天 TWD 179,900 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "TWD 179,900 起",
-      "priceTwd": 179900,
-      "currency": "TWD",
-      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUN11BR261101PAK",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
-    },
-    {
-      "id": "喜鴻旅遊-172",
-      "agency": "喜鴻旅遊",
-      "productName": "【魅力歐洲．璀璨北歐極光１２日】玻璃極光屋、帝王蟹、雪地摩托車、破冰船、五星酒店",
-      "destination": "芬蘭",
-      "selectableDates": "11/04、11/18、12/02",
-      "months": [
-        11,
-        12
-      ],
-      "days": 12,
-      "auroraNights": null,
-      "flightSummary": "來源列表未揭露；需進商品頁確認",
-      "itinerarySummary": "【魅力歐洲．璀璨北歐極光１２日】玻璃極光屋、帝王蟹、雪地摩托車、破冰船、五星酒店 歐洲 芬蘭 選擇日期 11/04 11/18 12/02 更多 12天 TWD 213,900 起",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "TWD 213,900 起",
-      "priceTwd": 213900,
-      "currency": "TWD",
-      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUN12BR261104PAK",
-      "sourceTitle": "",
-      "sourceVerificationStatus": "unchecked",
-      "sourceVerificationNote": "尚未取得可比對的官方頁標題",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
-    },
-    {
-      "id": "鳳凰旅遊-173",
-      "agency": "鳳凰旅遊",
-      "productName": "《2025品保優旅選》冰島極光藍冰洞健行、斯奈山半島、 雪上摩托車 10 天(冰島馬騎行、藍湖溫泉、冰島龍蝦海鮮總匯、4D飛越冰島、六晚探索極光)",
-      "destination": "冰島",
-      "selectableDates": "2026.10.29 四",
-      "months": [
-        10
-      ],
-      "days": 10,
-      "auroraNights": null,
-      "flightSummary": "CI",
-      "itinerarySummary": "10天；報名狀態：保證；機位：1；",
-      "bookingStatus": "保證 出團",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "NT$190,900",
-      "priceTwd": 190900,
-      "currency": "NTD",
-      "sourceUrl": "https://www.travel.com.tw/TOU/TOU0020/AUA1000014/AUA102210CI26A",
-      "sourceTitle": "華麗美洲 阿拉斯加│冰川健行、極光列車、珍娜溫泉泡湯、極光之城費爾班克斯、西雅圖城市遊１０日",
-      "sourceVerificationStatus": "mismatch",
-      "sourceVerificationNote": "官方頁標題與商品名稱落差過大；相似度 8%",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "needs-check"
-    },
-    {
-      "id": "鳳凰旅遊-174",
-      "agency": "鳳凰旅遊",
-      "productName": "*秋季特賣*幸福極光冰島荷蘭浪漫10天( 冰河湖兩棲船、金環三景、黑沙灘、羊角村、國立博物館 、五晚冰島極光追尋)【限時優惠～第 2人省6000】",
-      "destination": "冰島",
-      "selectableDates": "2026.09.15 二、2026.10.06 二",
+      "selectableDates": "2026/9/3、2026/9/12、2026/9/19、2026/9/24、2026/9/30、2026/10/8",
       "months": [
         9,
         10
       ],
       "days": 10,
-      "auroraNights": null,
-      "flightSummary": "CI",
-      "itinerarySummary": "10天；報名狀態：即將；機位：6；",
-      "bookingStatus": "即將 成團、報名",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "NT$172,900",
-      "priceTwd": 172900,
-      "currency": "NTD",
-      "sourceUrl": "https://www.travel.com.tw/TOU/TOU0020/ONW1100026/ONS090810NZ26A",
-      "sourceTitle": "極光凝視．靜謐之境 紐西蘭南島慢旅．與Aurora之約10天(NZ)(皇后鎮五星三晚+蒂卡波湖連住 2 晚+異國美食)",
-      "sourceVerificationStatus": "mismatch",
-      "sourceVerificationNote": "官方頁標題與商品名稱落差過大；相似度 2%",
+      "auroraNights": 3,
+      "flightSummary": "參考航班：去程 長榮航空 BR024，2026/09/03 桃園(TPE) 23:00 → 西雅圖(SEA) 19:00；中段 西捷航空 WS104，2026/09/05 溫哥華(YVR) 07:30 → 卡加利(YYC) 10:00；中段 西捷航空 WS685，2026/09/05 卡加利(YYC) 11:10 → 黃刀鎮(YZF) 13:25；中段 西捷航空 WS684，2026/09/08 黃刀鎮(YZF) 14:15 → 卡加利(YYC) 16:30；中段 西捷航空 WS127，2026/09/08 卡加利(YYC) 18:00 → 溫哥華(YVR) 18:40；回程 長榮航空 BR023，2026/09/11 西雅圖(SEA) 00:30 → 桃園(TPE) 04:00+1；實際交通資訊以說明會資料為主",
+      "itinerarySummary": "【經典加拿大黃刀鎮極光１０日】三晚追光、極光營地、卡梅倫瀑布、酒莊品酒、格蘭維爾島 美洲 加西（溫哥華、黃刀鎮） 第二人 省$6,000 選擇日期 09/03 09/12 09/19 更多 10天 TWD 149,000 起",
+      "bookingStatus": "保證出團、可售：10、可售：19、可售：6、可售：16、可售",
+      "bookingStatusType": "bookable",
+      "priceLabel": "TWD 149,000 起",
+      "priceTwd": 149000,
+      "currency": "TWD",
+      "sourceUrl": "https://www.besttour.com.tw/itinerary/CAD10BR260903B",
+      "sourceTitle": "【經典加拿大黃刀鎮極光１０日】三晚追光、極光營地、卡梅倫瀑布、酒莊品酒、格蘭維爾島",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "needs-check"
+      "dataStatus": "available"
     },
     {
-      "id": "鳳凰旅遊-175",
-      "agency": "鳳凰旅遊",
-      "productName": "冰島幸福極光～溫泉冰河湖、冰河健行、金環風景線、大英博物館9天7夜(加贈泰晤士河遊船)【早鳥優惠～前十名第2人省6千】",
-      "destination": "冰島",
-      "selectableDates": "2026.10.31 六、2026.11.04 三",
+      "id": "喜鴻旅遊-159",
+      "agency": "喜鴻旅遊",
+      "productName": "【經典北歐芬蘭極光８日】極光列車、破冰船、極光屋、聖誕老人村、北極漂浮、狗拉雪橇",
+      "destination": "芬蘭",
+      "selectableDates": "2026/11/13、2026/11/20、2026/11/27、2026/12/4、2026/12/11、2027/1/1、2027/1/8、2027/1/15、2027/1/22、2027/2/12、2027/2/19、2027/2/26、2027/3/5、2027/3/12、2027/3/19",
       "months": [
+        1,
+        2,
+        3,
+        11,
+        12
+      ],
+      "days": 8,
+      "auroraNights": null,
+      "flightSummary": "參考航班：去程 長榮航空 BR087，2026/11/13 桃園(TPE) 23:30 → 巴黎戴高樂機場(CDG) 08:00+1；中段 芬蘭航空 AY1576，2026/11/14 巴黎戴高樂機場(CDG) 15:15 → 赫爾辛基(HEL) 19:10；中段 芬蘭航空 AY602，2026/11/18 伊瓦洛(IVL) 09:15 → 赫爾辛基(HEL) 10:45；中段 芬蘭航空 AY1577，2026/11/18 赫爾辛基(HEL) 16:05 → 巴黎戴高樂機場(CDG) 18:15；回程 長榮航空 BR088，2026/11/19 巴黎戴高樂機場(CDG) 11:20 → 桃園(TPE) 07:20+1；實際交通資訊以說明會資料為主",
+      "itinerarySummary": "【經典北歐芬蘭極光８日】極光列車、破冰船、極光屋、聖誕老人村、北極漂浮、狗拉雪橇 歐洲 芬蘭 第二人 省$6,000 選擇日期 11/13 11/20 11/27 更多 8天 TWD 148,800 起",
+      "bookingStatus": "可售、可售：16、可售：18、可售：14、可售：12",
+      "bookingStatusType": "bookable",
+      "priceLabel": "TWD 148,800 起",
+      "priceTwd": 148800,
+      "currency": "TWD",
+      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUX08BR261113B",
+      "sourceTitle": "【經典北歐芬蘭極光８日】極光列車、極光屋、聖誕老人村、北極漂浮、狗拉雪橇",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 96%",
+      "checkedAt": "2026-07-17",
+      "dataStatus": "available"
+    },
+    {
+      "id": "喜鴻旅遊-160",
+      "agency": "喜鴻旅遊",
+      "productName": "【經典北歐極光１０日】玻璃極光屋、破冰船、聖誕老人村、雪上活動三合一、帝王蟹",
+      "destination": "芬蘭",
+      "selectableDates": "2026/11/5、2026/11/12、2026/11/19、2026/11/26、2026/12/3、2026/12/10、2026/12/17、2026/12/24、2027/1/7、2027/1/14、2027/1/21、2027/1/28、2027/2/11、2027/2/18、2027/2/25、2027/3/4、2027/3/11、2027/3/18、2027/3/25",
+      "months": [
+        1,
+        2,
+        3,
+        11,
+        12
+      ],
+      "days": 10,
+      "auroraNights": null,
+      "flightSummary": "參考航班：去程 土耳其航空 TK025，2026/11/05 桃園(TPE) 22:00 → 伊斯坦堡(IST) 05:50+1；中段 土耳其航空 TK1761，2026/11/06 伊斯坦堡(IST) 08:45 → 赫爾辛基(HEL) 11:30；中段 挪威穿梭航空 DY311，2026/11/12 希爾克內斯(KKN) 11:50 → 奧斯陸(OSL) 14:10；中段 土耳其航空 TK1754，2026/11/13 奧斯陸(OSL) 18:20 → 伊斯坦堡(IST) 00:20+1；回程 土耳其航空 TK024，2026/11/14 伊斯坦堡(IST) 01:55 → 桃園(TPE) 17:40；實際交通資訊以說明會資料為主",
+      "itinerarySummary": "【經典北歐極光１０日】玻璃極光屋、破冰船、聖誕老人村、雪上活動三合一、帝王蟹 歐洲 瑞典 選擇日期 11/05 11/12 11/19 更多 10天 TWD 178,800 起",
+      "bookingStatus": "可售、可售：19、可售：18、可售：16、可售：3、可售：10、可候補、額滿",
+      "bookingStatusType": "limited",
+      "priceLabel": "TWD 178,800 起",
+      "priceTwd": 178800,
+      "currency": "TWD",
+      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUN10TK261105J",
+      "sourceTitle": "【經典北歐極光１０日】玻璃極光屋、聖誕老人村、雪上活動三合一、帝王蟹",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 96%",
+      "checkedAt": "2026-07-17",
+      "dataStatus": "available"
+    },
+    {
+      "id": "喜鴻旅遊-161",
+      "agency": "喜鴻旅遊",
+      "productName": "【經典冰島極光１０日】藍湖溫泉、騎乘冰島馬、藍冰洞、冰川健行、間歇泉、小龍蝦餐",
+      "destination": "冰島",
+      "selectableDates": "2026/10/30、2026/11/5、2026/11/19、2026/11/27、2026/12/3、2026/12/17、2027/1/4、2027/1/8、2027/1/22、2027/1/28、2027/2/1、2027/2/11、2027/2/19、2027/3/3、2027/3/19、2027/3/25",
+      "months": [
+        1,
+        2,
+        3,
         10,
-        11
+        11,
+        12
+      ],
+      "days": 10,
+      "auroraNights": null,
+      "flightSummary": "參考航班：去程 長榮航空 BR087，2026/10/30 桃園(TPE) 23:30 → 巴黎戴高樂機場(CDG) 08:00+1；中段 冰島航空 FI543，2026/11/01 巴黎戴高樂機場(CDG) 13:00 → 雷克雅維克(KEF) 15:40；中段 冰島航空 FI542，2026/11/06 雷克雅維克(KEF) 07:30 → 巴黎戴高樂機場(CDG) 12:00；回程 長榮航空 BR088，2026/11/07 巴黎戴高樂機場(CDG) 11:20 → 桃園(TPE) 07:20+1；實際交通資訊以說明會資料為主",
+      "itinerarySummary": "【經典冰島極光１０日】藍湖溫泉、騎乘冰島馬、藍冰洞、冰川健行、間歇泉、小龍蝦餐 歐洲 冰島 第二人 省$8,000 選擇日期 10/30 11/05 11/19 更多 10天 TWD 175,800 起",
+      "bookingStatus": "可售：13、可售：18、可售：25、可售：16、可售：14、可售：20、可售",
+      "bookingStatusType": "bookable",
+      "priceLabel": "TWD 175,800 起",
+      "priceTwd": 175800,
+      "currency": "TWD",
+      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUX10BR261030A",
+      "sourceTitle": "【經典冰島極光１０日】藍湖溫泉、騎乘冰島馬、藍冰洞、冰川健行、間歇泉、小龍蝦餐",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
+      "checkedAt": "2026-07-17",
+      "dataStatus": "available"
+    },
+    {
+      "id": "喜鴻旅遊-162",
+      "agency": "喜鴻旅遊",
+      "productName": "【夢幻加拿大黃刀鎮極光１０日】極光三晚、球體玻璃屋、狗拉雪橇、冰酒品嘗、格蘭維爾島",
+      "destination": "黃刀鎮",
+      "selectableDates": "2026/11/26、2026/12/3、2026/12/10、2026/12/17、2026/12/24、2026/12/31、2027/1/7、2027/1/14、2027/1/21、2027/1/28、2027/2/4、2027/2/11、2027/2/18、2027/2/25、2027/3/4、2027/3/11、2027/3/18、2027/3/25",
+      "months": [
+        1,
+        2,
+        3,
+        11,
+        12
+      ],
+      "days": 10,
+      "auroraNights": 3,
+      "flightSummary": "參考航班：去程 長榮航空 BR024，2026/11/26 桃園(TPE) 23:00 → 西雅圖(SEA) 17:30；中段 西捷航空 WS104，2026/11/28 溫哥華(YVR) 07:00 → 卡加利(YYC) 09:35；中段 西捷航空 WS685，2026/11/28 卡加利(YYC) 11:15 → 黃刀鎮(YZF) 13:40；中段 西捷航空 WS127，2026/12/01 卡加利(YYC) 19:00 → 溫哥華(YVR) 20:45；回程 長榮航空 BR023，2026/12/03 西雅圖(SEA) 23:30 → 桃園(TPE) 04:40+2；實際交通資訊以說明會資料為主",
+      "itinerarySummary": "【夢幻加拿大黃刀鎮極光１０日】極光三晚、球體玻璃屋、狗拉雪橇、冰酒品嘗、格蘭維爾島 美洲 加西（溫哥華、黃刀鎮） 第二人 省$6,000 選擇日期 11/26 12/03 12/10 更多 10天 TWD 143,000 起",
+      "bookingStatus": "可售、可售：13、可售：17、可售：19、可售：3、可售：2、保證出團、可售：25、可售：18、可售：26",
+      "bookingStatusType": "bookable",
+      "priceLabel": "TWD 143,000 起",
+      "priceTwd": 143000,
+      "currency": "TWD",
+      "sourceUrl": "https://www.besttour.com.tw/itinerary/CAD10BR261126C",
+      "sourceTitle": "【夢幻加拿大黃刀鎮極光１０日】極光三晚、球體玻璃屋、狗拉雪橇、冰酒品嘗、格蘭維爾島",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
+      "checkedAt": "2026-07-17",
+      "dataStatus": "available"
+    },
+    {
+      "id": "喜鴻旅遊-163",
+      "agency": "喜鴻旅遊",
+      "productName": "【舞動加拿大育空白馬極光８日】三晚追光、極光營地、野生動物園、極地溫泉、酒莊品酒",
+      "destination": "黃刀鎮",
+      "selectableDates": "2026/12/8、2026/12/22、2027/1/5、2027/1/19、2027/2/2、2027/2/23",
+      "months": [
+        1,
+        2,
+        12
+      ],
+      "days": 8,
+      "auroraNights": 3,
+      "flightSummary": "參考航班：去程 長榮航空 BR024，2026/12/08 桃園(TPE) 23:00 → 西雅圖(SEA) 17:30；回程 長榮航空 BR025，2026/12/14 西雅圖(SEA) 00:10 → 桃園(TPE) 05:20+1；實際交通資訊以說明會資料為主",
+      "itinerarySummary": "【舞動加拿大育空白馬極光８日】三晚追光、極光營地、野生動物園、極地溫泉、酒莊品酒 美洲 加西（溫哥華、黃刀鎮） 第二人 省$6,000 選擇日期 12/08 12/22 01/05 更多 8天 TWD 136,800 起",
+      "bookingStatus": "可售、可售：25、可售：26",
+      "bookingStatusType": "bookable",
+      "priceLabel": "TWD 136,800 起",
+      "priceTwd": 136800,
+      "currency": "TWD",
+      "sourceUrl": "https://www.besttour.com.tw/itinerary/CAD08BR261208W",
+      "sourceTitle": "【舞動加拿大育空白馬極光８日】三晚追光、極光營地、野生動物園、極地溫泉、酒莊品酒",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
+      "checkedAt": "2026-07-17",
+      "dataStatus": "available"
+    },
+    {
+      "id": "喜鴻旅遊-164",
+      "agency": "喜鴻旅遊",
+      "productName": "【魅力歐洲．冰島巴黎１０日】極光遊船、金環三合一、藍冰洞、露天溫泉、火山岩漿隧道",
+      "destination": "冰島",
+      "selectableDates": "2026/10/25、2026/11/6、2026/11/8、2026/11/14、2026/11/20、2026/11/22、2026/12/4、2026/12/6、2026/12/13、2026/12/18、2026/12/20、2026/12/26、2027/1/1、2027/1/3、2027/1/10、2027/1/15、2027/1/17、2027/1/24、2027/2/12、2027/2/26",
+      "months": [
+        1,
+        2,
+        10,
+        11,
+        12
+      ],
+      "days": 10,
+      "auroraNights": null,
+      "flightSummary": "參考航班：去程 長榮航空 BR087，2026/10/25 桃園(TPE) 23:30 → 巴黎戴高樂機場(CDG) 08:00+1；回程 長榮航空 BR088，2026/11/02 巴黎戴高樂機場(CDG) 11:20 → 桃園(TPE) 07:20+1；實際交通資訊以說明會資料為主",
+      "itinerarySummary": "【魅力歐洲．冰島巴黎１０日】極光遊船、金環三合一、藍冰洞、露天溫泉、火山岩漿隧道 歐洲 冰島 選擇日期 10/25 11/06 11/08 更多 10天 TWD 175,900 起",
+      "bookingStatus": "可售、可候補",
+      "bookingStatusType": "limited",
+      "priceLabel": "TWD 175,900 起",
+      "priceTwd": 175900,
+      "currency": "TWD",
+      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUX10BR261025PAK",
+      "sourceTitle": "【魅力歐洲．冰島巴黎１０日】極光遊船、金環三合一、藍冰洞、露天溫泉、火山岩漿隧道",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
+      "checkedAt": "2026-07-17",
+      "dataStatus": "available"
+    },
+    {
+      "id": "喜鴻旅遊-165",
+      "agency": "喜鴻旅遊",
+      "productName": "【魅力歐洲．冰島英倫９日】極光遊船、藍冰洞、火山岩漿隧道、露天溫泉、小龍蝦餐、米其林推薦",
+      "destination": "冰島",
+      "selectableDates": "2026/11/7、2026/11/21、2026/12/5、2027/2/13、2027/3/11、2027/3/25",
+      "months": [
+        2,
+        3,
+        11,
+        12
       ],
       "days": 9,
       "auroraNights": null,
-      "flightSummary": "BR",
-      "itinerarySummary": "10天；報名狀態：報名；機位：6；早鳥優惠",
-      "bookingStatus": "即將 成團、報名",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "NT$179,900",
+      "flightSummary": "參考航班：去程 長榮航空 BR067，2026/11/07 桃園(TPE) 08:05 → LONDON(LHR) 19:05；回程 長榮航空 BR068，2026/11/14 LONDON(LHR) 21:20 → 桃園(TPE) 21:50+1；實際交通資訊以說明會資料為主",
+      "itinerarySummary": "【魅力歐洲．冰島英倫９日】極光遊船、藍冰洞、火山岩漿隧道、露天溫泉、小龍蝦餐、米其林推薦 歐洲 冰島 選擇日期 11/07 11/21 12/05 更多 9天 TWD 179,900 起",
+      "bookingStatus": "可售、可售：25、可售：26、可候補",
+      "bookingStatusType": "limited",
+      "priceLabel": "TWD 179,900 起",
       "priceTwd": 179900,
-      "currency": "NTD",
-      "sourceUrl": "https://www.travel.com.tw/TOU/TOU0020/ENN1000140/ENN102610CI26A",
-      "sourceTitle": "極光探索、冰島藍冰洞、巴黎精品10日(冰島馬秀表演、天際溫泉、冰島小龍蝦風味、極光巴士、五晚探索極光)",
-      "sourceVerificationStatus": "mismatch",
-      "sourceVerificationNote": "官方頁標題與商品名稱落差過大；相似度 12%",
+      "currency": "TWD",
+      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUX09BR261107PAK",
+      "sourceTitle": "【魅力歐洲．冰島英倫９日】極光遊船、藍冰洞、火山岩漿隧道、露天溫泉、小龍蝦餐、米其林推薦",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "needs-check"
+      "dataStatus": "available"
     },
     {
-      "id": "鳳凰旅遊-176",
-      "agency": "鳳凰旅遊",
-      "productName": "探索北歐三國冰川、峽灣、極光秘境 12 天(丹麥、挪威及芬蘭)",
+      "id": "喜鴻旅遊-166",
+      "agency": "喜鴻旅遊",
+      "productName": "【魅力歐洲．遇見歐若拉北歐１１日】玻璃極光屋、捕撈帝王蟹、極光列車、詩麗雅號、巴黎市區酒店",
       "destination": "芬蘭",
-      "selectableDates": "2026.11.08 日",
+      "selectableDates": "2026/11/9、2026/11/23",
       "months": [
         11
       ],
-      "days": 12,
+      "days": 11,
       "auroraNights": null,
-      "flightSummary": "QR",
-      "itinerarySummary": "12天；報名狀態：即將；機位：7；",
-      "bookingStatus": "即將 成團",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "NT$192,900",
-      "priceTwd": 192900,
-      "currency": "NTD",
-      "sourceUrl": "https://www.travel.com.tw/TOU/TOU0020/ENN1000121/EWW110409CI26A",
-      "sourceTitle": "冰島幸福極光～溫泉冰河湖、冰河健行、金環風景線、大英博物館9天7夜(加贈泰晤士河遊船)早鳥優惠～前十名第2人省6千",
-      "sourceVerificationStatus": "mismatch",
-      "sourceVerificationNote": "官方頁標題與商品名稱落差過大；相似度 5%",
+      "flightSummary": "參考航班：去程 長榮航空 BR087，2026/11/09 桃園(TPE) 23:30 → 巴黎戴高樂機場(CDG) 08:00+1；回程 長榮航空 BR088，2026/11/18 巴黎戴高樂機場(CDG) 11:20 → 桃園(TPE) 07:20+1；實際交通資訊以說明會資料為主",
+      "itinerarySummary": "【魅力歐洲．遇見歐若拉北歐１１日】玻璃極光屋、捕撈帝王蟹、極光列車、詩麗雅號、巴黎市區酒店 歐洲 瑞典 選擇日期 11/09 11/23 11天 TWD 179,900 起",
+      "bookingStatus": "可售、可售：25、可售：23",
+      "bookingStatusType": "bookable",
+      "priceLabel": "TWD 179,900 起",
+      "priceTwd": 179900,
+      "currency": "TWD",
+      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUN11BR261109PAK",
+      "sourceTitle": "【魅力歐洲．遇見歐若拉北歐１１日】玻璃極光屋、捕撈帝王蟹、極光列車、詩麗雅號、巴黎市區酒店",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "needs-check"
+      "dataStatus": "available"
     },
     {
-      "id": "鳳凰旅遊-177",
-      "agency": "鳳凰旅遊",
-      "productName": "探索北歐三國冰川、峽灣、極光秘境 12 天(丹麥、挪威及芬蘭)【限時優惠第二人省6000】",
+      "id": "喜鴻旅遊-167",
+      "agency": "喜鴻旅遊",
+      "productName": "【魅力歐洲．遇見歐若拉北歐１１日】玻璃極光屋、捕撈帝王蟹、極光列車、詩麗雅號、慕尼黑五星酒店",
       "destination": "芬蘭",
-      "selectableDates": "2026.10.07 三、2026.10.11 日",
+      "selectableDates": "2026/11/1、2026/11/15",
       "months": [
-        10
+        11
+      ],
+      "days": 11,
+      "auroraNights": null,
+      "flightSummary": "參考航班：去程 長榮航空 BR071，2026/11/01 桃園(TPE) 23:25 → 慕尼黑(MUC) 07:05+1；回程 長榮航空 BR072，2026/11/10 慕尼黑(MUC) 11:30 → 桃園(TPE) 06:30+1；實際交通資訊以說明會資料為主",
+      "itinerarySummary": "【魅力歐洲．遇見歐若拉北歐１１日】玻璃極光屋、捕撈帝王蟹、極光列車、詩麗雅號、慕尼黑五星酒店 歐洲 瑞典 選擇日期 11/01 11/15 11天 TWD 179,900 起",
+      "bookingStatus": "可售、可售：25、可售：26",
+      "bookingStatusType": "bookable",
+      "priceLabel": "TWD 179,900 起",
+      "priceTwd": 179900,
+      "currency": "TWD",
+      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUN11BR261101PAK",
+      "sourceTitle": "【魅力歐洲．遇見歐若拉北歐１１日】玻璃極光屋、捕撈帝王蟹、極光列車、詩麗雅號、慕尼黑五星酒店",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
+      "checkedAt": "2026-07-17",
+      "dataStatus": "available"
+    },
+    {
+      "id": "喜鴻旅遊-168",
+      "agency": "喜鴻旅遊",
+      "productName": "【魅力歐洲．璀璨北歐極光１２日】玻璃極光屋、帝王蟹、雪地摩托車、破冰船、五星酒店",
+      "destination": "芬蘭",
+      "selectableDates": "2026/11/4、2026/11/18、2026/12/2、2026/12/16、2026/12/30、2027/1/13、2027/1/27、2027/2/10、2027/3/10、2027/3/24",
+      "months": [
+        1,
+        2,
+        3,
+        11,
+        12
       ],
       "days": 12,
       "auroraNights": null,
-      "flightSummary": "QR",
-      "itinerarySummary": "12天；報名狀態：報名；機位：6；早鳥優惠",
-      "bookingStatus": "報名",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "NT$192,900",
-      "priceTwd": 192900,
-      "currency": "NTD",
-      "sourceUrl": "https://www.travel.com.tw/TOU/TOU0020/ENN1000144/ENN100610CI26A",
-      "sourceTitle": "*秋季特賣*幸福極光冰島荷蘭浪漫10天( 冰河湖兩棲船、金環三景、黑沙灘、羊角村、國立博物館 、五晚冰島極光追尋)限時優惠～第 2人省6000",
-      "sourceVerificationStatus": "mismatch",
-      "sourceVerificationNote": "官方頁標題與商品名稱落差過大；相似度 17%",
+      "flightSummary": "參考航班：去程 長榮航空 BR071，2026/11/04 桃園(TPE) 23:25 → 慕尼黑(MUC) 07:05+1；回程 長榮航空 BR072，2026/11/14 慕尼黑(MUC) 11:30 → 桃園(TPE) 06:30+1；實際交通資訊以說明會資料為主",
+      "itinerarySummary": "【魅力歐洲．璀璨北歐極光１２日】玻璃極光屋、帝王蟹、雪地摩托車、破冰船、五星酒店 歐洲 芬蘭 選擇日期 11/04 11/18 12/02 更多 12天 TWD 213,900 起",
+      "bookingStatus": "可售、可候補",
+      "bookingStatusType": "limited",
+      "priceLabel": "TWD 213,900 起",
+      "priceTwd": 213900,
+      "currency": "TWD",
+      "sourceUrl": "https://www.besttour.com.tw/itinerary/EUN12BR261104PAK",
+      "sourceTitle": "【魅力歐洲．璀璨北歐極光１２日】玻璃極光屋、帝王蟹、雪地摩托車、破冰船、五星酒店",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "needs-check"
+      "dataStatus": "available"
     },
     {
-      "id": "鳳凰旅遊-178",
+      "id": "鳳凰旅遊-169",
       "agency": "鳳凰旅遊",
       "productName": "華麗美洲 阿拉斯加│冰川健行、極光列車、珍娜溫泉泡湯、極光之城費爾班克斯、西雅圖城市遊１０日",
       "destination": "阿拉斯加",
@@ -4540,73 +4346,22 @@
       ],
       "days": 10,
       "auroraNights": null,
-      "flightSummary": "CI",
+      "flightSummary": "參考航班：去程 中華航空 CI22，桃園國際機場(TPE) → 西雅圖-塔科馬機場(SEA)；回程 中華航空 CI21，西雅圖-塔科馬機場(SEA) → 桃園國際機場(TPE)；同款公開頁可核對 CI22/CI21，實際日期與時間以鳳凰商品頁或行前說明資料為準",
       "itinerarySummary": "10天；報名狀態：即將；機位：6；",
       "bookingStatus": "報名、暫滿 候補",
-      "bookingStatusType": "needs-check",
+      "bookingStatusType": "limited",
       "priceLabel": "NT$140,900",
       "priceTwd": 140900,
       "currency": "NTD",
       "sourceUrl": "https://www.travel.com.tw/TOU/TOU0020/ENN1000144/ENN091510CI26A",
-      "sourceTitle": "*秋季特賣*幸福極光冰島荷蘭浪漫10天( 冰河湖兩棲船、金環三景、黑沙灘、羊角村、國立博物館 、五晚冰島極光追尋)限時優惠～第 2人省6000",
-      "sourceVerificationStatus": "mismatch",
-      "sourceVerificationNote": "官方頁標題與商品名稱落差過大；相似度 3%",
+      "sourceTitle": "華麗美洲 阿拉斯加冰川健行、極光列車、珍娜溫泉泡湯、西雅圖10日",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 96%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "needs-check"
+      "dataStatus": "available"
     },
     {
-      "id": "鳳凰旅遊-179",
-      "agency": "鳳凰旅遊",
-      "productName": "華麗美洲 阿拉斯加│冰川健行、極光列車、珍娜溫泉泡湯、極光之城費爾班克斯、西雅圖城市遊１０日 CI 2026.10.08 四 10 結團 早鳥優惠 秋賞湖光山色 黃刀賞極光 10 天 (入住露易絲湖城堡飯店、黃刀鎮三晚、品嘗冰酒、OUTLET血拼趣) - 早鳥優惠 第二人扣 6000",
-      "destination": "黃刀鎮",
-      "selectableDates": "2026.10.09 五",
-      "months": [
-        10
-      ],
-      "days": 10,
-      "auroraNights": 3,
-      "flightSummary": "QR",
-      "itinerarySummary": "12天；報名狀態：報名；機位：6；早鳥優惠",
-      "bookingStatus": "保證 出團",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "NT$193,900",
-      "priceTwd": 193900,
-      "currency": "NTD",
-      "sourceUrl": "https://www.travel.com.tw/TOU/TOU0020/ENN1200057/ENN100712QR26A",
-      "sourceTitle": "探索北歐三國冰川、峽灣、極光秘境 12 天(丹麥、挪威及芬蘭)限時優惠第二人省6000",
-      "sourceVerificationStatus": "mismatch",
-      "sourceVerificationNote": "官方頁標題與商品名稱落差過大；相似度 17%",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "needs-check"
-    },
-    {
-      "id": "鳳凰旅遊-180",
-      "agency": "鳳凰旅遊",
-      "productName": "極光探索、冰島藍冰洞、巴黎精品10日(冰島馬秀表演、天際溫泉、冰島小龍蝦風味、極光巴士、五晚探索極光)",
-      "destination": "冰島",
-      "selectableDates": "2026.10.26 一、2026.11.06 五、2026.11.09 一",
-      "months": [
-        10,
-        11
-      ],
-      "days": 10,
-      "auroraNights": null,
-      "flightSummary": "BR",
-      "itinerarySummary": "10天；報名狀態：報名；機位：6；早鳥優惠",
-      "bookingStatus": "報名",
-      "bookingStatusType": "needs-check",
-      "priceLabel": "NT$177,900",
-      "priceTwd": 177900,
-      "currency": "NTD",
-      "sourceUrl": "https://www.travel.com.tw/TOU/TOU0020/ONW1100026/ONS101410NZ26A",
-      "sourceTitle": "極光凝視．靜謐之境 紐西蘭南島慢旅．與Aurora之約10天(NZ)(皇后鎮五星三晚+蒂卡波湖連住 2 晚+異國美食)",
-      "sourceVerificationStatus": "mismatch",
-      "sourceVerificationNote": "官方頁標題與商品名稱落差過大；相似度 3%",
-      "checkedAt": "2026-07-17",
-      "dataStatus": "needs-check"
-    },
-    {
-      "id": "鳳凰旅遊-181",
+      "id": "鳳凰旅遊-170",
       "agency": "鳳凰旅遊",
       "productName": "極光凝視．靜謐之境 紐西蘭南島慢旅．與Aurora之約10天(NZ)(皇后鎮五星三晚+蒂卡波湖連住 2 晚+異國美食)",
       "destination": "紐西蘭南極光",
@@ -4617,7 +4372,7 @@
       ],
       "days": 10,
       "auroraNights": 3,
-      "flightSummary": "NZ",
+      "flightSummary": "去程 紐西蘭航空 NZ078：2026/08/25 (二) 18:30 台北(桃園國際機場) → 2026/08/26 (三) 10:15 奧克蘭；回程 紐西蘭航空 NZ077：2026/09/03 (四) 10:35 奧克蘭 → 2026/09/03 (四) 16:55 台北(桃園國際機場)；實際以行前說明資料為準",
       "itinerarySummary": "10天；報名狀態：報名；機位：5；",
       "bookingStatus": "報名",
       "bookingStatusType": "bookable",
@@ -4632,7 +4387,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "鳳凰旅遊-182",
+      "id": "鳳凰旅遊-171",
       "agency": "鳳凰旅遊",
       "productName": "極光凝視．靜謐之境 紐西蘭南島慢旅．與Aurora之約10天(NZ)(皇后鎮五星三晚+蒂卡波湖連住 2 晚+異國美食) NZ 2026.09.01 二 10 結團 極光凝視．靜謐之境 紐西蘭南島慢旅．與Aurora之約10天(NZ)(皇后鎮五星三晚+蒂卡波湖連住 2 晚+異國美食)",
       "destination": "紐西蘭南極光",
@@ -4642,7 +4397,7 @@
       ],
       "days": 10,
       "auroraNights": 3,
-      "flightSummary": "紐西蘭航空 NZ；產品名稱可讀航空線索，完整航段需進商品頁確認",
+      "flightSummary": "去程 紐西蘭航空 NZ078：2026/09/01 (二) 18:30 台北(桃園國際機場) → 2026/09/02 (三) 10:15 奧克蘭；回程 紐西蘭航空 NZ077：2026/09/10 (四) 10:35 奧克蘭 → 2026/09/10 (四) 16:55 台北(桃園國際機場)；實際以行前說明資料為準",
       "itinerarySummary": "詳見商品頁；10天",
       "bookingStatus": "報名",
       "bookingStatusType": "bookable",
@@ -4654,10 +4409,10 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
-      "id": "長汎旅遊-183",
+      "id": "長汎旅遊-172",
       "agency": "長汎旅遊",
       "productName": "冰島追光奇景8日 飛越冰島秀 經典金環 冰河湖 藍冰洞 藍湖溫泉",
       "destination": "冰島",
@@ -4682,7 +4437,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "長汎旅遊-184",
+      "id": "長汎旅遊-173",
       "agency": "長汎旅遊",
       "productName": "玩美加族~加拿大極光10日 黃刀秋賞極光3晚.玻璃帳篷.卡梅倫瀑布健行.BBQ饗宴",
       "destination": "黃刀鎮",
@@ -4707,7 +4462,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "長汎旅遊-185",
+      "id": "長汎旅遊-174",
       "agency": "長汎旅遊",
       "productName": "紐西蘭戀上南極光10日 來紐西蘭看浪漫南極光‧升等奧克蘭五星酒店乙晚‧南島全程三排椅",
       "destination": "紐西蘭南極光",
