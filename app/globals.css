@@ -500,6 +500,49 @@ h3 {
   line-height: 1.4;
 }
 
+.sourceDisclosure {
+  display: grid;
+  gap: 16px;
+}
+
+.sourceDisclosure summary {
+  display: grid;
+  gap: 6px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.sourceDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.sourceDisclosure summary strong {
+  color: var(--ink);
+  font-size: clamp(1.35rem, 2.5vw, 2rem);
+  font-weight: 900;
+}
+
+.sourceDisclosure summary small {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.sourceDisclosure summary::after {
+  content: "展開";
+  width: fit-content;
+  margin-top: 8px;
+  padding: 7px 11px;
+  border-radius: 8px;
+  background: var(--teal-dark);
+  color: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.sourceDisclosure[open] summary::after {
+  content: "收合";
+}
+
 .sourceGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -251,28 +251,11 @@ export default function Home() {
               具體商品列
             </span>
             <span>
-              <strong>{sourceUpdatedCount}/9</strong>
+              <strong>{sourceUpdatedCount}/{sources.length || 8}</strong>
               已取得來源
             </span>
           </div>
         </div>
-      </section>
-
-      <section className="pageSection dataFlow">
-        <div>
-          <p className="eyebrow">Low Resource Mode</p>
-          <h2>採用「後台查詢，前台讀檔」</h2>
-          <p>
-            查詢腳本負責進入官方頁面、解析商品、輸出 Excel 與 JSON。網頁只載入
-            <code>/data/tour-products.latest.json</code>，使用者調整條件時只在本機資料中排序。
-          </p>
-        </div>
-        <ol>
-          <li>手動或排程查詢官方來源</li>
-          <li>產生 Excel、JSON、CSV</li>
-          <li>公開網頁讀取靜態 JSON</li>
-          <li>前端依預算、月份、目的地排序</li>
-        </ol>
       </section>
 
       <section className="pageSection simulator">
@@ -444,46 +427,28 @@ export default function Home() {
       </section>
 
       <section className="pageSection sourceSection">
-        <div className="sectionHeader">
-          <p className="eyebrow">Source Freshness</p>
-          <h2>資料來源與老化狀態</h2>
-          <p>公開頁面顯示查核結果，不顯示內部 Backlog。缺資料的來源保留狀態，不捏造商品。</p>
-        </div>
-        <div className="sourceGrid">
-          {sources.map((source) => (
-            <article className="sourceCard" key={source.agency}>
-              <span className={source.status}>{source.status === "updated" ? "已更新" : "未取得商品"}</span>
-              <strong>{source.agency}</strong>
-              <p>
-                {source.concreteRows} 筆具體商品 / {source.totalRows} 筆資料列
-              </p>
-              <small>查核日：{source.checkedAt}</small>
-              <small>{source.nextStep}</small>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="pageSection updatePolicy">
-        <div>
-          <p className="eyebrow">Next Implementation</p>
-          <h2>後續啟用方式</h2>
-        </div>
-        <div className="policyGrid">
-          <article>
-            <strong>目前階段</strong>
-            <p>手動查詢後轉成 JSON，網頁前端讀取靜態資料。</p>
-          </article>
-          <article>
-            <strong>下一階段</strong>
-            <p>把查詢腳本接成每日排程，只更新 JSON，不讓訪客觸發爬取。</p>
-          </article>
-          <article>
-            <strong>不建議做法</strong>
-            <p>不要在公開頁讓訪客即時查詢旅行社網站，避免慢速、封鎖與資料不穩。</p>
-          </article>
-        </div>
+        <details className="sourceDisclosure">
+          <summary>
+            <span className="eyebrow">Source Freshness</span>
+            <strong>資料來源與老化狀態</strong>
+            <small>點選展開來源查核狀態</small>
+          </summary>
+          <div className="sourceGrid">
+            {sources.map((source) => (
+              <article className="sourceCard" key={source.agency}>
+                <span className={source.status}>{source.status === "updated" ? "已更新" : "待補資料"}</span>
+                <strong>{source.agency}</strong>
+                <p>
+                  {source.concreteRows} 筆具體商品 / {source.totalRows} 筆資料列
+                </p>
+                <small>查核日：{source.checkedAt}</small>
+                <small>{source.nextStep}</small>
+              </article>
+            ))}
+          </div>
+        </details>
       </section>
     </main>
   );
 }
+

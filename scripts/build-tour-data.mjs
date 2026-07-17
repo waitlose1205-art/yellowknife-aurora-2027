@@ -15,7 +15,6 @@ const agencies = [
   "山富旅遊",
   "東南旅遊",
   "雄獅旅遊",
-  "易遊網",
   "可樂旅遊",
   "五福旅遊",
   "喜鴻旅遊",
@@ -126,7 +125,7 @@ function csvEscape(value) {
 
 const xml = readFileSync(inputPath, "utf8");
 const rawRows = parseWorkbook(xml);
-const products = rawRows.map((row, index) => {
+const products = rawRows.filter((row) => agencies.includes(clean(row.旅行社名稱))).map((row, index) => {
   const name = clean(row.產品名稱);
   const priceTwd = parsePriceTwd(row.金額);
   const sourceUrl = clean(row["訂購/來源網址"]);
