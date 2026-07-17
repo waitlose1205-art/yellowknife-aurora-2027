@@ -98,13 +98,19 @@ function formatCurrency(value: number) {
 }
 
 function getScore(product: Product, budget: number) {
+  if (product.priceTwd === null || product.priceTwd > budget) return -1;
+
   let score = 0;
   if (product.dataStatus === "available") score += 40;
   if (product.dataStatus === "partial") score += 26;
   if (product.bookingStatusType === "bookable") score += 30;
   if (product.bookingStatusType === "needs-check") score += 10;
-  if (product.priceTwd && product.priceTwd <= budget) score += 25;
   if (product.auroraNights && product.auroraNights >= 3) score += 10;
+
+  const budgetUseRate = Math.min(product.priceTwd / budget, 1);
+  score += Math.round(budgetUseRate * 30);
+  if (budget - product.priceTwd >= 10000) score += 5;
+
   return score;
 }
 
@@ -460,7 +466,7 @@ export default function Home() {
                           <span>{group.bookableCount} 筆可報名/可售</span>
                         </div>
                         <div className="agencyBestProduct">
-                          <strong>代表商品</strong>
+                          <strong>預算內最佳代表商品</strong>
                           <span>{product.productName}</span>
                           <small>{product.selectableDates}</small>
                           <small>{product.priceLabel || "未揭露價格"}</small>
