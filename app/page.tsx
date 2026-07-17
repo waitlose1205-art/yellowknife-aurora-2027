@@ -408,6 +408,13 @@ export default function Home() {
                 ? "條件已變更，按下確認後才更新旅行社卡片。"
                 : `目前結果依 ${formatCurrency(appliedFilters.budget)} 預算上限顯示。`}
             </p>
+
+            <div className="filterSummaryCard">
+              <span>篩選結果摘要</span>
+              <strong>{filteredProducts.length} 筆商品</strong>
+              <small>{agencyGroups.length} 家旅行社方案卡</small>
+              <small>{withinBudgetCount} 筆低於目前預算上限</small>
+            </div>
           </aside>
 
           <div className="resultPanel">
@@ -422,10 +429,6 @@ export default function Home() {
                   <strong>
                     {bestAgencyGroup ? `${bestAgencyGroup.agency}方案` : "沒有符合條件的旅行社方案"}
                   </strong>
-                  <p>
-                    符合條件 {filteredProducts.length} 筆，整理成 {agencyGroups.length} 家旅行社方案卡，
-                    其中 {withinBudgetCount} 筆低於目前預算上限。
-                  </p>
                   {bestProduct ? (
                     <p className="recommendationProduct">
                       代表商品：{bestProduct.productName}
@@ -465,17 +468,18 @@ export default function Home() {
                           <span>{group.priceRange}</span>
                           <span>{group.bookableCount} 筆可報名/可售</span>
                         </div>
-                        <div className="agencyBestProduct">
-                          <strong>預算內最佳代表商品</strong>
-                          <span>{product.productName}</span>
-                          <small>{product.selectableDates}</small>
-                          <small>{product.priceLabel || "未揭露價格"}</small>
-                        </div>
                         <details>
                           <summary>展開 {group.agency} 商品與航班資訊</summary>
                           <div className="agencyProductList">
-                            {group.products.map((agencyProduct) => (
-                              <article className="agencyProductCard" key={agencyProduct.id}>
+                            {group.products.map((agencyProduct) => {
+                              const isRecommended = agencyProduct.id === product.id;
+
+                              return (
+                              <article
+                                className={`agencyProductCard${isRecommended ? " recommended" : ""}`}
+                                key={agencyProduct.id}
+                              >
+                                {isRecommended ? <span className="recommendBadge">推薦</span> : null}
                                 <details>
                                   <summary>
                                     <strong>{agencyProduct.productName}</strong>
@@ -519,12 +523,10 @@ export default function Home() {
                                   </a>
                                 </details>
                               </article>
-                            ))}
+                              );
+                            })}
                           </div>
                         </details>
-                        <a href={product.sourceUrl} rel="noreferrer" target="_blank">
-                          前往此旅行社代表商品
-                        </a>
                       </article>
                     );
                     })}

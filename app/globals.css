@@ -296,6 +296,31 @@ h3 {
   line-height: 1.5;
 }
 
+.filterSummaryCard {
+  display: grid;
+  gap: 4px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #eef8f5;
+}
+
+.filterSummaryCard span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.filterSummaryCard strong {
+  color: var(--ink);
+  font-size: 1.18rem;
+}
+
+.filterSummaryCard small {
+  color: #36524d;
+  line-height: 1.45;
+}
+
 .resultPanel {
   min-width: 0;
 }
@@ -422,32 +447,6 @@ h3 {
   border-left: 6px solid var(--teal);
 }
 
-.agencyBestProduct {
-  display: grid;
-  gap: 6px;
-  margin-top: 14px;
-  padding: 12px;
-  border: 1px solid #dbe7e4;
-  border-radius: 8px;
-  background: #fbfffe;
-}
-
-.agencyBestProduct strong {
-  color: var(--ink);
-  font-size: 0.88rem;
-}
-
-.agencyBestProduct span {
-  color: #173331;
-  font-weight: 900;
-  line-height: 1.5;
-}
-
-.agencyBestProduct small {
-  color: var(--muted);
-  line-height: 1.45;
-}
-
 .metaGrid {
   margin-top: 12px;
 }
@@ -499,9 +498,30 @@ h3 {
 }
 
 .agencyProductCard {
+  position: relative;
   border: 1px solid #dbe7e4;
   border-radius: 8px;
   background: #fbfffe;
+}
+
+.agencyProductCard.recommended {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 1px rgba(12, 128, 115, 0.16);
+}
+
+.recommendBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  width: fit-content;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--teal-dark);
+  color: #fff;
+  font-size: 0.74rem;
+  font-weight: 900;
+  line-height: 1;
 }
 
 .agencyProductCard details {
@@ -513,6 +533,7 @@ h3 {
 .agencyProductCard summary {
   display: grid;
   gap: 4px;
+  padding-right: 58px;
 }
 
 .agencyProductCard summary strong {
