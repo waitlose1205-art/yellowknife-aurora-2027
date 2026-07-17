@@ -166,6 +166,15 @@ function isMissingValue(value) {
   return /未取得|未揭露|需進商品頁確認|來源列表未揭露|未於專題頁摘要顯示/.test(clean(value));
 }
 
+function isIncompleteFlightValue(value) {
+  return (
+    isMissingValue(value) ||
+    /完整航段與飛行時間需進商品頁確認|完整航段仍以商品頁為準|完整航段需進商品頁確認/.test(
+      clean(value),
+    )
+  );
+}
+
 function inferBookingFromItinerary(value) {
   const text = clean(value);
   const match = text.match(/(?:席位\s*[^；]+；)?成團狀態\s*[^；]+/);
@@ -233,7 +242,7 @@ function getSimilarity(firstValue, secondValue) {
 
 function isGenericSourceTitle(value) {
   const title = normalizeForVerification(value);
-  if (title.length < 8) return true;
+  if (title.length < 4) return true;
   return /^(雄獅旅遊|鳳凰旅遊|可樂旅遊|東南旅遊|山富旅遊|五福旅遊|喜鴻旅遊|長汎旅遊|首頁|旅遊)$/i.test(
     title,
   );
@@ -307,6 +316,16 @@ function shouldUseSupplementalValue(currentValue, nextValue) {
   return next.length > current.length * 1.4 && !isMissingValue(next);
 }
 
+function shouldUseFlightValue(currentValue, nextValue) {
+  const current = clean(currentValue);
+  const next = clean(nextValue);
+  if (!next) return false;
+  if (!current) return true;
+  if (isIncompleteFlightValue(current) && !isIncompleteFlightValue(next)) return true;
+  if (isMissingValue(current) && next.length > current.length) return true;
+  return next.length > current.length * 1.5 && !isMissingValue(next);
+}
+
 function loadSupplementalRows(paths) {
   const rows = [];
   for (const file of paths) {
@@ -372,6 +391,126 @@ function stripHtml(html) {
 
 function uniqueMatches(text, regex, limit = 8) {
   return [...new Set(clean(text).match(regex) || [])].slice(0, limit);
+}
+
+const airlineNameByCode = {
+  BR: "長榮航空",
+  CI: "中華航空",
+  JX: "星宇航空",
+  CX: "國泰航空",
+  TG: "泰國航空",
+  NZ: "紐西蘭航空",
+  EK: "阿聯酋航空",
+  QR: "卡達航空",
+  TK: "土耳其航空",
+};
+
+const manualDetailOverrides = new Map([
+  [
+    "https://www.everfuntravel.com/globaltour/detail/ENG26D24BR08TA",
+    {
+      title: "冰島追光奇景8日",
+      flight:
+        "參考航班：去程 長榮航空 BR87，2026/12/24 23:30 臺北桃園機場(TPE) → 2026/12/25 08:00 戴高樂機場(CDG)；回程 長榮航空 BR88，2026/12/30 11:20 戴高樂機場(CDG) → 2026/12/31 07:20 臺北桃園機場(TPE)；實際以行前說明資料為準",
+    },
+  ],
+  [
+    "https://www.everfuntravel.com/globaltour/detail/UWP26904BR10TA",
+    {
+      title: "玩美加族~加拿大極光10日",
+      flight:
+        "參考航班：去程 長榮航空 BR26，2026/09/04 23:40 臺北桃園機場(TPE) → 2026/09/04 19:40 西雅圖(SEA)；回程 長榮航空 BR25，2026/09/12 01:30 西雅圖(SEA) → 2026/09/13 05:20 臺北桃園機場(TPE)；實際以行前說明資料為準",
+    },
+  ],
+  [
+    "https://www.everfuntravel.com/globaltour/detail/NSP26910NZ10TB",
+    {
+      title: "紐西蘭戀上南極光10日",
+      flight: "紐西蘭航空；官方頁直連受防護頁阻擋，完整航段需以瀏覽器查核或行前說明資料為準",
+    },
+  ],
+]);
+
+function getManualDetailOverride(url) {
+  return manualDetailOverrides.get(normalizeSourceUrl(url)) || null;
+}
+
+function isBlockedDetailPage(html) {
+  return /Incapsula|Request unsuccessful|NOINDEX, NOFOLLOW|main-iframe|Access Denied|Cloudflare/i.test(
+    html,
+  );
+}
+
+function decodeEmbeddedJsonText(value) {
+  return clean(value)
+    .replace(/\\u003c/g, "<")
+    .replace(/\\u003e/g, ">")
+    .replace(/\\u0026/g, "&")
+    .replace(/\\"/g, '"')
+    .replace(/\\r|\\n|\\t/g, " ");
+}
+
+function getJsonField(segment, field) {
+  return clean(segment.match(new RegExp(`"${field}"\\s*:\\s*"([^"]*)"`, "i"))?.[1] || "");
+}
+
+function formatFlightSegment(segment) {
+  const airline = getJsonField(segment, "Airline_Name");
+  const code = getJsonField(segment, "Airline_Code");
+  const date = getJsonField(segment, "Flight_Date");
+  const departTime = getJsonField(segment, "Departure_Time");
+  const departCity = getJsonField(segment, "City_Name_D");
+  const arriveTime = getJsonField(segment, "Arrival_Time");
+  const arriveCity = getJsonField(segment, "City_Name_A");
+  if (!airline && !code && !departCity && !arriveCity) return "";
+
+  return `${airline || airlineNameByCode[code] || "航空公司未公布"}${code ? ` ${code}` : ""}：${date} ${departTime} ${departCity} → ${arriveTime} ${arriveCity}`;
+}
+
+function extractColatourFlight(html) {
+  const normalized = decodeEmbeddedJsonText(html);
+  const goBlock = normalized.match(/"FlightData_GoList"\s*:\s*\[\{([\s\S]*?)\}\]/)?.[1] || "";
+  const backBlock = normalized.match(/"FlightData_BackList"\s*:\s*\[\{([\s\S]*?)\}\]/)?.[1] || "";
+  const go = formatFlightSegment(goBlock);
+  const back = formatFlightSegment(backBlock);
+  return [go ? `去程 ${go}` : "", back ? `回程 ${back}` : ""].filter(Boolean).join("；");
+}
+
+function extractAirlineHintFromText(value) {
+  const text = clean(value);
+  const codeMatch = text.match(/\b(BR|CI|JX|CX|TG|NZ|EK|QR|TK)\b/i);
+  if (codeMatch) {
+    const code = codeMatch[1].toUpperCase();
+    return `${airlineNameByCode[code] || ""}${airlineNameByCode[code] ? " " : ""}${code}`;
+  }
+
+  return (
+    text.match(/長榮航空|中華航空|星宇航空|國泰航空|泰國航空|紐西蘭航空|阿聯酋航空|卡達航空|土耳其航空|加拿大航空|Air Canada|WestJet/)?.[0] ||
+    ""
+  );
+}
+
+function extractGenericFlight(html, text, row) {
+  const manual = getManualDetailOverride(row?.["訂購/來源網址"]);
+  if (manual?.flight) return manual.flight;
+
+  const colatourFlight = extractColatourFlight(html);
+  if (colatourFlight) return `${colatourFlight}；實際以行前說明資料為準`;
+
+  const productAirline = extractAirlineHintFromText(row?.產品名稱);
+  if (productAirline) return `${productAirline}；產品名稱可讀航空線索，完整航段需進商品頁確認`;
+
+  const focusedText =
+    text.match(/(?:交通資訊|多元交通體驗|五星級航空)[\s\S]{0,360}/)?.[0] ||
+    text.match(/(?:長榮航空|中華航空|星宇航空|紐西蘭航空|阿聯酋航空|卡達航空|土耳其航空)[\s\S]{0,160}/)?.[0] ||
+    "";
+  const focusedAirline = extractAirlineHintFromText(focusedText);
+  if (focusedAirline) return `${focusedAirline}；官方頁可讀航空線索，完整航段需進商品頁確認`;
+
+  const flightCodes = uniqueMatches(text, /\b(?:BR|CI|JX|CX|TG|NZ|EK|QR|TK)\s?\d{2,4}\b/g, 4);
+  if (flightCodes.length) return `參考航班：${flightCodes.join("、")}；完整航段需進商品頁確認`;
+
+  return "";
 }
 
 function extractAttribute(tag, attribute) {
@@ -456,10 +595,12 @@ function requestText(url, redirects = 0) {
   });
 }
 
-function extractGenericDetail(html) {
+function extractGenericDetail(html, row = null) {
   const text = stripHtml(html);
   return {
     title: extractPageTitle(html),
+    flight: extractGenericFlight(html, text, row),
+    blocked: isBlockedDetailPage(html),
     dates: uniqueMatches(
       text,
       /(?:20\d{2}[/-]\d{1,2}[/-]\d{1,2}|\d{1,2}[/-]\d{1,2}(?:\([日一二三四五六]\))?)/g,
@@ -504,24 +645,45 @@ async function enrichRowFromDetailPage(row) {
   if (!url || !/^https?:\/\//.test(url)) return row;
 
   try {
+    const manualDetail = getManualDetailOverride(url);
+    const baseRow = manualDetail
+      ? {
+          ...row,
+          官方頁標題: shouldUseSupplementalValue(row.官方頁標題, manualDetail.title)
+            ? manualDetail.title
+            : row.官方頁標題,
+          航班: shouldUseFlightValue(row.航班, manualDetail.flight) ? manualDetail.flight : row.航班,
+        }
+      : row;
     const response = await requestText(url);
-    if (!response || response.statusCode >= 400 || !response.data) return row;
+    if (!response || response.statusCode >= 400 || !response.data) return baseRow;
 
     const lionDetail = url.includes("travel.liontravel.com/detail")
       ? extractLionDetail(response.data)
       : null;
-    const genericDetail = extractGenericDetail(response.data);
-    const merged = { ...row };
+    const genericDetail = extractGenericDetail(response.data, baseRow);
+    const merged = { ...baseRow };
     const notes = [];
+
+    if (manualDetail?.title || manualDetail?.flight) {
+      notes.push("站點防護補充資料已套用");
+    }
+
+    if (genericDetail.blocked) {
+      notes.push("官方頁直連受防護頁阻擋");
+    }
 
     if (genericDetail.title) {
       merged.官方頁標題 = genericDetail.title;
       notes.push("官方頁標題已查核");
     }
 
-    if (lionDetail?.flight && shouldUseSupplementalValue(merged.航班, lionDetail.flight)) {
+    if (lionDetail?.flight && shouldUseFlightValue(merged.航班, lionDetail.flight)) {
       merged.航班 = lionDetail.flight;
       notes.push("商品頁內嵌結構化航班");
+    } else if (genericDetail.flight && shouldUseFlightValue(merged.航班, genericDetail.flight)) {
+      merged.航班 = genericDetail.flight;
+      notes.push("商品頁可讀航班資訊");
     } else if (
       isMissingValue(merged.航班) &&
       genericDetail.airlines.length &&
