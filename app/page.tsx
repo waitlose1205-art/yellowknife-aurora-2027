@@ -50,6 +50,24 @@ type SourcePayload = {
   sources: SourceStatus[];
 };
 
+type FilterState = {
+  budget: number;
+  destination: string;
+  agency: string;
+  month: number;
+  minimumNights: number;
+  onlyConcrete: boolean;
+};
+
+const DEFAULT_FILTERS: FilterState = {
+  budget: 150000,
+  destination: "全部目的地",
+  agency: "全部旅行社",
+  month: 0,
+  minimumNights: 0,
+  onlyConcrete: true,
+};
+
 const monthOptions = [
   { value: 0, label: "不限月份" },
   { value: 9, label: "9 月" },
@@ -106,12 +124,8 @@ export default function Home() {
   const [payload, setPayload] = useState<ProductPayload | null>(null);
   const [sources, setSources] = useState<SourceStatus[]>([]);
   const [error, setError] = useState("");
-  const [budget, setBudget] = useState(150000);
-  const [destination, setDestination] = useState("全部目的地");
-  const [agency, setAgency] = useState("全部旅行社");
-  const [month, setMonth] = useState(0);
-  const [minimumNights, setMinimumNights] = useState(0);
-  const [onlyConcrete, setOnlyConcrete] = useState(true);
+  const [draftFilters, setDraftFilters] = useState<FilterState>(DEFAULT_FILTERS);
+  const [appliedFilters, setAppliedFilters] = useState<FilterState>(DEFAULT_FILTERS);
 
   useEffect(() => {
     async function loadData() {
@@ -140,25 +154,43 @@ export default function Home() {
   const products = payload?.products ?? [];
   const destinations = useMemo(() => getDestinationOptions(products), [products]);
   const agencies = useMemo(() => getAgencyOptions(products), [products]);
+  const filtersChanged =
+    draftFilters.budget !== appliedFilters.budget ||
+    draftFilters.destination !== appliedFilters.destination ||
+    draftFilters.agency !== appliedFilters.agency ||
+    draftFilters.month !== appliedFilters.month ||
+    draftFilters.minimumNights !== appliedFilters.minimumNights ||
+    draftFilters.onlyConcrete !== appliedFilters.onlyConcrete;
 
   const filteredProducts = useMemo(() => {
     return products
-      .filter((product) => (destination === "全部目的地" ? true : product.destination === destination))
-      .filter((product) => (agency === "全部旅行社" ? true : product.agency === agency))
-      .filter((product) => (month === 0 ? true : product.months.includes(month)))
       .filter((product) =>
-        minimumNights === 0 ? true : (product.auroraNights ?? 0) >= minimumNights,
+        appliedFilters.destination === "全部目的地"
+          ? true
+          : product.destination === appliedFilters.destination,
       )
-      .filter((product) => (onlyConcrete ? product.dataStatus !== "unavailable" : true))
+      .filter((product) =>
+        appliedFilters.agency === "全部旅行社" ? true : product.agency === appliedFilters.agency,
+      )
+      .filter((product) =>
+        appliedFilters.month === 0 ? true : product.months.includes(appliedFilters.month),
+      )
+      .filter((product) =>
+        appliedFilters.minimumNights === 0
+          ? true
+          : (product.auroraNights ?? 0) >= appliedFilters.minimumNights,
+      )
+      .filter((product) => (appliedFilters.onlyConcrete ? product.dataStatus !== "unavailable" : true))
+      .filter((product) => product.priceTwd !== null && product.priceTwd <= appliedFilters.budget)
       .sort((first, second) => {
-        const secondScore = getScore(second, budget);
-        const firstScore = getScore(first, budget);
+        const secondScore = getScore(second, appliedFilters.budget);
+        const firstScore = getScore(first, appliedFilters.budget);
         if (secondScore !== firstScore) return secondScore - firstScore;
         const firstPrice = first.priceTwd ?? Number.MAX_SAFE_INTEGER;
         const secondPrice = second.priceTwd ?? Number.MAX_SAFE_INTEGER;
         return firstPrice - secondPrice;
       });
-  }, [agency, budget, destination, minimumNights, month, onlyConcrete, products]);
+  }, [appliedFilters, products]);
 
   const agencyGroups = useMemo(() => {
     const groups = new Map<string, Product[]>();
@@ -173,8 +205,8 @@ export default function Home() {
         const sortedProducts = agencyProducts
           .slice()
           .sort((first, second) => {
-            const secondScore = getScore(second, budget);
-            const firstScore = getScore(first, budget);
+            const secondScore = getScore(second, appliedFilters.budget);
+            const firstScore = getScore(first, appliedFilters.budget);
             if (secondScore !== firstScore) return secondScore - firstScore;
             const firstPrice = first.priceTwd ?? Number.MAX_SAFE_INTEGER;
             const secondPrice = second.priceTwd ?? Number.MAX_SAFE_INTEGER;
@@ -198,7 +230,7 @@ export default function Home() {
           agency: agencyName,
           products: sortedProducts,
           bestProduct: sortedProducts[0],
-          score: sortedProducts[0] ? getScore(sortedProducts[0], budget) : 0,
+          score: sortedProducts[0] ? getScore(sortedProducts[0], appliedFilters.budget) : 0,
           destinations: Array.from(new Set(sortedProducts.map((product) => product.destination))),
           priceRange:
             prices.length === 0
@@ -215,14 +247,14 @@ export default function Home() {
         if (second.score !== first.score) return second.score - first.score;
         return first.agency.localeCompare(second.agency, "zh-Hant");
       });
-  }, [budget, filteredProducts]);
+  }, [appliedFilters.budget, filteredProducts]);
 
   const topAgencyGroups = agencyGroups.slice(0, 12);
   const bestAgencyGroup = topAgencyGroups[0];
   const bestProduct = bestAgencyGroup?.bestProduct;
   const concreteCount = products.filter((product) => product.dataStatus !== "unavailable").length;
   const withinBudgetCount = filteredProducts.filter(
-    (product) => product.priceTwd !== null && product.priceTwd <= budget,
+    (product) => product.priceTwd !== null && product.priceTwd <= appliedFilters.budget,
   ).length;
   const sourceUpdatedCount = sources.filter((source) => source.status === "updated").length;
 
@@ -243,12 +275,10 @@ export default function Home() {
               查核基準日
             </span>
             <span>
-              <strong>{products.length}</strong>
-              匯入資料列
-            </span>
-            <span>
-              <strong>{concreteCount}</strong>
-              具體商品列
+              <strong>
+                {products.length} / {concreteCount}
+              </strong>
+              匯入資料列 / 具體商品列
             </span>
             <span>
               <strong>{sourceUpdatedCount}/{sources.length || 8}</strong>
@@ -269,20 +299,30 @@ export default function Home() {
           <aside className="controlPanel">
             <label className="controlGroup">
               <span>預算上限</span>
-              <strong>{formatCurrency(budget)}</strong>
+              <strong>{formatCurrency(draftFilters.budget)}</strong>
               <input
                 max={400000}
                 min={100000}
-                onChange={(event) => setBudget(Number(event.target.value))}
+                onChange={(event) =>
+                  setDraftFilters((current) => ({
+                    ...current,
+                    budget: Number(event.target.value),
+                  }))
+                }
                 step={10000}
                 type="range"
-                value={budget}
+                value={draftFilters.budget}
               />
             </label>
 
             <label className="controlGroup">
               <span>目的地</span>
-              <select onChange={(event) => setDestination(event.target.value)} value={destination}>
+              <select
+                onChange={(event) =>
+                  setDraftFilters((current) => ({ ...current, destination: event.target.value }))
+                }
+                value={draftFilters.destination}
+              >
                 {destinations.map((item) => (
                   <option key={item}>{item}</option>
                 ))}
@@ -291,7 +331,12 @@ export default function Home() {
 
             <label className="controlGroup">
               <span>旅行社</span>
-              <select onChange={(event) => setAgency(event.target.value)} value={agency}>
+              <select
+                onChange={(event) =>
+                  setDraftFilters((current) => ({ ...current, agency: event.target.value }))
+                }
+                value={draftFilters.agency}
+              >
                 {agencies.map((item) => (
                   <option key={item}>{item}</option>
                 ))}
@@ -300,7 +345,12 @@ export default function Home() {
 
             <label className="controlGroup">
               <span>出發月份</span>
-              <select onChange={(event) => setMonth(Number(event.target.value))} value={month}>
+              <select
+                onChange={(event) =>
+                  setDraftFilters((current) => ({ ...current, month: Number(event.target.value) }))
+                }
+                value={draftFilters.month}
+              >
                 {monthOptions.map((item) => (
                   <option key={item.value} value={item.value}>
                     {item.label}
@@ -312,22 +362,46 @@ export default function Home() {
             <label className="controlGroup">
               <span>最低極光夜數</span>
               <select
-                onChange={(event) => setMinimumNights(Number(event.target.value))}
-                value={minimumNights}
+                onChange={(event) =>
+                  setDraftFilters((current) => ({
+                    ...current,
+                    minimumNights: Number(event.target.value),
+                  }))
+                }
+                value={draftFilters.minimumNights}
               >
                 <option value={0}>不限夜數</option>
+                <option value={1}>至少 1 晚/次</option>
+                <option value={2}>至少 2 晚/次</option>
                 <option value={3}>至少 3 晚/次</option>
+                <option value={4}>至少 4 晚/次</option>
+                <option value={5}>至少 5 晚/次</option>
               </select>
             </label>
 
             <label className="toggleRow">
               <input
-                checked={onlyConcrete}
-                onChange={(event) => setOnlyConcrete(event.target.checked)}
+                checked={draftFilters.onlyConcrete}
+                onChange={(event) =>
+                  setDraftFilters((current) => ({ ...current, onlyConcrete: event.target.checked }))
+                }
                 type="checkbox"
               />
               只顯示已取得具體商品的來源
             </label>
+
+            <button
+              className="applyFiltersButton"
+              onClick={() => setAppliedFilters(draftFilters)}
+              type="button"
+            >
+              確認篩選
+            </button>
+            <p className="filterApplyNote">
+              {filtersChanged
+                ? "條件已變更，按下確認後才更新旅行社卡片。"
+                : `目前結果依 ${formatCurrency(appliedFilters.budget)} 預算上限顯示。`}
+            </p>
           </aside>
 
           <div className="resultPanel">
@@ -338,15 +412,22 @@ export default function Home() {
             ) : (
               <>
                 <div className="recommendation">
-                  <span>目前最適合</span>
-                  <strong>{bestProduct?.productName ?? "沒有符合條件的商品"}</strong>
+                  <span>目前最適合旅行社方案</span>
+                  <strong>
+                    {bestAgencyGroup ? `${bestAgencyGroup.agency}方案` : "沒有符合條件的旅行社方案"}
+                  </strong>
                   <p>
                     符合條件 {filteredProducts.length} 筆，整理成 {agencyGroups.length} 家旅行社方案卡，
                     其中 {withinBudgetCount} 筆低於目前預算上限。
                   </p>
                   {bestProduct ? (
+                    <p className="recommendationProduct">
+                      代表商品：{bestProduct.productName}
+                    </p>
+                  ) : null}
+                  {bestProduct ? (
                     <a href={bestProduct.sourceUrl} rel="noreferrer" target="_blank">
-                      前往訂購/來源頁
+                      前往代表商品來源頁
                     </a>
                   ) : null}
                 </div>
@@ -355,10 +436,14 @@ export default function Home() {
                   一張卡只代表一家旅行社；卡片內才展開該旅行社符合條件的旅行團。
                 </p>
 
-                <div className="productGrid">
-                  {topAgencyGroups.map((group) => {
+                {topAgencyGroups.length === 0 ? (
+                  <div className="emptyState">
+                    目前條件下沒有符合預算與篩選條件的商品；請調高預算或放寬其他條件後重新確認篩選。
+                  </div>
+                ) : (
+                  <div className="productGrid">
+                    {topAgencyGroups.map((group) => {
                     const product = group.bestProduct;
-                    const overBudget = product.priceTwd !== null && product.priceTwd > budget;
                     return (
                       <article className="productCard agencyOptionCard" key={group.agency}>
                         <div className="productHead">
@@ -371,7 +456,7 @@ export default function Home() {
                         <div className="metaGrid">
                           <span>{group.destinations.slice(0, 4).join("、")}</span>
                           <span>{group.products.length} 筆符合條件商品</span>
-                          <span className={overBudget ? "overBudget" : ""}>{group.priceRange}</span>
+                          <span>{group.priceRange}</span>
                           <span>{group.bookableCount} 筆可報名/可售</span>
                         </div>
                         <div className="agencyBestProduct">
@@ -382,34 +467,52 @@ export default function Home() {
                         </div>
                         <details>
                           <summary>展開 {group.agency} 商品與航班資訊</summary>
-                          <dl>
-                            <div>
-                              <dt>航班</dt>
-                              <dd className={isMissing(product.flightSummary) ? "muted" : ""}>
-                                {product.flightSummary}
-                              </dd>
-                            </div>
-                            <div>
-                              <dt>行程</dt>
-                              <dd>{product.itinerarySummary}</dd>
-                            </div>
-                            <div>
-                              <dt>報名</dt>
-                              <dd>{product.bookingStatus}</dd>
-                            </div>
-                          </dl>
                           <div className="agencyProductList">
-                            {group.products.slice(0, 8).map((agencyProduct) => (
-                              <a
-                                href={agencyProduct.sourceUrl}
-                                key={agencyProduct.id}
-                                rel="noreferrer"
-                                target="_blank"
-                              >
-                                <strong>{agencyProduct.productName}</strong>
-                                <small>{agencyProduct.selectableDates}</small>
-                                <small>{agencyProduct.priceLabel || "未揭露價格"}</small>
-                              </a>
+                            {group.products.map((agencyProduct) => (
+                              <article className="agencyProductCard" key={agencyProduct.id}>
+                                <details>
+                                  <summary>
+                                    <strong>{agencyProduct.productName}</strong>
+                                    <small>{agencyProduct.priceLabel || "未揭露價格"}</small>
+                                    <small>{agencyProduct.selectableDates}</small>
+                                  </summary>
+                                  <dl>
+                                    <div>
+                                      <dt>可選擇日期</dt>
+                                      <dd>{agencyProduct.selectableDates}</dd>
+                                    </div>
+                                    <div>
+                                      <dt>金額</dt>
+                                      <dd>{agencyProduct.priceLabel || "未揭露價格"}</dd>
+                                    </div>
+                                    <div>
+                                      <dt>極光夜數</dt>
+                                      <dd>
+                                        {agencyProduct.auroraNights
+                                          ? `${agencyProduct.auroraNights} 晚/次`
+                                          : "未標示"}
+                                      </dd>
+                                    </div>
+                                    <div>
+                                      <dt>預計航班</dt>
+                                      <dd className={isMissing(agencyProduct.flightSummary) ? "muted" : ""}>
+                                        {agencyProduct.flightSummary}
+                                      </dd>
+                                    </div>
+                                    <div>
+                                      <dt>行程計畫表</dt>
+                                      <dd>{agencyProduct.itinerarySummary}</dd>
+                                    </div>
+                                    <div>
+                                      <dt>報名狀態</dt>
+                                      <dd>{agencyProduct.bookingStatus}</dd>
+                                    </div>
+                                  </dl>
+                                  <a href={agencyProduct.sourceUrl} rel="noreferrer" target="_blank">
+                                    前往訂購/來源頁
+                                  </a>
+                                </details>
+                              </article>
                             ))}
                           </div>
                         </details>
@@ -418,8 +521,9 @@ export default function Home() {
                         </a>
                       </article>
                     );
-                  })}
-                </div>
+                    })}
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -430,8 +534,8 @@ export default function Home() {
         <details className="sourceDisclosure">
           <summary>
             <span className="eyebrow">Source Freshness</span>
-            <strong>資料來源與老化狀態</strong>
-            <small>點選展開來源查核狀態</small>
+            <strong>資料來源與更新時間</strong>
+            <small>點選展開來源與更新時間</small>
           </summary>
           <div className="sourceGrid">
             {sources.map((source) => (

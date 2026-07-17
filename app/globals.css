@@ -119,14 +119,14 @@ h3 {
 
 .statusBar {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 34px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 24px;
 }
 
 .statusBar span {
-  min-height: 112px;
-  padding: 18px;
+  min-height: 76px;
+  padding: 12px 14px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   background: rgba(8, 26, 28, 0.68);
@@ -137,9 +137,9 @@ h3 {
 
 .statusBar strong {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   color: #ffffff;
-  font-size: 1.5rem;
+  font-size: 1.18rem;
 }
 
 .pageSection {
@@ -275,6 +275,27 @@ h3 {
   margin-top: 2px;
 }
 
+.applyFiltersButton {
+  min-height: 42px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--teal-dark);
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.applyFiltersButton:hover {
+  background: var(--teal);
+}
+
+.filterApplyNote {
+  margin: -8px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
 .resultPanel {
   min-width: 0;
 }
@@ -306,6 +327,13 @@ h3 {
   margin: 10px 0 0;
   color: #36524d;
   line-height: 1.65;
+}
+
+.recommendationProduct {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #eef8f5;
+  font-weight: 800;
 }
 
 .recommendation a,
@@ -468,6 +496,34 @@ h3 {
   display: grid;
   gap: 8px;
   margin-top: 14px;
+}
+
+.agencyProductCard {
+  border: 1px solid #dbe7e4;
+  border-radius: 8px;
+  background: #fbfffe;
+}
+
+.agencyProductCard details {
+  margin-top: 0;
+  padding: 10px;
+  border-top: 0;
+}
+
+.agencyProductCard summary {
+  display: grid;
+  gap: 4px;
+}
+
+.agencyProductCard summary strong {
+  color: var(--ink);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.agencyProductCard summary small {
+  color: var(--muted);
+  line-height: 1.4;
 }
 
 .agencyProductList a {
