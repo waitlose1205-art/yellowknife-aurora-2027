@@ -509,6 +509,45 @@ h3 {
   box-shadow: 0 0 0 1px rgba(12, 128, 115, 0.16);
 }
 
+.agencyProductCard.sourceMismatchCard {
+  border-color: #d77a3d;
+  background: #fffaf5;
+}
+
+.productBadges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.sourceBadge {
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #edf6f2;
+  color: var(--teal-dark);
+  font-size: 0.74rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.sourceBadge.verified {
+  background: #dff6ec;
+  color: #0f6c4d;
+}
+
+.sourceBadge.unchecked,
+.sourceBadge.unavailable {
+  background: #fff2cb;
+  color: #7a5700;
+}
+
+.sourceBadge.mismatch {
+  background: #ffe2d1;
+  color: #9a3d10;
+}
+
 .recommendBadge {
   position: absolute;
   top: 10px;
@@ -522,6 +561,15 @@ h3 {
   font-size: 0.74rem;
   font-weight: 900;
   line-height: 1;
+}
+
+.warningBadge {
+  background: #b94f19;
+}
+
+.sourceMismatchText {
+  color: #9a3d10 !important;
+  font-weight: 800;
 }
 
 .agencyProductCard details {

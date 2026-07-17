@@ -19,6 +19,9 @@ type Product = {
   priceTwd: number | null;
   currency: string;
   sourceUrl: string;
+  sourceTitle?: string;
+  sourceVerificationStatus?: "verified" | "mismatch" | "unchecked" | "unavailable";
+  sourceVerificationNote?: string;
   checkedAt: string;
   dataStatus: "available" | "partial" | "needs-check" | "unavailable";
 };
@@ -93,12 +96,20 @@ const bookingStatusLabel: Record<Product["bookingStatusType"], string> = {
   unavailable: "未取得",
 };
 
+const sourceVerificationLabel = {
+  verified: "來源已驗證",
+  mismatch: "來源疑似不一致",
+  unchecked: "來源待查核",
+  unavailable: "未提供來源",
+} as const;
+
 function formatCurrency(value: number) {
   return `NT$${value.toLocaleString("zh-TW")}`;
 }
 
 function getScore(product: Product, budget: number) {
   if (product.priceTwd === null || product.priceTwd > budget) return -1;
+  if (product.sourceVerificationStatus === "mismatch") return -1;
 
   let score = 0;
   if (product.dataStatus === "available") score += 40;
@@ -106,6 +117,8 @@ function getScore(product: Product, budget: number) {
   if (product.bookingStatusType === "bookable") score += 30;
   if (product.bookingStatusType === "needs-check") score += 10;
   if (product.auroraNights && product.auroraNights >= 3) score += 10;
+  if (product.sourceVerificationStatus === "verified") score += 12;
+  if (product.sourceVerificationStatus === "unchecked") score -= 6;
 
   const budgetUseRate = Math.min(product.priceTwd / budget, 1);
   score += Math.round(budgetUseRate * 30);
@@ -124,6 +137,10 @@ function getAgencyOptions(products: Product[]) {
 
 function isMissing(value: string) {
   return /未取得|未揭露|需進商品頁確認|來源列表未揭露/.test(value);
+}
+
+function getSourceVerificationStatus(product: Product) {
+  return product.sourceVerificationStatus ?? "unchecked";
 }
 
 export default function Home() {
@@ -218,6 +235,10 @@ export default function Home() {
             const secondPrice = second.priceTwd ?? Number.MAX_SAFE_INTEGER;
             return firstPrice - secondPrice;
           });
+        const recommendableProducts = sortedProducts.filter(
+          (product) => getScore(product, appliedFilters.budget) >= 0,
+        );
+        const bestProduct = recommendableProducts[0] ?? sortedProducts[0];
         const prices = sortedProducts
           .map((product) => product.priceTwd)
           .filter((price): price is number => price !== null)
@@ -235,8 +256,8 @@ export default function Home() {
         return {
           agency: agencyName,
           products: sortedProducts,
-          bestProduct: sortedProducts[0],
-          score: sortedProducts[0] ? getScore(sortedProducts[0], appliedFilters.budget) : 0,
+          bestProduct,
+          score: recommendableProducts[0] ? getScore(recommendableProducts[0], appliedFilters.budget) : -1,
           destinations: Array.from(new Set(sortedProducts.map((product) => product.destination))),
           priceRange:
             prices.length === 0
@@ -256,7 +277,7 @@ export default function Home() {
   }, [appliedFilters.budget, filteredProducts]);
 
   const topAgencyGroups = agencyGroups.slice(0, 12);
-  const bestAgencyGroup = topAgencyGroups[0];
+  const bestAgencyGroup = topAgencyGroups.find((group) => group.score >= 0);
   const bestProduct = bestAgencyGroup?.bestProduct;
   const concreteCount = products.filter((product) => product.dataStatus !== "unavailable").length;
   const withinBudgetCount = filteredProducts.filter(
@@ -453,13 +474,19 @@ export default function Home() {
                   <div className="productGrid">
                     {topAgencyGroups.map((group) => {
                     const product = group.bestProduct;
+                    const sourceStatus = getSourceVerificationStatus(product);
                     return (
                       <article className="productCard agencyOptionCard" key={group.agency}>
                         <div className="productHead">
                           <span>{group.agency}</span>
-                          <span className={product.dataStatus}>
-                            {dataStatusLabel[product.dataStatus]}
-                          </span>
+                          <div className="productBadges">
+                            <span className={product.dataStatus}>
+                              {dataStatusLabel[product.dataStatus]}
+                            </span>
+                            <span className={`sourceBadge ${sourceStatus}`}>
+                              {sourceVerificationLabel[sourceStatus]}
+                            </span>
+                          </div>
                         </div>
                         <h3>{group.agency}方案</h3>
                         <div className="metaGrid">
@@ -472,14 +499,21 @@ export default function Home() {
                           <summary>展開 {group.agency} 商品與航班資訊</summary>
                           <div className="agencyProductList">
                             {group.products.map((agencyProduct) => {
-                              const isRecommended = agencyProduct.id === product.id;
+                              const agencySourceStatus = getSourceVerificationStatus(agencyProduct);
+                              const isRecommended =
+                                group.score >= 0 && agencyProduct.id === product.id;
 
                               return (
                               <article
-                                className={`agencyProductCard${isRecommended ? " recommended" : ""}`}
+                                className={`agencyProductCard${isRecommended ? " recommended" : ""}${
+                                  agencySourceStatus === "mismatch" ? " sourceMismatchCard" : ""
+                                }`}
                                 key={agencyProduct.id}
                               >
                                 {isRecommended ? <span className="recommendBadge">推薦</span> : null}
+                                {agencySourceStatus === "mismatch" ? (
+                                  <span className="recommendBadge warningBadge">來源待修正</span>
+                                ) : null}
                                 <details>
                                   <summary>
                                     <strong>{agencyProduct.productName}</strong>
@@ -517,9 +551,30 @@ export default function Home() {
                                       <dt>報名狀態</dt>
                                       <dd>{agencyProduct.bookingStatus}</dd>
                                     </div>
+                                    <div>
+                                      <dt>來源查核</dt>
+                                      <dd
+                                        className={
+                                          agencySourceStatus === "mismatch" ? "sourceMismatchText" : ""
+                                        }
+                                      >
+                                        {sourceVerificationLabel[agencySourceStatus]}
+                                        {agencyProduct.sourceVerificationNote
+                                          ? `；${agencyProduct.sourceVerificationNote}`
+                                          : ""}
+                                      </dd>
+                                    </div>
+                                    <div>
+                                      <dt>官方頁標題</dt>
+                                      <dd className={agencyProduct.sourceTitle ? "" : "muted"}>
+                                        {agencyProduct.sourceTitle || "尚未取得可比對標題"}
+                                      </dd>
+                                    </div>
                                   </dl>
                                   <a href={agencyProduct.sourceUrl} rel="noreferrer" target="_blank">
-                                    前往訂購/來源頁
+                                    {agencySourceStatus === "mismatch"
+                                      ? "前往來源頁重新確認"
+                                      : "前往訂購/來源頁"}
                                   </a>
                                 </details>
                               </article>

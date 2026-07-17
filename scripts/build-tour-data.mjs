@@ -3,8 +3,11 @@ import http from "node:http";
 import https from "node:https";
 import { basename, join } from "node:path";
 
+const detailHttpsAgent = new https.Agent({ rejectUnauthorized: false });
+
+const inputArg = process.argv.slice(2).find((arg) => !arg.startsWith("--"));
 const inputPath =
-  process.argv[2] ||
+  inputArg ||
   join(
     process.cwd(),
     "exports",
@@ -141,6 +144,7 @@ function inferAuroraNights(row) {
 
 function inferStatus(row) {
   const status = getBookingStatus(row);
+  if (getSourceVerification(row).status === "mismatch") return "needs-check";
   if (/未取得具體|未取得/.test(row.產品名稱)) return "unavailable";
   if (/結團|額滿|暫滿|候補/.test(status)) return "limited";
   if (/保證|已成團|可售|報名|熱銷|成團/.test(status)) return "bookable";
@@ -148,6 +152,7 @@ function inferStatus(row) {
 }
 
 function inferDataStatus(row) {
+  if (getSourceVerification(row).status === "mismatch") return "needs-check";
   if (/未取得具體|未取得/.test(row.產品名稱)) return "unavailable";
   const missing = [row.可選擇日期, row.航班, getBookingStatus(row), row.金額].filter((value) =>
     /未取得|未揭露|需進商品頁確認|來源列表未揭露/.test(value),
@@ -195,6 +200,83 @@ function normalizeProductName(name) {
     .replace(/[~～－—–・．、，,。:：()（）【】\[\]《》「」『』]/g, " ")
     .replace(/\s+/g, "")
     .toLowerCase();
+}
+
+function normalizeForVerification(value) {
+  return normalizeProductName(value)
+    .replace(/20\d{2}[./-]?\d{0,2}[./-]?\d{0,2}/g, "")
+    .replace(/\d{1,3}(?:,\d{3})+/g, "")
+    .replace(/\d+[日天晚次]/g, "")
+    .replace(/早鳥|優惠|限時|第二人|保證出發|已成團|可報名|熱銷/g, "");
+}
+
+function getBigrams(value) {
+  const text = normalizeForVerification(value);
+  const bigrams = new Set();
+  for (let index = 0; index < text.length - 1; index += 1) {
+    bigrams.add(text.slice(index, index + 2));
+  }
+  return bigrams;
+}
+
+function getSimilarity(firstValue, secondValue) {
+  const first = getBigrams(firstValue);
+  const second = getBigrams(secondValue);
+  if (!first.size || !second.size) return 0;
+
+  let overlap = 0;
+  for (const item of first) {
+    if (second.has(item)) overlap += 1;
+  }
+  return overlap / Math.min(first.size, second.size);
+}
+
+function isGenericSourceTitle(value) {
+  const title = normalizeForVerification(value);
+  if (title.length < 8) return true;
+  return /^(雄獅旅遊|鳳凰旅遊|可樂旅遊|東南旅遊|山富旅遊|五福旅遊|喜鴻旅遊|長汎旅遊|首頁|旅遊)$/i.test(
+    title,
+  );
+}
+
+function getSourceVerification(row) {
+  const sourceUrl = normalizeSourceUrl(row["訂購/來源網址"]);
+  const sourceTitle = clean(row.官方頁標題);
+  const statusText = clean(row.資料狀態);
+
+  if (/來源疑似不一致|來源不一致|商品頁不一致/.test(statusText)) {
+    return {
+      status: "mismatch",
+      note: "來源頁與商品列疑似不一致，需人工重查來源網址",
+    };
+  }
+
+  if (!sourceUrl) {
+    return {
+      status: "unavailable",
+      note: "未提供可查核來源網址",
+    };
+  }
+
+  if (!sourceTitle || isGenericSourceTitle(sourceTitle)) {
+    return {
+      status: "unchecked",
+      note: "尚未取得可比對的官方頁標題",
+    };
+  }
+
+  const similarity = getSimilarity(row.產品名稱, sourceTitle);
+  if (similarity < 0.3) {
+    return {
+      status: "mismatch",
+      note: `官方頁標題與商品名稱落差過大；相似度 ${Math.round(similarity * 100)}%`,
+    };
+  }
+
+  return {
+    status: "verified",
+    note: `官方頁標題與商品名稱可對應；相似度 ${Math.round(similarity * 100)}%`,
+  };
 }
 
 function productKeys(row) {
@@ -292,6 +374,35 @@ function uniqueMatches(text, regex, limit = 8) {
   return [...new Set(clean(text).match(regex) || [])].slice(0, limit);
 }
 
+function extractAttribute(tag, attribute) {
+  const match = tag.match(new RegExp(`${attribute}=["']([^"']+)["']`, "i"));
+  return match ? decodeHtml(match[1]) : "";
+}
+
+function extractPageTitle(html) {
+  const candidates = [];
+  const metaTitle =
+    html.match(/<meta[^>]+(?:property|name)=["'](?:og:title|twitter:title)["'][^>]*>/i)?.[0] ||
+    html.match(/<meta[^>]+content=["'][^"']+["'][^>]+(?:property|name)=["'](?:og:title|twitter:title)["'][^>]*>/i)?.[0];
+
+  if (metaTitle) candidates.push(extractAttribute(metaTitle, "content"));
+  candidates.push(stripHtml(html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || ""));
+
+  for (const heading of html.matchAll(/<h[1-3][^>]*>([\s\S]*?)<\/h[1-3]>/gi)) {
+    candidates.push(stripHtml(heading[1]));
+  }
+
+  return (
+    candidates
+      .map((candidate) =>
+        clean(candidate)
+          .replace(/\s*[-｜|]\s*(雄獅旅遊|鳳凰旅遊|可樂旅遊|東南旅遊|山富旅遊|五福旅遊|喜鴻旅遊|長汎旅遊).*$/i, "")
+          .replace(/\s*::\s*.*$/, ""),
+      )
+      .find((candidate) => candidate.length >= 6) || ""
+  );
+}
+
 function requestText(url, redirects = 0) {
   return new Promise((resolve, reject) => {
     let parsed;
@@ -306,6 +417,7 @@ function requestText(url, redirects = 0) {
     const request = client.get(
       parsed,
       {
+        agent: parsed.protocol === "https:" ? detailHttpsAgent : undefined,
         timeout: 15000,
         headers: {
           "accept-language": "zh-TW,zh;q=0.9,en;q=0.8",
@@ -347,6 +459,7 @@ function requestText(url, redirects = 0) {
 function extractGenericDetail(html) {
   const text = stripHtml(html);
   return {
+    title: extractPageTitle(html),
     dates: uniqueMatches(
       text,
       /(?:20\d{2}[/-]\d{1,2}[/-]\d{1,2}|\d{1,2}[/-]\d{1,2}(?:\([日一二三四五六]\))?)/g,
@@ -400,6 +513,11 @@ async function enrichRowFromDetailPage(row) {
     const genericDetail = extractGenericDetail(response.data);
     const merged = { ...row };
     const notes = [];
+
+    if (genericDetail.title) {
+      merged.官方頁標題 = genericDetail.title;
+      notes.push("官方頁標題已查核");
+    }
 
     if (lionDetail?.flight && shouldUseSupplementalValue(merged.航班, lionDetail.flight)) {
       merged.航班 = lionDetail.flight;
@@ -481,6 +599,7 @@ const products = enrichedRows.filter((row) => agencies.includes(clean(row.旅行
   const name = clean(row.產品名稱);
   const priceTwd = parsePriceTwd(row.金額);
   const sourceUrl = clean(row["訂購/來源網址"]);
+  const sourceVerification = getSourceVerification(row);
   return {
     id: `${clean(row.旅行社名稱)}-${index + 1}`,
     agency: clean(row.旅行社名稱),
@@ -498,6 +617,9 @@ const products = enrichedRows.filter((row) => agencies.includes(clean(row.旅行
     priceTwd,
     currency: row.金額.includes("TWD") ? "TWD" : "NTD",
     sourceUrl,
+    sourceTitle: clean(row.官方頁標題),
+    sourceVerificationStatus: sourceVerification.status,
+    sourceVerificationNote: sourceVerification.note,
     checkedAt,
     dataStatus: inferDataStatus(row),
   };
@@ -554,6 +676,9 @@ const csvHeaders = [
   "bookingStatus",
   "priceLabel",
   "sourceUrl",
+  "sourceTitle",
+  "sourceVerificationStatus",
+  "sourceVerificationNote",
   "checkedAt",
   "dataStatus",
 ];
