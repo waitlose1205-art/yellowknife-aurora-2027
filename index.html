@@ -1,23 +1,23 @@
 <!doctype html>
 <html lang="zh-Hant">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>黃刀鎮極光旅決策儀表板</title>
-    <meta
-      name="description"
-      content="整理黃刀鎮極光旅的決策狀態、搜尋範圍、A/B 極光夜數、團體樣本、待重查項目與決策門檻。"
-    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>極光旅行團靜態資料推薦系統</title>
     <style>
       :root {
-        --background: #f5f7f6;
-        --foreground: #14201f;
-        --muted: #667673;
+        color-scheme: light;
+        --bg: #f4f7f4;
         --panel: #ffffff;
-        --line: #d8e0de;
-        --teal: #0f766e;
-        --green: #20c997;
-        --amber: #d8a24a;
+        --ink: #102a2c;
+        --muted: #5e7274;
+        --line: #d4e0dc;
+        --accent: #0f5d62;
+        --accent-2: #c7892c;
+        --soft: #e8f3ef;
+        --soft-2: #f6ead7;
+        --danger: #a94442;
+        --shadow: 0 18px 45px rgba(16, 42, 44, 0.08);
       }
 
       * {
@@ -26,4178 +26,934 @@
 
       body {
         margin: 0;
-        background: var(--background);
-        color: var(--foreground);
-        font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", Arial, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          "Noto Sans TC",
+          "Microsoft JhengHei",
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        line-height: 1.6;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      button,
+      select,
+      input {
+        font: inherit;
       }
 
       .hero {
-        position: relative;
-        min-height: 82vh;
-        display: flex;
+        min-height: 360px;
+        display: grid;
         align-items: end;
-        overflow: hidden;
-        background-image:
-          linear-gradient(180deg, rgba(5, 15, 18, 0.06) 0%, rgba(5, 15, 18, 0.54) 54%, rgba(5, 15, 18, 0.93) 100%),
-          linear-gradient(90deg, rgba(5, 15, 18, 0.86) 0%, rgba(5, 15, 18, 0.44) 52%, rgba(5, 15, 18, 0.18) 100%),
-          url("public/aurora-hero.png");
-        background-position: center;
-        background-size: cover;
+        padding: 42px clamp(18px, 5vw, 72px);
+        color: #fff;
+        background:
+          linear-gradient(180deg, rgba(8, 39, 45, 0.34), rgba(8, 39, 45, 0.82)),
+          url("/aurora-hero.png") center/cover;
       }
 
-      .heroContent,
-      .pageSection,
-      .contentGrid,
-      .tableSection,
-      .closingPanel {
-        width: min(1120px, calc(100% - 40px));
+      .heroInner {
+        max-width: 1120px;
+        width: 100%;
         margin: 0 auto;
       }
 
-      .heroContent {
-        position: relative;
-        padding: 72px 0 56px;
-        color: #fff;
-      }
-
       .eyebrow {
-        margin: 0 0 12px;
-        color: var(--green);
-        font-size: 0.78rem;
-        font-weight: 900;
+        margin: 0 0 10px;
+        color: #8fe4d2;
+        font-size: 0.82rem;
+        font-weight: 800;
         letter-spacing: 0;
         text-transform: uppercase;
       }
 
       h1,
       h2,
-      h3 {
-        margin: 0;
-        letter-spacing: 0;
+      h3,
+      p {
+        margin-top: 0;
       }
 
       h1 {
-        max-width: 860px;
-        font-size: clamp(2.45rem, 7vw, 5.8rem);
-        line-height: 1.02;
-        font-weight: 900;
+        max-width: 820px;
+        margin-bottom: 14px;
+        font-size: clamp(2rem, 5vw, 4.5rem);
+        line-height: 1.05;
+        letter-spacing: 0;
       }
 
-      h2 {
-        font-size: clamp(1.45rem, 3vw, 2.35rem);
-        line-height: 1.18;
-        font-weight: 900;
-      }
-
-      h3 {
-        color: #172c29;
-        font-size: 1.15rem;
-        font-weight: 900;
-      }
-
-      .lead {
-        max-width: 760px;
-        margin: 24px 0 0;
-        color: rgba(255, 255, 255, 0.9);
-        font-size: clamp(1.05rem, 2vw, 1.35rem);
-        line-height: 1.75;
-      }
-
-      .decisionBar {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 12px;
-        margin-top: 34px;
-      }
-
-      .decisionStatus {
-        min-height: 132px;
-        padding: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 8px;
-        background: rgba(8, 21, 24, 0.66);
-        backdrop-filter: blur(18px);
-      }
-
-      .decisionStatus span,
-      .summaryLabel {
-        display: block;
-        color: rgba(255, 255, 255, 0.68);
-        font-size: 0.86rem;
-        font-weight: 700;
-      }
-
-      .decisionStatus strong {
-        display: block;
-        margin-top: 8px;
-        font-size: clamp(1.25rem, 2vw, 1.65rem);
-      }
-
-      .decisionStatus small {
-        display: block;
-        margin-top: 8px;
-        color: rgba(255, 255, 255, 0.72);
-        line-height: 1.45;
-      }
-
-      .summaryBand {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1px;
-        background: #112420;
-        color: #fff;
-      }
-
-      .summaryItem {
-        padding: 28px max(24px, calc((100vw - 1120px) / 2));
-        background: #132d29;
-      }
-
-      .summaryItem + .summaryItem {
-        background: #193634;
-      }
-
-      .summaryItem strong {
-        display: block;
-        margin-top: 8px;
-        font-size: 1.12rem;
-        line-height: 1.55;
-      }
-
-      .pageSection,
-      .contentGrid,
-      .tableSection,
-      .closingPanel {
-        margin-top: 32px;
-      }
-
-      .contentGrid {
-        display: grid;
-        grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
-        gap: 20px;
-      }
-
-      .panel,
-      .tableSection,
-      .closingPanel {
-        padding: 28px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--panel);
-        box-shadow: 0 18px 48px rgba(24, 48, 44, 0.08);
-      }
-
-      .auroraBadge span,
-      .nightPill,
-      .statusPill {
-        display: inline-flex;
-        border-radius: 999px;
-        font-size: 0.78rem;
-        font-weight: 900;
-      }
-
-      .sectionHeader p:not(.eyebrow),
-      .auroraBadge p,
-      .gateItem span {
-        color: var(--muted);
-        line-height: 1.7;
-      }
-
-      .badgeGrid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
-        margin-top: 24px;
-      }
-
-      .warningPanel {
-        background: #fffdf7;
-      }
-
-      .compactRuleDisclosure summary,
-      .baselineDisclosure summary {
-        display: grid;
-        gap: 5px;
-        cursor: pointer;
-        color: #173331;
-        font-weight: 900;
-        list-style: none;
-      }
-
-      .compactRuleDisclosure summary::-webkit-details-marker,
-      .baselineDisclosure summary::-webkit-details-marker {
-        display: none;
-      }
-
-      .compactRuleDisclosure summary span,
-      .baselineDisclosure summary strong {
+      .hero p {
+        max-width: 720px;
+        margin-bottom: 0;
+        color: rgba(255, 255, 255, 0.88);
         font-size: 1.05rem;
       }
 
-      .compactRuleDisclosure summary small,
-      .baselineDisclosure summary span {
-        color: var(--muted);
-        font-size: 0.88rem;
-        font-weight: 800;
-        line-height: 1.45;
+      main {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 24px clamp(16px, 4vw, 28px) 64px;
       }
 
-      .badgeGrid.compact {
-        margin-top: 14px;
-      }
-
-      .auroraBadge {
-        padding: 18px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #fff;
-      }
-
-      .auroraBadge span,
-      .nightPill {
-        padding: 5px 10px;
-        background: #163b38;
-        color: #fff;
-      }
-
-      .auroraBadge strong {
-        display: block;
-        margin-top: 14px;
-        color: #172c29;
-      }
-
-      .priorityStack {
-        display: grid;
-        gap: 10px;
-        margin-top: 24px;
-      }
-
-      .priorityStack span {
-        padding: 14px 16px;
-        border-left: 4px solid var(--teal);
-        background: #eef7f4;
-        color: #173331;
-        font-weight: 800;
-      }
-
-      .scopeSection,
-      .sourceSyncSection,
-      .directionSection {
-        padding: 28px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #fff;
-        box-shadow: 0 18px 48px rgba(24, 48, 44, 0.08);
-      }
-
-      .scopeGrid {
+      .statusBar {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 14px;
-        margin-top: 22px;
+        gap: 10px;
+        margin: -52px 0 24px;
       }
 
-      .scopeCard {
-        min-height: 160px;
-        padding: 18px;
+      .statusItem,
+      .panel,
+      .agencyCard,
+      .sourceCard {
         border: 1px solid var(--line);
         border-radius: 8px;
-        background: #fbfffe;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: var(--shadow);
       }
 
-      .scopeCard span {
-        display: inline-flex;
-        padding: 5px 10px;
-        border-radius: 999px;
-        background: #e6f6f1;
-        color: #0b6b58;
+      .statusItem {
+        padding: 14px 16px;
+      }
+
+      .label {
+        display: block;
+        color: var(--muted);
         font-size: 0.78rem;
+        font-weight: 800;
+      }
+
+      .value {
+        display: block;
+        margin-top: 3px;
+        font-size: 1rem;
         font-weight: 900;
       }
 
-      .scopeCard h3 {
-        margin-top: 14px;
+      .layout {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 18px;
+        align-items: start;
       }
 
-      .scopeCard p {
-        color: var(--muted);
-        line-height: 1.65;
+      .panel {
+        padding: 20px;
       }
 
-      .sourceActions a,
-      .bookingRow a,
-      .recommendationAction .bookingLink {
-        width: fit-content;
-        min-height: 40px;
-        padding: 9px 12px;
+      .controls {
+        position: sticky;
+        top: 16px;
+      }
+
+      .controlGroup {
+        margin-top: 18px;
+      }
+
+      .controlGroup:first-of-type {
+        margin-top: 0;
+      }
+
+      .controlGroup label,
+      .inlineCheck {
+        display: block;
+        color: #163c3f;
+        font-weight: 850;
+      }
+
+      select,
+      input[type="range"] {
+        width: 100%;
+      }
+
+      select {
+        min-height: 42px;
+        margin-top: 7px;
+        border: 1px solid var(--line);
         border-radius: 8px;
-        background: #163b38;
-        color: #fff;
+        background: #fff;
+        color: var(--ink);
+        padding: 8px 10px;
+      }
+
+      input[type="range"] {
+        margin-top: 12px;
+        accent-color: var(--accent);
+      }
+
+      .budgetReadout {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 6px;
+        color: var(--muted);
         font-size: 0.9rem;
+      }
+
+      .inlineCheck {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .inlineCheck input {
+        width: 18px;
+        height: 18px;
+        margin-top: 4px;
+        accent-color: var(--accent);
+      }
+
+      .hintBox {
+        margin-top: 18px;
+        padding: 14px;
+        border-left: 4px solid var(--accent);
+        background: var(--soft);
+        color: #244b4f;
+        font-size: 0.92rem;
+      }
+
+      .summary {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .bestBox {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        padding: 18px;
+      }
+
+      .bestBox h2,
+      .resultsHeader h2,
+      .sources h2 {
+        margin-bottom: 8px;
+        font-size: 1.4rem;
+      }
+
+      .bestBox p,
+      .resultsHeader p,
+      .sourceCard p,
+      .muted {
+        color: var(--muted);
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .metric {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--soft);
+        padding: 12px;
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 1.25rem;
+      }
+
+      .resultsHeader {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        align-items: end;
+        margin-bottom: 14px;
+      }
+
+      .sortNote {
+        max-width: 310px;
+        color: var(--muted);
+        font-size: 0.9rem;
+        text-align: right;
+      }
+
+      .agencyGrid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .agencyCard {
+        display: grid;
+        gap: 14px;
+        padding: 18px;
+        min-width: 0;
+      }
+
+      .agencyTop {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .agencyCard h3 {
+        margin-bottom: 4px;
+        font-size: 1.2rem;
+      }
+
+      .score {
+        min-width: 72px;
+        height: 72px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        background: #103f44;
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: 900;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        border-radius: 999px;
+        background: var(--soft);
+        color: #174246;
+        padding: 5px 10px;
+        font-size: 0.82rem;
+        font-weight: 800;
+      }
+
+      .chip.warn {
+        background: var(--soft-2);
+        color: #71501c;
+      }
+
+      .chip.danger {
+        background: #f8e3e0;
+        color: var(--danger);
+      }
+
+      .productFocus {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        background: #fbfdfc;
+      }
+
+      .productFocus h4 {
+        margin: 0 0 8px;
+        font-size: 1rem;
+      }
+
+      .fields {
+        display: grid;
+        gap: 7px;
+        margin: 0;
+      }
+
+      .field {
+        display: grid;
+        grid-template-columns: 92px 1fr;
+        gap: 8px;
+      }
+
+      .field dt {
+        color: var(--muted);
+        font-weight: 850;
+      }
+
+      .field dd {
+        margin: 0;
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+
+      .actionLink {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        width: fit-content;
+        border-radius: 8px;
+        background: var(--accent);
+        color: #fff;
+        padding: 9px 14px;
         font-weight: 900;
         text-decoration: none;
+      }
+
+      details {
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
+      }
+
+      summary {
+        cursor: pointer;
+        font-weight: 900;
+      }
+
+      .productList {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .productRow {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+        background: #fff;
+      }
+
+      .productRow strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .empty {
+        border: 1px dashed var(--line);
+        border-radius: 8px;
+        padding: 24px;
+        color: var(--muted);
+        background: #fff;
+      }
+
+      .sources {
+        margin-top: 24px;
       }
 
       .sourceGrid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
-        margin-top: 18px;
+        gap: 12px;
       }
 
       .sourceCard {
-        display: flex;
-        min-height: 238px;
-        flex-direction: column;
-        padding: 18px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #fbfcfc;
-      }
-
-      .sourceCard.active {
-        border-color: #0f766e;
-        background: #eef8f5;
-      }
-
-      .sourceCardHeader span {
-        display: inline-flex;
-        padding: 5px 10px;
-        border-radius: 999px;
-        background: #e6f6f1;
-        color: #0b6b58;
-        font-size: 0.76rem;
-        font-weight: 900;
-      }
-
-      .sourceCardHeader h3 {
-        margin-top: 12px;
-      }
-
-      .sourceCard p {
-        margin: 12px 0 0;
-        color: #2e4742;
-        line-height: 1.65;
-      }
-
-      .sourceCard > strong {
-        display: block;
-        margin-top: 10px;
-        color: #10201d;
-        font-size: 1.08rem;
-      }
-
-      .sourceCard small {
-        display: block;
-        margin-top: 10px;
-        color: var(--muted);
-        line-height: 1.55;
-      }
-
-      .sourceStatusGrid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin-top: 12px;
-      }
-
-      .sourceStatusGrid span {
-        padding: 5px 9px;
-        border-radius: 999px;
-        background: #e6f6f1;
-        color: #0b6b58;
-        font-size: 0.76rem;
-        font-weight: 900;
-      }
-
-      .sourceActions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: auto;
-        padding-top: 18px;
-      }
-
-      .compactSourceSection {
-        margin-bottom: 42px;
-        padding: 18px;
-        box-shadow: none;
-      }
-
-      .compactSourceSection .sectionHeader h2 {
-        font-size: clamp(1.3rem, 2vw, 1.75rem);
-      }
-
-      .compactSourceSection .sectionHeader p {
-        max-width: 760px;
-        font-size: 0.92rem;
-      }
-
-      .compactSourceSection .sourceNote {
-        padding: 10px 12px;
-      }
-
-      .compactSourceSection .sourceGrid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 10px;
-        margin-top: 14px;
-      }
-
-      .compactSourceSection .sourceCard {
-        min-height: 0;
-        padding: 12px;
-        background: #fbfffe;
-      }
-
-      .compactSourceSection .sourceCardHeader span,
-      .compactSourceSection .sourceStatusGrid span {
-        padding: 4px 7px;
-        font-size: 0.68rem;
-      }
-
-      .compactSourceSection .sourceCardHeader h3 {
-        margin-top: 8px;
-        font-size: 0.95rem;
-        line-height: 1.35;
-      }
-
-      .compactSourceSection .sourceCard p {
-        margin-top: 8px;
-        font-size: 0.82rem;
-        line-height: 1.45;
-      }
-
-      .compactSourceSection .sourceCard > strong {
-        margin-top: 8px;
-        font-size: 0.86rem;
-        line-height: 1.45;
-      }
-
-      .compactSourceSection .sourceCard small {
-        margin-top: 8px;
-        font-size: 0.76rem;
-        line-height: 1.45;
-      }
-
-      .compactSourceSection .sourceStatusGrid {
-        margin-top: 9px;
-      }
-
-      .compactSourceSection .sourceActions {
-        padding-top: 10px;
-      }
-
-      .compactSourceSection .sourceActions a {
-        min-height: 32px;
-        padding: 6px 9px;
-        font-size: 0.78rem;
-      }
-
-      .globalAgencySection {
-        background: #fbfffe;
-      }
-
-      .agencyDisclosure {
-        display: block;
-      }
-
-      .agencyDisclosureSummary {
-        cursor: pointer;
-        list-style: none;
-      }
-
-      .agencyDisclosureSummary::-webkit-details-marker {
-        display: none;
-      }
-
-      .agencyDisclosureSummary .sectionHeader {
-        margin-bottom: 0;
-      }
-
-      .agencyDisclosureSummary .sourceNote {
-        border-color: #cfe1dc;
-        background: #f8fbfa;
-      }
-
-      .agencyDisclosureSummary:hover .sourceNote {
-        border-color: #8dbdaf;
-        background: #f4fbf8;
-      }
-
-      .agencyRankingGrid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
-        margin-top: 22px;
-      }
-
-      .agencyScoreCard {
-        display: flex;
-        min-height: 100%;
-        flex-direction: column;
-        gap: 12px;
-        padding: 16px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #fff;
-      }
-
-      .agencyScoreCard.strong {
-        border-color: #b7dfcf;
-        background: #f4fbf8;
-      }
-
-      .agencyScoreCard.conditional {
-        border-color: #d6e6e1;
-      }
-
-      .agencyScoreCard.watch {
-        border-color: #f0d49a;
-        background: #fffaf0;
-      }
-
-      .agencyScoreCard.pending {
-        border-color: #e5dfd7;
-        background: #fffdf9;
-      }
-
-      .agencyScoreHead {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        align-items: start;
-      }
-
-      .agencyScoreHead span,
-      .agencyMeta span,
-      .destinationChips span {
-        display: inline-flex;
-        width: fit-content;
-        padding: 4px 8px;
-        border-radius: 999px;
-        background: #e6f6f1;
-        color: #0b6b58;
-        font-size: 0.72rem;
-        font-weight: 900;
-      }
-
-      .agencyScoreHead h3 {
-        margin-top: 8px;
-        line-height: 1.35;
-      }
-
-      .agencyScoreHead > strong {
-        min-width: 54px;
-        text-align: right;
-        color: #173331;
-        font-size: 2rem;
-        line-height: 1;
-      }
-
-      .agencyMeta,
-      .destinationChips,
-      .signalList,
-      .agencyAction {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 7px;
-      }
-
-      .agencyScoreCard p {
-        margin: 0;
-        color: var(--muted);
-        line-height: 1.55;
-      }
-
-      .signalList {
-        display: grid;
-        margin-top: 2px;
-      }
-
-      .signalList strong {
-        color: #173331;
-        font-size: 0.88rem;
-      }
-
-      .signalList small {
-        color: var(--muted);
-        line-height: 1.45;
-      }
-
-      .agencyAction {
-        margin-top: auto;
-        padding-top: 4px;
-      }
-
-      .agencyAction a {
-        display: inline-flex;
-        min-height: 34px;
-        align-items: center;
-        justify-content: center;
-        padding: 7px 11px;
-        border-radius: 8px;
-        background: #163b38;
-        color: #fff;
-        font-size: 0.84rem;
-        font-weight: 900;
-        text-decoration: none;
-      }
-
-      .agencyAction small {
-        flex-basis: 100%;
-        color: var(--muted);
-        line-height: 1.45;
-      }
-
-      .directionChooser {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px;
-        margin-top: 22px;
-      }
-
-      .directionChooser button {
-        min-height: 46px;
-        padding: 10px 12px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #f8fbfa;
-        color: #24413d;
-        cursor: pointer;
-        font: inherit;
-        font-weight: 900;
-      }
-
-      .directionChooser button.active {
-        border-color: #163b38;
-        background: #163b38;
-        color: #fff;
-      }
-
-      .directionChooser button:disabled {
-        cursor: not-allowed;
-        opacity: 0.58;
-      }
-
-      .directionDetail {
-        margin-top: 16px;
-        padding: 20px;
-        border: 1px solid #cfe7df;
-        border-radius: 8px;
-        background: #eef8f5;
-      }
-
-      .directionLocked {
-        display: grid;
-        gap: 8px;
-        padding: 18px;
-        border: 1px dashed #adcfc5;
-        border-radius: 8px;
-        background: #fbfffe;
-        color: var(--muted);
-        line-height: 1.65;
-      }
-
-      .directionLocked strong {
-        color: #173331;
-      }
-
-      .directionIntro p {
-        margin: 10px 0 0;
-        color: #31504b;
-        line-height: 1.65;
-      }
-
-      .directionBudgetNote {
-        width: fit-content;
-        margin-top: 16px;
-        padding: 8px 12px;
-        border: 1px solid #cfe7df;
-        border-radius: 8px;
-        background: #fbfffe;
-        color: #173331;
-        font-size: 0.9rem;
-        font-weight: 900;
-      }
-
-      .directionList {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px;
-        margin-top: 18px;
-      }
-
-      .directionListHeader {
-        margin-top: 18px;
-        color: #173331;
-        font-weight: 900;
-      }
-
-      .directionItem {
-        padding: 16px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #fff;
-      }
-
-      .directionItem.linked {
-        border-color: #cfe7df;
-        background: #fbfffe;
-      }
-
-      .directionItem.pending {
-        background: #fffdf7;
-      }
-
-      .directionItem span {
-        display: inline-flex;
-        padding: 5px 10px;
-        border-radius: 999px;
-        background: #e6f6f1;
-        color: #0b6b58;
-        font-size: 0.76rem;
-        font-weight: 900;
-      }
-
-      .directionItem h3 {
-        margin-top: 12px;
-      }
-
-      .directionResultRow {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        align-items: center;
-        margin-top: 10px;
-      }
-
-      .directionResultRow small {
-        color: var(--muted);
-        font-weight: 900;
-      }
-
-      .directionItem p {
-        margin: 8px 0 0;
-        color: var(--muted);
-        line-height: 1.6;
-      }
-
-      .directionTourMeta {
-        display: grid;
-        gap: 5px;
-        margin-top: 12px;
-        padding: 12px;
-        border: 1px solid #dbe7e4;
-        border-radius: 8px;
-        background: #f8fbfa;
-      }
-
-      .directionTourMeta strong {
-        color: #173331;
-      }
-
-      .directionTourMeta small {
-        color: var(--muted);
-        line-height: 1.45;
-      }
-
-      .directionTourMeta .directionBudgetBasis {
-        width: fit-content;
-        padding: 5px 8px;
-        border-radius: 8px;
-        font-weight: 900;
-      }
-
-      .directionAgencyLinks {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px;
-        margin-top: 10px;
-      }
-
-      .directionAgencyLinks > strong {
-        grid-column: 1 / -1;
-        color: #173331;
-        font-size: 0.9rem;
-      }
-
-      .directionAgencyLinks a {
-        display: grid;
-        gap: 4px;
-        min-height: 94px;
-        padding: 10px;
-        border: 1px solid #cfe1dc;
-        border-radius: 8px;
-        background: #fbfffe;
-        color: inherit;
-        text-decoration: none;
-      }
-
-      .directionAgencyLinks a:hover {
-        border-color: #6ea99a;
-        background: #f4fbf8;
-      }
-
-      .directionAgencyLinks span {
-        color: #173331;
-        font-weight: 900;
-      }
-
-      .directionAgencyLinks small {
-        color: var(--muted);
-        font-size: 0.76rem;
-        line-height: 1.35;
-      }
-
-      .directionBudgetBasis.under {
-        background: #e9f8ef;
-        color: #23743a;
-      }
-
-      .directionBudgetBasis.near {
-        background: #fff6df;
-        color: #8a5b00;
-      }
-
-      .directionBudgetBasis.over {
-        background: #fff0ed;
-        color: #b42318;
-      }
-
-      .directionBudgetBasis.unknown {
-        background: #edf2f7;
-        color: #40515e;
-      }
-
-      .directionInfoDetail {
-        margin-top: 12px;
-        border-top: 1px solid #e0ebe8;
-        padding-top: 12px;
-      }
-
-      .directionInfoDetail summary {
-        color: #173331;
-        cursor: pointer;
-        font-size: 0.9rem;
-        font-weight: 900;
-      }
-
-      .directionInfoGrid {
-        display: grid;
-        gap: 10px;
-        margin-top: 12px;
-      }
-
-      .directionInfoGrid span,
-      .directionUnpublished {
-        display: grid;
-        gap: 5px;
-        padding: 10px;
-        border-radius: 8px;
-        background: #f8fbfa;
-        color: var(--muted);
-        font-size: 0.86rem;
-        line-height: 1.5;
-      }
-
-      .directionInfoGrid strong,
-      .directionUnpublished strong {
-        color: #173331;
-      }
-
-      .directionUnpublished {
-        margin-top: 12px;
-        border: 1px solid #f3dfb6;
-        background: #fffaf0;
-      }
-
-      .directionRankingSummary {
-        display: grid;
-        gap: 6px;
-        margin-top: 12px;
-        padding: 12px;
-        border: 1px solid #dbe7e4;
-        border-radius: 8px;
-        background: #fff;
-        color: var(--muted);
-        font-size: 0.88rem;
-        line-height: 1.5;
-      }
-
-      .directionRankingSummary strong {
-        color: #173331;
-      }
-
-      .directionRankingSummary small {
-        color: #7a5b00;
-      }
-
-      .directionTourLink {
-        display: inline-flex;
-        width: fit-content;
-        min-height: 36px;
-        align-items: center;
-        margin-top: 12px;
-        padding: 8px 11px;
-        border-radius: 8px;
-        background: #163b38;
-        color: #fff;
-        font-size: 0.86rem;
-        font-weight: 900;
-        text-decoration: none;
-      }
-
-      .simulatorSection {
-        padding-top: 6px;
-      }
-
-      .simulatorShell {
-        display: grid;
-        grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
-        gap: 20px;
-        margin-top: 24px;
-        align-items: start;
-      }
-
-      .controlPanel,
-      .topRecommendation,
-      .optionCard {
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #fff;
-        box-shadow: 0 18px 48px rgba(24, 48, 44, 0.08);
-      }
-
-      .controlPanel {
-        padding: 24px;
-      }
-
-      .controlGroup {
-        display: grid;
-        gap: 10px;
-        margin-top: 22px;
-      }
-
-      .controlGroup:first-child {
-        margin-top: 0;
-      }
-
-      .controlLabel {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        font-weight: 900;
-      }
-
-      .controlLabel strong {
-        color: var(--teal);
-      }
-
-      .controlGroup input[type="range"] {
-        width: 100%;
-        accent-color: var(--teal);
-      }
-
-      .budgetNumber {
-        width: 100%;
-        min-height: 42px;
-        padding: 8px 10px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        color: var(--foreground);
-        font: inherit;
-        font-weight: 800;
-      }
-
-      .rangeHint {
-        color: var(--muted);
-        font-size: 0.84rem;
-        font-weight: 800;
-        line-height: 1.45;
-      }
-
-      .controlTitle {
-        color: #173331;
-        font-weight: 900;
-      }
-
-      .segmentedControl {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 8px;
-      }
-
-      .comfortControl {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-
-      .auroraControl {
-        grid-template-columns: 1fr;
-      }
-
-      .segmentedControl button {
-        min-height: 42px;
-        padding: 8px 10px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #f8fbfa;
-        color: #24413d;
-        cursor: pointer;
-        font: inherit;
-        font-size: 0.88rem;
-        font-weight: 900;
-      }
-
-      .segmentedControl button span,
-      .segmentedControl button small {
-        display: block;
-      }
-
-      .segmentedControl button small {
-        margin-top: 3px;
-        color: var(--muted);
-        font-size: 0.76rem;
-        line-height: 1.35;
-      }
-
-      .segmentedControl button.active {
-        border-color: #163b38;
-        background: #163b38;
-        color: #fff;
-      }
-
-      .segmentedControl button.active small {
-        color: rgba(255, 255, 255, 0.78);
-      }
-
-      .selectionImpactPreview {
-        display: grid;
-        gap: 8px;
-        margin-top: 18px;
-        padding: 12px;
-        border: 1px solid #cfe7df;
-        border-radius: 8px;
-        background: #eef8f5;
-        color: #31504b;
-        line-height: 1.45;
-      }
-
-      .selectionImpactPreview > strong {
-        color: #173331;
-        font-size: 0.92rem;
-      }
-
-      .selectionImpactPreview span {
-        display: grid;
-        grid-template-columns: 48px minmax(0, 1fr);
-        gap: 8px;
-      }
-
-      .selectionImpactPreview b {
-        color: #0b6b58;
-      }
-
-      .selectionImpactPreview small {
-        color: #7a5b00;
-        font-weight: 900;
-      }
-
-      .toggleRow {
-        display: flex;
-        gap: 10px;
-        margin-top: 22px;
-        color: #24413d;
-        font-weight: 800;
-        line-height: 1.55;
-      }
-
-      .toggleRow input {
-        width: 18px;
-        height: 18px;
-        margin-top: 2px;
-        accent-color: var(--teal);
-      }
-
-      .impactAudit {
-        display: grid;
-        gap: 8px;
-        margin-top: 18px;
-        padding: 12px;
-        border: 1px solid #dbe7e4;
-        border-radius: 8px;
-        background: #fbfffe;
-      }
-
-      .impactAudit > strong {
-        color: #173331;
-        font-size: 0.92rem;
-      }
-
-      .impactAudit span {
-        display: grid;
-        grid-template-columns: minmax(86px, 0.7fr) auto minmax(0, 1.7fr);
-        gap: 8px;
-        align-items: start;
-        padding: 8px 0 0;
-        border-top: 1px solid #edf3f1;
-        color: #31504b;
-      }
-
-      .impactAudit span:first-of-type {
-        border-top: 0;
-        padding-top: 2px;
-      }
-
-      .impactAudit b {
-        color: #173331;
-      }
-
-      .impactAudit small {
-        width: fit-content;
-        padding: 3px 7px;
-        border-radius: 999px;
-        background: #e6f6f1;
-        color: #0b6b58;
-        font-weight: 900;
-      }
-
-      .impactAudit em {
-        font-style: normal;
-        line-height: 1.45;
-      }
-
-      .simulatorHint {
-        margin: 18px 0 0;
-        color: var(--muted);
-        font-size: 0.9rem;
-        line-height: 1.6;
-      }
-
-      .applyPlannerBox {
-        display: grid;
-        gap: 10px;
-        margin-top: 22px;
-      }
-
-      .applyPlannerButton {
-        min-height: 42px;
-        border: 0;
-        border-radius: 8px;
-        background: #163b38;
-        color: #fff;
-        cursor: pointer;
-        font: inherit;
-        font-weight: 900;
-      }
-
-      .applyPlannerButton:hover {
-        background: #0f2e2b;
-      }
-
-      .baselineDisclosure {
-        margin-top: 18px;
-      }
-
-      .baselineDisclosure[open] summary {
-        margin-bottom: 16px;
-      }
-
-      .applyPlannerStatus {
-        display: block;
-        padding: 10px 12px;
-        border-radius: 8px;
-        font-size: 0.86rem;
-        font-weight: 850;
-        line-height: 1.5;
-      }
-
-      .applyPlannerStatus.ready {
-        border: 1px solid #cfe7df;
-        background: #eef8f5;
-        color: #173331;
-      }
-
-      .applyPlannerStatus.pending {
-        border: 1px solid #f0d49a;
-        background: #fff7e5;
-        color: #7a4f00;
-      }
-
-      .topRecommendation {
-        padding: 20px;
-        border-left: 6px solid var(--teal);
-      }
-
-      .topRecommendation.strong {
-        border-left-color: #2f9e44;
-        background: #f1fbf5;
-      }
-
-      .topRecommendation.conditional {
-        border-left-color: #d8a24a;
-        background: #fff8e8;
-      }
-
-      .topRecommendation.backup {
-        border-left-color: #245c73;
-        background: #f0f7fb;
-      }
-
-      .topRecommendation.pending {
-        border-left-color: #64748b;
-        background: #f8fafc;
-      }
-
-      .topRecommendation.exclude {
-        border-left-color: #c24137;
-        background: #fff0ee;
-      }
-
-      .topRecommendation .recommendationKicker {
-        display: block;
-        color: var(--muted);
-        font-size: 0.84rem;
-        font-weight: 900;
-      }
-
-      .topRecommendation strong {
-        display: block;
-        margin-top: 6px;
-        color: #173331;
-        font-size: 1.25rem;
-      }
-
-      .topRecommendation p {
-        margin: 10px 0 0;
-        color: #2e4742;
-        line-height: 1.65;
-      }
-
-      .recommendationMeta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 12px;
-      }
-
-      .recommendationMeta span {
-        padding: 5px 9px;
-        border: 1px solid rgba(22, 59, 56, 0.14);
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.72);
-        color: #24413d;
-        font-size: 0.8rem;
-        font-weight: 900;
-      }
-
-      .recommendationAction {
-        display: grid;
-        gap: 8px;
-        margin-top: 16px;
-      }
-
-      .recommendationAction a {
-        width: fit-content;
-        min-height: 40px;
-        display: inline-flex;
-        align-items: center;
-        padding: 9px 14px;
-        border-radius: 8px;
-        background: #163b38;
-        color: #fff;
-        font-weight: 900;
-        text-decoration: none;
-      }
-
-      .recommendationAction small {
-        color: #3c5550;
-        line-height: 1.45;
-      }
-
-      .resultToolbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin-top: 20px;
-      }
-
-      .resultCounts {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .resultCounts span {
-        padding: 6px 10px;
-        border-radius: 999px;
-        background: #e6f6f1;
-        color: #0b6b58;
-        font-size: 0.82rem;
-        font-weight: 900;
-      }
-
-      .optionList {
-        display: grid;
-        gap: 14px;
-        margin-top: 14px;
-      }
-
-      .optionCard {
-        padding: 20px;
-        border-left: 6px solid var(--teal);
-      }
-
-      .optionCard.strong {
-        border-left-color: #2f9e44;
-      }
-
-      .optionCard.conditional {
-        border-left-color: #d8a24a;
-      }
-
-      .optionCard.backup {
-        border-left-color: #245c73;
-      }
-
-      .optionCard.pending {
-        border-left-color: #64748b;
-      }
-
-      .optionCard.exclude {
-        border-left-color: #c24137;
-        opacity: 0.78;
-      }
-
-      .optionHeader {
-        display: grid;
-        grid-template-columns: auto minmax(0, 1fr);
-        gap: 14px;
-        align-items: start;
-      }
-
-      .optionHeader p {
-        margin: 8px 0 0;
-        color: var(--muted);
-        line-height: 1.6;
-      }
-
-      .recommendationBadge {
-        display: inline-flex;
-        align-items: center;
-        min-height: 30px;
-        padding: 5px 10px;
-        border-radius: 999px;
-        font-size: 0.82rem;
-        font-weight: 900;
-        white-space: nowrap;
-      }
-
-      .recommendationBadge.strong {
-        background: #dff7e8;
-        color: #146c43;
-      }
-
-      .recommendationBadge.conditional {
-        background: #fff0bd;
-        color: #8a5a00;
-      }
-
-      .recommendationBadge.backup {
-        background: #e6f0ff;
-        color: #25528a;
-      }
-
-      .recommendationBadge.pending {
-        background: #e2e8f0;
-        color: #334155;
-      }
-
-      .recommendationBadge.exclude {
-        background: #ffd9d6;
-        color: #a2362d;
-      }
-
-      .optionMetrics {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 10px;
-        margin-top: 16px;
-      }
-
-      .optionMetrics span {
-        padding: 12px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #f8fbfa;
-      }
-
-      .optionMetrics strong,
-      .optionMetrics small {
-        display: block;
-      }
-
-      .optionMetrics small {
-        margin-top: 4px;
-        color: var(--muted);
-        font-weight: 800;
-      }
-
-      .estimateGrid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-        margin-top: 14px;
         padding: 14px;
-        border: 1px solid #dbe7e4;
-        border-radius: 8px;
-        background: #fbfffe;
       }
 
-      .estimateGrid span,
-      .estimateGrid small {
-        color: #31504b;
-        line-height: 1.55;
+      .sourceCard h3 {
+        margin-bottom: 6px;
+        font-size: 1rem;
       }
 
-      .estimateGrid strong {
-        display: block;
-        color: #173331;
-        font-size: 0.86rem;
-      }
-
-      .estimateGrid small {
-        grid-column: 1 / -1;
-        padding-top: 8px;
-        border-top: 1px solid #dbe7e4;
-        font-weight: 900;
-      }
-
-      .flightOptionList,
-      .hotelRateList {
-        display: grid;
-        gap: 10px;
-        margin-top: 14px;
-      }
-
-      .flightOptionList > strong,
-      .hotelRateList > strong {
-        color: #173331;
-      }
-
-      .flightOptionCard {
-        display: grid;
-        grid-template-columns: 36px minmax(0, 1fr);
-        gap: 12px;
-        padding: 12px;
-        border: 1px solid #dbe7e4;
-        border-radius: 8px;
-        background: #fbfffe;
-      }
-
-      .flightOptionCard > span {
-        width: 32px;
-        height: 32px;
-        display: inline-grid;
-        place-items: center;
-        border-radius: 999px;
-        background: #163b38;
-        color: #fff;
-        font-weight: 900;
-      }
-
-      .flightOptionCard strong,
-      .flightOptionCard small,
-      .flightOptionCard p {
-        display: block;
-      }
-
-      .flightOptionCard p {
-        margin: 6px 0;
-        color: #31504b;
-        line-height: 1.5;
-      }
-
-      .flightOptionCard small {
-        margin-top: 4px;
-        color: #536a65;
-        line-height: 1.45;
-      }
-
-      .flightOptionCard a {
-        width: fit-content;
-        min-height: 34px;
-        display: inline-flex;
-        align-items: center;
-        margin-top: 8px;
-        padding: 7px 10px;
-        border-radius: 8px;
-        background: #e6f6f1;
-        color: #0b6b58;
-        font-weight: 900;
-        text-decoration: none;
-      }
-
-      .hotelRateList {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .hotelRateList > strong {
-        grid-column: 1 / -1;
-      }
-
-      .hotelRateCard {
-        display: grid;
-        gap: 5px;
-        padding: 12px;
-        border: 1px solid #dbe7e4;
-        border-radius: 8px;
-        background: #fbfffe;
-        color: #31504b;
-        line-height: 1.45;
-      }
-
-      .hotelRateCard strong {
-        color: #173331;
-      }
-
-      .hotelRateCard span,
-      .hotelRateCard small {
-        font-size: 0.86rem;
-      }
-
-      .sourceInline {
-        display: grid;
-        gap: 6px;
-        margin-top: 14px;
-        padding: 12px 14px;
-        border: 1px solid #cfe7df;
-        border-radius: 8px;
-        background: #eef8f5;
-        color: #31504b;
-        line-height: 1.5;
-      }
-
-      .sourceInline span {
-        font-size: 0.86rem;
-        font-weight: 900;
-      }
-
-      .sourceInline strong {
-        color: #10201d;
-        font-size: 0.95rem;
-      }
-
-      .rankingSummary {
-        display: grid;
-        gap: 6px;
-        margin-top: 14px;
-        padding: 12px 14px;
-        border-left: 4px solid #245c73;
-        background: #f0f7fb;
-        color: #24413d;
-        line-height: 1.55;
-      }
-
-      .rankingSummary strong {
-        color: #173331;
-      }
-
-      .reasonColumns {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
-        margin-top: 16px;
-      }
-
-      .reasonColumns > div > strong {
-        display: block;
-        color: #173331;
-      }
-
-      .reasonList,
-      .blockerList {
-        display: grid;
-        gap: 8px;
-        margin: 10px 0 0;
-        padding-left: 18px;
-        color: #31504b;
-        line-height: 1.55;
-      }
-
-      .blockerList {
-        color: #8a352d;
-      }
-
-      .nextStep {
-        margin: 16px 0 0;
-        padding: 12px 14px;
-        border-left: 4px solid var(--teal);
-        background: #eef7f4;
-        color: #173331;
-        line-height: 1.55;
-      }
-
-      .bookingRow {
-        margin-top: 12px;
-      }
-
-      .tableHeader {
-        display: flex;
-        align-items: start;
-        justify-content: space-between;
-        gap: 20px;
-      }
-
-      .sourceNote {
-        min-width: 250px;
-        padding: 14px 16px;
+      .loading,
+      .error {
         border: 1px solid var(--line);
         border-radius: 8px;
-        background: #f8fbfa;
+        background: #fff;
+        padding: 18px;
       }
 
-      .sourceNote strong,
-      .sourceNote span {
-        display: block;
-        line-height: 1.5;
+      .error {
+        border-color: #d9aaa5;
+        color: var(--danger);
       }
 
-      .sourceNote span {
-        margin-top: 4px;
-        color: var(--muted);
-        font-size: 0.9rem;
-      }
-
-      .tableWrap {
-        width: 100%;
-        margin-top: 24px;
-        overflow-x: auto;
-      }
-
-      table {
-        width: 100%;
-        min-width: 980px;
-        border-collapse: collapse;
-        font-size: 0.95rem;
-      }
-
-      th,
-      td {
-        padding: 15px 14px;
-        border-bottom: 1px solid var(--line);
-        text-align: left;
-        vertical-align: top;
-      }
-
-      th {
-        background: #eef4f3;
-        color: #24413d;
-        font-size: 0.82rem;
-        font-weight: 900;
-      }
-
-      td {
-        color: #243633;
-        line-height: 1.55;
-      }
-
-      .budgetRow.green td {
-        background: #f1fbf5;
-      }
-
-      .budgetRow.yellow td {
-        background: #fff8e8;
-      }
-
-      .budgetRow.red td {
-        background: #fff0ee;
-      }
-
-      .statusPill {
-        min-height: 30px;
-        padding: 5px 10px;
-        white-space: nowrap;
-      }
-
-      .statusPill.green {
-        background: #dff7e8;
-        color: #146c43;
-      }
-
-      .statusPill.yellow {
-        background: #fff0bd;
-        color: #8a5a00;
-      }
-
-      .statusPill.red {
-        background: #ffd9d6;
-        color: #a2362d;
-      }
-
-      .mobileTourCards {
-        display: none;
-      }
-
-      .checkList {
-        display: grid;
-        gap: 10px;
-        margin: 24px 0 0;
-        padding: 0;
-        list-style: none;
-      }
-
-      .checkList li {
-        padding: 13px 14px;
-        border-left: 4px solid var(--amber);
-        background: #fff8e8;
-        color: #352818;
-        font-weight: 800;
-      }
-
-      .gateList {
-        display: grid;
-        gap: 12px;
-        margin-top: 24px;
-      }
-
-      .gateItem {
-        padding: 16px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #fbfcfc;
-      }
-
-      .gateItem strong {
-        display: block;
-        color: #173331;
-      }
-
-      .closingPanel {
-        margin-bottom: 48px;
-        background: linear-gradient(135deg, #102522, #163b38 55%, #265063);
-        color: #fff;
-      }
-
-      .closingPanel p:last-child {
-        max-width: 860px;
-        margin: 18px 0 0;
-        color: rgba(255, 255, 255, 0.84);
-        line-height: 1.8;
-      }
-
-      @media (max-width: 980px) {
-        .decisionBar,
-        .scopeGrid,
-        .sourceGrid,
-        .directionList {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .simulatorShell {
+      @media (max-width: 900px) {
+        .statusBar,
+        .layout,
+        .summary,
+        .agencyGrid,
+        .sourceGrid {
           grid-template-columns: 1fr;
         }
+
+        .controls {
+          position: static;
+        }
+
+        .resultsHeader {
+          display: block;
+        }
+
+        .sortNote {
+          max-width: none;
+          text-align: left;
+        }
       }
 
-      @media (max-width: 820px) {
+      @media (max-width: 560px) {
         .hero {
-          min-height: 820px;
+          min-height: 320px;
+          padding: 30px 16px;
         }
 
-        .heroContent,
-        .pageSection,
-        .contentGrid,
-        .tableSection,
-        .closingPanel {
-          width: calc(100% - 28px);
+        .statusBar {
+          margin-top: -36px;
         }
 
-        .heroContent {
-          padding-bottom: 34px;
-        }
-
-        .decisionBar,
-        .summaryBand,
-        .contentGrid,
-        .scopeGrid,
-        .sourceGrid,
-        .agencyRankingGrid,
-        .directionChooser,
-        .directionAgencyLinks,
-        .directionList,
-        .badgeGrid {
-          grid-template-columns: 1fr;
-        }
-
-        .segmentedControl,
-        .comfortControl,
-        .impactAudit span,
-        .optionMetrics,
-        .estimateGrid,
-        .hotelRateList,
-        .reasonColumns {
-          grid-template-columns: 1fr;
-        }
-
-        .resultToolbar,
-        .optionHeader {
-          display: grid;
-        }
-
-        .summaryItem {
-          padding: 24px 20px;
-        }
-
-        .pageSection,
-        .contentGrid,
-        .tableSection,
-        .closingPanel {
-          margin-top: 20px;
-        }
-
-        .panel,
-        .tableSection,
-        .closingPanel {
-          padding: 22px;
-        }
-
-        .tableHeader {
-          display: grid;
-        }
-
-        .sourceNote {
-          min-width: 0;
-        }
-
-        .tourTableWrap {
-          display: none;
-        }
-
-        .mobileTourCards {
-          display: grid;
-          gap: 12px;
-          margin-top: 22px;
-        }
-
-        .tourCard {
-          padding: 18px;
-          border: 1px solid var(--line);
-          border-radius: 8px;
-        }
-
-        .tourCard.green {
-          border-left: 6px solid #2f9e44;
-          background: #f1fbf5;
-        }
-
-        .tourCard.yellow {
-          border-left: 6px solid #d8a24a;
-          background: #fff8e8;
-        }
-
-        .tourCard.red {
-          border-left: 6px solid #c24137;
-          background: #fff0ee;
-        }
-
-        .cardDate {
+        .agencyTop {
           display: block;
-          color: var(--muted);
-          font-size: 0.85rem;
-          font-weight: 800;
         }
 
-        .tourCard strong {
-          display: block;
-          margin-top: 5px;
+        .score {
+          width: 72px;
+          margin-top: 12px;
         }
 
-        .tourCard dl {
-          display: grid;
-          gap: 10px;
-          margin: 16px 0 0;
-        }
-
-        .tourCard dl div {
-          display: grid;
-          grid-template-columns: 76px 1fr;
-          gap: 12px;
-        }
-
-        .tourCard dt {
-          color: var(--muted);
-          font-weight: 900;
-        }
-
-        .tourCard dd {
-          margin: 0;
-          line-height: 1.55;
+        .field {
+          grid-template-columns: 1fr;
+          gap: 2px;
         }
       }
     </style>
   </head>
   <body>
-    <main>
-      <section class="hero">
-        <div class="heroContent">
-          <p class="eyebrow">Aurora Intelligence Project - Yellowknife 2027</p>
-          <h1>黃刀鎮極光旅決策儀表板</h1>
-          <p class="lead">
-            目前是 M2.1 市場實證與重查準備階段，不是最終下訂狀態。所有旅行團、票價與班表資料在正式付款前都必須重新查核。
-          </p>
-          <div class="decisionBar" aria-label="決策狀態列">
-            <div class="decisionStatus"><span>M2</span><strong>已通過</strong><small>靜態決策基線成立</small></div>
-            <div class="decisionStatus"><span>動態商品資料</span><strong>待重查</strong><small>9-11 月與冬季團都納入</small></div>
-            <div class="decisionStatus"><span>預算</span><strong>NT$150,000</strong><small>每人原則上限</small></div>
-            <div class="decisionStatus"><span>策略</span><strong>團體優先</strong><small>自由行作比較基準</small></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="summaryBand" aria-label="目前結論">
-        <div class="summaryItem">
-          <span class="summaryLabel">目前結論</span>
-          <strong>2026 團體樣本顯示，低操作負擔可行，但預算緩衝薄。</strong>
-        </div>
-        <div class="summaryItem">
-          <span class="summaryLabel">查核基準</span>
-          <strong>查核基準日：2026-07-15；正式下訂前需重查旅行團、票價與班表。</strong>
-        </div>
-      </section>
-
-      <section class="pageSection scopeSection">
-        <div class="sectionHeader tableHeader">
-          <div>
-            <p class="eyebrow">Search Scope</p>
-            <h2>極光旅遊團搜尋範圍</h2>
-            <p>本網站不只看 2027 年 1-3 月；9 月、10 月、11 月的秋季極光團，以及冬季極光團，都應納入同一套比較。</p>
-          </div>
-          <div class="sourceNote">
-            <strong>目前資料狀態</strong>
-            <span>已同步來源商品會自動進入排序；缺少團名、價格或訂購網址者不列入推薦。</span>
-          </div>
-        </div>
-        <div class="scopeGrid">
-          <article class="scopeCard">
-            <span>9-11 月</span>
-            <h3>秋季極光團</h3>
-            <p>同樣是本網站重點；需納入旅行團與自由行比較。</p>
-          </article>
-          <article class="scopeCard">
-            <span>12-3 月</span>
-            <h3>冬季極光團</h3>
-            <p>可搭配雪地活動，但需檢查低溫、體力與延誤風險。</p>
-          </article>
-          <article class="scopeCard">
-            <span>4-6 月</span>
-            <h3>延伸觀測</h3>
-            <p>可保留搜尋，但要確認是否仍屬可販售極光行程。</p>
-          </article>
-          <article class="scopeCard">
-            <span>2027 與其他年份</span>
-            <h3>年份不作唯一限制</h3>
-            <p>只要是可查核的黃刀鎮極光旅行團，就可放入候選。</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="pageSection simulatorSection" id="decision-simulator">
-        <div class="sectionHeader">
-          <p class="eyebrow">Decision Options</p>
-          <h2>決策選項列表</h2>
-          <p>先設定預算、旅行型態、極光夜數與風險容忍度；按下確認並查核後，才更新推薦與候選方向。</p>
-        </div>
-
-        <div class="simulatorShell">
-          <aside class="controlPanel" aria-label="可調整條件">
-            <div class="controlGroup">
-              <div class="controlLabel">
-                <span>預算上限</span>
-                <strong id="budgetLabel">NT$150,000</strong>
-              </div>
-              <input aria-label="預算上限" id="budgetRange" max="400000" min="100000" step="10000" type="range" value="150000" />
-              <input aria-label="直接輸入預算" class="budgetNumber" id="budgetNumber" max="400000" min="100000" step="10000" type="number" value="150000" />
-              <span class="rangeHint">可選區間：NT$100,000 - NT$400,000</span>
-            </div>
-
-            <div class="controlGroup">
-              <span class="controlTitle">旅行型態</span>
-              <div class="segmentedControl" data-filter="preferredMode">
-                <button class="active" data-value="group" type="button">團體優先</button>
-                <button data-value="either" type="button">兩者都看</button>
-                <button data-value="independent" type="button">自由行優先</button>
-              </div>
-            </div>
-
-            <div class="controlGroup">
-              <span class="controlTitle">最低極光夜數</span>
-              <div class="segmentedControl auroraControl" data-filter="auroraTarget">
-                <button class="active" data-value="A" type="button">
-                  <span>A級：至少 3 個完整極光夜</span>
-                  <small>抵達日不計；B級會降級</small>
-                </button>
-                <button data-value="B" type="button">
-                  <span>B級：至少 3 晚</span>
-                  <small>含抵達日；列價格備援</small>
-                </button>
-                <button data-value="either" type="button">
-                  <span>不限夜數</span>
-                  <small>僅作開放比較</small>
-                </button>
-              </div>
-            </div>
-
-            <div class="controlGroup">
-              <span class="controlTitle">風險容忍度</span>
-              <div class="segmentedControl" data-filter="riskTolerance">
-                <button data-value="1" type="button"><span>保守</span><small>只接受低風險</small></button>
-                <button class="active" data-value="2" type="button"><span>平衡</span><small>可接受可控待查</small></button>
-                <button data-value="3" type="button"><span>彈性</span><small>可放寬風險</small></button>
-              </div>
-            </div>
-
-            <div class="controlGroup">
-              <span class="controlTitle">舒適程度</span>
-              <div class="segmentedControl comfortControl" data-filter="comfort">
-                <button data-value="basic" type="button"><span>節制</span><small>壓低住宿成本</small></button>
-                <button class="active" data-value="balanced" type="button"><span>平衡</span><small>價格與體力折衷</small></button>
-                <button data-value="comfort" type="button"><span>舒適</span><small>提高飯店與緩衝</small></button>
-                <button data-value="any" type="button"><span>不限</span><small>不以舒適度排序</small></button>
-              </div>
-            </div>
-
-            <div class="selectionImpactPreview" aria-live="polite" id="selectionImpactPreview"></div>
-
-            <label class="toggleRow">
-              <input id="requireVerified" type="checkbox" />
-              <span>只採已查核資料；未重查的 2027 方向自動降級。</span>
-            </label>
-
-            <div class="impactAudit" aria-label="條件必要性與候選影響">
-              <strong>條件必要性與候選影響</strong>
-              <span>
-                <b>預算上限</b>
-                <small>必須</small>
-                <em>直接改變低於、臨界、超標與決策門檻；候選判讀以確認後的預算上限為準。</em>
-              </span>
-              <span>
-                <b>旅行型態</b>
-                <small>必須</small>
-                <em>決定預設候選分類，並加權團體或自由行，不會把非偏好型態完全隱藏。</em>
-              </span>
-              <span>
-                <b>最低極光夜數</b>
-                <small>必須</small>
-                <em>A級要求會降級只達 B級的候選；B級要求會保留價格備援。</em>
-              </span>
-              <span>
-                <b>風險容忍度</b>
-                <small>必須</small>
-                <em>航班銜接、資料缺口與來源新鮮度風險高於設定時會降級或排除。</em>
-              </span>
-              <span>
-                <b>舒適程度</b>
-                <small>排序條件</small>
-                <em>影響節制、平衡、舒適方案排序；不是單獨決定是否可下訂的硬門檻。</em>
-              </span>
-              <span>
-                <b>只採已查核資料</b>
-                <small>查核開關</small>
-                <em>開啟後，未完成重查或缺具體旅行團資料的項目只保留為待查方向。</em>
-              </span>
-            </div>
-
-            <div class="applyPlannerBox">
-              <button class="applyPlannerButton" id="applyPlanner" type="button">確認並查核</button>
-              <span class="applyPlannerStatus pending" id="applyPlannerStatus">尚未查核；請先確認條件，才會產生推薦。</span>
-            </div>
-
-            <p class="simulatorHint">查核結果是規劃輔助，不會取代正式下訂前確認。</p>
-          </aside>
-
-          <div class="resultPanel" aria-live="polite">
-            <div class="topRecommendation" id="topRecommendation"></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="pageSection directionSection" id="candidate-directions">
-        <div class="sectionHeader tableHeader">
-          <div>
-            <p class="eyebrow">Candidate Options</p>
-            <h2>旅行方案候選清單</h2>
-            <p>這裡使用上方已確認條件，把 A級團體、B級團體與自由行候選分開。點選分類後，下方會列出旅行團或自由行方案。</p>
-          </div>
-          <div class="sourceNote">
-            <strong>排序規則</strong>
-            <span>按下確認並查核後，才會依預算、夜數、型態與風險重新排序。</span>
-          </div>
-        </div>
-
-        <div class="directionChooser" id="directionChooser" aria-label="旅行方案候選清單分類選擇">
-          <button type="button" data-direction="group-a" aria-disabled="true" aria-pressed="false" disabled>A級團體候選方向</button>
-          <button type="button" data-direction="group-b" aria-disabled="true" aria-pressed="false" disabled>B級團體價格方向</button>
-          <button type="button" data-direction="independent" aria-disabled="true" aria-pressed="false" disabled>自由行候選</button>
-        </div>
-
-        <div class="directionDetail" id="directionDetail"></div>
-      </section>
-
-      <section class="pageSection globalAgencySection" id="global-agency-ranking">
-        <details class="agencyDisclosure">
-          <summary class="agencyDisclosureSummary">
-        <div class="sectionHeader tableHeader">
-          <div>
-            <p class="eyebrow">Global Aurora Tour Audit</p>
-            <h2>全球極光旅行社查核排序</h2>
-            <p>先用旅行社顯示名稱建立候選，並依來源可讀性、目的地覆蓋、價格透明度、是否有訂購頁與是否含黃刀鎮/芬蘭等極光商品線索評分。</p>
-          </div>
-          <div class="sourceNote">
-            <strong>查核基準日：2026-07-16</strong>
-            <span>已查 9 家台灣旅行社；點選展開／收合完整排序。</span>
-          </div>
-        </div>
-
-          </summary>
-
-          <div class="agencyRankingGrid">
-          <article class="agencyScoreCard strong">
-            <div class="agencyScoreHead"><div><span>優先查核</span><h3>東南旅遊</h3></div><strong>92</strong></div>
-            <div class="agencyMeta"><span>可讀最低價 NT$136,900 起</span><span>今日查核</span><span>白名單驗證</span></div>
-            <p>追逐極光專題可讀到多筆商品與 minPrice，黃刀鎮與北歐商品都有可進入的產品頁。</p>
-            <div class="destinationChips"><span>黃刀鎮</span><span>挪威</span><span>芬蘭</span><span>瑞典</span><span>冰島</span></div>
-            <div class="signalList">
-              <strong>查到的顯示名稱/線索</strong>
-              <small>玩美加族~黃刀鎮賞極光3晚、美加雙城10日</small>
-              <small>微奢/典藏/精選北歐極光屋、破冰船、馴鹿雪橇系列</small>
-              <small>加拿大黃刀鎮極光、露易絲湖、洛磯山脈12日</small>
-            </div>
-            <div class="agencyAction">
-              <a href="https://www.settour.com.tw/theme/aurora_Season0000008/" rel="noreferrer" target="_blank">前往來源</a>
-              <small>優先進商品頁確認出發日期、航班、飯店與 A/B 極光夜數口徑。</small>
-            </div>
-          </article>
-
-          <article class="agencyScoreCard strong">
-            <div class="agencyScoreHead"><div><span>優先查核</span><h3>雄獅旅遊</h3></div><strong>86</strong></div>
-            <div class="agencyMeta"><span>專題頁未直接提供價格</span><span>今日查核</span><span>白名單驗證</span></div>
-            <p>2026-2027 全球賞極光專題可讀到大量商品顯示名稱，涵蓋冰島、芬蘭、黃刀與北歐。</p>
-            <div class="destinationChips"><span>冰島</span><span>黃刀鎮</span><span>芬蘭</span><span>挪威</span><span>北歐</span></div>
-            <div class="signalList">
-              <strong>查到的顯示名稱/線索</strong>
-              <small>加拿大極光｜黃刀鎮賞極光3晚、溫哥華10日</small>
-              <small>特選芬蘭幸福極光10日｜破冰船、極光玻璃屋</small>
-              <small>經典冰島夢幻極光10日｜極光船、藍湖溫泉、藍冰洞</small>
-            </div>
-            <div class="agencyAction">
-              <a href="https://event.liontravel.com/zh-tw/winter-travel/aurora/index?fr=cg4" rel="noreferrer" target="_blank">前往來源</a>
-              <small>補抓各商品頁價格與可售日期；目前先用旅行社顯示名稱納入評分。</small>
-            </div>
-          </article>
-
-          <article class="agencyScoreCard conditional">
-            <div class="agencyScoreHead"><div><span>條件候選</span><h3>山富旅遊</h3></div><strong>82</strong></div>
-            <div class="agencyMeta"><span>專案頁未直接提供價格</span><span>今日查核</span><span>白名單驗證</span></div>
-            <p>世界極光專案頁可讀到芬蘭、羅弗敦、阿拉斯加、加拿大黃刀鎮與澳洲極光商品顯示名稱。</p>
-            <div class="destinationChips"><span>芬蘭</span><span>挪威</span><span>冰島</span><span>阿拉斯加</span><span>黃刀鎮</span><span>澳洲</span></div>
-            <div class="signalList">
-              <strong>查到的顯示名稱/線索</strong>
-              <small>幸福極光．芬蘭挪威10日</small>
-              <small>阿拉斯加幸福極光8日</small>
-              <small>加拿大黃刀鎮極光10日／美加黃刀極光炫目10日</small>
-            </div>
-            <div class="agencyAction">
-              <a href="https://www.travel4u.com.tw/project/aurora/" rel="noreferrer" target="_blank">前往來源</a>
-              <small>補抓商品頁價格與航班；目的地覆蓋完整，價格欄位仍需重查。</small>
-            </div>
-          </article>
-
-          <article class="agencyScoreCard watch">
-            <div class="agencyScoreHead"><div><span>持續追蹤</span><h3>可樂旅遊</h3></div><strong>68</strong></div>
-            <div class="agencyMeta"><span>搜尋頁 403，價格待重查</span><span>首頁有線索，搜尋頁受限</span><span>白名單驗證</span></div>
-            <p>首頁可讀到極光旅行與冰島幸福極光入口，但站內搜尋頁目前禁止讀取。</p>
-            <div class="destinationChips"><span>冰島</span></div>
-            <div class="signalList"><strong>查到的顯示名稱/線索</strong><small>冰島幸福極光 9/10/11/13 日</small><small>極光旅行熱門快搜入口</small></div>
-            <div class="agencyAction"><a href="https://www.colatour.com.tw/" rel="noreferrer" target="_blank">前往來源</a><small>改用瀏覽器或稍後重查站內搜尋結果，取得價格與商品頁。</small></div>
-          </article>
-
-          <article class="agencyScoreCard watch">
-            <div class="agencyScoreHead"><div><span>持續追蹤</span><h3>長汎旅遊</h3></div><strong>56</strong></div>
-            <div class="agencyMeta"><span>2026 歷史樣本 NT$142,451-165,451</span><span>歷史基準，需重查</span><span>白名單驗證</span></div>
-            <p>目前保留 2026 已結束黃刀鎮團體樣本，只能作價格基準，不當成可售商品。</p>
-            <div class="destinationChips"><span>黃刀鎮</span></div>
-            <div class="signalList"><strong>查到的顯示名稱/線索</strong><small>玩美加族~加拿大極光10日歷史樣本</small><small>四筆 2026 出發日比較基準</small></div>
-            <div class="agencyAction"><a href="https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB" rel="noreferrer" target="_blank">前往來源</a><small>重查是否已有新的可售黃刀鎮或全球極光團。</small></div>
-          </article>
-
-          <article class="agencyScoreCard pending">
-            <div class="agencyScoreHead"><div><span>資料待補</span><h3>易遊網</h3></div><strong>48</strong></div>
-            <div class="agencyMeta"><span>未取得極光團價格</span><span>今日比對，未入排序</span><span>白名單驗證</span></div>
-            <p>可讀到美加/加拿大跟團入口與一般加拿大商品，但未讀到黃刀鎮極光團具體商品。</p>
-            <div class="destinationChips"><span>加拿大</span></div>
-            <div class="signalList"><strong>查到的顯示名稱/線索</strong><small>美加/加拿大跟團入口</small><small>一般加拿大商品頁</small></div>
-            <div class="agencyAction"><a href="https://vacation.eztravel.com.tw/oversea/america-canada-newzealand-australia/" rel="noreferrer" target="_blank">前往來源</a><small>以站內搜尋或分類頁重查黃刀鎮、極光、芬蘭、冰島關鍵字。</small></div>
-          </article>
-
-          <article class="agencyScoreCard pending">
-            <div class="agencyScoreHead"><div><span>資料待補</span><h3>五福旅遊</h3></div><strong>34</strong></div>
-            <div class="agencyMeta"><span>未取得極光團價格</span><span>首頁未見極光</span><span>白名單驗證</span></div>
-            <p>首頁本次未讀到極光關鍵字。</p>
-            <div class="destinationChips"><span>待查</span></div>
-            <div class="signalList"><strong>查到的顯示名稱/線索</strong><small>首頁可讀，但無極光線索</small></div>
-            <div class="agencyAction"><a href="https://www.lifetour.com.tw/" rel="noreferrer" target="_blank">前往來源</a><small>重查站內搜尋或歐洲/美加分類頁。</small></div>
-          </article>
-
-          <article class="agencyScoreCard pending">
-            <div class="agencyScoreHead"><div><span>資料待補</span><h3>喜鴻旅遊</h3></div><strong>34</strong></div>
-            <div class="agencyMeta"><span>未取得極光團價格</span><span>首頁未見極光</span><span>白名單驗證</span></div>
-            <p>首頁本次未讀到極光關鍵字。</p>
-            <div class="destinationChips"><span>待查</span></div>
-            <div class="signalList"><strong>查到的顯示名稱/線索</strong><small>首頁可讀，但無極光線索</small></div>
-            <div class="agencyAction"><a href="https://www.besttour.com.tw/" rel="noreferrer" target="_blank">前往來源</a><small>重查站內搜尋或歐洲/美加分類頁。</small></div>
-          </article>
-
-          <article class="agencyScoreCard pending">
-            <div class="agencyScoreHead"><div><span>資料待補</span><h3>鳳凰旅遊</h3></div><strong>28</strong></div>
-            <div class="agencyMeta"><span>TLS 連線失敗</span><span>連線待重查</span><span>待確認</span></div>
-            <p>本次查核無法建立可信 TLS 連線，未能讀取頁面。</p>
-            <div class="destinationChips"><span>連線待查</span></div>
-            <div class="signalList"><strong>查到的顯示名稱/線索</strong><small>連線待重查</small></div>
-            <div class="agencyAction"><a href="https://www.phoenix.com.tw/" rel="noreferrer" target="_blank">前往來源</a><small>改用瀏覽器或其他網路環境重查後再給商品分。</small></div>
-          </article>
-        </div>
-        </details>
-      </section>
-
-      <section class="contentGrid">
-        <article class="panel warningPanel">
-          <details class="compactRuleDisclosure">
-            <summary>
-              <span>A/B 極光夜數規則</span>
-              <small>A級完整夜、B級含抵達日；點選展開。</small>
-            </summary>
-            <div class="badgeGrid compact">
-              <div class="auroraBadge">
-                <span>A 級</span>
-                <strong>抵達日不計</strong>
-                <p>3 個完整極光夜，最符合核心任務。</p>
-              </div>
-              <div class="auroraBadge">
-                <span>B 級</span>
-                <strong>3 晚，含抵達日</strong>
-                <p>可列入比較，但不得說成三個完整夜。</p>
-              </div>
-            </div>
-          </details>
-        </article>
-        <article class="panel">
-          <div class="sectionHeader">
-            <p class="eyebrow">Mission Priority</p>
-            <h2>判定順序</h2>
-          </div>
-          <div class="priorityStack">
-            <span>1. 極光機會</span>
-            <span>2. 安全</span>
-            <span>3. 體力</span>
-            <span>4. 體驗</span>
-          </div>
-        </article>
-      </section>
-
-      <section class="tableSection" id="historical-baseline">
-        <div class="sectionHeader tableHeader">
-          <div>
-            <p class="eyebrow">Historical Baseline</p>
-            <h2>2026 團體樣本比較強化</h2>
-            <p>綠：低於預算且有緩衝；黃：臨界通過；紅：必要費用後超標。</p>
-          </div>
-          <div class="sourceNote">
-            <strong>查核基準日：2026-07-15</strong>
-            <span>正式下訂前需重查</span>
-          </div>
-        </div>
-        <details class="baselineDisclosure">
-          <summary>
-            <strong>展開 2026 比較行程</strong>
-            <span>4 筆歷史樣本只作價格與行程節奏比較，不進入目前候選排序。</span>
-          </summary>
-          <div class="tableWrap tourTableWrap">
-            <table>
-            <thead>
-              <tr>
-                <th>日期</th>
-                <th>旅遊團名稱</th>
-                <th>必要費用後</th>
-                <th>預算餘額</th>
-                <th>夜數</th>
-                <th>判定</th>
-                <th>主要風險</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="budgetRow yellow">
-                <td>2026/01/15-01/24</td>
-                <td>玩美加族~加拿大極光10日</td>
-                <td>NT$149,451</td>
-                <td>NT$549</td>
-                <td><span class="nightPill">B 級</span></td>
-                <td><span class="statusPill yellow">臨界通過</span></td>
-                <td>預算幾乎沒有緩衝，任何保險、行李或匯率變動都可能超標。</td>
-              </tr>
-              <tr class="budgetRow red">
-                <td>2026/02/12-02/21</td>
-                <td>玩美加族~加拿大極光10日</td>
-                <td>NT$165,451</td>
-                <td>-NT$15,451</td>
-                <td><span class="nightPill">B 級</span></td>
-                <td><span class="statusPill red">超標</span></td>
-                <td>寒假與旺季溢價明顯，必要費用後已超過上限。</td>
-              </tr>
-              <tr class="budgetRow red">
-                <td>2026/02/19-02/28</td>
-                <td>玩美加族~加拿大極光10日</td>
-                <td>NT$155,451</td>
-                <td>-NT$5,451</td>
-                <td><span class="nightPill">B 級</span></td>
-                <td><span class="statusPill red">超標</span></td>
-                <td>標價接近預算，但加回必要費用後已超標。</td>
-              </tr>
-              <tr class="budgetRow green">
-                <td>2026/03/19-03/28</td>
-                <td>玩美加族~加拿大極光10日</td>
-                <td>NT$142,451</td>
-                <td>NT$7,549</td>
-                <td><span class="nightPill">B 級</span></td>
-                <td><span class="statusPill green">有緩衝</span></td>
-                <td>四個樣本中唯一保有合理餘額，但仍需等待 2027 公開資料。</td>
-              </tr>
-            </tbody>
-            </table>
-          </div>
-
-          <div class="mobileTourCards" aria-label="手機版團體樣本卡片">
-          <article class="tourCard yellow">
-            <div><span class="cardDate">2026/01/15-01/24</span><strong>玩美加族~加拿大極光10日</strong></div>
-            <dl>
-              <div><dt>總額</dt><dd>NT$149,451</dd></div>
-              <div><dt>夜數</dt><dd>B 級</dd></div>
-              <div><dt>判定</dt><dd>臨界通過</dd></div>
-              <div><dt>風險</dt><dd>預算幾乎沒有緩衝，任何保險、行李或匯率變動都可能超標。</dd></div>
-            </dl>
-          </article>
-          <article class="tourCard red">
-            <div><span class="cardDate">2026/02/12-02/21</span><strong>玩美加族~加拿大極光10日</strong></div>
-            <dl>
-              <div><dt>總額</dt><dd>NT$165,451</dd></div>
-              <div><dt>夜數</dt><dd>B 級</dd></div>
-              <div><dt>判定</dt><dd>超標</dd></div>
-              <div><dt>風險</dt><dd>寒假與旺季溢價明顯，必要費用後已超過上限。</dd></div>
-            </dl>
-          </article>
-          <article class="tourCard red">
-            <div><span class="cardDate">2026/02/19-02/28</span><strong>玩美加族~加拿大極光10日</strong></div>
-            <dl>
-              <div><dt>總額</dt><dd>NT$155,451</dd></div>
-              <div><dt>夜數</dt><dd>B 級</dd></div>
-              <div><dt>判定</dt><dd>超標</dd></div>
-              <div><dt>風險</dt><dd>標價接近預算，但加回必要費用後已超標。</dd></div>
-            </dl>
-          </article>
-          <article class="tourCard green">
-            <div><span class="cardDate">2026/03/19-03/28</span><strong>玩美加族~加拿大極光10日</strong></div>
-            <dl>
-              <div><dt>總額</dt><dd>NT$142,451</dd></div>
-              <div><dt>夜數</dt><dd>B 級</dd></div>
-              <div><dt>判定</dt><dd>有緩衝</dd></div>
-              <div><dt>風險</dt><dd>四個樣本中唯一保有合理餘額，但仍需等待 2027 公開資料。</dd></div>
-            </dl>
-          </article>
-          </div>
-        </details>
-      </section>
-
-      <section class="contentGrid">
-        <article class="panel" id="pending-2027-recheck">
-          <div class="sectionHeader">
-            <p class="eyebrow">PENDING_2027_RECHECK</p>
-            <h2>尚不可下結論</h2>
-            <p>缺少下列任一資訊時，只能列為待重查，不可作最終下訂判定。</p>
-          </div>
-          <ul class="checkList">
-            <li>旅行團商品完整航班與班號</li>
-            <li>實際飯店名稱或同級條件</li>
-            <li>YZF 抵達與離開時間</li>
-            <li>自由行已引用 2026 團體航段、住宿與行程節奏作參考；2027 正式航班、房價、YZF 抵離時間仍需重查</li>
-            <li>極光補看、延誤與改目的地規則</li>
-            <li>必要附加費後的每人總費用</li>
-            <li>行李、選位、分票與直掛風險</li>
-          </ul>
-        </article>
-
-        <article class="panel" id="decision-gates">
-          <div class="sectionHeader">
-            <p class="eyebrow">Decision Gates</p>
-            <h2>決策門檻區</h2>
-          </div>
-          <div class="gateList" id="gateList">
-            <div class="gateItem"><strong>強候選</strong><span>低於 NT$150,000，YZF 夜數清楚，並接近 A 級三個完整極光夜。</span></div>
-            <div class="gateItem"><strong>條件候選</strong><span>價格可接受，但需要明確補看、延誤或 YVR 過夜方案。</span></div>
-            <div class="gateItem"><strong>備援</strong><span>價格、體力或證據信心不足，但仍符合基本安全與轉機上限。</span></div>
-            <div class="gateItem"><strong>待查</strong><span>缺少未來可售日期、價格、航班、飯店或訂購網址；只能保留為搜尋方向。</span></div>
-            <div class="gateItem"><strong>排除</strong><span>超預算、轉機過度、核心極光夜無保護，或使用未知 2027 細節作賣點。</span></div>
-          </div>
-        </article>
-      </section>
-
-      <section class="closingPanel">
-        <p class="eyebrow">Current Recommendation</p>
-        <h2>先穩住比較基準，再匯入可查核的極光團商品</h2>
+    <header class="hero">
+      <div class="heroInner">
+        <p class="eyebrow">Aurora tour data</p>
+        <h1>極光旅行團靜態資料推薦系統</h1>
         <p>
-          旅行團仍可作為低操作負擔方案，但目前看來自由行舒適型雙人仍是重要基準。
-          任何極光旅行團商品，只要缺少完整日期、團費、航班、YZF 抵離時間、飯店、
-          極光補看或延誤條款，就先標示為 PENDING_2027_RECHECK。
+          由後台匯入旅行社資料，公開頁只讀取靜態資料並在本機排序。訪客調整條件時不會觸發旅行社網站查詢。
         </p>
-      </section>
+      </div>
+    </header>
 
-      <section class="pageSection sourceSyncSection compactSourceSection" id="source-sync">
-        <div class="sectionHeader tableHeader">
-          <div>
-            <p class="eyebrow">Source Appendix</p>
-            <h2>自動匯入資料源摘要</h2>
-            <p>此區只作末頁查核附錄，保留來源新鮮度、白名單與訂購連結；主要決策仍以上方候選方向與確認查核結果為準。</p>
-          </div>
-          <div class="sourceNote">
-            <strong>末頁查核摘要</strong>
-            <span>已匯入 2 筆可排序候選；另已建立 9 家台灣旅行社評分；2026 已結束行程僅作歷史基準；匯率：1 CAD ≈ NT$22.8176。</span>
-          </div>
+    <main>
+      <section class="statusBar" aria-label="資料狀態">
+        <div class="statusItem">
+          <span class="label">查核基準日</span>
+          <span class="value" id="checkedAt">讀取中</span>
         </div>
-
-        <div class="sourceGrid">
-          <article class="sourceCard">
-            <div class="sourceCardHeader">
-              <span>已併入排序</span>
-              <h3>Yellowknife Tours 5D4N Gold</h3>
-            </div>
-            <p>Yellowknife Tours</p>
-            <strong>CAD 1,490 + 5% GST 起（約 NT$35,698）</strong>
-            <div class="sourceStatusGrid">
-              <span>今日查核</span>
-              <span>白名單驗證</span>
-              <span>官方來源</span>
-            </div>
-            <small>2026-2027 冬季套裝來源；需另加國際/內陸機票、冬衣、小費與稅費。</small>
-            <small>價格、房型與活動內容會變動；正式下訂前需重查。</small>
-            <div class="sourceActions">
-              <a href="https://yellowknifetours.com/winter-packages/" rel="noreferrer" target="_blank">訂購網站</a>
-            </div>
-          </article>
-          <article class="sourceCard">
-            <div class="sourceCardHeader">
-              <span>已併入排序</span>
-              <h3>Yellowknife Tours 5D4N Diamond</h3>
-            </div>
-            <p>Yellowknife Tours</p>
-            <strong>CAD 2,398 + 5% GST 起（約 NT$57,452）</strong>
-            <div class="sourceStatusGrid">
-              <span>今日查核</span>
-              <span>白名單驗證</span>
-              <span>官方來源</span>
-            </div>
-            <small>飯店與活動等級較高，總費用更接近預算上限。</small>
-            <small>價格、房型與活動內容會變動；正式下訂前需重查。</small>
-            <div class="sourceActions">
-              <a href="https://yellowknifetours.com/winter-packages/" rel="noreferrer" target="_blank">訂購網站</a>
-            </div>
-          </article>
-          <article class="sourceCard">
-            <div class="sourceCardHeader">
-              <span>僅作歷史基準</span>
-              <h3>長汎 2026 團體樣本（四出發日）</h3>
-            </div>
-            <p>長汎旅遊</p>
-            <strong>NT$142,451-165,451</strong>
-            <div class="sourceStatusGrid">
-              <span>歷史基準，需重查</span>
-              <span>白名單驗證</span>
-              <span>旅行社來源</span>
-            </div>
-            <small>四筆 2026 團體歷史基準，不代表目前可下訂，不進入候選方向或推薦排序。</small>
-            <small>此為 2026 已成團樣本，只可作價格底線，不可視為目前可售。</small>
-            <div class="sourceActions">
-              <a href="https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB" rel="noreferrer" target="_blank">來源頁</a>
-            </div>
-          </article>
-          <article class="sourceCard">
-            <div class="sourceCardHeader">
-              <span>支援成本估算</span>
-              <h3>Air Canada YVR-YZF 月份票價</h3>
-            </div>
-            <p>Air Canada</p>
-            <strong>2026/09-12 CAD 318 起（約 NT$7,256）；2027/01-03 CAD 339 起（約 NT$7,735）</strong>
-            <div class="sourceStatusGrid">
-              <span>票價高波動，需重查</span>
-              <span>白名單驗證</span>
-              <span>航空官方</span>
-            </div>
-            <small>航班價格會變動；用來修正自由行與當地套裝總額，不單獨列為旅行團。</small>
-            <small>航空票價與艙等會即時變動，只作成本估算支援。</small>
-            <div class="sourceActions">
-              <a href="https://www.aircanada.com/en-ca/flights-from-vancouver-to-yellowknife" rel="noreferrer" target="_blank">航空公司查詢</a>
-            </div>
-          </article>
-          <article class="sourceCard">
-            <div class="sourceCardHeader">
-              <span>待查，不併入排序</span>
-              <h3>ezTravel 美加/加拿大跟團比對</h3>
-            </div>
-            <p>ezTravel 易遊網</p>
-            <strong>已見一般加拿大商品；未取得黃刀鎮極光團具體價格</strong>
-            <div class="sourceStatusGrid">
-              <span>今日比對，未入排序</span>
-              <span>白名單驗證</span>
-              <span>旅行社來源待查</span>
-            </div>
-            <small>比對美加分類與加拿大團頁；未查得黃刀鎮/極光關鍵字。取得具體團名、日期、價格與航班後才進入候選。</small>
-            <small>目前只確認 ezTravel 有美加/加拿大跟團入口與一般加拿大商品；未取得黃刀鎮極光團具體頁。</small>
-            <div class="sourceActions">
-              <a href="https://vacation.eztravel.com.tw/oversea/america-canada-newzealand-australia/" rel="noreferrer" target="_blank">比對來源</a>
-            </div>
-          </article>
+        <div class="statusItem">
+          <span class="label">已匯入商品</span>
+          <span class="value" id="productCount">讀取中</span>
+        </div>
+        <div class="statusItem">
+          <span class="label">呈現規則</span>
+          <span class="value">一張卡 = 一家旅行社</span>
+        </div>
+        <div class="statusItem">
+          <span class="label">資料模式</span>
+          <span class="value">靜態 JSON</span>
         </div>
       </section>
+
+      <div class="layout">
+        <aside class="panel controls" aria-label="決策選項列表">
+          <h2>決策選項列表</h2>
+          <p class="muted">設定條件後，右側只重新排序已匯入資料，不即時連線旅行社網站。</p>
+
+          <div class="controlGroup">
+            <label for="budget">預算上限</label>
+            <input id="budget" type="range" min="100000" max="400000" step="10000" value="230000" />
+            <div class="budgetReadout">
+              <span>NT$100,000</span>
+              <strong id="budgetLabel">NT$230,000</strong>
+              <span>NT$400,000</span>
+            </div>
+          </div>
+
+          <div class="controlGroup">
+            <label for="destination">目的地</label>
+            <select id="destination"></select>
+          </div>
+
+          <div class="controlGroup">
+            <label for="agency">旅行社</label>
+            <select id="agency"></select>
+          </div>
+
+          <div class="controlGroup">
+            <label for="month">出發月份</label>
+            <select id="month">
+              <option value="all">不限月份</option>
+              <option value="9">9 月</option>
+              <option value="10">10 月</option>
+              <option value="11">11 月</option>
+              <option value="12">12 月</option>
+              <option value="1">1 月</option>
+              <option value="2">2 月</option>
+              <option value="3">3 月</option>
+            </select>
+          </div>
+
+          <div class="controlGroup">
+            <label for="aurora">最低極光夜數</label>
+            <select id="aurora">
+              <option value="3">A級：至少 3 個完整極光夜</option>
+              <option value="2">B級：至少 3 晚或資料待補</option>
+              <option value="0">不限夜數，開放比較</option>
+            </select>
+          </div>
+
+          <label class="inlineCheck">
+            <input id="concreteOnly" type="checkbox" checked />
+            <span>只顯示已取得產品名稱與價格的商品</span>
+          </label>
+
+          <div class="hintBox">
+            價格基準會依預算上限即時改變；超過預算的商品不列入旅行社卡片。
+          </div>
+        </aside>
+
+        <section aria-live="polite">
+          <div id="message" class="loading">正在讀取已匯入的旅行團資料。</div>
+
+          <div id="app" hidden>
+            <section class="summary">
+              <article class="bestBox">
+                <h2>目前最適合</h2>
+                <div id="bestResult"></div>
+              </article>
+              <article class="bestBox">
+                <h2>篩選摘要</h2>
+                <div class="metrics">
+                  <div class="metric">
+                    <span class="label">符合旅行社</span>
+                    <strong id="agencyCount">0</strong>
+                  </div>
+                  <div class="metric">
+                    <span class="label">符合商品</span>
+                    <strong id="matchCount">0</strong>
+                  </div>
+                  <div class="metric">
+                    <span class="label">最低價格</span>
+                    <strong id="minPrice">-</strong>
+                  </div>
+                  <div class="metric">
+                    <span class="label">預算上限</span>
+                    <strong id="activeBudget">-</strong>
+                  </div>
+                </div>
+              </article>
+            </section>
+
+            <section>
+              <div class="resultsHeader">
+                <div>
+                  <p class="eyebrow">Agency cards</p>
+                  <h2>旅行社方案列表</h2>
+                  <p>每張卡只代表一家旅行社；卡內列出該旅行社符合條件的旅行團。</p>
+                </div>
+                <p class="sortNote">排序依價格是否低於預算、極光夜數、資料完整度、可報名狀態與來源連結計算。</p>
+              </div>
+              <div id="agencyGrid" class="agencyGrid"></div>
+            </section>
+
+            <section class="sources">
+              <p class="eyebrow">Source status</p>
+              <h2>資料來源狀態</h2>
+              <p class="muted">這是後台匯入狀態，不是公開訪客即時查詢結果。</p>
+              <div id="sourceGrid" class="sourceGrid"></div>
+            </section>
+          </div>
+        </section>
+      </div>
     </main>
+
     <script>
-      let plannerState = {
-        budget: 150000,
-        preferredMode: "group",
-        auroraTarget: "A",
-        riskTolerance: 2,
-        comfort: "balanced",
-        requireVerified: false,
-      };
-      let draftPlannerState = { ...plannerState };
-      let hasConfirmedPlanner = false;
-
-      const budgetRange = {
-        min: 100000,
-        max: 400000,
-        step: 10000,
+      const state = {
+        products: [],
+        sources: [],
+        budget: 230000,
+        destination: "all",
+        agency: "all",
+        month: "all",
+        aurora: 3,
+        concreteOnly: true,
       };
 
-      const controlChoiceMeta = {
-        auroraTarget: {
-          A: "確認後優先切到 A級團體或 A級自由行，B級候選會降級。",
-          B: "確認後切到 B級價格方向，允許 3 晚但標示為待查或備援。",
-          either: "確認後不以夜數排除候選，只用於開放比價。",
-        },
-        riskTolerance: {
-          1: "短轉機、來源待查、航班不明會明顯降級。",
-          2: "保留待查候選，但需要航班與訂購頁補齊。",
-          3: "保留更多高風險備援，但不代表可直接下訂。",
-        },
-        comfort: {
-          basic: "節制型與低價方案排序較前，舒適度不足會提醒。",
-          balanced: "平衡型方案加分，是目前預設基準。",
-          comfort: "舒適型自由行或較高品質團體會加分，節制型降級。",
-          any: "舒適度不作主要排序條件，只看價格、夜數與風險。",
-        },
+      const elements = {
+        checkedAt: document.getElementById("checkedAt"),
+        productCount: document.getElementById("productCount"),
+        budget: document.getElementById("budget"),
+        budgetLabel: document.getElementById("budgetLabel"),
+        destination: document.getElementById("destination"),
+        agency: document.getElementById("agency"),
+        month: document.getElementById("month"),
+        aurora: document.getElementById("aurora"),
+        concreteOnly: document.getElementById("concreteOnly"),
+        message: document.getElementById("message"),
+        app: document.getElementById("app"),
+        bestResult: document.getElementById("bestResult"),
+        agencyCount: document.getElementById("agencyCount"),
+        matchCount: document.getElementById("matchCount"),
+        minPrice: document.getElementById("minPrice"),
+        activeBudget: document.getElementById("activeBudget"),
+        agencyGrid: document.getElementById("agencyGrid"),
+        sourceGrid: document.getElementById("sourceGrid"),
       };
 
-      const plannerImpactRows = [
-        {
-          item: "預算上限",
-          requirement: "必須",
-          impact: "直接改變低於、臨界、超標與決策門檻；候選判讀以確認後的預算上限為準。",
-        },
-        {
-          item: "旅行型態",
-          requirement: "必須",
-          impact: "決定預設候選分類，並加權團體或自由行，不會把非偏好型態完全隱藏。",
-        },
-        {
-          item: "最低極光夜數",
-          requirement: "必須",
-          impact: "A級要求會降級只達 B級的候選；B級要求會保留價格備援。",
-        },
-        {
-          item: "風險容忍度",
-          requirement: "必須",
-          impact: "航班銜接、資料缺口與來源新鮮度風險高於設定時會降級或排除。",
-        },
-        {
-          item: "舒適程度",
-          requirement: "排序條件",
-          impact: "影響節制、平衡、舒適方案排序；不是單獨決定是否可下訂的硬門檻。",
-        },
-        {
-          item: "只採已查核資料",
-          requirement: "查核開關",
-          impact: "開啟後，未完成重查或缺具體旅行團資料的項目只保留為待查方向。",
-        },
-      ];
-
-      const sourceStatusRegistry = {
-        yktours: {
-          checkedAt: "2026-07-15",
-          freshnessStatus: "current",
-          freshnessLabel: "今日查核",
-          recheckReason: "價格、房型與活動內容會變動；正式下訂前需重查。",
-          allowedDomain: "yellowknifetours.com",
-          safetyStatus: "verified",
-          safetyLabel: "白名單驗證",
-        },
-        everfun: {
-          checkedAt: "2026-07-15",
-          freshnessStatus: "recheck",
-          freshnessLabel: "歷史基準，需重查",
-          recheckReason: "此為 2026 已成團樣本，只可作價格底線，不可視為目前可售。",
-          allowedDomain: "everfuntravel.com",
-          safetyStatus: "verified",
-          safetyLabel: "白名單驗證",
-        },
-        airCanada: {
-          checkedAt: "2026-07-15",
-          freshnessStatus: "recheck",
-          freshnessLabel: "票價高波動，需重查",
-          recheckReason: "航空票價與艙等會即時變動，只作成本估算支援。",
-          allowedDomain: "aircanada.com",
-          safetyStatus: "verified",
-          safetyLabel: "白名單驗證",
-        },
-        eztravel: {
-          checkedAt: "2026-07-16",
-          freshnessStatus: "recheck",
-          freshnessLabel: "今日比對，未入排序",
-          recheckReason: "目前只確認 ezTravel 有美加/加拿大跟團入口與一般加拿大商品；未取得黃刀鎮極光團具體頁。",
-          allowedDomain: "vacation.eztravel.com.tw",
-          safetyStatus: "verified",
-          safetyLabel: "白名單驗證",
-        },
-        liontravel: {
-          checkedAt: "2026-07-16",
-          freshnessStatus: "current",
-          freshnessLabel: "今日查核",
-          recheckReason: "專題頁可讀冰島、黃刀鎮、芬蘭與北歐極光商品顯示名稱；價格需進商品頁重查。",
-          allowedDomain: "liontravel.com",
-          safetyStatus: "verified",
-          safetyLabel: "白名單驗證",
-        },
-        settour: {
-          checkedAt: "2026-07-16",
-          freshnessStatus: "current",
-          freshnessLabel: "今日查核",
-          recheckReason: "追逐極光專題可讀商品與 minPrice；仍需進商品頁確認日期、航班與飯店。",
-          allowedDomain: "settour.com.tw",
-          safetyStatus: "verified",
-          safetyLabel: "白名單驗證",
-        },
-        travel4u: {
-          checkedAt: "2026-07-16",
-          freshnessStatus: "current",
-          freshnessLabel: "今日查核",
-          recheckReason: "世界極光專案頁可讀多目的地商品顯示名稱；價格需重查。",
-          allowedDomain: "travel4u.com.tw",
-          safetyStatus: "verified",
-          safetyLabel: "白名單驗證",
-        },
-        colatour: {
-          checkedAt: "2026-07-16",
-          freshnessStatus: "recheck",
-          freshnessLabel: "首頁有線索，搜尋頁受限",
-          recheckReason: "首頁可讀極光旅行與冰島幸福極光入口；站內搜尋頁回傳 403。",
-          allowedDomain: "colatour.com.tw",
-          safetyStatus: "verified",
-          safetyLabel: "白名單驗證",
-        },
-        lifetour: {
-          checkedAt: "2026-07-16",
-          freshnessStatus: "recheck",
-          freshnessLabel: "首頁未見極光",
-          recheckReason: "首頁可讀但未找到極光商品線索。",
-          allowedDomain: "lifetour.com.tw",
-          safetyStatus: "verified",
-          safetyLabel: "白名單驗證",
-        },
-        besttour: {
-          checkedAt: "2026-07-16",
-          freshnessStatus: "recheck",
-          freshnessLabel: "首頁未見極光",
-          recheckReason: "首頁可讀但未找到極光商品線索。",
-          allowedDomain: "besttour.com.tw",
-          safetyStatus: "verified",
-          safetyLabel: "白名單驗證",
-        },
-        phoenix: {
-          checkedAt: "2026-07-16",
-          freshnessStatus: "recheck",
-          freshnessLabel: "連線待重查",
-          recheckReason: "本次查核無法建立可信 TLS 連線。",
-          allowedDomain: "phoenix.com.tw",
-          safetyStatus: "pending",
-          safetyLabel: "待確認",
-        },
-      };
-
-      const staticAgencyCandidates = {
-        yellowknife: [
-          {
-            agency: "東南旅遊",
-            sourceStatusId: "settour",
-            priceLabel: "可讀最低價 NT$136,900 起",
-            destinations: ["黃刀鎮", "挪威", "芬蘭", "瑞典", "冰島"],
-            sourceUrl: "https://www.settour.com.tw/theme/aurora_Season0000008/",
-          },
-          {
-            agency: "雄獅旅遊",
-            sourceStatusId: "liontravel",
-            priceLabel: "專題頁未直接提供價格",
-            destinations: ["冰島", "黃刀鎮", "芬蘭", "挪威", "北歐"],
-            sourceUrl: "https://event.liontravel.com/zh-tw/winter-travel/aurora/index?fr=cg4",
-          },
-          {
-            agency: "山富旅遊",
-            sourceStatusId: "travel4u",
-            priceLabel: "專案頁未直接提供價格",
-            destinations: ["芬蘭", "挪威", "冰島", "阿拉斯加", "黃刀鎮", "澳洲"],
-            sourceUrl: "https://www.travel4u.com.tw/project/aurora/",
-          },
-          {
-            agency: "長汎旅遊",
-            sourceStatusId: "everfun",
-            priceLabel: "2026 歷史樣本 NT$142,451-165,451",
-            destinations: ["黃刀鎮"],
-            sourceUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB",
-          },
-        ],
-        global: [
-          {
-            agency: "東南旅遊",
-            sourceStatusId: "settour",
-            priceLabel: "可讀最低價 NT$136,900 起",
-            destinations: ["黃刀鎮", "挪威", "芬蘭", "瑞典", "冰島"],
-            sourceUrl: "https://www.settour.com.tw/theme/aurora_Season0000008/",
-          },
-          {
-            agency: "雄獅旅遊",
-            sourceStatusId: "liontravel",
-            priceLabel: "專題頁未直接提供價格",
-            destinations: ["冰島", "黃刀鎮", "芬蘭", "挪威", "北歐"],
-            sourceUrl: "https://event.liontravel.com/zh-tw/winter-travel/aurora/index?fr=cg4",
-          },
-          {
-            agency: "山富旅遊",
-            sourceStatusId: "travel4u",
-            priceLabel: "專案頁未直接提供價格",
-            destinations: ["芬蘭", "挪威", "冰島", "阿拉斯加", "黃刀鎮", "澳洲"],
-            sourceUrl: "https://www.travel4u.com.tw/project/aurora/",
-          },
-          {
-            agency: "可樂旅遊",
-            sourceStatusId: "colatour",
-            priceLabel: "搜尋頁 403，價格待重查",
-            destinations: ["冰島"],
-            sourceUrl: "https://www.colatour.com.tw/",
-          },
-        ],
-        price: [
-          {
-            agency: "東南旅遊",
-            sourceStatusId: "settour",
-            priceLabel: "可讀最低價 NT$136,900 起",
-            destinations: ["黃刀鎮", "挪威", "芬蘭", "瑞典", "冰島"],
-            sourceUrl: "https://www.settour.com.tw/theme/aurora_Season0000008/",
-          },
-          {
-            agency: "可樂旅遊",
-            sourceStatusId: "colatour",
-            priceLabel: "搜尋頁 403，價格待重查",
-            destinations: ["冰島"],
-            sourceUrl: "https://www.colatour.com.tw/",
-          },
-          {
-            agency: "長汎旅遊",
-            sourceStatusId: "everfun",
-            priceLabel: "2026 歷史樣本 NT$142,451-165,451",
-            destinations: ["黃刀鎮"],
-            sourceUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB",
-          },
-        ],
-      };
-
-      const independentFlightOptions = [
-        {
-          priority: 1,
-          airline: "Air Canada 加拿大航空",
-          route: "TPE -> YVR / YEG / YYC / YYZ -> YZF",
-          role: "可直接查台北到黃刀鎮完整行程",
-          recommendedUse: "自由行首選；優先同一張票到底、加拿大境內轉機少、行李可直掛。",
-          riskCheck: "準點率與罷工紀錄需納入風險；冬季至少保留 4 小時以上轉機緩衝或 YVR 過夜。",
-          estimate: "估算機票 NT$48,000-58,000；2027 付款頁需重查。",
-          bookingUrl: "https://www.aircanada.com/en-ca/flights-from-taipei-to-yellowknife",
-        },
-        {
-          priority: 2,
-          airline: "EVA Air 長榮航空",
-          route: "TPE -> YVR / YYZ，再接加拿大境內段",
-          role: "長程直飛品質穩定",
-          recommendedUse: "搭配 Air Canada、WestJet 或 Canadian North；適合舒適型自由行。",
-          riskCheck: "若分開開票，行李直掛、延誤責任與 YVR 過夜成本要獨立確認。",
-          estimate: "估算機票 NT$49,000-57,000 + YVR 住宿。",
-          bookingUrl: "https://flights.evaair.com/en/flights-from-taipei-to-vancouver",
-        },
-        {
-          priority: 3,
-          airline: "China Airlines 中華航空",
-          route: "TPE -> YVR，再接加拿大境內段",
-          role: "長程替代方案",
-          recommendedUse: "價格好時納入；可作 Air Canada 或長榮的替代長程段。",
-          riskCheck: "分開開票會提高行李與誤點風險；不排短轉機。",
-          estimate: "估算機票 NT$46,000-52,000 + YVR 住宿。",
-          bookingUrl: "https://flights.china-airlines.com/en-tw/flights-from-taipei-to-vancouver",
-        },
-        {
-          priority: 4,
-          airline: "WestJet",
-          route: "YYC / YEG -> YZF",
-          role: "加拿大境內價格備援",
-          recommendedUse: "當 Calgary 或 Edmonton 轉機價格明顯較好時才納入。",
-          riskCheck: "曾有罷工與取消航班新聞；冬季不排短轉機，不作唯一方案。",
-          estimate: "估算總機票 NT$44,000-56,000；內陸段需當季重查。",
-          bookingUrl: "https://www.westjet.com/",
-        },
-        {
-          priority: 5,
-          airline: "Canadian North",
-          route: "YEG -> YZF 與北方航線",
-          role: "Edmonton 北方航線備援",
-          recommendedUse: "適合接 Edmonton；作為 Air Canada / WestJet 之外的北方段備案。",
-          riskCheck: "班次與天候變動較大；需查當季班表與行李銜接。",
-          estimate: "估算總機票 NT$48,000-60,000；北方段需重查。",
-          bookingUrl: "https://canadiannorth.com/",
-        },
-        {
-          priority: 6,
-          airline: "Air North",
-          route: "季節性 YVR / YXY / YYZ / YOW -> YZF",
-          role: "季節班備案",
-          recommendedUse: "若剛好有 Vancouver-Yellowknife 季節班，可作有價值備案。",
-          riskCheck: "季節性與班次少是主要風險；不可作唯一方案。",
-          estimate: "估算總機票 NT$46,000-58,000；需確認季節班是否開航。",
-          bookingUrl: "https://www.flyairnorth.com/",
-        },
-        {
-          priority: 7,
-          airline: "STARLUX 星宇航空",
-          route: "TPE -> SEA / SFO / LAX -> Canada -> YZF",
-          role: "價格或哩程備案",
-          recommendedUse: "只在價格或哩程明顯有利時使用；不作主推薦。",
-          riskCheck: "美國轉機段數多，需檢查入境/轉機條件、行李責任與延誤風險。",
-          estimate: "估算機票 NT$52,000-68,000 + 美國轉機成本。",
-          bookingUrl: "https://www.starlux-airlines.com/",
-        },
-      ];
-
-      const independentHotelMonthlyRates = [
-        {
-          month: "9月",
-          yellowknife: "YZF NT$5,000-7,000/晚",
-          vancouver: "YVR NT$4,000-5,800/晚",
-          total: "6 晚房費約 NT$34,000-49,600/房",
-          note: "秋季可列入極光重點；仍需確認可售套裝與接駁。",
-        },
-        {
-          month: "10月",
-          yellowknife: "YZF NT$5,200-7,600/晚",
-          vancouver: "YVR NT$4,100-5,900/晚",
-          total: "6 晚房費約 NT$35,000-50,800/房",
-          note: "秋季與初冬交界，價格常比深冬穩定。",
-        },
-        {
-          month: "11月",
-          yellowknife: "YZF NT$5,800-8,600/晚",
-          vancouver: "YVR NT$4,300-6,300/晚",
-          total: "6 晚房費約 NT$39,800-57,000/房",
-          note: "冬季需求上升前需提早鎖房型。",
-        },
-        {
-          month: "12月",
-          yellowknife: "YZF NT$6,500-9,800/晚",
-          vancouver: "YVR NT$4,800-7,200/晚",
-          total: "6 晚房費約 NT$45,600-68,400/房",
-          note: "假期與冬季活動需求增加，需保留預算緩衝。",
-        },
-        {
-          month: "1月",
-          yellowknife: "YZF NT$6,800-10,500/晚",
-          vancouver: "YVR NT$4,800-7,500/晚",
-          total: "6 晚房費約 NT$46,800-72,000/房",
-          note: "嚴冬月份，住宿與延誤備援都要拉高。",
-        },
-        {
-          month: "2月",
-          yellowknife: "YZF NT$7,200-11,200/晚",
-          vancouver: "YVR NT$5,000-7,800/晚",
-          total: "6 晚房費約 NT$48,800-76,400/房",
-          note: "寒假與旺季警戒，預算上限需重新測試。",
-        },
-        {
-          month: "3月",
-          yellowknife: "YZF NT$6,600-9,800/晚",
-          vancouver: "YVR NT$4,700-7,200/晚",
-          total: "6 晚房費約 NT$45,800-68,400/房",
-          note: "可對照 2026 三月低價團體樣本。",
-        },
-      ];
-
-      const directionCategories = [
-        {
-          id: "group-a",
-          label: "A級團體候選方向",
-          title: "可選擇的 A級團體候選方向",
-          summary: "A級代表抵達日不計，需保留至少 3 個完整極光夜。尚未公告價格的商品會保留在待查候選中，但不可視為可下訂。",
-          items: [
-            {
-              candidateId: "group-a-taiwan-complete",
-              name: "東南／雄獅／山富：A級完整夜候選",
-              condition: "可先依旅行社顯示名稱列候選；正式推薦前仍需補齊商品頁、總費用與 3 個完整極光夜口徑。",
-              status: "已列旅行社候選",
-            },
-            {
-              candidateId: "group-a-autumn",
-              name: "9-11 月全球極光 A級候選",
-              condition: "依旅行社名稱先納入芬蘭、冰島、北歐與黃刀鎮線索；需確認抵達日不計入完整夜。",
-              status: "已列旅行社候選",
-            },
-            {
-              candidateId: "group-a-winter",
-              name: "12-3 月冬季 A級旅行社候選",
-              condition: "依旅行社名稱先列冬季極光來源；需同時檢查低溫、航班延誤、飯店與補看規則。",
-              status: "已列旅行社候選",
-            },
-          ],
-        },
-        {
-          id: "group-b",
-          label: "B級團體價格方向",
-          title: "B級團體價格方向",
-          summary: "B級代表 3 晚可能含抵達日，只能當價格備援，不能宣稱為 3 個完整極光夜。此分類只列未來可查核商品方向，已結束的 2026 行程只留在歷史基準表。",
-          items: [
-            {
-              candidateId: "group-b-price-watch",
-              name: "B級價格優先旅行社候選",
-              condition: "可先依旅行社名稱與可讀價格線索列入；需補未來可售日期、訂購頁、總團費與 3 晚極光口徑。",
-              status: "已列旅行社候選",
-            },
-            {
-              candidateId: "group-b-autumn-price",
-              name: "9-11 月 B級價格旅行社候選",
-              condition: "秋季商品若只標示 3 晚極光，需確認是否把抵達日算入；先以旅行社名稱保留候選。",
-              status: "已列旅行社候選",
-            },
-            {
-              candidateId: "group-b-winter-price",
-              name: "12-3 月 B級價格旅行社候選",
-              condition: "冬季價格團需確認 YZF 抵離時間、補看規則與必要費後總額；先以旅行社名稱保留候選。",
-              status: "已列旅行社候選",
-            },
-          ],
-        },
-        {
-          id: "independent",
-          label: "自由行候選",
-          title: "自由行候選方案",
-          summary: "自由行可先引用 2026 已成團樣本的航段結構、住宿等級與行程節奏作參考，再用 2027 航班與套裝價格區間重算。",
-          items: [
-            {
-              candidateId: "source-yktours-gold-5d4n",
-              name: "Yellowknife Tours 5D4N Gold Hotel Package",
-              condition: "當地套裝價已查到；航班、住宿節奏先用 2026 團體樣本作參考，2027 正式下訂前重查。",
-              status: "當地套裝＋2026參考",
-            },
-            {
-              candidateId: "source-yktours-diamond-5d4n",
-              name: "Yellowknife Tours 5D4N Diamond Hotel Package",
-              condition: "舒適型當地套裝價已查到；以 2026 飯店等級與航段結構作自由行參考。",
-              status: "舒適套裝＋2026參考",
-            },
-            {
-              candidateId: "independent-comfort",
-              name: "自由行舒適型雙人基準",
-              condition: "以 2026 低價團航段、Chateau Nova／Explorer Hotel 等級與 M2.1 航班區間作估算。",
-              status: "2026樣本參考估算",
-            },
-            {
-              candidateId: "independent-basic",
-              name: "自由行節制型備援",
-              condition: "需先確認低價航班與住宿是否仍保住 A級完整極光夜。",
-              status: "2026樣本參考估算",
-            },
-          ],
-        },
-      ];
-
-      let selectedDirectionId = null;
-
-      const staticCandidates = [
-  {
-    id: "group-a-taiwan-complete",
-    title: "A級團體待查：旅行社完整夜候選",
-    packageName: "旅行社候選：東南旅遊／雄獅旅遊／山富旅遊／長汎旅遊",
-    mode: "group",
-    estimatedCost: 0,
-    auroraLevel: "A",
-    riskLevel: 2,
-    comfort: "balanced",
-    verified: false,
-    dataState: "已列旅行社候選，缺商品細節",
-    guideUrl: "#global-agency-ranking",
-    guideLabel: "查看旅行社排序",
-    guideNote: "此項目可先依旅行社名稱列候選；取得商品頁、價格、航班與夜數口徑後才可下訂。",
-    description: "已查到可列入 A級方向的旅行社來源，但仍缺正式可售商品頁、價格、航班與飯店。",
-    nextStep: "優先深查東南、雄獅、山富的商品頁，確認是否真的有 3 個完整極光夜。",
-    departureWindow: "2027 或 9-11 月待查",
-    productType: "A級旅行社候選",
-    rankingSummary: "旅行社名稱已可列入候選，但正式商品頁、總費用與 A級夜數尚未補齊；只能作深查排序，不作可下訂推薦。",
-    costBasis: {
-      readiness: "missing",
-      label: "價格尚未公布",
-      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
-      flightDetail: "旅行社來源已列候選，但尚未公布可售商品的完整航班與班號。",
-      hotelDetail: "旅行社來源已列候選，但尚未公布可售商品的飯店名稱或同級條件。",
-      scheduleDetail: "尚未公布 YZF 抵達、離開時間與完整極光夜切分。",
-      priceDetail: "東南可讀最低價 NT$136,900 起；其他旅行社需進商品頁補總費用。",
-      missingItems: ["可售商品頁", "訂購網址", "總團費", "航班", "飯店", "3 個完整極光夜口徑"],
-    },
-    agencyCandidates: staticAgencyCandidates.yellowknife,
-  },
-  {
-    id: "group-a-autumn",
-    title: "A級團體待查：9-11 月全球極光旅行社候選",
-    packageName: "旅行社候選：東南旅遊／雄獅旅遊／山富旅遊／可樂旅遊",
-    mode: "group",
-    estimatedCost: 0,
-    auroraLevel: "A",
-    riskLevel: 2,
-    comfort: "balanced",
-    verified: false,
-    dataState: "已列旅行社候選，缺秋季商品細節",
-    guideUrl: "#global-agency-ranking",
-    guideLabel: "查看旅行社排序",
-    guideNote: "秋季極光團也屬本網站重點；目前先依旅行社名稱列候選，商品頁需重查。",
-    description: "保留 9-11 月全球極光旅行社候選，避免只看冬季或只看 2027 年初。",
-    nextStep: "深查東南、雄獅、山富與可樂的秋季極光商品，確認是否有 A級完整夜。",
-    departureWindow: "9-11 月待查",
-    productType: "A級秋季旅行社候選",
-    rankingSummary: "秋季時間符合搜尋範圍，且已有旅行社來源名稱；缺商品頁價格與完整夜口徑前仍不可下訂。",
-    costBasis: {
-      readiness: "missing",
-      label: "價格尚未公布",
-      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
-      flightDetail: "已列旅行社候選；尚未公布秋季團航班與 YZF 抵離時間。",
-      hotelDetail: "已列旅行社候選；尚未公布秋季團飯店。",
-      scheduleDetail: "尚未公布是否有 3 個完整極光夜，抵達日不得計入 A級夜數。",
-      priceDetail: "東南可讀最低價 NT$136,900 起；其他秋季商品需進來源頁補價。",
-      missingItems: ["秋季可售日期", "商品頁", "團費", "航班", "飯店", "完整極光夜數", "訂購網址"],
-    },
-    agencyCandidates: staticAgencyCandidates.global,
-  },
-  {
-    id: "group-a-winter",
-    title: "A級團體待查：12-3 月冬季旅行社候選",
-    packageName: "旅行社候選：東南旅遊／雄獅旅遊／山富旅遊／可樂旅遊",
-    mode: "group",
-    estimatedCost: 0,
-    auroraLevel: "A",
-    riskLevel: 2,
-    comfort: "balanced",
-    verified: false,
-    dataState: "已列旅行社候選，缺冬季商品細節",
-    guideUrl: "#global-agency-ranking",
-    guideLabel: "查看旅行社排序",
-    guideNote: "冬季團需額外檢查低溫、延誤、補看與飯店位置；目前先依旅行社名稱列候選。",
-    description: "保留冬季 A級旅行社候選；正式商品頁補齊後再與 B級價格團比較。",
-    nextStep: "深查冬季旅行社商品，確認航班延誤備援與補看規則。",
-    departureWindow: "12-3 月待查",
-    productType: "A級冬季旅行社候選",
-    rankingSummary: "冬季極光條件可能較強，且已有旅行社來源名稱；沒有商品頁價格與航班前不能作可下訂推薦。",
-    costBasis: {
-      readiness: "missing",
-      label: "價格尚未公布",
-      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
-      flightDetail: "已列旅行社候選；尚未公布冬季團航班、轉機與延誤備援。",
-      hotelDetail: "已列旅行社候選；尚未公布冬季團飯店與保暖動線。",
-      scheduleDetail: "尚未公布 YZF 夜數配置與補看規則。",
-      priceDetail: "尚未公布團費、冬衣、稅費、小費與必要附加費總額。",
-      missingItems: ["冬季可售日期", "商品頁", "航班延誤備援", "飯店", "補看規則", "總費用", "訂購網址"],
-    },
-    agencyCandidates: staticAgencyCandidates.global,
-  },
-  {
-    id: "group-b-price-watch",
-    title: "B級團體待查：價格優先旅行社候選",
-    packageName: "旅行社候選：東南旅遊／可樂旅遊／長汎旅遊",
-    mode: "group",
-    estimatedCost: 0,
-    auroraLevel: "B",
-    riskLevel: 2,
-    comfort: "balanced",
-    verified: false,
-    dataState: "已列旅行社候選，缺可售商品細節",
-    guideUrl: "#global-agency-ranking",
-    guideLabel: "查看旅行社排序",
-    guideNote: "此項目只代表未來可售 B級團體搜尋方向；可先依旅行社名稱列候選，但不能用 2026 已結束行程替代。",
-    description: "保留 B級價格優先旅行社候選，需等未來可售商品頁補齊後才可比較。",
-    nextStep: "深查東南、可樂與長汎新商品，比對總團費、訂購網址、YZF 抵離時間與是否含抵達日。",
-    departureWindow: "未來可售日期待查",
-    productType: "B級旅行社候選",
-    rankingSummary: "B級價格方向可作備援，且已有旅行社來源名稱；目前仍缺可售商品頁與完整費用，不可用已結束行程當候選。",
-    costBasis: {
-      readiness: "missing",
-      label: "價格尚未公布",
-      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
-      flightDetail: "已列旅行社候選；尚未公布未來團體航班與 YZF 抵離時間。",
-      hotelDetail: "已列旅行社候選；尚未公布未來團體飯店或同級條件。",
-      scheduleDetail: "尚未公布 3 晚極光是否含抵達日；需明確標成 B級。",
-      priceDetail: "東南可讀最低價 NT$136,900 起；可樂與長汎需重查新商品價格。",
-      missingItems: ["未來可售日期", "商品頁", "訂購網址", "總團費", "航班", "飯店", "B級夜數口徑"],
-    },
-    agencyCandidates: staticAgencyCandidates.price,
-  },
-  {
-    id: "group-b-autumn-price",
-    title: "B級團體待查：9-11 月價格旅行社候選",
-    packageName: "旅行社候選：東南旅遊／可樂旅遊／長汎旅遊",
-    mode: "group",
-    estimatedCost: 0,
-    auroraLevel: "B",
-    riskLevel: 2,
-    comfort: "balanced",
-    verified: false,
-    dataState: "已列旅行社候選，缺秋季價格細節",
-    guideUrl: "#global-agency-ranking",
-    guideLabel: "查看旅行社排序",
-    guideNote: "秋季 B級團可列入重點；目前先依旅行社名稱列候選，需確認不是已結束或不可售商品。",
-    description: "保留 9-11 月 B級價格旅行社候選，適合檢查秋季是否有較低總額。",
-    nextStep: "深查秋季可售團後，確認 3 晚極光口徑、飯店、航班與訂購頁。",
-    departureWindow: "9-11 月待查",
-    productType: "B級秋季旅行社候選",
-    rankingSummary: "秋季 B級團可作價格備援，且已有旅行社來源名稱；目前缺可售商品頁與價格資料。",
-    costBasis: {
-      readiness: "missing",
-      label: "價格尚未公布",
-      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
-      flightDetail: "已列旅行社候選；尚未公布秋季團航班與 YZF 抵離時間。",
-      hotelDetail: "已列旅行社候選；尚未公布秋季團飯店。",
-      scheduleDetail: "尚未公布是否把抵達日算入 3 晚極光。",
-      priceDetail: "東南可讀最低價 NT$136,900 起；其他旅行社秋季價格需重查。",
-      missingItems: ["秋季可售日期", "商品頁", "團費", "航班", "飯店", "訂購網址"],
-    },
-    agencyCandidates: staticAgencyCandidates.price,
-  },
-  {
-    id: "group-b-winter-price",
-    title: "B級團體待查：12-3 月價格旅行社候選",
-    packageName: "旅行社候選：東南旅遊／可樂旅遊／長汎旅遊",
-    mode: "group",
-    estimatedCost: 0,
-    auroraLevel: "B",
-    riskLevel: 2,
-    comfort: "balanced",
-    verified: false,
-    dataState: "已列旅行社候選，缺冬季價格細節",
-    guideUrl: "#global-agency-ranking",
-    guideLabel: "查看旅行社排序",
-    guideNote: "冬季 B級價格團須額外查低溫、延誤與補看規則；目前先依旅行社名稱列候選。",
-    description: "保留 12-3 月 B級價格旅行社候選，用來追蹤冬季低價團是否值得列入備援。",
-    nextStep: "深查冬季可售團後，確認總費用、航班延誤備援、飯店與補看條款。",
-    departureWindow: "12-3 月待查",
-    productType: "B級冬季旅行社候選",
-    rankingSummary: "冬季 B級團可能有價格優勢，且已有旅行社來源名稱；缺可售商品資料前不能推薦。",
-    costBasis: {
-      readiness: "missing",
-      label: "價格尚未公布",
-      totalLabel: "價格尚未公布；以已確認預算作搜尋上限",
-      flightDetail: "已列旅行社候選；尚未公布冬季團航班、轉機與延誤備援。",
-      hotelDetail: "已列旅行社候選；尚未公布冬季團飯店與保暖動線。",
-      scheduleDetail: "尚未公布 YZF 夜數配置與補看規則。",
-      priceDetail: "東南可讀最低價 NT$136,900 起；其他冬季商品需重查價格與必要費。",
-      missingItems: ["冬季可售日期", "商品頁", "航班延誤備援", "飯店", "補看規則", "總費用", "訂購網址"],
-    },
-    agencyCandidates: staticAgencyCandidates.price,
-  },
-  {
-    id: "source-yktours-gold-5d4n",
-    title: "來源匯入：冬季當地套裝低價候選",
-    packageName: "Yellowknife Tours 5D4N Gold Hotel Package",
-    mode: "independent",
-    estimatedCost: 132000,
-    auroraLevel: "A",
-    riskLevel: 2,
-    comfort: "balanced",
-    verified: true,
-    dataState: "來源同步",
-    guideUrl: "#source-sync",
-    guideLabel: "查看來源同步",
-    guideNote: "來源頁列 2026-2027 冬季套裝，Gold 5D4N 雙人房型有 CAD 1,490 + 5% GST 起價；依 1 CAD≈NT$22.8176 換算約 NT$35,698，總額仍需加機票與必要費。",
-    description: "網站自動匯入的可查核來源候選；價格較有機會落在預算內，但不是台灣旅行社全包團。",
-    nextStep: "前往訂購網站確認日期、房型、活動內容，再加回國際與內陸機票。",
-    departureWindow: "12-4 月冬季套裝",
-    productType: "當地套裝",
-    rankingSummary: "價格低於預算、A級完整極光夜、官方來源可查、訂購連結通過白名單驗證。",
-    costBasis: {
-      readiness: "partial",
-      label: "2026樣本參考估算",
-      totalLabel: "參考總額 NT$132,000；Gold 套裝約 NT$35,698 起，航班與住宿節奏參考 2026 樣本",
-      flightDetail: "參考 2026 團體：台灣長程飛西雅圖、陸路進溫哥華、再接加拿大內陸段至 YZF；自由行可改用 TPE-YVR-YZF 或 YVR 過夜方案。",
-      hotelDetail: "參考 2026 團體住宿等級：Chateau Nova、Explorer Hotel 或同級；此套裝偏 Quality Inn／Nova Inn 等級，正式房型需重查。",
-      scheduleDetail: "參考 2026/03/19-03/28 十日節奏：Day 3 抵達 YZF，Day 4 約 2 小時市區自由；自由行應把抵達夜作緩衝，保留後續 3 個完整極光夜。",
-      priceDetail: "以 Gold 套裝 CAD 1,490 + 5% GST、M2.1 機票區間與 2026 團體必要費結構估算；2027 付款頁需重查。",
-      missingItems: ["2027 正式航班票價", "2027 YZF 抵離時間", "2027 實際房型", "付款頁總額"],
-      flightOptions: independentFlightOptions,
-      hotelMonthlyRates: independentHotelMonthlyRates,
-    },
-    bookingUrl: "https://yellowknifetours.com/winter-packages/",
-    bookingLabel: "前往 Yellowknife Tours 訂購/詢價",
-    sourceStatusId: "yktours",
-    sourceName: "Yellowknife Tours",
-    sourceCheckedAt: "2026-07-15",
-    sourceSummary: "5D4N Gold Hotel Package；CAD 1,490 + 5% GST 起，約 NT$35,698；自由行總額以 2026 團體樣本與航班區間估算。",
-    importedFromSource: true,
-  },
-  {
-    id: "source-yktours-diamond-5d4n",
-    title: "來源匯入：冬季當地套裝舒適候選",
-    packageName: "Yellowknife Tours 5D4N Diamond Hotel Package",
-    mode: "independent",
-    estimatedCost: 155000,
-    auroraLevel: "A",
-    riskLevel: 2,
-    comfort: "comfort",
-    verified: true,
-    dataState: "來源同步",
-    guideUrl: "#source-sync",
-    guideLabel: "查看來源同步",
-    guideNote: "來源頁列 Diamond 5D4N 雙人房型有 CAD 2,398 + 5% GST 起價；依 1 CAD≈NT$22.8176 換算約 NT$57,452，舒適度較高但總費用貼近預算上限。",
-    description: "網站自動匯入的舒適型來源候選；適合作為自由行舒適基準的實際商品版本。",
-    nextStep: "前往訂購網站確認飯店、餐食、活動與可選日期，並重算台幣總額。",
-    departureWindow: "12-4 月冬季套裝",
-    productType: "當地舒適套裝",
-    rankingSummary: "A級完整極光夜與官方來源加分，但舒適型總費用接近或超過預算時會降級。",
-    costBasis: {
-      readiness: "partial",
-      label: "2026樣本參考估算",
-      totalLabel: "參考總額 NT$135,000-155,000；Diamond 套裝約 NT$57,452 起",
-      flightDetail: "參考 2026 團體航段結構與 M2.1 航班區間；舒適版優先 TPE-YVR 直飛＋YVR 過夜＋隔日 AC 下午班進 YZF。",
-      hotelDetail: "參考 2026 Chateau Nova、Explorer Hotel 或同級；Diamond 版以 Explorer 等級或較佳房型作舒適基準。",
-      scheduleDetail: "參考 2026 十日節奏，但自由行調整為 YVR 緩衝與 YZF 4 晚，確保抵達夜不計後仍有 3 個完整極光夜。",
-      priceDetail: "以 Diamond 套裝 CAD 2,398 + 5% GST、M2.1 機票區間與 2026 必要費結構估算；接近 NT$150,000 時需重查低票價。",
-      missingItems: ["2027 正式航班票價", "2027 實際房型", "YVR 過夜住宿價", "付款頁總額"],
-      flightOptions: independentFlightOptions,
-      hotelMonthlyRates: independentHotelMonthlyRates,
-    },
-    bookingUrl: "https://yellowknifetours.com/winter-packages/",
-    bookingLabel: "前往 Yellowknife Tours 訂購/詢價",
-    sourceStatusId: "yktours",
-    sourceName: "Yellowknife Tours",
-    sourceCheckedAt: "2026-07-15",
-    sourceSummary: "5D4N Diamond Hotel Package；CAD 2,398 + 5% GST 起，約 NT$57,452；自由行總額參考 2026 團體節奏與舒適住宿等級。",
-    importedFromSource: true,
-  },
-  {
-    id: "group-2026-jan15",
-    title: "2026 一月團體樣本",
-    packageName: "歷史樣本：玩美加族~加拿大極光10日（2026/01/15）",
-    mode: "group",
-    estimatedCost: 149451,
-    auroraLevel: "B",
-    riskLevel: 1,
-    comfort: "balanced",
-    verified: true,
-    dataState: "歷史基準",
-    guideUrl: "#historical-baseline",
-    guideLabel: "查看 2026 團體樣本",
-    guideNote: "此項目是 2026 歷史比較基準，不是目前可下訂商品。",
-    description: "B級團體歷史樣本，必要費後接近原始 NT$150,000 預算；預算提高時仍可作價格比較。",
-    nextStep: "作為 B級團體價格樣本；正式下訂前需重查 2027 商品。",
-    departureWindow: "2026/01 歷史樣本",
-    productType: "團體歷史樣本",
-    rankingSummary: "價格接近原始預算、旅行社來源可查；但夜數屬 B級且資料是歷史樣本。",
-    costBasis: {
-      readiness: "historical",
-      label: "歷史團體總額",
-      totalLabel: "歷史必要費後 NT$149,451",
-      flightDetail: "2026 團體樣本含旅行社規劃航段結構；2027 航班仍需重查。",
-      hotelDetail: "黃刀鎮住宿以 Chateau Nova、Explorer Hotel 或同級為方向；實際入住需以當期商品為準。",
-      scheduleDetail: "2026/01/15-01/24 歷史出發日期已知；不可直接套用至 2027。",
-      priceDetail: "以團費、公告小費、ESTA、eTA 等必要費用後估算。",
-      missingItems: ["2027 可售日期", "2027 實際團費", "2027 航班與飯店確認"],
-    },
-    bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26115BR10TA",
-    bookingLabel: "查看長汎旅遊團頁",
-    sourceStatusId: "everfun",
-    sourceName: "長汎旅遊",
-    sourceCheckedAt: "2026-07-15",
-    sourceSummary: "2026 一月團體歷史樣本；只作價格基準，不代表目前仍可售。",
-    importedFromSource: true,
-  },
-  {
-    id: "group-2026-feb12",
-    title: "2026 二月寒假團體樣本",
-    packageName: "歷史樣本：玩美加族~加拿大極光10日（2026/02/12）",
-    mode: "group",
-    estimatedCost: 165451,
-    auroraLevel: "B",
-    riskLevel: 2,
-    comfort: "balanced",
-    verified: true,
-    dataState: "歷史基準",
-    guideUrl: "#historical-baseline",
-    guideLabel: "查看 2026 團體樣本",
-    guideNote: "此項目是寒假旺季價格警戒，不是目前可下訂商品。",
-    description: "B級團體寒假歷史樣本，價格較高；預算提高後可納入比較，但仍是歷史資料。",
-    nextStep: "用來檢查旺季團費是否仍在已確認預算內。",
-    departureWindow: "2026/02 歷史樣本",
-    productType: "團體歷史樣本",
-    rankingSummary: "可作旺季價格上緣；但夜數屬 B級，且資料是歷史樣本。",
-    costBasis: {
-      readiness: "historical",
-      label: "歷史團體總額",
-      totalLabel: "歷史必要費後 NT$165,451",
-      flightDetail: "2026 團體樣本含旅行社規劃航段結構；2027 航班仍需重查。",
-      hotelDetail: "黃刀鎮住宿以 Chateau Nova、Explorer Hotel 或同級為方向；實際入住需以當期商品為準。",
-      scheduleDetail: "2026/02/12-02/21 歷史出發日期已知；不可直接套用至 2027。",
-      priceDetail: "以團費、公告小費、ESTA、eTA 等必要費用後估算。",
-      missingItems: ["2027 可售日期", "2027 實際團費", "2027 航班與飯店確認"],
-    },
-    bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26212BR10TA",
-    bookingLabel: "查看長汎旅遊團頁",
-    sourceStatusId: "everfun",
-    sourceName: "長汎旅遊",
-    sourceCheckedAt: "2026-07-15",
-    sourceSummary: "2026 二月寒假團體歷史樣本；只作價格基準，不代表目前仍可售。",
-    importedFromSource: true,
-  },
-  {
-    id: "group-2026-feb19",
-    title: "2026 二月團體樣本",
-    packageName: "歷史樣本：玩美加族~加拿大極光10日（2026/02/19）",
-    mode: "group",
-    estimatedCost: 155451,
-    auroraLevel: "B",
-    riskLevel: 2,
-    comfort: "balanced",
-    verified: true,
-    dataState: "歷史基準",
-    guideUrl: "#historical-baseline",
-    guideLabel: "查看 2026 團體樣本",
-    guideNote: "此項目是 2026 歷史比較基準，不是目前可下訂商品。",
-    description: "B級團體歷史樣本，必要費後略高於原始預算；預算提高時可作中高價比較。",
-    nextStep: "作為 B級團體價格樣本；正式下訂前需重查 2027 商品。",
-    departureWindow: "2026/02 歷史樣本",
-    productType: "團體歷史樣本",
-    rankingSummary: "可作二月中高價參考；但夜數屬 B級，且資料是歷史樣本。",
-    costBasis: {
-      readiness: "historical",
-      label: "歷史團體總額",
-      totalLabel: "歷史必要費後 NT$155,451",
-      flightDetail: "2026 團體樣本含旅行社規劃航段結構；2027 航班仍需重查。",
-      hotelDetail: "黃刀鎮住宿以 Chateau Nova、Explorer Hotel 或同級為方向；實際入住需以當期商品為準。",
-      scheduleDetail: "2026/02/19-02/28 歷史出發日期已知；不可直接套用至 2027。",
-      priceDetail: "以團費、公告小費、ESTA、eTA 等必要費用後估算。",
-      missingItems: ["2027 可售日期", "2027 實際團費", "2027 航班與飯店確認"],
-    },
-    bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26219BR10TA",
-    bookingLabel: "查看長汎旅遊團頁",
-    sourceStatusId: "everfun",
-    sourceName: "長汎旅遊",
-    sourceCheckedAt: "2026-07-15",
-    sourceSummary: "2026 二月團體歷史樣本；只作價格基準，不代表目前仍可售。",
-    importedFromSource: true,
-  },
-  {
-    id: "group-2026-march",
-    title: "2026 三月低價團體樣本",
-    packageName: "歷史樣本：玩美加族~加拿大極光10日（三月低價團）",
-    mode: "group",
-    estimatedCost: 142451,
-    auroraLevel: "B",
-    riskLevel: 1,
-    comfort: "balanced",
-    verified: true,
-    dataState: "歷史基準",
-    guideUrl: "#historical-baseline",
-    guideLabel: "查看 2026 團體樣本",
-    guideNote: "此項目是歷史比較基準，不是 2027 可下訂商品。",
-    description: "目前最乾淨的團體價格基準，低於 NT$150,000 且有緩衝，但不是 2027 可下訂商品。",
-    nextStep: "用來當旅行團報價的對照底線，不能直接下訂。",
-    departureWindow: "2026/03 歷史樣本",
-    productType: "團體歷史樣本",
-    rankingSummary: "價格有緩衝、旅行社來源可查；但夜數屬B級且資料是歷史樣本，因此不能當成目前可下訂商品。",
-    costBasis: {
-      readiness: "historical",
-      label: "歷史團體總額",
-      totalLabel: "歷史必要費後 NT$142,451",
-      flightDetail: "2026 團體樣本含旅行社規劃航段結構；2027 航班仍需重查。",
-      hotelDetail: "黃刀鎮住宿以 Chateau Nova、Explorer Hotel 或同級為方向；實際入住需以當期商品為準。",
-      scheduleDetail: "2026/03/19-03/28 歷史出發日期已知；不可直接套用至 2027。",
-      priceDetail: "以團費、公告小費、ESTA、eTA 等必要費用後估算。",
-      missingItems: ["2027 可售日期", "2027 實際團費", "2027 航班與飯店確認"],
-    },
-    bookingUrl: "https://www.everfuntravel.com/globaltour/detail/UWP26319BR10TB",
-    bookingLabel: "查看長汎旅遊團頁",
-    sourceStatusId: "everfun",
-    sourceName: "長汎旅遊",
-    sourceCheckedAt: "2026-07-15",
-    sourceSummary: "歷史團體樣本；只作價格基準，不代表目前仍可售。",
-    importedFromSource: true,
-  },
-  {
-    id: "independent-comfort",
-    title: "自由行舒適型雙人基準",
-    packageName: "自由行方案：雙人舒適型 3 完整極光夜",
-    mode: "independent",
-    estimatedCost: 132000,
-    auroraLevel: "A",
-    riskLevel: 2,
-    comfort: "comfort",
-    verified: false,
-    dataState: "規劃基準",
-    guideUrl: "#pending-2027-recheck",
-    guideLabel: "查看自由行查核項目",
-    guideNote: "目前採 2026 團體航段、飯店等級與 M2.1 航班價格區間作估算；正式下訂前仍需重查。",
-    description: "保留完整極光夜與較高舒適度，是團體方案的主要比較基準。",
-    nextStep: "重查航班、飯店與極光活動後，與團體總費用並列表。",
-    departureWindow: "2027 參考 2026 三月節奏",
-    productType: "自由行規劃基準",
-    rankingSummary: "A級完整極光夜與舒適度符合需求；航班、飯店與時間先用 2026 團體樣本作參考，正式報價需重查。",
-    costBasis: {
-      readiness: "partial",
-      label: "2026樣本參考估算",
-      totalLabel: "參考區間 NT$108,000-132,000",
-      flightDetail: "參考 2026 團體航段與 M2.1 航班排序：優先 TPE-YVR 直飛或 Air Canada 聯程，YVR 保留過夜或至少 4 小時分票緩衝。",
-      hotelDetail: "參考 2026 Chateau Nova、Explorer Hotel 或同級；自由行舒適型優先指定 Explorer 或 Chateau Nova。",
-      scheduleDetail: "參考 2026/03/19-03/28 十日節奏，但自由行改為抵達夜緩衝＋3 個完整極光夜，避免把抵達日算入 A 級夜數。",
-      priceDetail: "採 M2.1 舒適型雙人區間：機票 NT$42,000-55,000、Gold Explorer 或同級、2 晚 YVR 較佳住宿與必要費。",
-      missingItems: ["2027 航班票價重查", "2027 飯店房價重查", "YZF 抵離時間確認", "活動與保險總額確認"],
-      flightOptions: independentFlightOptions,
-      hotelMonthlyRates: independentHotelMonthlyRates,
-    },
-  },
-  {
-    id: "independent-basic",
-    title: "自由行節制型備援",
-    packageName: "自由行方案：節制型 3 完整極光夜備援",
-    mode: "independent",
-    estimatedCost: 115000,
-    auroraLevel: "A",
-    riskLevel: 3,
-    comfort: "basic",
-    verified: false,
-    dataState: "規劃基準",
-    guideUrl: "#decision-gates",
-    guideLabel: "查看決策門檻",
-    guideNote: "此項目以降低成本為主，但會提高轉機、住宿與現地安排負擔。",
-    description: "最容易壓低總額，但需要承擔更多轉機、飯店與現地安排操作。",
-    nextStep: "只有在願意提高操作負擔時，才納入備援池。",
-    departureWindow: "2027 參考 2026 三月節奏",
-    productType: "自由行節制基準",
-    rankingSummary: "價格有優勢且符合 A級夜數；以 2026 團體航段與飯店等級作參考，但操作風險較高。",
-    costBasis: {
-      readiness: "partial",
-      label: "2026樣本參考估算",
-      totalLabel: "參考區間 NT$95,000-115,000",
-      flightDetail: "參考 2026 團體長旅行鏈作風險基準；節制型可用較低價的 TPE-ICN/YVR 或 TPE-YVR 組合，但仍需保留 YVR 轉機緩衝。",
-      hotelDetail: "參考 2026 同級住宿下限；節制型可接受 Quality Inn／Nova Inn 或同級，但不得犧牲安全與夜間恢復。",
-      scheduleDetail: "參考 2026 Day 3 抵 YZF 的節奏；自由行需確保 YZF 至少 4 晚，抵達夜只當緩衝。",
-      priceDetail: "採 M2.1 節制型雙人區間：機票 NT$36,000-48,000、Gold Quality/Nova、2 晚 YVR 平價住宿與基本餐飲交通。",
-      missingItems: ["2027 低價航班重查", "2027 節制型房價重查", "轉機緩衝確認", "必要費總額確認"],
-      flightOptions: independentFlightOptions,
-      hotelMonthlyRates: independentHotelMonthlyRates,
-    },
-  },
-  {
-    id: "independent-solo",
-    title: "自由行單人舒適型",
-    packageName: "自由行方案：單人舒適型上限警戒",
-    mode: "independent",
-    estimatedCost: 165000,
-    auroraLevel: "A",
-    riskLevel: 3,
-    comfort: "comfort",
-    verified: false,
-    dataState: "高波動估算",
-    guideUrl: "#decision-gates",
-    guideLabel: "查看排除門檻",
-    guideNote: "此項目主要用來提醒單房差與舒適度成本，不作目前主推薦。",
-    description: "單房差與舒適度會明顯推高成本，適合當上限警戒，不適合作為目前主方案。",
-    nextStep: "除非預算提高或找到明確降價來源，否則維持排除。",
-    departureWindow: "2027 參考 2026 三月節奏",
-    productType: "自由行上限警戒",
-    rankingSummary: "A級夜數與舒適度達標；參考 2026 住宿等級後，單房差仍是主要超標來源。",
-    costBasis: {
-      readiness: "partial",
-      label: "2026樣本參考估算",
-      totalLabel: "參考區間 NT$125,000-165,000",
-      flightDetail: "參考 2026 航段結構與 M2.1 單人機票區間；若採分票，YVR 過夜與行李風險需納入。",
-      hotelDetail: "參考 2026 Chateau Nova、Explorer Hotel 或同級；單人版以 Explorer 單人或同級房價作上限警戒。",
-      scheduleDetail: "參考 2026 十日節奏並保留抵達夜緩衝；單人移動需降低深夜抵達與嚴寒步行風險。",
-      priceDetail: "採 M2.1 單人自由行區間：Gold Explorer 單人、溫哥華單人房、機票與必要費，單房差是主要成本來源。",
-      missingItems: ["2027 單人房價重查", "2027 航班票價重查", "YVR 過夜成本確認", "必要費總額確認"],
-      flightOptions: independentFlightOptions,
-      hotelMonthlyRates: independentHotelMonthlyRates,
-    },
-  },
-];
-
-      const formatCurrency = (value) =>
-        `NT$${new Intl.NumberFormat("zh-TW", {
+      const formatTwd = (value) => {
+        if (!Number.isFinite(value)) return "未公布";
+        return new Intl.NumberFormat("zh-TW", {
+          style: "currency",
+          currency: "TWD",
           maximumFractionDigits: 0,
-        }).format(value)}`;
+        }).format(value);
+      };
 
-      const getModeLabel = (mode) => (mode === "group" ? "團體" : "自由行");
-      const getComfortLabel = (level) => (level === "basic" ? "節制" : level === "comfort" ? "舒適" : "平衡");
-      const getAuroraLevelLabel = (level) => (level === "A" ? "A級：3 個完整極光夜" : "B級：3 晚含抵達日");
-      const clampBudget = (value) => Math.min(budgetRange.max, Math.max(budgetRange.min, value));
-      const getSourceStatus = (option) => (option.sourceStatusId ? sourceStatusRegistry[option.sourceStatusId] : null);
-      const getEstimateLabel = (option) =>
-        option.costBasis.readiness === "complete" || option.costBasis.readiness === "historical"
-          ? formatCurrency(option.estimatedCost)
-          : option.costBasis.totalLabel;
-      const isRecommendationOption = (option) => option.costBasis.readiness !== "historical";
-      const isActionableStatus = (status) => status === "strong" || status === "conditional" || status === "backup";
-      const resultStatusOrder = { strong: 0, conditional: 1, backup: 2, pending: 3, exclude: 4 };
+      const safeText = (value, fallback = "未公布") => {
+        const text = String(value ?? "").trim();
+        return text || fallback;
+      };
 
-      function getBudgetStatus(option, budget) {
-        if (option.costBasis.readiness === "missing") {
-          return {
-            className: "unknown",
-            label: "價格尚未公布，預算只作搜尋上限",
-          };
+      const unique = (items) => [...new Set(items.filter(Boolean))].sort((a, b) => String(a).localeCompare(String(b), "zh-Hant"));
+
+      const hasConcreteProduct = (product) =>
+        Boolean(product.productName && product.sourceUrl && Number.isFinite(product.priceTwd));
+
+      const parseNumber = (value) => {
+        const number = Number(value);
+        return Number.isFinite(number) ? number : null;
+      };
+
+      const productScore = (product) => {
+        const price = parseNumber(product.priceTwd);
+        let score = 0;
+        if (price && price <= state.budget) score += 38;
+        if (price && price <= state.budget * 0.9) score += 10;
+        if ((product.auroraNights ?? 0) >= state.aurora) score += 18;
+        if (product.dataStatus === "available") score += 14;
+        if (product.dataStatus === "partial") score += 8;
+        if (product.bookingStatusType === "bookable") score += 10;
+        if (product.sourceUrl) score += 10;
+        return score;
+      };
+
+      const agencyScore = (products) => {
+        if (!products.length) return 0;
+        const best = Math.max(...products.map(productScore));
+        const depth = Math.min(products.length * 2, 10);
+        return Math.min(best + depth, 100);
+      };
+
+      const inferDestinationOptions = () => {
+        const destinations = unique(state.products.map((product) => product.destination || "未分類"));
+        elements.destination.innerHTML = [
+          `<option value="all">不限目的地</option>`,
+          ...destinations.map((destination) => `<option value="${escapeAttribute(destination)}">${escapeHtml(destination)}</option>`),
+        ].join("");
+      };
+
+      const inferAgencyOptions = () => {
+        const agencies = unique(state.products.map((product) => product.agency || "未分類旅行社"));
+        elements.agency.innerHTML = [
+          `<option value="all">不限旅行社</option>`,
+          ...agencies.map((agency) => `<option value="${escapeAttribute(agency)}">${escapeHtml(agency)}</option>`),
+        ].join("");
+      };
+
+      const escapeHtml = (value) =>
+        String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+
+      const escapeAttribute = escapeHtml;
+
+      const productMatches = (product) => {
+        const price = parseNumber(product.priceTwd);
+        if (state.concreteOnly && !hasConcreteProduct(product)) return false;
+        if (price && price > state.budget) return false;
+        if (!price && state.concreteOnly) return false;
+        if (state.destination !== "all" && product.destination !== state.destination) return false;
+        if (state.agency !== "all" && product.agency !== state.agency) return false;
+        if (state.month !== "all") {
+          const targetMonth = Number(state.month);
+          if (!Array.isArray(product.months) || !product.months.includes(targetMonth)) return false;
         }
+        if (state.aurora > 0 && Number(product.auroraNights ?? 0) < state.aurora) return false;
+        return true;
+      };
 
-        const delta = budget - option.estimatedCost;
-
-        if (delta >= 5000) {
-          return {
-            className: "under",
-            label: `低於目前預算 ${formatCurrency(delta)}`,
-          };
+      const groupByAgency = (products) => {
+        const groups = new Map();
+        for (const product of products) {
+          const agency = product.agency || "未分類旅行社";
+          if (!groups.has(agency)) groups.set(agency, []);
+          groups.get(agency).push(product);
         }
+        return [...groups.entries()]
+          .map(([agency, agencyProducts]) => ({
+            agency,
+            products: agencyProducts.sort((a, b) => productScore(b) - productScore(a) || (a.priceTwd ?? Infinity) - (b.priceTwd ?? Infinity)),
+            score: agencyScore(agencyProducts),
+          }))
+          .sort((a, b) => b.score - a.score || a.agency.localeCompare(b.agency, "zh-Hant"));
+      };
 
-        if (delta >= 0) {
-          return {
-            className: "near",
-            label: `臨界通過，剩 ${formatCurrency(delta)}`,
-          };
+      const renderBest = (groups) => {
+        if (!groups.length) {
+          elements.bestResult.innerHTML = `<p>目前條件下沒有符合的已匯入旅行團。請放寬預算、月份或極光夜數。</p>`;
+          return;
         }
-
-        return {
-          className: "over",
-          label: `超過目前預算 ${formatCurrency(Math.abs(delta))}`,
-        };
-      }
-
-      function getDirectionIdForOption(option) {
-        if (option.mode === "independent") {
-          return "independent";
-        }
-
-        return option.auroraLevel === "A" ? "group-a" : "group-b";
-      }
-
-      function getDirectionIdForFilters(filters, fallback) {
-        if (filters.preferredMode === "independent") {
-          return "independent";
-        }
-
-        if (filters.preferredMode === "group") {
-          return filters.auroraTarget === "A" ? "group-a" : filters.auroraTarget === "B" ? "group-b" : "group-b";
-        }
-
-        if (filters.auroraTarget === "B") {
-          return "group-b";
-        }
-
-        return getDirectionIdForOption(fallback);
-      }
-
-      function isSamePlannerFilters(first, second) {
-        return (
-          first.budget === second.budget &&
-          first.preferredMode === second.preferredMode &&
-          first.auroraTarget === second.auroraTarget &&
-          first.riskTolerance === second.riskTolerance &&
-          first.comfort === second.comfort &&
-          first.requireVerified === second.requireVerified
-        );
-      }
-
-      function getEvaluatedResults() {
-        return staticCandidates
-          .filter(isRecommendationOption)
-          .map(evaluateStaticOption)
-          .sort((a, b) => resultStatusOrder[a.status] - resultStatusOrder[b.status] || b.score - a.score);
-      }
-
-      function getBestResult(results) {
-        return results.find((result) => isActionableStatus(result.status)) || results[0];
-      }
-
-      function getDirectionContext(results) {
-        const globalBest = getBestResult(results);
-        const syncedDirectionId = getDirectionIdForFilters(plannerState, globalBest.option);
-        const activeDirectionId = selectedDirectionId || syncedDirectionId;
-        const selected = directionCategories.find((category) => category.id === activeDirectionId) || directionCategories[0];
-        const evaluatedMap = new Map(results.map((result) => [result.option.id, result]));
-        const rankedItems = rankDirectionItems(selected.items, evaluatedMap);
-        const selectedResults = rankedItems
-          .map((item) => (item.candidateId ? evaluatedMap.get(item.candidateId) : null))
-          .filter(Boolean);
-        const best = getBestResult(selectedResults) || globalBest;
-
-        return {
-          activeDirectionId,
-          best,
-          evaluatedMap,
-          rankedItems,
-          selected,
-          selectedResults,
-        };
-      }
-
-      function getRecommendationKicker(hasPendingChanges, best) {
-        if (hasPendingChanges) return "上次確認結果";
-        return best.status === "pending" ? "本分類待查項目" : "本分類優先項目";
-      }
-
-      function rankDirectionItems(items, evaluatedMap) {
-        return [...items].sort((first, second) => {
-          const firstResult = first.candidateId ? evaluatedMap.get(first.candidateId) : null;
-          const secondResult = second.candidateId ? evaluatedMap.get(second.candidateId) : null;
-
-          if (firstResult && secondResult) {
-            if (firstResult.status === "pending" && secondResult.status === "pending") {
-              return 0;
-            }
-
-            return resultStatusOrder[firstResult.status] - resultStatusOrder[secondResult.status] || secondResult.score - firstResult.score;
-          }
-
-          if (firstResult) return -1;
-          if (secondResult) return 1;
-          return 0;
-        });
-      }
-
-      function getDirectionResultNote(result) {
-        return result.status === "pending" ? "待查項目不評分" : `分數 ${result.score}`;
-      }
-
-      function renderDraftControls() {
-        document.getElementById("budgetLabel").textContent = formatCurrency(draftPlannerState.budget);
-        document.getElementById("budgetRange").value = draftPlannerState.budget;
-        document.getElementById("budgetNumber").value = draftPlannerState.budget;
-        document.getElementById("requireVerified").checked = draftPlannerState.requireVerified;
-
-        document.querySelectorAll(".segmentedControl").forEach((group) => {
-          const filter = group.dataset.filter;
-          group.querySelectorAll("button").forEach((button) => {
-            const value = filter === "riskTolerance" ? Number(button.dataset.value) : button.dataset.value;
-            button.classList.toggle("active", draftPlannerState[filter] === value);
-            button.setAttribute("aria-pressed", String(draftPlannerState[filter] === value));
-          });
-        });
-
-        renderSelectionImpactPreview();
-      }
-
-      function renderSelectionImpactPreview() {
-        const target = document.getElementById("selectionImpactPreview");
-        const hasPendingChanges = !isSamePlannerFilters(draftPlannerState, plannerState);
-        const needsPlannerCheck = !hasConfirmedPlanner || hasPendingChanges;
-
-        target.innerHTML = `
-          <strong>目前選擇會影響</strong>
-          <span><b>夜數</b>${controlChoiceMeta.auroraTarget[draftPlannerState.auroraTarget]}</span>
-          <span><b>風險</b>${controlChoiceMeta.riskTolerance[draftPlannerState.riskTolerance]}</span>
-          <span><b>舒適</b>${controlChoiceMeta.comfort[draftPlannerState.comfort]}</span>
-          <small>${needsPlannerCheck ? "尚未套用：按「確認並查核」後才更新推薦與候選清單。" : "已套用到推薦排序與候選清單。"}</small>
+        const bestAgency = groups[0];
+        const bestProduct = bestAgency.products[0];
+        elements.bestResult.innerHTML = `
+          <p><strong>${escapeHtml(bestAgency.agency)}</strong> 目前排序最高。</p>
+          <dl class="fields">
+            <div class="field"><dt>代表商品</dt><dd>${escapeHtml(safeText(bestProduct.productName))}</dd></div>
+            <div class="field"><dt>價格</dt><dd>${escapeHtml(bestProduct.priceLabel || formatTwd(bestProduct.priceTwd))}</dd></div>
+            <div class="field"><dt>日期</dt><dd>${escapeHtml(safeText(bestProduct.selectableDates))}</dd></div>
+            <div class="field"><dt>航班</dt><dd>${escapeHtml(safeText(bestProduct.flightSummary))}</dd></div>
+          </dl>
+          ${bestProduct.sourceUrl ? `<p><a class="actionLink" href="${escapeAttribute(bestProduct.sourceUrl)}" target="_blank" rel="noopener">查看訂購來源</a></p>` : ""}
         `;
-      }
+      };
 
-      function renderApplyStatus() {
-        const status = document.getElementById("applyPlannerStatus");
-        const hasPendingChanges = !isSamePlannerFilters(draftPlannerState, plannerState);
-        const needsPlannerCheck = !hasConfirmedPlanner || hasPendingChanges;
-        status.className = `applyPlannerStatus ${needsPlannerCheck ? "pending" : "ready"}`;
-        status.textContent = !hasConfirmedPlanner
-          ? "尚未查核；請先確認條件，才會產生推薦。"
-          : hasPendingChanges
-            ? "條件已修改，尚未查核；下方仍顯示上次確認結果。"
-            : "條件已確認；下方推薦與候選方向已同步。";
-      }
+      const renderAgencyCard = (group) => {
+        const products = group.products;
+        const best = products[0];
+        const prices = products.map((product) => parseNumber(product.priceTwd)).filter(Number.isFinite);
+        const destinations = unique(products.map((product) => product.destination)).slice(0, 4);
+        const bookable = products.filter((product) => product.bookingStatusType === "bookable").length;
+        const priceRange = prices.length
+          ? prices.length === 1
+            ? formatTwd(prices[0])
+            : `${formatTwd(Math.min(...prices))} - ${formatTwd(Math.max(...prices))}`
+          : "未公布";
 
-      function updateDraftPlanner(updater) {
-        draftPlannerState = updater({ ...draftPlannerState });
-        renderDraftControls();
-        renderApplyStatus();
-      }
+        return `
+          <article class="agencyCard">
+            <div class="agencyTop">
+              <div>
+                <span class="chip">旅行社方案</span>
+                <h3>${escapeHtml(group.agency)}</h3>
+                <p class="muted">符合條件 ${products.length} 筆；卡片內只列這一家旅行社的商品。</p>
+              </div>
+              <div class="score" aria-label="推薦分數">${Math.round(group.score)}</div>
+            </div>
 
-      function getDecisionGates(budget) {
-        return [
-          ["強候選", `低於 ${formatCurrency(budget)}，YZF 夜數清楚，並接近 A 級三個完整極光夜。`],
-          ["條件候選", `價格接近 ${formatCurrency(budget)}，但需要明確補看、延誤或 YVR 過夜方案。`],
-          ["備援", `價格、體力或證據信心不足，但仍未明顯超過 ${formatCurrency(budget)} 的可比較上限。`],
-          ["待查", "缺少未來可售日期、價格、航班、飯店或訂購網址；只能保留為搜尋方向。"],
-          ["排除", `超過 ${formatCurrency(budget)}、轉機過度、核心極光夜無保護，或使用未知 2027 細節作賣點。`],
-        ];
-      }
+            <div class="chips">
+              <span class="chip">${escapeHtml(priceRange)}</span>
+              <span class="chip">${bookable ? `${bookable} 筆可報名` : "報名狀態待確認"}</span>
+              ${destinations.map((destination) => `<span class="chip warn">${escapeHtml(destination)}</span>`).join("")}
+            </div>
 
-      function renderDecisionGates() {
-        document.getElementById("gateList").innerHTML = getDecisionGates(plannerState.budget)
-          .map(([label, body]) => `<div class="gateItem"><strong>${label}</strong><span>${body}</span></div>`)
+            <section class="productFocus">
+              <h4>${escapeHtml(safeText(best.productName))}</h4>
+              <dl class="fields">
+                <div class="field"><dt>可選日期</dt><dd>${escapeHtml(safeText(best.selectableDates))}</dd></div>
+                <div class="field"><dt>預計航班</dt><dd>${escapeHtml(safeText(best.flightSummary))}</dd></div>
+                <div class="field"><dt>行程摘要</dt><dd>${escapeHtml(safeText(best.itinerarySummary))}</dd></div>
+                <div class="field"><dt>報名狀態</dt><dd>${escapeHtml(safeText(best.bookingStatus))}</dd></div>
+                <div class="field"><dt>金額</dt><dd>${escapeHtml(best.priceLabel || formatTwd(best.priceTwd))}</dd></div>
+              </dl>
+              ${best.sourceUrl ? `<p><a class="actionLink" href="${escapeAttribute(best.sourceUrl)}" target="_blank" rel="noopener">訂購 / 來源網址</a></p>` : ""}
+            </section>
+
+            <details>
+              <summary>展開 ${products.length} 筆旅行團</summary>
+              <div class="productList">
+                ${products
+                  .map(
+                    (product) => `
+                      <div class="productRow">
+                        <strong>${escapeHtml(safeText(product.productName))}</strong>
+                        <div class="chips">
+                          <span class="chip">${escapeHtml(product.priceLabel || formatTwd(product.priceTwd))}</span>
+                          <span class="chip">${escapeHtml(safeText(product.selectableDates))}</span>
+                          <span class="chip warn">${escapeHtml(safeText(product.destination, "未分類目的地"))}</span>
+                        </div>
+                        ${product.sourceUrl ? `<p><a href="${escapeAttribute(product.sourceUrl)}" target="_blank" rel="noopener">查看來源</a></p>` : ""}
+                      </div>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </details>
+          </article>
+        `;
+      };
+
+      const renderSources = () => {
+        elements.sourceGrid.innerHTML = state.sources
+          .map(
+            (source) => `
+              <article class="sourceCard">
+                <h3>${escapeHtml(safeText(source.agency, "未分類來源"))}</h3>
+                <p>總筆數 ${source.totalRows ?? 0}；具體商品 ${source.concreteRows ?? 0}；可報名 ${source.availableRows ?? 0}</p>
+                <span class="chip ${source.status === "updated" ? "" : "danger"}">${escapeHtml(source.status || "待確認")}</span>
+              </article>
+            `,
+          )
           .join("");
-      }
+      };
 
-      function evaluateStaticOption(option) {
-        let score = 40;
-        const reasons = [];
-        const cautions = [];
-        const blockers = [];
-        const budgetDelta = option.estimatedCost - plannerState.budget;
-        const sourceStatus = getSourceStatus(option);
+      const render = () => {
+        state.budget = Number(elements.budget.value);
+        state.destination = elements.destination.value;
+        state.agency = elements.agency.value;
+        state.month = elements.month.value;
+        state.aurora = Number(elements.aurora.value);
+        state.concreteOnly = elements.concreteOnly.checked;
 
-        if (option.costBasis.readiness === "missing") {
-          score -= 32;
-          blockers.push(`缺少 ${option.costBasis.missingItems.join("、")}，不能視為完整預算或可下訂商品。`);
-        } else if (option.mode === "independent" && option.costBasis.readiness === "partial") {
-          score -= 8;
-          cautions.push(`自由行目前採 2026 團體樣本作參考，需重查 ${option.costBasis.missingItems.join("、")} 後才能下訂。`);
+        elements.budgetLabel.textContent = formatTwd(state.budget);
+        elements.activeBudget.textContent = formatTwd(state.budget);
+
+        const matches = state.products.filter(productMatches);
+        const groups = groupByAgency(matches);
+        const prices = matches.map((product) => parseNumber(product.priceTwd)).filter(Number.isFinite);
+
+        elements.agencyCount.textContent = String(groups.length);
+        elements.matchCount.textContent = String(matches.length);
+        elements.minPrice.textContent = prices.length ? formatTwd(Math.min(...prices)) : "-";
+
+        renderBest(groups);
+        elements.agencyGrid.innerHTML = groups.length
+          ? groups.map(renderAgencyCard).join("")
+          : `<div class="empty">目前條件下沒有符合資料。這代表已匯入資料中沒有同時符合預算、月份、目的地與極光夜數的商品。</div>`;
+      };
+
+      const bindEvents = () => {
+        [
+          elements.budget,
+          elements.destination,
+          elements.agency,
+          elements.month,
+          elements.aurora,
+          elements.concreteOnly,
+        ].forEach((element) => element.addEventListener("input", render));
+      };
+
+      const loadData = async () => {
+        try {
+          const [productPayload, sourcePayload] = await Promise.all([
+            fetch("/data/tour-products.latest.json", { cache: "no-store" }).then((response) => {
+              if (!response.ok) throw new Error("tour-products.latest.json 讀取失敗");
+              return response.json();
+            }),
+            fetch("/data/source-status.json", { cache: "no-store" }).then((response) => {
+              if (!response.ok) throw new Error("source-status.json 讀取失敗");
+              return response.json();
+            }),
+          ]);
+
+          state.products = Array.isArray(productPayload.products) ? productPayload.products : [];
+          state.sources = Array.isArray(sourcePayload.sources) ? sourcePayload.sources : [];
+          elements.checkedAt.textContent = productPayload.checkedAt || sourcePayload.checkedAt || "未標示";
+          elements.productCount.textContent = `${state.products.length} 筆`;
+
+          inferDestinationOptions();
+          inferAgencyOptions();
+          bindEvents();
+          renderSources();
+          render();
+
+          elements.message.hidden = true;
+          elements.app.hidden = false;
+        } catch (error) {
+          elements.message.className = "error";
+          elements.message.textContent = `資料讀取失敗：${error.message}`;
         }
+      };
 
-        if (option.costBasis.readiness === "missing") {
-          cautions.push("價格仍待補完整資料，預算判讀只作提醒。");
-        } else if (budgetDelta <= -5000) {
-          score += 30;
-          reasons.push(`低於預算 ${formatCurrency(Math.abs(budgetDelta))}，有實際緩衝。`);
-        } else if (budgetDelta <= 0) {
-          score += 20;
-          cautions.push("低於預算但緩衝偏薄，必要費與匯率需重算。");
-        } else {
-          score -= 35;
-          blockers.push(`超過預算 ${formatCurrency(budgetDelta)}。`);
-        }
-
-        if (plannerState.auroraTarget === "A") {
-          if (option.auroraLevel === "A") {
-            score += 25;
-            reasons.push("符合 A 級：抵達日不計，保留完整極光夜。");
-          } else {
-            score -= 22;
-            blockers.push("只有 B 級夜數，可能把抵達日誤算成完整極光夜。");
-          }
-        } else if (plannerState.auroraTarget === "B") {
-          score += option.auroraLevel === "A" ? 18 : 14;
-          reasons.push(option.auroraLevel === "A" ? "高於最低夜數要求。" : "符合 B 級最低夜數。");
-        } else {
-          score += 8;
-          reasons.push("夜數條件未限制，保留作比較。");
-        }
-
-        if (plannerState.preferredMode === "either") {
-          score += 12;
-          reasons.push("符合團體與自由行並行比較。");
-        } else if (plannerState.preferredMode === option.mode) {
-          score += 18;
-          reasons.push(`符合目前偏好的${getModeLabel(option.mode)}模式。`);
-        } else {
-          score += 4;
-          cautions.push(`不是目前偏好的模式，但可作${getModeLabel(option.mode)}比較基準。`);
-        }
-
-        if (option.riskLevel <= plannerState.riskTolerance) {
-          score += 22;
-          reasons.push("風險等級在目前可接受範圍內。");
-        } else if (option.riskLevel === plannerState.riskTolerance + 1) {
-          score -= 12;
-          cautions.push("風險略高，需要額外備援或人工確認。");
-        } else {
-          score -= 28;
-          blockers.push("風險高於目前容忍度。");
-        }
-
-        if (option.verified) {
-          score += 12;
-          reasons.push("已有查核基準，可作比較。");
-        } else if (plannerState.requireVerified) {
-          score -= 30;
-          blockers.push("尚未完成商品與動態資料正式重查。");
-        } else {
-          score -= 4;
-          cautions.push("屬於規劃或待重查資料，不可直接下訂。");
-        }
-
-        if (sourceStatus) {
-          if (sourceStatus.safetyStatus === "verified") {
-            score += 8;
-            reasons.push(`${sourceStatus.safetyLabel}：${sourceStatus.allowedDomain}`);
-          }
-
-          if (sourceStatus.freshnessStatus === "current") {
-            score += 6;
-            reasons.push(`資料新鮮度：${sourceStatus.freshnessLabel}`);
-          } else {
-            score -= 8;
-            cautions.push(`資料新鮮度：${sourceStatus.freshnessLabel}，${sourceStatus.recheckReason}`);
-          }
-        }
-
-        if (plannerState.comfort === "any") {
-          score += 5;
-        } else if (plannerState.comfort === option.comfort) {
-          score += 10;
-          reasons.push("舒適度符合目前設定。");
-        } else if (plannerState.comfort === "comfort" && option.comfort === "basic") {
-          score -= 10;
-          cautions.push("舒適度低於設定，可能增加體力與操作負擔。");
-        } else {
-          score -= 4;
-          cautions.push("舒適度與設定不同，需確認是否可接受。");
-        }
-
-        let status = "exclude";
-        if (option.costBasis.readiness === "missing") {
-          status = "pending";
-        } else if (blockers.length === 0 && score >= 112) {
-          status = "strong";
-        } else if (blockers.length === 0 && score >= 88) {
-          status = "conditional";
-        } else if (blockers.length <= 1 && score >= 68) {
-          status = "backup";
-        }
-
-        const statusLabel =
-          status === "strong"
-            ? "強候選"
-            : status === "conditional"
-              ? "條件候選"
-              : status === "backup"
-                ? "備援"
-                : status === "pending"
-                  ? "待查"
-                  : "排除";
-
-        return {
-          option,
-          score: Math.max(0, Math.min(160, score)),
-          reasons,
-          cautions,
-          blockers,
-          status,
-          statusLabel,
-        };
-      }
-
-      function renderDirection() {
-        const results = getEvaluatedResults();
-        const { activeDirectionId, evaluatedMap, rankedItems, selected } = getDirectionContext(results);
-        const hasPendingChanges = !isSamePlannerFilters(draftPlannerState, plannerState);
-        const detail = document.getElementById("directionDetail");
-
-        if (!hasConfirmedPlanner) {
-          detail.innerHTML = `
-            <div class="directionLocked">
-              <strong>尚未產生候選清單</strong>
-              <span>請先在「決策選項列表」設定預算、旅行型態、極光夜數、風險與舒適程度，按下「確認並查核」後才顯示旅行團與方案。</span>
-            </div>
-          `;
-
-          document.querySelectorAll("#directionChooser button").forEach((button) => {
-            button.classList.remove("active");
-            button.setAttribute("aria-pressed", "false");
-            button.setAttribute("aria-disabled", "true");
-            button.disabled = true;
-          });
-          return;
-        }
-
-        const budgetNote = hasPendingChanges
-          ? `上次確認價格基準：${formatCurrency(plannerState.budget)}；目前條件尚未重新查核。`
-          : `已確認價格基準：${formatCurrency(plannerState.budget)}；候選方向已依上方確認條件重新查核。`;
-
-        detail.innerHTML = `
-          <div class="directionIntro">
-            <h3>${selected.title}</h3>
-            <p>${selected.summary}</p>
-          </div>
-          <div class="directionBudgetNote">${budgetNote}</div>
-          <div class="directionListHeader">旅行團與方案清單</div>
-          <div class="directionList">
-            ${rankedItems
-              .map((item) => {
-                const linkedOption = item.candidateId
-                  ? staticCandidates.find((option) => option.id === item.candidateId)
-                  : null;
-                const linkedResult = linkedOption ? evaluatedMap.get(linkedOption.id) : null;
-                const budgetStatus = linkedOption ? getBudgetStatus(linkedOption, plannerState.budget) : null;
-
-                return `
-                  <article class="directionItem ${linkedOption ? "linked" : "pending"}">
-                    <span>${item.status}</span>
-                    <h3>${item.name}</h3>
-                    ${
-                      linkedResult
-                        ? `<div class="directionResultRow">
-                            <span class="recommendationBadge ${linkedResult.status}">${linkedResult.statusLabel}</span>
-                            <small>${getDirectionResultNote(linkedResult)}</small>
-                          </div>`
-                        : ""
-                    }
-                    <p>${item.condition}</p>
-                    ${
-                      linkedOption
-                        ? `<div class="directionTourMeta">
-                            <strong>${linkedOption.packageName}</strong>
-                            <small>${linkedOption.productType}｜${linkedOption.departureWindow}</small>
-                            <small>${linkedOption.costBasis.totalLabel}</small>
-                            ${
-                              budgetStatus
-                                ? `<small class="directionBudgetBasis ${budgetStatus.className}">以目前預算上限 ${formatCurrency(plannerState.budget)} 判讀：${budgetStatus.label}</small>`
-                                : ""
-                            }
-                            <small>資料狀態：${linkedOption.dataState}</small>
-                          </div>`
-                        : ""
-                    }
-                    ${
-                      linkedOption && linkedOption.agencyCandidates && linkedOption.agencyCandidates.length
-                        ? `<div class="directionAgencyLinks">
-                            <strong>旅行社候選</strong>
-                            ${linkedOption.agencyCandidates
-                              .map((agency) => {
-                                const agencySourceState = sourceStatusRegistry[agency.sourceStatusId];
-                                return `<a href="${agency.sourceUrl}" rel="noreferrer" target="_blank">
-                                  <span>${agency.agency}</span>
-                                  <small>${agency.priceLabel}</small>
-                                  <small>${agency.destinations.join("、")}</small>
-                                  <small>${agencySourceState.freshnessLabel}｜${agencySourceState.safetyLabel}</small>
-                                </a>`;
-                              })
-                              .join("")}
-                          </div>`
-                        : ""
-                    }
-                    ${
-                      linkedOption
-                        ? `<details class="directionInfoDetail">
-                            <summary>查看航班、住宿與價格詳細資訊</summary>
-                            <div class="directionInfoGrid">
-                              <span><strong>航班</strong>${linkedOption.costBasis.flightDetail}</span>
-                              <span><strong>住宿</strong>${linkedOption.costBasis.hotelDetail}</span>
-                              <span><strong>時間</strong>${linkedOption.costBasis.scheduleDetail}</span>
-                              <span><strong>價格</strong>${linkedOption.costBasis.priceDetail}</span>
-                            </div>
-                            ${
-                              linkedOption.costBasis.flightOptions
-                                ? `<div class="flightOptionList">
-                                    <strong>自由行航班候選</strong>
-                                    ${linkedOption.costBasis.flightOptions
-                                      .map(
-                                        (flight) => `<div class="flightOptionCard">
-                                          <span>${flight.priority}</span>
-                                          <div>
-                                            <strong>${flight.airline}</strong>
-                                            <small>${flight.route}</small>
-                                            <p>${flight.role}；${flight.recommendedUse}</p>
-                                            <small>${flight.estimate}</small>
-                                            <small>${flight.riskCheck}</small>
-                                            <a href="${flight.bookingUrl}" rel="noreferrer" target="_blank">航空公司查詢</a>
-                                          </div>
-                                        </div>`,
-                                      )
-                                      .join("")}
-                                  </div>`
-                                : ""
-                            }
-                            ${
-                              linkedOption.costBasis.hotelMonthlyRates
-                                ? `<div class="hotelRateList">
-                                    <strong>自由行住宿月份估算</strong>
-                                    ${linkedOption.costBasis.hotelMonthlyRates
-                                      .map(
-                                        (hotel) => `<div class="hotelRateCard">
-                                          <strong>${hotel.month}</strong>
-                                          <span>${hotel.yellowknife}</span>
-                                          <span>${hotel.vancouver}</span>
-                                          <span>${hotel.total}</span>
-                                          <small>${hotel.note}</small>
-                                        </div>`,
-                                      )
-                                      .join("")}
-                                  </div>`
-                                : ""
-                            }
-                            ${
-                              linkedOption.costBasis.missingItems.length > 0
-                                ? `<div class="directionUnpublished">
-                                    <strong>尚未公布／需重查</strong>
-                                    <span>${linkedOption.costBasis.missingItems.join("、")}</span>
-                                  </div>`
-                                : ""
-                            }
-                          </details>`
-                        : `<div class="directionUnpublished">
-                            <strong>詳細資訊</strong>
-                            <span>尚未公布</span>
-                          </div>`
-                    }
-                    ${
-                      linkedResult
-                        ? `<div class="directionRankingSummary">
-                            <strong>排序理由</strong>
-                            <span>${linkedOption ? linkedOption.rankingSummary : ""}</span>
-                            ${
-                              [...linkedResult.blockers, ...linkedResult.cautions].length > 0
-                                ? `<small>${[...linkedResult.blockers, ...linkedResult.cautions].slice(0, 2).join("；")}</small>`
-                                : ""
-                            }
-                          </div>`
-                        : `<div class="directionRankingSummary">
-                            <strong>排序理由</strong>
-                            <span>尚未公布具體價格、航班、住宿與訂購網址，暫不納入推薦。</span>
-                          </div>`
-                    }
-                    ${
-                      linkedOption && linkedOption.bookingUrl
-                        ? `<a class="directionTourLink" href="${linkedOption.bookingUrl}" rel="noreferrer" target="_blank">${linkedOption.bookingLabel || "訂購網站"}</a>`
-                        : ""
-                    }
-                  </article>
-                `;
-              })
-              .join("")}
-          </div>
-        `;
-
-        document.querySelectorAll("#directionChooser button").forEach((button) => {
-          const isActive = button.dataset.direction === activeDirectionId;
-          button.classList.toggle("active", isActive);
-          button.setAttribute("aria-pressed", String(isActive));
-          button.setAttribute("aria-disabled", "false");
-          button.disabled = false;
-        });
-      }
-
-      function renderSimulator() {
-        renderDraftControls();
-        renderApplyStatus();
-
-        const results = getEvaluatedResults();
-        const { best, selected, selectedResults } = getDirectionContext(results);
-        const activeCount = selectedResults.filter((result) => isActionableStatus(result.status)).length;
-        const pendingCount = selectedResults.filter((result) => result.status === "pending").length;
-        const excludeCount = selectedResults.filter((result) => result.status === "exclude").length;
-        const bestSourceStatus = getSourceStatus(best.option);
-        const hasPendingChanges = !isSamePlannerFilters(draftPlannerState, plannerState);
-
-        const top = document.getElementById("topRecommendation");
-        if (!hasConfirmedPlanner) {
-          top.className = "topRecommendation pending";
-          top.innerHTML = `
-            <span class="recommendationKicker">尚未查核</span>
-            <strong>請先設定條件並按「確認並查核」</strong>
-            <div class="resultCounts">
-              <span>未產生推薦</span>
-              <span>預算尚未套用</span>
-            </div>
-            <p>目前不顯示最適合選項，避免在未決策價格或條件前誤判。</p>
-          `;
-          return;
-        }
-
-        top.className = `topRecommendation ${best.status}`;
-        top.innerHTML = `
-          <span class="recommendationKicker">${getRecommendationKicker(hasPendingChanges, best)}</span>
-          <strong>${best.option.packageName}</strong>
-          <div class="resultCounts">
-            <span>${selected.label}</span>
-            <span>可考慮 ${activeCount}</span>
-            <span>待查 ${pendingCount}</span>
-            <span>排除 ${excludeCount}</span>
-          </div>
-          <div class="recommendationMeta">
-            <span>已確認條件</span>
-            ${hasPendingChanges ? "<span>有未查核變更</span>" : ""}
-            <span>目前分類 ${selected.label}</span>
-            <span>預算基準 ${formatCurrency(plannerState.budget)}</span>
-            <span>${best.option.productType}</span>
-            <span>${best.option.departureWindow}</span>
-            <span>${best.option.title}</span>
-            <span>${best.option.dataState}</span>
-            <span>${best.option.costBasis.label}</span>
-            <span>${getAuroraLevelLabel(best.option.auroraLevel)}</span>
-            ${best.option.sourceName ? `<span>${best.option.sourceName}</span>` : ""}
-            ${bestSourceStatus ? `<span>${bestSourceStatus.safetyLabel}</span><span>${bestSourceStatus.freshnessLabel}</span>` : ""}
-          </div>
-          <p>${best.statusLabel}；${getDirectionResultNote(best)}。${best.option.description}</p>
-          <div class="rankingSummary">
-            <strong>為什麼這樣排：</strong>
-            <span>${best.option.rankingSummary}</span>
-          </div>
-          <div class="recommendationAction">
-            ${best.option.bookingUrl ? `<a class="bookingLink" href="${best.option.bookingUrl}" rel="noreferrer" target="_blank">${best.option.bookingLabel || "訂購網站"}</a>` : ""}
-            <a href="${best.option.guideUrl}">${best.option.guideLabel}</a>
-            <small>${best.option.guideNote}</small>
-          </div>
-        `;
-      }
-
-      document.querySelectorAll(".segmentedControl").forEach((group) => {
-        group.addEventListener("click", (event) => {
-          const button = event.target.closest("button");
-          if (!button) return;
-          const filter = group.dataset.filter;
-          const value = button.dataset.value;
-          updateDraftPlanner((current) => ({
-            ...current,
-            [filter]: filter === "riskTolerance" ? Number(value) : value,
-          }));
-        });
-      });
-
-      document.getElementById("budgetRange").addEventListener("input", (event) => {
-        updateDraftPlanner((current) => ({ ...current, budget: clampBudget(Number(event.target.value)) }));
-      });
-
-      document.getElementById("budgetNumber").addEventListener("input", (event) => {
-        updateDraftPlanner((current) => ({ ...current, budget: clampBudget(Number(event.target.value) || current.budget) }));
-      });
-
-      document.getElementById("requireVerified").addEventListener("change", (event) => {
-        updateDraftPlanner((current) => ({ ...current, requireVerified: event.target.checked }));
-      });
-
-      document.getElementById("applyPlanner").addEventListener("click", () => {
-        plannerState = { ...draftPlannerState };
-        selectedDirectionId = null;
-        hasConfirmedPlanner = true;
-        renderSimulator();
-        renderDirection();
-        renderDecisionGates();
-      });
-
-      document.getElementById("directionChooser").addEventListener("click", (event) => {
-        const button = event.target.closest("button");
-        if (!button) return;
-        selectedDirectionId = button.dataset.direction;
-        renderSimulator();
-        renderDirection();
-      });
-
-      renderSimulator();
-      renderDirection();
-      renderDecisionGates();
+      loadData();
     </script>
   </body>
 </html>
