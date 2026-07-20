@@ -15,6 +15,15 @@ import type { FilterState, Product, ProductPayload, SourcePayload } from "./lib/
 const formatTwd = (value: number | null) =>
   value === null ? "待確認" : formatCurrency(value);
 
+const formatCheckedTime = (value: string | undefined) =>
+  value
+    ? new Intl.DateTimeFormat("zh-TW", {
+        dateStyle: "medium",
+        timeStyle: "short",
+        timeZone: "Asia/Taipei",
+      }).format(new Date(value))
+    : "未標示";
+
 const comparisonRows: Array<[string, (product: Product) => string]> = [
   ["代表行程", (product) => product.productName || "待確認"],
   ["總價", (product) => product.priceLabel || formatTwd(product.priceTwd)],
@@ -190,7 +199,8 @@ export default function Home() {
             <span>{sourcePayload?.sources.filter((source) => source.status === "updated").length ?? 0} 個來源已更新</span>
             <span>{matchingProducts.length} 筆符合條件商品</span>
             <span>{Number.isFinite(lowestPrice) ? `最低 ${formatTwd(lowestPrice)}` : "價格待確認"}</span>
-            <span>資料更新時間 {payload?.checkedAt ?? sourcePayload?.checkedAt ?? "未標示"}</span>
+            <span>本次核對 {formatCheckedTime(payload?.generatedAt ?? sourcePayload?.generatedAt)}</span>
+            <span>原始彙整日期 {payload?.checkedAt ?? sourcePayload?.checkedAt ?? "未標示"}</span>
           </section>
         </section>
       </div>

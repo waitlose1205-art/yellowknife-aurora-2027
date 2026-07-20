@@ -47,6 +47,22 @@ test("available products do not contain known missing-value markers", async () =
   }
 });
 
+test("Everfun live booking states match the official detail pages", async () => {
+  const payload = await loadJson("../public/data/tour-products.latest.json");
+  const bySource = new Map(payload.products.map((product) => [product.sourceUrl, product]));
+  const iceland = bySource.get(
+    "https://www.everfuntravel.com/globaltour/detail/ENG26D24BR08TA",
+  );
+  const yellowknife = bySource.get(
+    "https://www.everfuntravel.com/globaltour/detail/UWP26904BR10TA",
+  );
+
+  assert.equal(iceland?.bookingStatus, "可售名額 15/25；報名中");
+  assert.equal(iceland?.bookingStatusType, "bookable");
+  assert.equal(yellowknife?.bookingStatus, "可售名額 0/27；候補");
+  assert.equal(yellowknife?.bookingStatusType, "limited");
+});
+
 test("independent travel estimates remain disabled until sourced inputs exist", async () => {
   const payload = await loadJson("../public/data/independent-travel-estimates.latest.json");
   assert.equal(payload.status, "not-ready");

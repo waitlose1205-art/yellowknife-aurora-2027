@@ -2,7 +2,7 @@
   "summary": {
     "checkedAt": "2026-07-20",
     "sourceCheckedAt": "2026-07-17",
-    "generatedAt": "2026-07-20T01:10:09.065Z",
+    "generatedAt": "2026-07-20T03:59:13.958Z",
     "totalProducts": 175,
     "availableProducts": 72,
     "recommendableProducts": 63,
@@ -1154,7 +1154,7 @@
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "dataStatus": "available",
       "priceLabel": "TWD 239,900 起；同業/企業低價 TWD 225,900",
-      "bookingStatus": "席位 10/33；成團狀態 未標示保證出發",
+      "bookingStatus": "席位 10/32；成團狀態 已成團/保證出發",
       "sourceUrl": "https://travel.liontravel.com/detail?NormGroupID=5b5aff77-3845-420b-adec-4dcfdd315b01&Origin=LION",
       "nextAction": "目前可作推薦排序資料使用"
     },
@@ -3242,7 +3242,7 @@
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "dataStatus": "available",
       "priceLabel": "NT$143,800",
-      "bookingStatus": "可售",
+      "bookingStatus": "可售名額 15/25；報名中",
       "sourceUrl": "https://www.everfuntravel.com/globaltour/detail/ENG26D24BR08TA",
       "nextAction": "目前可作推薦排序資料使用"
     },
@@ -3260,7 +3260,7 @@
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "dataStatus": "available",
       "priceLabel": "NT$138,900",
-      "bookingStatus": "可售",
+      "bookingStatus": "可售名額 0/27；候補",
       "sourceUrl": "https://www.everfuntravel.com/globaltour/detail/UWP26904BR10TA",
       "nextAction": "目前可作推薦排序資料使用"
     },

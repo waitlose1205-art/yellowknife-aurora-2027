@@ -363,6 +363,7 @@ const manualDetailOverrides = new Map([
     "https://www.everfuntravel.com/globaltour/detail/ENG26D24BR08TA",
     {
       title: "冰島追光奇景8日",
+      booking: "可售名額 15/25；報名中",
       flight:
         "參考航班：去程 長榮航空 BR87，2026/12/24 23:30 臺北桃園機場(TPE) → 2026/12/25 08:00 戴高樂機場(CDG)；回程 長榮航空 BR88，2026/12/30 11:20 戴高樂機場(CDG) → 2026/12/31 07:20 臺北桃園機場(TPE)；實際以行前說明資料為準",
     },
@@ -371,6 +372,7 @@ const manualDetailOverrides = new Map([
     "https://www.everfuntravel.com/globaltour/detail/UWP26904BR10TA",
     {
       title: "玩美加族~加拿大極光10日",
+      booking: "可售名額 0/27；候補",
       flight:
         "參考航班：去程 長榮航空 BR26，2026/09/04 23:40 臺北桃園機場(TPE) → 2026/09/04 19:40 西雅圖(SEA)；回程 長榮航空 BR25，2026/09/12 01:30 西雅圖(SEA) → 2026/09/13 05:20 臺北桃園機場(TPE)；實際以行前說明資料為準",
     },
