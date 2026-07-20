@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>極光旅行團靜態資料推薦系統</title>
+    <title>黃刀鎮極光旅行團｜行程推薦與比較</title>
     <style>
       :root {
         color-scheme: light;
@@ -505,6 +505,233 @@
         .field {
           grid-template-columns: 1fr;
           gap: 2px;
+        }
+      }
+
+      /* Aurora Night skin */
+      :root {
+        color-scheme: dark;
+        --bg: #061310;
+        --panel: rgba(9, 29, 27, 0.9);
+        --ink: #e8f7f2;
+        --muted: #9db8b1;
+        --line: rgba(137, 221, 199, 0.18);
+        --accent: #1aa985;
+        --accent-2: #f0bf63;
+        --soft: rgba(49, 211, 168, 0.12);
+        --soft-2: rgba(240, 191, 99, 0.13);
+        --danger: #ff8a7a;
+        --shadow: 0 24px 64px rgba(0, 0, 0, 0.32), 0 0 34px rgba(45, 225, 171, 0.08);
+      }
+
+      body {
+        position: relative;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 8% 22%, rgba(22, 151, 133, 0.2), transparent 30rem),
+          radial-gradient(circle at 93% 64%, rgba(44, 105, 132, 0.18), transparent 34rem),
+          linear-gradient(180deg, #061310 0%, #081b18 48%, #06120f 100%);
+        background-attachment: fixed;
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background-image:
+          radial-gradient(circle, rgba(255, 255, 255, 0.42) 0 1px, transparent 1.4px),
+          radial-gradient(circle, rgba(129, 229, 210, 0.28) 0 1px, transparent 1.4px);
+        background-position: 0 0, 37px 51px;
+        background-size: 94px 94px, 139px 139px;
+        content: "";
+        opacity: 0.3;
+        pointer-events: none;
+      }
+
+      .hero {
+        position: relative;
+        min-height: 520px;
+        overflow: hidden;
+        border-bottom: 1px solid rgba(94, 235, 197, 0.2);
+        background:
+          linear-gradient(180deg, rgba(3, 15, 17, 0.04), rgba(3, 16, 15, 0.95)),
+          linear-gradient(90deg, rgba(3, 14, 15, 0.9), rgba(3, 14, 15, 0.15) 74%),
+          url("/aurora-hero.png") center/cover;
+        isolation: isolate;
+      }
+
+      .hero::before {
+        position: absolute;
+        inset: -54% -18% 26% 12%;
+        z-index: -1;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 205deg,
+          transparent 0deg,
+          rgba(50, 235, 170, 0.05) 34deg,
+          rgba(60, 218, 193, 0.38) 68deg,
+          rgba(96, 157, 224, 0.15) 96deg,
+          transparent 130deg
+        );
+        content: "";
+        filter: blur(30px);
+        opacity: 0.85;
+        transform: rotate(-8deg);
+      }
+
+      .heroInner {
+        padding-bottom: 40px;
+      }
+
+      .eyebrow {
+        width: fit-content;
+        padding: 5px 10px;
+        border: 1px solid rgba(92, 239, 198, 0.22);
+        border-radius: 999px;
+        background: rgba(6, 43, 38, 0.58);
+        color: #70f2cb;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        backdrop-filter: blur(12px);
+      }
+
+      h1 {
+        max-width: 900px;
+        text-shadow: 0 8px 42px rgba(0, 0, 0, 0.44);
+        text-wrap: balance;
+      }
+
+      .hero p {
+        color: rgba(232, 248, 243, 0.82);
+        line-height: 1.8;
+      }
+
+      .statusItem,
+      .panel,
+      .agencyCard,
+      .sourceCard,
+      .bestBox,
+      .metric,
+      .productFocus,
+      .productRow,
+      .empty,
+      .loading,
+      .error {
+        border-color: var(--line);
+        background: linear-gradient(145deg, rgba(10, 33, 30, 0.92), rgba(7, 23, 22, 0.86));
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+      }
+
+      .statusItem {
+        min-height: 82px;
+        border-color: rgba(140, 234, 208, 0.2);
+      }
+
+      .statusItem .value {
+        color: #effcf8;
+      }
+
+      .controlGroup label,
+      .inlineCheck,
+      .productFocus h4,
+      summary {
+        color: #ddf2ec;
+      }
+
+      select {
+        border-color: rgba(142, 217, 197, 0.22);
+        background: #0a2420;
+        color: #e9f8f4;
+      }
+
+      input[type="range"],
+      .inlineCheck input {
+        accent-color: #3de4b5;
+      }
+
+      .hintBox {
+        border-left-color: #3de4b5;
+        background: rgba(43, 170, 140, 0.13);
+        color: #b9d9d0;
+      }
+
+      .score,
+      .actionLink {
+        background: linear-gradient(135deg, #1e9f82, #0d675f);
+        box-shadow: 0 10px 26px rgba(21, 158, 127, 0.24);
+      }
+
+      .actionLink {
+        transition: transform 160ms ease, filter 160ms ease, box-shadow 160ms ease;
+      }
+
+      .actionLink:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
+        box-shadow: 0 13px 30px rgba(36, 205, 163, 0.27);
+      }
+
+      .agencyCard,
+      .sourceCard {
+        transition: border-color 160ms ease, transform 160ms ease;
+      }
+
+      .agencyCard:hover,
+      .sourceCard:hover {
+        border-color: rgba(76, 226, 186, 0.38);
+        transform: translateY(-2px);
+      }
+
+      .chip {
+        background: rgba(53, 217, 173, 0.13);
+        color: #73e9c6;
+      }
+
+      .chip.warn {
+        background: rgba(240, 191, 99, 0.13);
+        color: #f3c978;
+      }
+
+      .chip.danger {
+        background: rgba(255, 117, 98, 0.14);
+        color: var(--danger);
+      }
+
+      details {
+        border-color: rgba(145, 216, 198, 0.14);
+      }
+
+      button:focus-visible,
+      a:focus-visible,
+      input:focus-visible,
+      select:focus-visible,
+      summary:focus-visible {
+        outline: 3px solid rgba(94, 241, 200, 0.72);
+        outline-offset: 3px;
+      }
+
+      @media (max-width: 900px) {
+        .hero {
+          min-height: 470px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .hero {
+          min-height: 430px;
+        }
+
+        .heroInner {
+          padding-bottom: 24px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          transition-duration: 0.01ms !important;
         }
       }
     </style>
