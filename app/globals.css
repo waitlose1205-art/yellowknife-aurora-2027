@@ -1341,6 +1341,24 @@ summary:focus-visible {
   font-size: 1rem;
 }
 
+.comparisonTable thead .bestOptionHeader {
+  background: #edf4ef;
+}
+
+.bestOptionBadge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 6px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: #3e6758;
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
 .comparisonTable tbody th {
   width: 142px;
   background: #fafaf7;
@@ -1499,6 +1517,16 @@ summary:focus-visible {
     font-weight: 800;
     letter-spacing: 0.05em;
     text-transform: uppercase;
+  }
+
+  .comparisonMobileCard.bestOptionCard {
+    border-top: 3px solid #3e6758;
+    background: #f6faf7;
+  }
+
+  .comparisonMobileCard .bestOptionBadge {
+    display: flex;
+    margin-bottom: 9px;
   }
 
   .comparisonMobileCard h2 {

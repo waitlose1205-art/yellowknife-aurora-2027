@@ -72,7 +72,6 @@ export default function Home() {
   const lowestPrice = Math.min(
     ...matchingProducts.map((product) => product.priceTwd ?? Infinity),
   );
-  const best = options[0]?.bestProduct;
 
   return (
     <main className="workbench" id="top">
@@ -205,7 +204,8 @@ export default function Home() {
                     <tr>
                       <th scope="col">比較項目</th>
                       {options.map((group, index) => (
-                        <th key={group.agency} scope="col">
+                        <th className={index === 0 ? "bestOptionHeader" : undefined} key={group.agency} scope="col">
+                          {index === 0 ? <b className="bestOptionBadge">最佳方案</b> : null}
                           <span>方案 {index + 1}</span>
                           <strong>{group.agency}</strong>
                         </th>
@@ -241,7 +241,8 @@ export default function Home() {
 
               <div className="comparisonMobileList">
                 {options.map((group, index) => (
-                  <article className="comparisonMobileCard" key={group.agency}>
+                  <article className={`comparisonMobileCard${index === 0 ? " bestOptionCard" : ""}`} key={group.agency}>
+                    {index === 0 ? <b className="bestOptionBadge">最佳方案</b> : null}
                     <span>方案 {index + 1}</span>
                     <h2>{group.agency}</h2>
                     <dl>
@@ -254,23 +255,6 @@ export default function Home() {
                 ))}
               </div>
 
-              <section className="recommendationStrip">
-                <img alt="黃刀鎮極光" src="/aurora-hero.png" />
-                <div>
-                  <p>Recommendation</p>
-                  <h2>{options[0].agency}</h2>
-                  <span>{best?.productName}</span>
-                  {best?.sourceUrl ? (
-                    <a className="workbenchLink recommendationLink" href={best.sourceUrl} rel="noreferrer" target="_blank">
-                      查看來源
-                    </a>
-                  ) : null}
-                </div>
-                <div className="recommendationPrice">
-                  <small>目前最適合</small>
-                  <strong>{formatTwd(best?.priceTwd ?? null)}</strong>
-                </div>
-              </section>
             </>
           ) : null}
 
