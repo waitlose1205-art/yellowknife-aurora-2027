@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "極光旅行團靜態推薦系統",
+  title: "黃刀鎮極光旅行團｜行程推薦與比較",
   description:
-    "以後台查詢與靜態 JSON 顯示旅行社極光商品，支援目的地、月份、預算與資料狀態篩選。",
+    "比較台灣旅行社黃刀鎮極光行程，依月份、預算、極光夜數與資料狀態快速篩選。",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
