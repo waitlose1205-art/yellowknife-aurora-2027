@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import type { CSSProperties } from "react";
 import { DEFAULT_FILTERS, monthOptions } from "./lib/tourConstants";
 import {
   filterProducts,
@@ -103,7 +104,16 @@ export default function Home() {
               type="range"
               value={draftFilters.budget}
             />
-            <small>NT$100,000 <strong>{formatTwd(draftFilters.budget)}</strong> NT$400,000</small>
+            <div
+              className="workbenchBudgetScale"
+              style={{
+                "--budget-position": `${((draftFilters.budget - 100000) / 300000) * 100}%`,
+              } as CSSProperties}
+            >
+              <strong>{formatTwd(draftFilters.budget)}</strong>
+              <span>NT$100,000</span>
+              <span>NT$400,000</span>
+            </div>
           </label>
 
           <label className="workbenchField">
@@ -178,7 +188,7 @@ export default function Home() {
         <section className="workbenchContent" id="compare">
           <header className="comparisonHeader">
             <div>
-              <h1>黃刀鎮行程比較</h1>
+              <h1>方案行程比較</h1>
               <p>以相同條件檢視旅行社方案的價格、日期、極光夜數、航班與資料驗證。</p>
             </div>
             <p className="comparisonNote">排序依價格、極光夜數、資料完整度、可報名狀態與來源連結計算。</p>
@@ -250,6 +260,11 @@ export default function Home() {
                   <p>Recommendation</p>
                   <h2>{options[0].agency}</h2>
                   <span>{best?.productName}</span>
+                  {best?.sourceUrl ? (
+                    <a className="workbenchLink recommendationLink" href={best.sourceUrl} rel="noreferrer" target="_blank">
+                      查看來源
+                    </a>
+                  ) : null}
                 </div>
                 <div className="recommendationPrice">
                   <small>目前最適合</small>

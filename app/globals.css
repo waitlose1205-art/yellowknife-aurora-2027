@@ -1185,6 +1185,26 @@ summary:focus-visible {
   color: #3e6758;
 }
 
+.workbenchBudgetScale {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  min-height: 32px;
+  padding-top: 18px;
+  color: #65716d;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.workbenchBudgetScale strong {
+  position: absolute;
+  top: 0;
+  left: var(--budget-position);
+  color: #3e6758;
+  font-size: 0.8rem;
+  transform: translateX(-50%);
+}
+
 .workbenchCheck {
   display: flex;
   gap: 9px;
@@ -1385,6 +1405,10 @@ summary:focus-visible {
   color: #202a27;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 1.2rem;
+}
+
+.recommendationLink {
+  margin-top: 12px;
 }
 
 .recommendationPrice {
