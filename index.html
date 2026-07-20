@@ -1179,16 +1179,240 @@
           border-bottom: 0;
         }
       }
+
+      /* Third concept: direct comparison, not a hero landing page */
+      .hero {
+        min-height: 0;
+        padding: 0;
+        border-bottom: 1px solid var(--line);
+        background: #fff;
+      }
+
+      .heroInner {
+        max-width: 1240px;
+      }
+
+      .siteNav {
+        min-height: 68px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .brand {
+        color: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.18rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-decoration: none;
+      }
+
+      .brand span {
+        color: var(--accent);
+        font-family: inherit;
+        font-weight: 400;
+      }
+
+      .siteNavLinks {
+        display: flex;
+        gap: 28px;
+        align-items: center;
+      }
+
+      .siteNavLinks a {
+        color: var(--ink);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-decoration: none;
+      }
+
+      .siteNavLinks a[aria-current="page"] {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 8px;
+      }
+
+      .statusBar {
+        display: none;
+      }
+
+      main {
+        padding-top: 28px;
+      }
+
+      .layout {
+        grid-template-columns: 250px minmax(0, 1fr);
+        gap: 32px;
+      }
+
+      .controls h2 {
+        font-size: 0.88rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .controls .muted,
+      .hintBox {
+        font-size: 0.8rem;
+        line-height: 1.55;
+      }
+
+      .controlGroup {
+        margin-top: 15px;
+        padding-top: 14px;
+      }
+
+      .controlGroup label,
+      .inlineCheck {
+        font-size: 0.82rem;
+      }
+
+      .budgetReadout {
+        font-size: 0.78rem;
+      }
+
+      #app {
+        display: flex;
+        flex-direction: column;
+      }
+
+      #app > section:nth-of-type(2) {
+        order: 1;
+      }
+
+      #app > .summary {
+        order: 2;
+        margin-top: 28px;
+      }
+
+      #app > .sources {
+        order: 3;
+      }
+
+      .resultsHeader {
+        align-items: start;
+        margin: 0 0 18px;
+        padding: 0 0 16px;
+        border-top: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .resultsHeader h2 {
+        margin: 0 0 4px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+
+      .resultsHeader .eyebrow {
+        display: none;
+      }
+
+      .resultsHeader p {
+        margin-bottom: 0;
+        font-size: 0.82rem;
+      }
+
+      .sortNote {
+        max-width: 240px;
+        padding-top: 7px;
+      }
+
+      .comparisonTableWrap {
+        border-color: #cfd3cc;
+      }
+
+      .comparisonTable {
+        min-width: 780px;
+      }
+
+      .comparisonTable th,
+      .comparisonTable td {
+        padding: 12px 14px;
+      }
+
+      .comparisonTable thead th {
+        padding-top: 14px;
+        background: #f6f6f3;
+      }
+
+      .comparisonTable tbody th {
+        width: 142px;
+        font-size: 0.72rem;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+      }
+
+      .comparisonTable td {
+        color: #36413d;
+        font-size: 0.84rem;
+        line-height: 1.45;
+      }
+
+      .agencyColumnName {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .tablePrice {
+        font-size: 1.2rem;
+      }
+
+      .summary {
+        grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+      }
+
+      .bestBox {
+        border-top: 0;
+      }
+
+      .bestBox h2 {
+        margin-top: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.25rem;
+      }
+
+      @media (max-width: 760px) {
+        .siteNav {
+          min-height: 58px;
+        }
+
+        .siteNavLinks {
+          display: none;
+        }
+
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .panel {
+          padding-bottom: 22px;
+        }
+
+        .summary {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body>
     <header class="hero">
       <div class="heroInner">
-        <p class="eyebrow">Yellowknife trip comparison</p>
-        <h1>黃刀鎮極光行程比較工作台</h1>
-        <p>
-          用一致的條件比較旅行社方案：價格、出發日期、極光夜數、航班與資料驗證都放在同一張表裡。
-        </p>
+        <nav class="siteNav" aria-label="網站導覽">
+          <a class="brand" href="#top">YK <span>|</span> AURORA</a>
+          <div class="siteNavLinks">
+            <a href="#filters">條件設定</a>
+            <a aria-current="page" href="#compare">方案比較</a>
+            <a href="#sources">資料來源</a>
+          </div>
+        </nav>
       </div>
     </header>
 
@@ -1213,8 +1437,8 @@
       </section>
 
       <div class="layout">
-        <aside class="panel controls" aria-label="決策選項列表">
-          <h2>決策選項列表</h2>
+        <aside class="panel controls" id="filters" aria-label="旅行條件">
+          <h2>Trip parameters</h2>
           <p class="muted">設定條件後，右側只重新排序已匯入資料，不即時連線旅行社網站。</p>
 
           <div class="controlGroup">
@@ -1302,19 +1526,19 @@
               </article>
             </section>
 
-            <section>
+            <section id="compare">
               <div class="resultsHeader">
                 <div>
                   <p class="eyebrow">Compare options</p>
-                  <h2>旅行社方案比較</h2>
-                  <p>每一欄代表一家旅行社，使用該旅行社排序最高的符合條件商品作為比較基準。</p>
+                  <h2>黃刀鎮行程比較</h2>
+                  <p>以相同條件檢視三個旅行社方案的價格、日期、極光夜數、航班與資料驗證。</p>
                 </div>
                 <p class="sortNote">排序依價格是否低於預算、極光夜數、資料完整度、可報名狀態與來源連結計算。</p>
               </div>
               <div id="agencyGrid" class="agencyGrid"></div>
             </section>
 
-            <section class="sources">
+            <section class="sources" id="sources">
               <p class="eyebrow">Source status</p>
               <h2>資料來源狀態</h2>
               <p class="muted">這是後台匯入狀態，不是公開訪客即時查詢結果。</p>
