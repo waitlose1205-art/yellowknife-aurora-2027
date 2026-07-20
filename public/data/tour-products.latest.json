@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "checkedAt": "2026-07-17",
-  "generatedAt": "2026-07-17T10:25:30.075Z",
+  "generatedAt": "2026-07-20T01:10:09.065Z",
   "sourceFile": "taiwan_aurora_tours_refresh_2026-07-17_nine-agencies.xls",
   "updateMode": "offline-generated-static-json",
   "products": [
@@ -1178,7 +1178,7 @@
       "priceTwd": 136900,
       "currency": "TWD",
       "sourceUrl": "https://travel.liontravel.com/detail?NormGroupID=c1f7206d-f04f-4871-b599-9b408afb92b9&Origin=LION",
-      "sourceTitle": "加拿大極光｜黃刀鎮賞極光3晚、景觀帳篷營地、狗拉雪橇、西雅圖太空針塔、溫哥華１０日(26ABN20BRB-T)-西雅圖",
+      "sourceTitle": "加拿大極光｜黃刀鎮賞極光3晚、景觀帳篷營地、狗拉雪橇、西雅圖太空針塔、溫哥華１０日(26ABD04BRB-T)-西雅圖",
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
@@ -1433,13 +1433,13 @@
       "auroraNights": null,
       "flightSummary": "土耳其航空：桃園機場 22:10 → 伊斯坦堡機場 05:50；土耳其航空：伊斯坦堡機場 02:00 → 桃園機場 17:40；去程轉機 1 次、回程轉機 1 次；團號 27ED112TK-T；TourID 25ED12HO01",
       "itinerarySummary": "12日；玩樂369經典星空璀璨北歐冰島芬蘭極光12日；標籤：秘境、自然生態、經典、早鳥；席位 10/32；成團狀態 已成團/保證出發",
-      "bookingStatus": "席位 10/32；成團狀態 已成團/保證出發",
+      "bookingStatus": "席位 10/33；成團狀態 未標示保證出發",
       "bookingStatusType": "bookable",
       "priceLabel": "TWD 239,900 起；同業/企業低價 TWD 225,900",
       "priceTwd": 239900,
       "currency": "TWD",
       "sourceUrl": "https://travel.liontravel.com/detail?NormGroupID=5b5aff77-3845-420b-adec-4dcfdd315b01&Origin=LION",
-      "sourceTitle": "玩樂369經典星空璀璨北歐夢幻極光12日｜冰島、芬蘭拉普蘭經典之旅(27ED112TK-T)-北歐多國",
+      "sourceTitle": "玩樂369經典星空璀璨北歐夢幻極光12日｜冰島、芬蘭拉普蘭經典之旅(27ED116EKE-T)-北歐多國",
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
@@ -2061,6 +2061,32 @@
     {
       "id": "可樂旅遊-82",
       "agency": "可樂旅遊",
+      "productName": "【芬蘭幸福極光、限量加價商務艙】三晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日",
+      "destination": "芬蘭",
+      "selectableDates": "01/14、01/28、02/11",
+      "months": [
+        1,
+        2
+      ],
+      "days": 11,
+      "auroraNights": 3,
+      "flightSummary": "去程 土耳其航空 TK：2027/01/14 22:00 台北(桃園) → 05:50 伊斯坦堡；回程 土耳其航空 TK：2027/01/24 01:55 伊斯坦堡 → 17:40 台北(桃園)；實際以行前說明資料為準",
+      "itinerarySummary": "///... 看見芬蘭極光從前愛斯基摩人以為是鬼神引導死者靈魂上天堂的火炬，許多民族也有他們不同的極光傳說。年，伽利略以曙光女神奧羅拉之名創造出AURORA BOREALIS一詞。",
+      "bookingStatus": "來源列表未揭露；需進商品頁確認",
+      "bookingStatusType": "needs-check",
+      "priceLabel": "NT$220,900 起",
+      "priceTwd": 220900,
+      "currency": "NTD",
+      "sourceUrl": "https://tour.colatour.com.tw/itinerary?PatternNo=242515",
+      "sourceTitle": "芬蘭幸福極光、限量加價商務艙三晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日 - 國外團體旅遊｜colatour 可樂旅遊",
+      "sourceVerificationStatus": "verified",
+      "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
+      "checkedAt": "2026-07-17",
+      "dataStatus": "partial"
+    },
+    {
+      "id": "可樂旅遊-83",
+      "agency": "可樂旅遊",
       "productName": "【芬蘭幸福極光、限量加價商務艙】兩晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日",
       "destination": "芬蘭",
       "selectableDates": "03/25",
@@ -2084,7 +2110,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-83",
+      "id": "可樂旅遊-84",
       "agency": "可樂旅遊",
       "productName": "【芬蘭幸福極光、限量加價商務艙】兩晚極光屋、波羅的海遊輪、聖誕老人村、星空夜臥火車10日",
       "destination": "芬蘭",
@@ -2109,7 +2135,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-84",
+      "id": "可樂旅遊-85",
       "agency": "可樂旅遊",
       "productName": "【芬蘭幸福極光、限量加價商務艙】森林極光樹屋、波羅的海遊輪、聖誕老人村、星空夜臥火車10日",
       "destination": "芬蘭",
@@ -2134,7 +2160,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-85",
+      "id": "可樂旅遊-86",
       "agency": "可樂旅遊",
       "productName": "【限時搶GO冰島】藍湖地熱溫泉、金環風景線、冰島馬秀、Outlet購物去、雙首都自由活動10日",
       "destination": "冰島",
@@ -2159,7 +2185,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-86",
+      "id": "可樂旅遊-87",
       "agency": "可樂旅遊",
       "productName": "【歐洲日送100歐元】冰島幸福極光～藍湖地熱溫泉、冰川健行體驗、金環風景線、三晚慕尼黑住宿10日",
       "destination": "冰島",
@@ -2185,7 +2211,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-87",
+      "id": "可樂旅遊-88",
       "agency": "可樂旅遊",
       "productName": "【雙主題體驗、早鳥享優惠】阿拉斯加極光、黃石深度紀行、五大國家公園、六大私房秘境15日",
       "destination": "阿拉斯加",
@@ -2210,7 +2236,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-88",
+      "id": "可樂旅遊-89",
       "agency": "可樂旅遊",
       "productName": "【雙主題體驗、早鳥享優惠】黃刀鎮極光(三晚)、狗拉雪橇體驗、四大國家公園、露易絲湖城堡11日",
       "destination": "黃刀鎮",
@@ -2236,7 +2262,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-89",
+      "id": "可樂旅遊-90",
       "agency": "可樂旅遊",
       "productName": "【雙主題體驗、早鳥享優惠】黃刀鎮極光(三晚)、狗拉雪橇體驗、四大國家公園、露易絲湖城堡12日",
       "destination": "黃刀鎮",
@@ -2262,7 +2288,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-90",
+      "id": "可樂旅遊-91",
       "agency": "可樂旅遊",
       "productName": "【雙主題體驗、早鳥享優惠】黃刀鎮極光(三晚)、特色極光營地、四大國家公園、兩晚班夫小鎮12日",
       "destination": "黃刀鎮",
@@ -2287,7 +2313,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-91",
+      "id": "可樂旅遊-92",
       "agency": "可樂旅遊",
       "productName": "【雙主題體驗、早鳥享優惠】黃刀鎮極光(三晚)、特色極光營地、四大國家公園、露易絲湖城堡12日",
       "destination": "黃刀鎮",
@@ -2313,7 +2339,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-92",
+      "id": "可樂旅遊-93",
       "agency": "可樂旅遊",
       "productName": "北極圈幸福極光～羅浮敦群島、皮艇捕蟹體驗、馴鹿雪橇纜車、北極圈跨國列車12日",
       "destination": "芬蘭",
@@ -2339,7 +2365,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-93",
+      "id": "可樂旅遊-94",
       "agency": "可樂旅遊",
       "productName": "全球郵輪 台北出發 【美麗星世界、星辰公主號遊輪、早鳥優惠】阿拉斯加冰河雙重奏、白色隘口之旅、西雅圖漫遊趣、黃刀鎮幸福極光15日",
       "destination": "黃刀鎮",
@@ -2364,7 +2390,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-94",
+      "id": "可樂旅遊-95",
       "agency": "可樂旅遊",
       "productName": "全球郵輪 台北出發 【美麗星世界、星辰公主號遊輪、早鳥優惠】阿拉斯加冰河雙重奏、白色隘口之旅、西雅圖漫遊趣、黃刀鎮幸福極光15日",
       "destination": "黃刀鎮",
@@ -2389,7 +2415,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-95",
+      "id": "可樂旅遊-96",
       "agency": "可樂旅遊",
       "productName": "冰島幸福極光～溫泉冰河湖、冰川健行體驗、金環風景線、荷比雙城遊13日",
       "destination": "冰島",
@@ -2414,7 +2440,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-96",
+      "id": "可樂旅遊-97",
       "agency": "可樂旅遊",
       "productName": "冰島幸福極光～溫泉冰河湖、藍冰洞探險、金環風景線、荷蘭5D飛行遊船10日",
       "destination": "冰島",
@@ -2439,7 +2465,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-97",
+      "id": "可樂旅遊-98",
       "agency": "可樂旅遊",
       "productName": "冰島幸福極光～溫泉冰河湖、藍冰洞極光船、金環風景線、香榭巴黎住三晚11日",
       "destination": "冰島",
@@ -2465,7 +2491,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-98",
+      "id": "可樂旅遊-99",
       "agency": "可樂旅遊",
       "productName": "冰島幸福極光～藍湖地熱溫泉、冰川健行體驗、金環風景線、冰島首都兩晚10日",
       "destination": "冰島",
@@ -2491,7 +2517,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-99",
+      "id": "可樂旅遊-100",
       "agency": "可樂旅遊",
       "productName": "冰島極光不思議～藍湖地熱溫泉、冰川健行體驗、金環風景線、兩晚住宿巴黎九日",
       "destination": "冰島",
@@ -2517,7 +2543,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-100",
+      "id": "可樂旅遊-101",
       "agency": "可樂旅遊",
       "productName": "冰島極光喜迎春～溫泉冰河湖、藍冰洞極光船、金環風景線、香榭巴黎住兩晚10日",
       "destination": "冰島",
@@ -2542,7 +2568,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-101",
+      "id": "可樂旅遊-102",
       "agency": "可樂旅遊",
       "productName": "玩美加族～阿拉斯加幸福極光之旅8日",
       "destination": "阿拉斯加",
@@ -2567,7 +2593,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-102",
+      "id": "可樂旅遊-103",
       "agency": "可樂旅遊",
       "productName": "玩美加族～黃刀鎮極光(三晚)、卡梅倫瀑布健行、西雅圖太空針塔、溫哥華漫遊10日",
       "destination": "黃刀鎮",
@@ -2592,7 +2618,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-103",
+      "id": "可樂旅遊-104",
       "agency": "可樂旅遊",
       "productName": "玩美加族～黃刀鎮極光(三晚)、狗拉雪橇體驗、西雅圖太空針塔、溫哥華漫遊10日",
       "destination": "黃刀鎮",
@@ -2619,7 +2645,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-104",
+      "id": "可樂旅遊-105",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～三晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日",
       "destination": "芬蘭",
@@ -2645,7 +2671,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-105",
+      "id": "可樂旅遊-106",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～兩晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日",
       "destination": "芬蘭",
@@ -2670,7 +2696,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-106",
+      "id": "可樂旅遊-107",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～兩晚玻璃極光屋、帝王蟹雪橇車、聖誕老人村、冰雪歷險體驗10日",
       "destination": "芬蘭",
@@ -2696,7 +2722,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-107",
+      "id": "可樂旅遊-108",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～兩晚極光屋、波羅的海遊輪、聖誕老人村、星空夜臥火車10日",
       "destination": "芬蘭",
@@ -2723,7 +2749,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-108",
+      "id": "可樂旅遊-109",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～兩晚極光屋、波羅的海遊輪、聖誕老人村、星空夜臥火車九日",
       "destination": "芬蘭",
@@ -2749,7 +2775,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-109",
+      "id": "可樂旅遊-110",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～兩晚極光屋、聖誕老人村、星空夜臥火車、野生動物園10日",
       "destination": "芬蘭",
@@ -2774,7 +2800,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-110",
+      "id": "可樂旅遊-111",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～兩晚極光屋、聖誕老人村、星空夜臥火車、野生動物園12日",
       "destination": "芬蘭",
@@ -2799,7 +2825,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-111",
+      "id": "可樂旅遊-112",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～玻璃極光屋、帝王蟹雪橇車、聖誕老人村、冰雪歷險體驗10日",
       "destination": "芬蘭",
@@ -2825,7 +2851,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-112",
+      "id": "可樂旅遊-113",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～玻璃極光屋、帝王蟹雪橇車、聖誕老人村、星空夜臥火車11日",
       "destination": "芬蘭",
@@ -2852,7 +2878,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-113",
+      "id": "可樂旅遊-114",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～玻璃極光屋、聖誕老人村、星空夜臥火車、冰原歷險體驗10日",
       "destination": "芬蘭",
@@ -2878,7 +2904,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-114",
+      "id": "可樂旅遊-115",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～森林極光樹屋、波羅的海遊輪、聖誕老人村、星空夜臥火車10日",
       "destination": "芬蘭",
@@ -2903,7 +2929,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-115",
+      "id": "可樂旅遊-116",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～森林極光樹屋、破冰船龍蝦裝、聖誕老人村、星空夜臥火車10日",
       "destination": "芬蘭",
@@ -2929,7 +2955,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-116",
+      "id": "可樂旅遊-117",
       "agency": "可樂旅遊",
       "productName": "芬蘭幸福極光～聖誕老人村、星空夜臥火車、冰原歷險體驗、乙晚五星飯店10日",
       "destination": "芬蘭",
@@ -2954,7 +2980,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-117",
+      "id": "可樂旅遊-118",
       "agency": "可樂旅遊",
       "productName": "芬蘭挪威、幸福極光～帝王蟹雪橇車、極地破冰巡航、冰原歷險體驗、北極圈極光船12日",
       "destination": "芬蘭",
@@ -2980,7 +3006,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-118",
+      "id": "可樂旅遊-119",
       "agency": "可樂旅遊",
       "productName": "芬蘭挪威、幸福極光～海濱別墅極光屋、破冰船帝王蟹、冰原歷險纜車、聖誕老人極光船12日",
       "destination": "芬蘭",
@@ -3005,7 +3031,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-119",
+      "id": "可樂旅遊-120",
       "agency": "可樂旅遊",
       "productName": "芬蘭挪威、幸福極光～海濱別墅極光屋、極地帝王蟹、極圈麥當勞纜車、聖誕老人極光船12日",
       "destination": "芬蘭",
@@ -3031,7 +3057,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-120",
+      "id": "可樂旅遊-121",
       "agency": "可樂旅遊",
       "productName": "芬蘭挪威、幸福極光～極地帝王蟹、極圈麥當勞纜車、聖誕老人極光船12日",
       "destination": "芬蘭",
@@ -3056,7 +3082,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-121",
+      "id": "可樂旅遊-122",
       "agency": "可樂旅遊",
       "productName": "芬蘭極光不思議～極光海濱別墅、聖誕老人村、冰雪體驗動物園、星空夜臥火車八日",
       "destination": "芬蘭",
@@ -3082,7 +3108,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-122",
+      "id": "可樂旅遊-123",
       "agency": "可樂旅遊",
       "productName": "芬蘭極光喜迎春～三晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日",
       "destination": "芬蘭",
@@ -3107,7 +3133,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-123",
+      "id": "可樂旅遊-124",
       "agency": "可樂旅遊",
       "productName": "芬蘭極光喜迎春～兩晚玻璃極光屋、帝王蟹破冰船、星空夜臥火車、冰原歷險體驗11日",
       "destination": "芬蘭",
@@ -3132,7 +3158,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-124",
+      "id": "可樂旅遊-125",
       "agency": "可樂旅遊",
       "productName": "阿拉斯加極光～玻璃極光屋乙晚、三晚追逐極光、狗拉雪橇體驗、珍娜溫泉泡湯八日",
       "destination": "阿拉斯加",
@@ -3158,7 +3184,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-125",
+      "id": "可樂旅遊-126",
       "agency": "可樂旅遊",
       "productName": "美麗星世界～阿拉斯加極光(三晚)、冬季極光列車、冰川健行體驗、珍娜溫泉度假村10日",
       "destination": "阿拉斯加",
@@ -3184,7 +3210,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-126",
+      "id": "可樂旅遊-127",
       "agency": "可樂旅遊",
       "productName": "美麗星世界～黃刀鎮極光(三晚)、三大國家公園、露易絲湖城堡、西雅圖夜未眠12日",
       "destination": "黃刀鎮",
@@ -3210,7 +3236,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-127",
+      "id": "可樂旅遊-128",
       "agency": "可樂旅遊",
       "productName": "華麗美洲、阿拉斯加極光～冬季極光列車、冰川健行體驗、西雅圖城市遊10日",
       "destination": "阿拉斯加",
@@ -3236,7 +3262,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-128",
+      "id": "可樂旅遊-129",
       "agency": "可樂旅遊",
       "productName": "華麗美洲～黃刀鎮極光(三晚)、狗拉雪橇體驗、三大國家公園、溫哥華漫遊11日",
       "destination": "黃刀鎮",
@@ -3262,7 +3288,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-129",
+      "id": "可樂旅遊-130",
       "agency": "可樂旅遊",
       "productName": "舞動的精靈～阿拉斯加極光、三晚極光旅行、狗拉雪橇體驗、珍娜溫泉泡湯八日",
       "destination": "阿拉斯加",
@@ -3288,7 +3314,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-130",
+      "id": "可樂旅遊-131",
       "agency": "可樂旅遊",
       "productName": "舞動的精靈～黃刀鎮極光(三晚)、狗拉雪橇體驗、愛戀溫哥華、浪漫西雅圖10日",
       "destination": "黃刀鎮",
@@ -3314,7 +3340,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-131",
+      "id": "可樂旅遊-132",
       "agency": "可樂旅遊",
       "productName": "舞動的精靈～黃刀鎮極光(三晚)、特色極光營地、愛戀溫哥華、浪漫西雅圖10日",
       "destination": "黃刀鎮",
@@ -3340,7 +3366,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "可樂旅遊-132",
+      "id": "可樂旅遊-133",
       "agency": "可樂旅遊",
       "productName": "魅力歐洲、繽紛北歐～魔幻冰島、芬蘭極地秘境、賞極光旗艦14日",
       "destination": "芬蘭",
@@ -3366,7 +3392,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-133",
+      "id": "五福旅遊-134",
       "agency": "五福旅遊",
       "productName": "玩美加族 阿拉斯加極光８日~極光小屋、入住珍娜溫泉飯店（長榮航空) 北極村聖誕老人村 費爾班【夜間極光欣賞】",
       "destination": "阿拉斯加",
@@ -3393,7 +3419,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "五福旅遊-134",
+      "id": "五福旅遊-135",
       "agency": "五福旅遊",
       "productName": "玩美加族 阿拉斯加極光金色大地８日~入住珍娜溫泉飯店（長榮航空) 北極村聖誕老人村 費爾班【夜間極光欣賞】",
       "destination": "阿拉斯加",
@@ -3418,7 +3444,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "五福旅遊-135",
+      "id": "五福旅遊-136",
       "agency": "五福旅遊",
       "productName": "玩美加族 Chill愛黃刀極光秋季10日～玻璃帳篷、卡梅倫瀑布健行 黃刀鎮賞極光3晚 BBQ饗宴 西雅圖太空針塔 溫哥華",
       "destination": "黃刀鎮",
@@ -3444,7 +3470,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-136",
+      "id": "五福旅遊-137",
       "agency": "五福旅遊",
       "productName": "芬蘭極光10天-北極特快車、極地探索、聖誕老人村、極光屋住宿 極光屋住宿 聖誕老人村 北極特快車 極地探索 馴鹿牧場之旅 哈士奇拉雪橇",
       "destination": "芬蘭",
@@ -3470,7 +3496,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-137",
+      "id": "五福旅遊-138",
       "agency": "五福旅遊",
       "productName": "美麗星世界 阿拉斯加極光(三晚)、珍娜溫泉度假村10日(星宇航空) 極光小屋三晚 冬季極光列車 冰川健行 珍娜溫泉度假村",
       "destination": "阿拉斯加",
@@ -3496,7 +3522,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "五福旅遊-138",
+      "id": "五福旅遊-139",
       "agency": "五福旅遊",
       "productName": "美麗星世界 星辰公主遊輪～阿拉斯加冰河雙重奏、黃刀鎮幸福極光15日 鮭魚之都~凱契根 伐木工人秀 朱諾 棉田豪冰河",
       "destination": "黃刀鎮",
@@ -3521,7 +3547,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-139",
+      "id": "五福旅遊-140",
       "agency": "五福旅遊",
       "productName": "美麗星世界 尋夢公主遊輪～阿拉斯加冰河三重奏、追逐幸福極光16日 雙景觀火車 丹奈利國家公園",
       "destination": "阿拉斯加",
@@ -3546,7 +3572,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-140",
+      "id": "五福旅遊-141",
       "agency": "五福旅遊",
       "productName": "紐西蘭南極光10日～升等奧克蘭五星酒店一晚、螢火蟲洞 紐航直飛 拉納克城堡 登山纜車 箭鎮",
       "destination": "紐西蘭南極光",
@@ -3573,7 +3599,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-141",
+      "id": "五福旅遊-142",
       "agency": "五福旅遊",
       "productName": "追尋南極光·塔斯馬尼亞+雪墨9日-搖籃山、酒杯灣、童話小鎮 純淨塔斯馬尼亞 雪墨雙城起訖 搖籃山國家公園 十大最美酒杯灣 野生塔州惡魔 德文特河遊船",
       "destination": "紐西蘭南極光",
@@ -3602,7 +3628,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-142",
+      "id": "五福旅遊-143",
       "agency": "五福旅遊",
       "productName": "追尋南極光·塔斯馬尼亞+墨雪9日-搖籃山、酒杯灣、童話小鎮 純淨塔斯馬尼亞 墨雪雙城起訖 搖籃山國家公園 十大最美酒杯灣 野生塔州惡魔 德文特河遊船",
       "destination": "紐西蘭南極光",
@@ -3628,7 +3654,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-143",
+      "id": "五福旅遊-144",
       "agency": "五福旅遊",
       "productName": "華麗美洲 阿拉斯加~冰川健行、極光列車、珍娜溫泉泡湯、西雅圖10日 三晚極光觀測 珍娜溫泉度假村 聖誕老⼈之村 北⽅極地博物館",
       "destination": "阿拉斯加",
@@ -3655,7 +3681,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-144",
+      "id": "五福旅遊-145",
       "agency": "五福旅遊",
       "productName": "魅力歐洲 北歐極光11天－捕帝王蟹、冰上漂浮、玻璃屋、極光特快車、巴黎",
       "destination": "芬蘭",
@@ -3680,7 +3706,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-145",
+      "id": "五福旅遊-146",
       "agency": "五福旅遊",
       "productName": "魅力歐洲 北歐極光11天－捕帝王蟹、冰上漂浮、玻璃屋、詩麗雅號、慕尼黑",
       "destination": "芬蘭",
@@ -3705,7 +3731,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-146",
+      "id": "五福旅遊-147",
       "agency": "五福旅遊",
       "productName": "魅力歐洲 冰島巴黎10日－極光遊船、金環之旅、冰洞、露天溫泉、巴黎",
       "destination": "冰島",
@@ -3731,7 +3757,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-147",
+      "id": "五福旅遊-148",
       "agency": "五福旅遊",
       "productName": "魅力歐洲 冰島英倫9天－極光遊船、金環三合一、冰洞、露天溫泉",
       "destination": "冰島",
@@ -3759,7 +3785,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-148",
+      "id": "五福旅遊-149",
       "agency": "五福旅遊",
       "productName": "魅力歐洲 冰島荷蘭9日－極光遊船、金環之旅、冰洞、露天溫泉、荷蘭",
       "destination": "冰島",
@@ -3787,7 +3813,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-149",
+      "id": "五福旅遊-150",
       "agency": "五福旅遊",
       "productName": "魅力歐洲 璀璨北歐12日－極光列車、極光屋、雪上摩托車、破冰船、慕尼黑",
       "destination": "芬蘭",
@@ -3813,7 +3839,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "五福旅遊-150",
+      "id": "五福旅遊-151",
       "agency": "五福旅遊",
       "productName": "魅力歐洲 繽紛北歐14日－冰島、芬蘭極地秘境、賞極光、聖誕老人村、巴黎",
       "destination": "芬蘭",
@@ -3841,7 +3867,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "喜鴻旅遊-151",
+      "id": "喜鴻旅遊-152",
       "agency": "喜鴻旅遊",
       "productName": "【玩美加族加拿大黃刀鎮１０日】極光3晚、玻璃帳篷、卡梅倫瀑布健行、BBQ饗宴",
       "destination": "黃刀鎮",
@@ -3866,7 +3892,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-152",
+      "id": "喜鴻旅遊-153",
       "agency": "喜鴻旅遊",
       "productName": "【玩美加族加拿大黃刀鎮１０日】極光3晚、景觀帳篷營地、狗拉雪橇、太空針塔、溫哥華",
       "destination": "黃刀鎮",
@@ -3895,7 +3921,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-153",
+      "id": "喜鴻旅遊-154",
       "agency": "喜鴻旅遊",
       "productName": "【玩美加族阿拉斯加幸福極光之旅８日】 美洲 阿拉斯加",
       "destination": "阿拉斯加",
@@ -3926,7 +3952,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-154",
+      "id": "喜鴻旅遊-155",
       "agency": "喜鴻旅遊",
       "productName": "【玩美加族星辰公主遊輪１５日】阿拉斯加冰河景緻、黃刀精靈極光 遊輪 星辰公主號",
       "destination": "黃刀鎮",
@@ -3951,7 +3977,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-155",
+      "id": "喜鴻旅遊-156",
       "agency": "喜鴻旅遊",
       "productName": "【美麗星世界．阿拉斯加極光１０日】極光列車、冰川健行、珍娜溫泉度假村、三晚極光",
       "destination": "阿拉斯加",
@@ -3976,7 +4002,7 @@
       "dataStatus": "partial"
     },
     {
-      "id": "喜鴻旅遊-156",
+      "id": "喜鴻旅遊-157",
       "agency": "喜鴻旅遊",
       "productName": "【美麗星世界星辰公主號１５日】阿拉斯加冰河雙重奏、白色隘口之旅、黃刀鎮幸福極光 遊輪 星辰公主號",
       "destination": "黃刀鎮",
@@ -4001,7 +4027,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-157",
+      "id": "喜鴻旅遊-158",
       "agency": "喜鴻旅遊",
       "productName": "【美麗星世界黃刀鎮洛磯１２日】黃刀極光、露易絲湖城堡飯店、硫磺山纜車、西雅圖",
       "destination": "黃刀鎮",
@@ -4029,7 +4055,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-158",
+      "id": "喜鴻旅遊-159",
       "agency": "喜鴻旅遊",
       "productName": "【經典加拿大黃刀鎮極光１０日】三晚追光、極光營地、卡梅倫瀑布、酒莊品酒、格蘭維爾島",
       "destination": "黃刀鎮",
@@ -4055,7 +4081,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-159",
+      "id": "喜鴻旅遊-160",
       "agency": "喜鴻旅遊",
       "productName": "【經典北歐芬蘭極光８日】極光列車、破冰船、極光屋、聖誕老人村、北極漂浮、狗拉雪橇",
       "destination": "芬蘭",
@@ -4084,7 +4110,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-160",
+      "id": "喜鴻旅遊-161",
       "agency": "喜鴻旅遊",
       "productName": "【經典北歐極光１０日】玻璃極光屋、破冰船、聖誕老人村、雪上活動三合一、帝王蟹",
       "destination": "芬蘭",
@@ -4113,7 +4139,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-161",
+      "id": "喜鴻旅遊-162",
       "agency": "喜鴻旅遊",
       "productName": "【經典冰島極光１０日】藍湖溫泉、騎乘冰島馬、藍冰洞、冰川健行、間歇泉、小龍蝦餐",
       "destination": "冰島",
@@ -4143,7 +4169,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-162",
+      "id": "喜鴻旅遊-163",
       "agency": "喜鴻旅遊",
       "productName": "【夢幻加拿大黃刀鎮極光１０日】極光三晚、球體玻璃屋、狗拉雪橇、冰酒品嘗、格蘭維爾島",
       "destination": "黃刀鎮",
@@ -4172,7 +4198,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-163",
+      "id": "喜鴻旅遊-164",
       "agency": "喜鴻旅遊",
       "productName": "【舞動加拿大育空白馬極光８日】三晚追光、極光營地、野生動物園、極地溫泉、酒莊品酒",
       "destination": "黃刀鎮",
@@ -4199,7 +4225,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-164",
+      "id": "喜鴻旅遊-165",
       "agency": "喜鴻旅遊",
       "productName": "【魅力歐洲．冰島巴黎１０日】極光遊船、金環三合一、藍冰洞、露天溫泉、火山岩漿隧道",
       "destination": "冰島",
@@ -4228,7 +4254,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-165",
+      "id": "喜鴻旅遊-166",
       "agency": "喜鴻旅遊",
       "productName": "【魅力歐洲．冰島英倫９日】極光遊船、藍冰洞、火山岩漿隧道、露天溫泉、小龍蝦餐、米其林推薦",
       "destination": "冰島",
@@ -4256,7 +4282,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-166",
+      "id": "喜鴻旅遊-167",
       "agency": "喜鴻旅遊",
       "productName": "【魅力歐洲．遇見歐若拉北歐１１日】玻璃極光屋、捕撈帝王蟹、極光列車、詩麗雅號、巴黎市區酒店",
       "destination": "芬蘭",
@@ -4281,7 +4307,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-167",
+      "id": "喜鴻旅遊-168",
       "agency": "喜鴻旅遊",
       "productName": "【魅力歐洲．遇見歐若拉北歐１１日】玻璃極光屋、捕撈帝王蟹、極光列車、詩麗雅號、慕尼黑五星酒店",
       "destination": "芬蘭",
@@ -4306,7 +4332,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "喜鴻旅遊-168",
+      "id": "喜鴻旅遊-169",
       "agency": "喜鴻旅遊",
       "productName": "【魅力歐洲．璀璨北歐極光１２日】玻璃極光屋、帝王蟹、雪地摩托車、破冰船、五星酒店",
       "destination": "芬蘭",
@@ -4335,7 +4361,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "鳳凰旅遊-169",
+      "id": "鳳凰旅遊-170",
       "agency": "鳳凰旅遊",
       "productName": "華麗美洲 阿拉斯加│冰川健行、極光列車、珍娜溫泉泡湯、極光之城費爾班克斯、西雅圖城市遊１０日",
       "destination": "阿拉斯加",
@@ -4361,7 +4387,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "鳳凰旅遊-170",
+      "id": "鳳凰旅遊-171",
       "agency": "鳳凰旅遊",
       "productName": "極光凝視．靜謐之境 紐西蘭南島慢旅．與Aurora之約10天(NZ)(皇后鎮五星三晚+蒂卡波湖連住 2 晚+異國美食)",
       "destination": "紐西蘭南極光",
@@ -4387,7 +4413,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "鳳凰旅遊-171",
+      "id": "鳳凰旅遊-172",
       "agency": "鳳凰旅遊",
       "productName": "極光凝視．靜謐之境 紐西蘭南島慢旅．與Aurora之約10天(NZ)(皇后鎮五星三晚+蒂卡波湖連住 2 晚+異國美食) NZ 2026.09.01 二 10 結團 極光凝視．靜謐之境 紐西蘭南島慢旅．與Aurora之約10天(NZ)(皇后鎮五星三晚+蒂卡波湖連住 2 晚+異國美食)",
       "destination": "紐西蘭南極光",
@@ -4412,7 +4438,7 @@
       "dataStatus": "available"
     },
     {
-      "id": "長汎旅遊-172",
+      "id": "長汎旅遊-173",
       "agency": "長汎旅遊",
       "productName": "冰島追光奇景8日 飛越冰島秀 經典金環 冰河湖 藍冰洞 藍湖溫泉",
       "destination": "冰島",
@@ -4424,8 +4450,8 @@
       "auroraNights": null,
       "flightSummary": "參考航班：去程 長榮航空 BR87，2026/12/24 23:30 臺北桃園機場(TPE) → 2026/12/25 08:00 戴高樂機場(CDG)；回程 長榮航空 BR88，2026/12/30 11:20 戴高樂機場(CDG) → 2026/12/31 07:20 臺北桃園機場(TPE)；實際以行前說明資料為準",
       "itinerarySummary": "冰島追光奇景8日 飛越冰島秀 經典金環 冰河湖 藍冰洞 藍湖溫泉 work 台北(桃園)出發 date_range 8日遊 airplanemode_active 飛機 五星長榮航空 極光 出發日：12/24 143,800",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
+      "bookingStatus": "可售",
+      "bookingStatusType": "bookable",
       "priceLabel": "NT$143,800",
       "priceTwd": 143800,
       "currency": "NTD",
@@ -4434,10 +4460,10 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
-      "id": "長汎旅遊-173",
+      "id": "長汎旅遊-174",
       "agency": "長汎旅遊",
       "productName": "玩美加族~加拿大極光10日 黃刀秋賞極光3晚.玻璃帳篷.卡梅倫瀑布健行.BBQ饗宴",
       "destination": "黃刀鎮",
@@ -4449,8 +4475,8 @@
       "auroraNights": 3,
       "flightSummary": "參考航班：去程 長榮航空 BR26，2026/09/04 23:40 臺北桃園機場(TPE) → 2026/09/04 19:40 西雅圖(SEA)；回程 長榮航空 BR25，2026/09/12 01:30 西雅圖(SEA) → 2026/09/13 05:20 臺北桃園機場(TPE)；實際以行前說明資料為準",
       "itinerarySummary": "玩美加族~加拿大極光10日 黃刀秋賞極光3晚.玻璃帳篷.卡梅倫瀑布健行.BBQ饗宴 work 台北(桃園)出發 date_range 10日遊 airplanemode_active 飛機 早鳥優惠 玩美加族 出發日：09/04 138,900",
-      "bookingStatus": "來源列表未揭露；需進商品頁確認",
-      "bookingStatusType": "needs-check",
+      "bookingStatus": "可售",
+      "bookingStatusType": "bookable",
       "priceLabel": "NT$138,900",
       "priceTwd": 138900,
       "currency": "NTD",
@@ -4459,10 +4485,10 @@
       "sourceVerificationStatus": "verified",
       "sourceVerificationNote": "官方頁標題與商品名稱可對應；相似度 100%",
       "checkedAt": "2026-07-17",
-      "dataStatus": "partial"
+      "dataStatus": "available"
     },
     {
-      "id": "長汎旅遊-174",
+      "id": "長汎旅遊-175",
       "agency": "長汎旅遊",
       "productName": "紐西蘭戀上南極光10日 來紐西蘭看浪漫南極光‧升等奧克蘭五星酒店乙晚‧南島全程三排椅",
       "destination": "紐西蘭南極光",

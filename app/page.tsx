@@ -1,147 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-
-type Product = {
-  id: string;
-  agency: string;
-  productName: string;
-  destination: string;
-  selectableDates: string;
-  months: number[];
-  days: number | null;
-  auroraNights: number | null;
-  flightSummary: string;
-  itinerarySummary: string;
-  bookingStatus: string;
-  bookingStatusType: "bookable" | "limited" | "needs-check" | "unavailable";
-  priceLabel: string;
-  priceTwd: number | null;
-  currency: string;
-  sourceUrl: string;
-  sourceTitle?: string;
-  sourceVerificationStatus?: "verified" | "mismatch" | "unchecked" | "unavailable";
-  sourceVerificationNote?: string;
-  checkedAt: string;
-  dataStatus: "available" | "partial" | "needs-check" | "unavailable";
-};
-
-type ProductPayload = {
-  schemaVersion: number;
-  checkedAt: string;
-  generatedAt: string;
-  sourceFile: string;
-  updateMode: string;
-  products: Product[];
-};
-
-type SourceStatus = {
-  agency: string;
-  checkedAt: string;
-  generatedAt: string;
-  sourceFile: string;
-  totalRows: number;
-  concreteRows: number;
-  availableRows: number;
-  status: "updated" | "no-concrete-product";
-  nextStep: string;
-};
-
-type SourcePayload = {
-  checkedAt: string;
-  generatedAt: string;
-  sources: SourceStatus[];
-};
-
-type FilterState = {
-  budget: number;
-  destination: string;
-  agency: string;
-  month: number;
-  minimumNights: number;
-  onlyConcrete: boolean;
-};
-
-const DEFAULT_FILTERS: FilterState = {
-  budget: 150000,
-  destination: "全部目的地",
-  agency: "全部旅行社",
-  month: 0,
-  minimumNights: 0,
-  onlyConcrete: true,
-};
-
-const monthOptions = [
-  { value: 0, label: "不限月份" },
-  { value: 9, label: "9 月" },
-  { value: 10, label: "10 月" },
-  { value: 11, label: "11 月" },
-  { value: 12, label: "12 月" },
-  { value: 1, label: "1 月" },
-  { value: 2, label: "2 月" },
-  { value: 3, label: "3 月" },
-];
-
-const dataStatusLabel: Record<Product["dataStatus"], string> = {
-  available: "欄位完整",
-  partial: "部分可用",
-  "needs-check": "需進商品頁確認",
-  unavailable: "未取得商品",
-};
-
-const bookingStatusLabel: Record<Product["bookingStatusType"], string> = {
-  bookable: "可報名",
-  limited: "候補/額滿/結團",
-  "needs-check": "需確認",
-  unavailable: "未取得",
-};
-
-const sourceVerificationLabel = {
-  verified: "來源已驗證",
-  mismatch: "來源疑似不一致",
-  unchecked: "來源待查核",
-  unavailable: "未提供來源",
-} as const;
-
-function formatCurrency(value: number) {
-  return `NT$${value.toLocaleString("zh-TW")}`;
-}
-
-function getScore(product: Product, budget: number) {
-  if (product.priceTwd === null || product.priceTwd > budget) return -1;
-  if (product.sourceVerificationStatus === "mismatch") return -1;
-
-  let score = 0;
-  if (product.dataStatus === "available") score += 40;
-  if (product.dataStatus === "partial") score += 26;
-  if (product.bookingStatusType === "bookable") score += 30;
-  if (product.bookingStatusType === "needs-check") score += 10;
-  if (product.auroraNights && product.auroraNights >= 3) score += 10;
-  if (product.sourceVerificationStatus === "verified") score += 12;
-  if (product.sourceVerificationStatus === "unchecked") score -= 6;
-
-  const budgetUseRate = Math.min(product.priceTwd / budget, 1);
-  score += Math.round(budgetUseRate * 30);
-  if (budget - product.priceTwd >= 10000) score += 5;
-
-  return score;
-}
-
-function getDestinationOptions(products: Product[]) {
-  return ["全部目的地", ...Array.from(new Set(products.map((product) => product.destination))).sort()];
-}
-
-function getAgencyOptions(products: Product[]) {
-  return ["全部旅行社", ...Array.from(new Set(products.map((product) => product.agency))).sort()];
-}
-
-function isMissing(value: string) {
-  return /未取得|未揭露|需進商品頁確認|來源列表未揭露/.test(value);
-}
-
-function getSourceVerificationStatus(product: Product) {
-  return product.sourceVerificationStatus ?? "unchecked";
-}
+import { DecisionFilters } from "./components/DecisionFilters";
+import { RecommendationResults } from "./components/RecommendationResults";
+import { SourceStatusSection } from "./components/SourceStatusSection";
+import { DEFAULT_FILTERS } from "./lib/tourConstants";
+import {
+  filterProducts,
+  filtersAreChanged,
+  getAgencyOptions,
+  getDestinationOptions,
+  groupProductsByAgency,
+} from "./lib/tourLogic";
+import type { FilterState, ProductPayload, SourcePayload, SourceStatus } from "./lib/tourTypes";
 
 export default function Home() {
   const [payload, setPayload] = useState<ProductPayload | null>(null);
@@ -174,107 +45,18 @@ export default function Home() {
     loadData();
   }, []);
 
-  const products = payload?.products ?? [];
+  const products = useMemo(() => payload?.products ?? [], [payload?.products]);
   const destinations = useMemo(() => getDestinationOptions(products), [products]);
   const agencies = useMemo(() => getAgencyOptions(products), [products]);
-  const filtersChanged =
-    draftFilters.budget !== appliedFilters.budget ||
-    draftFilters.destination !== appliedFilters.destination ||
-    draftFilters.agency !== appliedFilters.agency ||
-    draftFilters.month !== appliedFilters.month ||
-    draftFilters.minimumNights !== appliedFilters.minimumNights ||
-    draftFilters.onlyConcrete !== appliedFilters.onlyConcrete;
-
-  const filteredProducts = useMemo(() => {
-    return products
-      .filter((product) =>
-        appliedFilters.destination === "全部目的地"
-          ? true
-          : product.destination === appliedFilters.destination,
-      )
-      .filter((product) =>
-        appliedFilters.agency === "全部旅行社" ? true : product.agency === appliedFilters.agency,
-      )
-      .filter((product) =>
-        appliedFilters.month === 0 ? true : product.months.includes(appliedFilters.month),
-      )
-      .filter((product) =>
-        appliedFilters.minimumNights === 0
-          ? true
-          : (product.auroraNights ?? 0) >= appliedFilters.minimumNights,
-      )
-      .filter((product) => (appliedFilters.onlyConcrete ? product.dataStatus !== "unavailable" : true))
-      .filter((product) => product.priceTwd !== null && product.priceTwd <= appliedFilters.budget)
-      .sort((first, second) => {
-        const secondScore = getScore(second, appliedFilters.budget);
-        const firstScore = getScore(first, appliedFilters.budget);
-        if (secondScore !== firstScore) return secondScore - firstScore;
-        const firstPrice = first.priceTwd ?? Number.MAX_SAFE_INTEGER;
-        const secondPrice = second.priceTwd ?? Number.MAX_SAFE_INTEGER;
-        return firstPrice - secondPrice;
-      });
-  }, [appliedFilters, products]);
-
-  const agencyGroups = useMemo(() => {
-    const groups = new Map<string, Product[]>();
-    for (const product of filteredProducts) {
-      const current = groups.get(product.agency) ?? [];
-      current.push(product);
-      groups.set(product.agency, current);
-    }
-
-    return Array.from(groups.entries())
-      .map(([agencyName, agencyProducts]) => {
-        const sortedProducts = agencyProducts
-          .slice()
-          .sort((first, second) => {
-            const secondScore = getScore(second, appliedFilters.budget);
-            const firstScore = getScore(first, appliedFilters.budget);
-            if (secondScore !== firstScore) return secondScore - firstScore;
-            const firstPrice = first.priceTwd ?? Number.MAX_SAFE_INTEGER;
-            const secondPrice = second.priceTwd ?? Number.MAX_SAFE_INTEGER;
-            return firstPrice - secondPrice;
-          });
-        const recommendableProducts = sortedProducts.filter(
-          (product) => getScore(product, appliedFilters.budget) >= 0,
-        );
-        const bestProduct = recommendableProducts[0] ?? sortedProducts[0];
-        const prices = sortedProducts
-          .map((product) => product.priceTwd)
-          .filter((price): price is number => price !== null)
-          .sort((first, second) => first - second);
-        const completeCount = sortedProducts.filter(
-          (product) => product.dataStatus === "available",
-        ).length;
-        const partialCount = sortedProducts.filter(
-          (product) => product.dataStatus === "partial",
-        ).length;
-        const bookableCount = sortedProducts.filter(
-          (product) => product.bookingStatusType === "bookable",
-        ).length;
-
-        return {
-          agency: agencyName,
-          products: sortedProducts,
-          bestProduct,
-          score: recommendableProducts[0] ? getScore(recommendableProducts[0], appliedFilters.budget) : -1,
-          destinations: Array.from(new Set(sortedProducts.map((product) => product.destination))),
-          priceRange:
-            prices.length === 0
-              ? "價格需確認"
-              : prices.length === 1
-                ? formatCurrency(prices[0])
-                : `${formatCurrency(prices[0])} - ${formatCurrency(prices[prices.length - 1])}`,
-          completeCount,
-          partialCount,
-          bookableCount,
-        };
-      })
-      .sort((first, second) => {
-        if (second.score !== first.score) return second.score - first.score;
-        return first.agency.localeCompare(second.agency, "zh-Hant");
-      });
-  }, [appliedFilters.budget, filteredProducts]);
+  const filtersChanged = filtersAreChanged(draftFilters, appliedFilters);
+  const filteredProducts = useMemo(
+    () => filterProducts(products, appliedFilters),
+    [appliedFilters, products],
+  );
+  const agencyGroups = useMemo(
+    () => groupProductsByAgency(filteredProducts, appliedFilters.budget),
+    [appliedFilters.budget, filteredProducts],
+  );
 
   const topAgencyGroups = agencyGroups.slice(0, 12);
   const bestAgencyGroup = topAgencyGroups.find((group) => group.score >= 0);
@@ -323,299 +105,28 @@ export default function Home() {
         </div>
 
         <div className="simulatorGrid">
-          <aside className="controlPanel">
-            <label className="controlGroup">
-              <span>預算上限</span>
-              <strong>{formatCurrency(draftFilters.budget)}</strong>
-              <input
-                max={400000}
-                min={100000}
-                onChange={(event) =>
-                  setDraftFilters((current) => ({
-                    ...current,
-                    budget: Number(event.target.value),
-                  }))
-                }
-                step={10000}
-                type="range"
-                value={draftFilters.budget}
-              />
-            </label>
-
-            <label className="controlGroup">
-              <span>目的地</span>
-              <select
-                onChange={(event) =>
-                  setDraftFilters((current) => ({ ...current, destination: event.target.value }))
-                }
-                value={draftFilters.destination}
-              >
-                {destinations.map((item) => (
-                  <option key={item}>{item}</option>
-                ))}
-              </select>
-            </label>
-
-            <label className="controlGroup">
-              <span>旅行社</span>
-              <select
-                onChange={(event) =>
-                  setDraftFilters((current) => ({ ...current, agency: event.target.value }))
-                }
-                value={draftFilters.agency}
-              >
-                {agencies.map((item) => (
-                  <option key={item}>{item}</option>
-                ))}
-              </select>
-            </label>
-
-            <label className="controlGroup">
-              <span>出發月份</span>
-              <select
-                onChange={(event) =>
-                  setDraftFilters((current) => ({ ...current, month: Number(event.target.value) }))
-                }
-                value={draftFilters.month}
-              >
-                {monthOptions.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="controlGroup">
-              <span>最低極光夜數</span>
-              <select
-                onChange={(event) =>
-                  setDraftFilters((current) => ({
-                    ...current,
-                    minimumNights: Number(event.target.value),
-                  }))
-                }
-                value={draftFilters.minimumNights}
-              >
-                <option value={0}>不限夜數</option>
-                <option value={1}>至少 1 晚/次</option>
-                <option value={2}>至少 2 晚/次</option>
-                <option value={3}>至少 3 晚/次</option>
-                <option value={4}>至少 4 晚/次</option>
-                <option value={5}>至少 5 晚/次</option>
-              </select>
-            </label>
-
-            <label className="toggleRow">
-              <input
-                checked={draftFilters.onlyConcrete}
-                onChange={(event) =>
-                  setDraftFilters((current) => ({ ...current, onlyConcrete: event.target.checked }))
-                }
-                type="checkbox"
-              />
-              只顯示已取得具體商品的來源
-            </label>
-
-            <button
-              className="applyFiltersButton"
-              onClick={() => setAppliedFilters(draftFilters)}
-              type="button"
-            >
-              確認篩選
-            </button>
-            <p className="filterApplyNote">
-              {filtersChanged
-                ? "條件已變更，按下確認後才更新旅行社卡片。"
-                : `目前結果依 ${formatCurrency(appliedFilters.budget)} 預算上限顯示。`}
-            </p>
-
-            <div className="filterSummaryCard">
-              <span>篩選結果摘要</span>
-              <strong>{filteredProducts.length} 筆商品</strong>
-              <small>{agencyGroups.length} 家旅行社方案卡</small>
-              <small>{withinBudgetCount} 筆低於目前預算上限</small>
-            </div>
-          </aside>
-
-          <div className="resultPanel">
-            {error ? (
-              <div className="emptyState">{error}</div>
-            ) : !payload ? (
-              <div className="emptyState">正在讀取靜態資料...</div>
-            ) : (
-              <>
-                <div className="recommendation">
-                  <span>目前最適合旅行社方案</span>
-                  <strong>
-                    {bestAgencyGroup ? `${bestAgencyGroup.agency}方案` : "沒有符合條件的旅行社方案"}
-                  </strong>
-                  {bestProduct ? (
-                    <p className="recommendationProduct">
-                      代表商品：{bestProduct.productName}
-                    </p>
-                  ) : null}
-                  {bestProduct ? (
-                    <a href={bestProduct.sourceUrl} rel="noreferrer" target="_blank">
-                      前往代表商品來源頁
-                    </a>
-                  ) : null}
-                </div>
-
-                <p className="agencyUnitNote">
-                  一張卡只代表一家旅行社；卡片內才展開該旅行社符合條件的旅行團。
-                </p>
-
-                {topAgencyGroups.length === 0 ? (
-                  <div className="emptyState">
-                    目前條件下沒有符合預算與篩選條件的商品；請調高預算或放寬其他條件後重新確認篩選。
-                  </div>
-                ) : (
-                  <div className="productGrid">
-                    {topAgencyGroups.map((group) => {
-                    const product = group.bestProduct;
-                    const sourceStatus = getSourceVerificationStatus(product);
-                    return (
-                      <article className="productCard agencyOptionCard" key={group.agency}>
-                        <div className="productHead">
-                          <span>{group.agency}</span>
-                          <div className="productBadges">
-                            <span className={product.dataStatus}>
-                              {dataStatusLabel[product.dataStatus]}
-                            </span>
-                            <span className={`sourceBadge ${sourceStatus}`}>
-                              {sourceVerificationLabel[sourceStatus]}
-                            </span>
-                          </div>
-                        </div>
-                        <h3>{group.agency}方案</h3>
-                        <div className="metaGrid">
-                          <span>{group.destinations.slice(0, 4).join("、")}</span>
-                          <span>{group.products.length} 筆符合條件商品</span>
-                          <span>{group.priceRange}</span>
-                          <span>{group.bookableCount} 筆可報名/可售</span>
-                        </div>
-                        <details>
-                          <summary>展開 {group.agency} 商品與航班資訊</summary>
-                          <div className="agencyProductList">
-                            {group.products.map((agencyProduct) => {
-                              const agencySourceStatus = getSourceVerificationStatus(agencyProduct);
-                              const isRecommended =
-                                group.score >= 0 && agencyProduct.id === product.id;
-
-                              return (
-                              <article
-                                className={`agencyProductCard${isRecommended ? " recommended" : ""}${
-                                  agencySourceStatus === "mismatch" ? " sourceMismatchCard" : ""
-                                }`}
-                                key={agencyProduct.id}
-                              >
-                                {isRecommended ? <span className="recommendBadge">推薦</span> : null}
-                                {agencySourceStatus === "mismatch" ? (
-                                  <span className="recommendBadge warningBadge">來源待修正</span>
-                                ) : null}
-                                <details>
-                                  <summary>
-                                    <strong>{agencyProduct.productName}</strong>
-                                    <small>{agencyProduct.priceLabel || "未揭露價格"}</small>
-                                    <small>{agencyProduct.selectableDates}</small>
-                                  </summary>
-                                  <dl>
-                                    <div>
-                                      <dt>可選擇日期</dt>
-                                      <dd>{agencyProduct.selectableDates}</dd>
-                                    </div>
-                                    <div>
-                                      <dt>金額</dt>
-                                      <dd>{agencyProduct.priceLabel || "未揭露價格"}</dd>
-                                    </div>
-                                    <div>
-                                      <dt>極光夜數</dt>
-                                      <dd>
-                                        {agencyProduct.auroraNights
-                                          ? `${agencyProduct.auroraNights} 晚/次`
-                                          : "未標示"}
-                                      </dd>
-                                    </div>
-                                    <div>
-                                      <dt>預計航班</dt>
-                                      <dd className={isMissing(agencyProduct.flightSummary) ? "muted" : ""}>
-                                        {agencyProduct.flightSummary}
-                                      </dd>
-                                    </div>
-                                    <div>
-                                      <dt>行程計畫表</dt>
-                                      <dd>{agencyProduct.itinerarySummary}</dd>
-                                    </div>
-                                    <div>
-                                      <dt>報名狀態</dt>
-                                      <dd>{agencyProduct.bookingStatus}</dd>
-                                    </div>
-                                    <div>
-                                      <dt>來源查核</dt>
-                                      <dd
-                                        className={
-                                          agencySourceStatus === "mismatch" ? "sourceMismatchText" : ""
-                                        }
-                                      >
-                                        {sourceVerificationLabel[agencySourceStatus]}
-                                        {agencyProduct.sourceVerificationNote
-                                          ? `；${agencyProduct.sourceVerificationNote}`
-                                          : ""}
-                                      </dd>
-                                    </div>
-                                    <div>
-                                      <dt>官方頁標題</dt>
-                                      <dd className={agencyProduct.sourceTitle ? "" : "muted"}>
-                                        {agencyProduct.sourceTitle || "尚未取得可比對標題"}
-                                      </dd>
-                                    </div>
-                                  </dl>
-                                  <a href={agencyProduct.sourceUrl} rel="noreferrer" target="_blank">
-                                    {agencySourceStatus === "mismatch"
-                                      ? "前往來源頁重新確認"
-                                      : "前往訂購/來源頁"}
-                                  </a>
-                                </details>
-                              </article>
-                              );
-                            })}
-                          </div>
-                        </details>
-                      </article>
-                    );
-                    })}
-                  </div>
-                )}
-              </>
-            )}
-          </div>
+          <DecisionFilters
+            agencies={agencies}
+            agencyGroups={agencyGroups}
+            destinations={destinations}
+            draftFilters={draftFilters}
+            filteredCount={filteredProducts.length}
+            filtersChanged={filtersChanged}
+            setAppliedFilters={setAppliedFilters}
+            setDraftFilters={setDraftFilters}
+            withinBudgetCount={withinBudgetCount}
+          />
+          <RecommendationResults
+            bestAgencyGroup={bestAgencyGroup}
+            bestProduct={bestProduct}
+            error={error}
+            payloadLoaded={Boolean(payload)}
+            topAgencyGroups={topAgencyGroups}
+          />
         </div>
       </section>
 
-      <section className="pageSection sourceSection">
-        <details className="sourceDisclosure">
-          <summary>
-            <span className="eyebrow">Source Freshness</span>
-            <strong>資料來源與更新時間</strong>
-            <small>點選展開來源與更新時間</small>
-          </summary>
-          <div className="sourceGrid">
-            {sources.map((source) => (
-              <article className="sourceCard" key={source.agency}>
-                <span className={source.status}>{source.status === "updated" ? "已更新" : "待補資料"}</span>
-                <strong>{source.agency}</strong>
-                <p>
-                  {source.concreteRows} 筆具體商品 / {source.totalRows} 筆資料列
-                </p>
-                <small>查核日：{source.checkedAt}</small>
-                <small>{source.nextStep}</small>
-              </article>
-            ))}
-          </div>
-        </details>
-      </section>
+      <SourceStatusSection sources={sources} />
     </main>
   );
 }
-

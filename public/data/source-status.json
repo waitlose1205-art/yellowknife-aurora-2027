@@ -1,11 +1,11 @@
 {
   "checkedAt": "2026-07-17",
-  "generatedAt": "2026-07-17T10:25:30.075Z",
+  "generatedAt": "2026-07-20T01:10:09.065Z",
   "sources": [
     {
       "agency": "山富旅遊",
       "checkedAt": "2026-07-17",
-      "generatedAt": "2026-07-17T10:25:30.075Z",
+      "generatedAt": "2026-07-20T01:10:09.065Z",
       "sourceFile": "taiwan_aurora_tours_refresh_2026-07-17_nine-agencies.xls",
       "totalRows": 14,
       "concreteRows": 14,
@@ -16,7 +16,7 @@
     {
       "agency": "東南旅遊",
       "checkedAt": "2026-07-17",
-      "generatedAt": "2026-07-17T10:25:30.075Z",
+      "generatedAt": "2026-07-20T01:10:09.065Z",
       "sourceFile": "taiwan_aurora_tours_refresh_2026-07-17_nine-agencies.xls",
       "totalRows": 28,
       "concreteRows": 28,
@@ -27,7 +27,7 @@
     {
       "agency": "雄獅旅遊",
       "checkedAt": "2026-07-17",
-      "generatedAt": "2026-07-17T10:25:30.075Z",
+      "generatedAt": "2026-07-20T01:10:09.065Z",
       "sourceFile": "taiwan_aurora_tours_refresh_2026-07-17_nine-agencies.xls",
       "totalRows": 31,
       "concreteRows": 31,
@@ -38,10 +38,10 @@
     {
       "agency": "可樂旅遊",
       "checkedAt": "2026-07-17",
-      "generatedAt": "2026-07-17T10:25:30.075Z",
+      "generatedAt": "2026-07-20T01:10:09.065Z",
       "sourceFile": "taiwan_aurora_tours_refresh_2026-07-17_nine-agencies.xls",
-      "totalRows": 59,
-      "concreteRows": 59,
+      "totalRows": 60,
+      "concreteRows": 60,
       "availableRows": 0,
       "status": "updated",
       "nextStep": "下次排程或手動查核時重新產生靜態資料檔"
@@ -49,7 +49,7 @@
     {
       "agency": "五福旅遊",
       "checkedAt": "2026-07-17",
-      "generatedAt": "2026-07-17T10:25:30.075Z",
+      "generatedAt": "2026-07-20T01:10:09.065Z",
       "sourceFile": "taiwan_aurora_tours_refresh_2026-07-17_nine-agencies.xls",
       "totalRows": 18,
       "concreteRows": 18,
@@ -60,7 +60,7 @@
     {
       "agency": "喜鴻旅遊",
       "checkedAt": "2026-07-17",
-      "generatedAt": "2026-07-17T10:25:30.075Z",
+      "generatedAt": "2026-07-20T01:10:09.065Z",
       "sourceFile": "taiwan_aurora_tours_refresh_2026-07-17_nine-agencies.xls",
       "totalRows": 18,
       "concreteRows": 18,
@@ -71,7 +71,7 @@
     {
       "agency": "鳳凰旅遊",
       "checkedAt": "2026-07-17",
-      "generatedAt": "2026-07-17T10:25:30.075Z",
+      "generatedAt": "2026-07-20T01:10:09.065Z",
       "sourceFile": "taiwan_aurora_tours_refresh_2026-07-17_nine-agencies.xls",
       "totalRows": 3,
       "concreteRows": 3,
@@ -82,11 +82,11 @@
     {
       "agency": "長汎旅遊",
       "checkedAt": "2026-07-17",
-      "generatedAt": "2026-07-17T10:25:30.075Z",
+      "generatedAt": "2026-07-20T01:10:09.065Z",
       "sourceFile": "taiwan_aurora_tours_refresh_2026-07-17_nine-agencies.xls",
       "totalRows": 3,
       "concreteRows": 3,
-      "availableRows": 1,
+      "availableRows": 3,
       "status": "updated",
       "nextStep": "下次排程或手動查核時重新產生靜態資料檔"
     }

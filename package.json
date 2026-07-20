@@ -10,6 +10,7 @@
     "build": "vinext build",
     "data:build": "node scripts/build-tour-data.mjs",
     "data:daily": "node scripts/build-tour-data.mjs --live-detail-check",
+    "data:update:guarded": "node scripts/run-daily-update.mjs",
     "start": "vinext start",
     "test": "npm run build && node --test tests/rendered-html.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
