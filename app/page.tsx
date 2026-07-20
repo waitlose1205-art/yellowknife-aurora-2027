@@ -281,6 +281,7 @@ export default function Home() {
             <span>{sourcePayload?.sources.filter((source) => source.status === "updated").length ?? 0} 個來源已更新</span>
             <span>{matchingProducts.length} 筆符合條件商品</span>
             <span>{Number.isFinite(lowestPrice) ? `最低 ${formatTwd(lowestPrice)}` : "價格待確認"}</span>
+            <span>資料更新時間 {payload?.checkedAt ?? sourcePayload?.checkedAt ?? "未標示"}</span>
           </section>
         </section>
       </div>
