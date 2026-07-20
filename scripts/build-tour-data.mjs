@@ -2,6 +2,14 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import http from "node:http";
 import https from "node:https";
 import { basename, join } from "node:path";
+import { SOURCE_MANIFEST } from "./pipeline/source-manifest.mjs";
+import { extractAgencyFlight } from "./pipeline/agencies/flight-adapter.mjs";
+import {
+  getSourceVerification,
+  isGenericSourceTitle,
+  normalizeProductName,
+  normalizeSourceUrl,
+} from "./pipeline/verification.mjs";
 
 const detailHttpsAgent = new https.Agent({ rejectUnauthorized: false });
 
@@ -13,8 +21,14 @@ const inputPath =
     "exports",
     "taiwan_aurora_tours_refresh_2026-07-17_nine-agencies.xls",
   );
-const outputDir = join(process.cwd(), "public", "data");
-const checkedAt = "2026-07-17";
+const outputDirArg = process.argv.find((arg) => arg.startsWith("--output-dir="));
+const outputDir = outputDirArg
+  ? join(process.cwd(), outputDirArg.slice("--output-dir=".length))
+  : join(process.cwd(), "public", "data");
+const checkedAt = basename(inputPath).match(/20\d{2}-\d{2}-\d{2}/)?.[0];
+if (!checkedAt) {
+  throw new Error(`Input filename must contain a source check date (YYYY-MM-DD): ${inputPath}`);
+}
 const liveDetailCheck = process.argv.includes("--live-detail-check");
 
 const supplementalInputPaths = [
@@ -31,16 +45,7 @@ const besttourRenderedDetailPath = join(
   "besttour-rendered-detail-2026-07-17.json",
 );
 
-const agencies = [
-  "山富旅遊",
-  "東南旅遊",
-  "雄獅旅遊",
-  "可樂旅遊",
-  "五福旅遊",
-  "喜鴻旅遊",
-  "鳳凰旅遊",
-  "長汎旅遊",
-];
+const agencies = SOURCE_MANIFEST.map(({ agency }) => agency);
 
 const destinationRules = [
   ["黃刀鎮", /黃刀|Yellowknife|YZF/i],
@@ -213,106 +218,6 @@ function getBookingStatus(row) {
   return status;
 }
 
-function normalizeSourceUrl(url) {
-  const value = clean(url);
-  if (!value) return "";
-  try {
-    const parsed = new URL(value);
-    parsed.hash = "";
-    parsed.searchParams.delete("utm_source");
-    parsed.searchParams.delete("utm_medium");
-    parsed.searchParams.delete("utm_campaign");
-    return parsed.toString();
-  } catch {
-    return value;
-  }
-}
-
-function normalizeProductName(name) {
-  return clean(name)
-    .replace(/[｜|│]/g, " ")
-    .replace(/[~～－—–・．、，,。:：()（）【】\[\]《》「」『』]/g, " ")
-    .replace(/\s+/g, "")
-    .toLowerCase();
-}
-
-function normalizeForVerification(value) {
-  return normalizeProductName(value)
-    .replace(/20\d{2}[./-]?\d{0,2}[./-]?\d{0,2}/g, "")
-    .replace(/\d{1,3}(?:,\d{3})+/g, "")
-    .replace(/\d+[日天晚次]/g, "")
-    .replace(/早鳥|優惠|限時|第二人|保證出發|已成團|可報名|熱銷/g, "");
-}
-
-function getBigrams(value) {
-  const text = normalizeForVerification(value);
-  const bigrams = new Set();
-  for (let index = 0; index < text.length - 1; index += 1) {
-    bigrams.add(text.slice(index, index + 2));
-  }
-  return bigrams;
-}
-
-function getSimilarity(firstValue, secondValue) {
-  const first = getBigrams(firstValue);
-  const second = getBigrams(secondValue);
-  if (!first.size || !second.size) return 0;
-
-  let overlap = 0;
-  for (const item of first) {
-    if (second.has(item)) overlap += 1;
-  }
-  return overlap / Math.min(first.size, second.size);
-}
-
-function isGenericSourceTitle(value) {
-  const title = normalizeForVerification(value);
-  if (title.length < 4) return true;
-  return /^(雄獅旅遊|鳳凰旅遊|可樂旅遊|東南旅遊|山富旅遊|五福旅遊|喜鴻旅遊|長汎旅遊|首頁|旅遊)$/i.test(
-    title,
-  );
-}
-
-function getSourceVerification(row) {
-  const sourceUrl = normalizeSourceUrl(row["訂購/來源網址"]);
-  const sourceTitle = clean(row.官方頁標題);
-  const statusText = clean(row.資料狀態);
-
-  if (/來源疑似不一致|來源不一致|商品頁不一致/.test(statusText)) {
-    return {
-      status: "mismatch",
-      note: "來源頁與商品列疑似不一致，需人工重查來源網址",
-    };
-  }
-
-  if (!sourceUrl) {
-    return {
-      status: "unavailable",
-      note: "未提供可查核來源網址",
-    };
-  }
-
-  if (!sourceTitle || isGenericSourceTitle(sourceTitle)) {
-    return {
-      status: "unchecked",
-      note: "尚未取得可比對的官方頁標題",
-    };
-  }
-
-  const similarity = getSimilarity(row.產品名稱, sourceTitle);
-  if (similarity < 0.3) {
-    return {
-      status: "mismatch",
-      note: `官方頁標題與商品名稱落差過大；相似度 ${Math.round(similarity * 100)}%`,
-    };
-  }
-
-  return {
-    status: "verified",
-    note: `官方頁標題與商品名稱可對應；相似度 ${Math.round(similarity * 100)}%`,
-  };
-}
-
 function productKeys(row) {
   const agency = clean(row.旅行社名稱);
   const sourceUrl = normalizeSourceUrl(row["訂購/來源網址"]);
@@ -453,18 +358,6 @@ function uniqueMatches(text, regex, limit = 8) {
   return [...new Set(clean(text).match(regex) || [])].slice(0, limit);
 }
 
-const airlineNameByCode = {
-  BR: "長榮航空",
-  CI: "中華航空",
-  JX: "星宇航空",
-  CX: "國泰航空",
-  TG: "泰國航空",
-  NZ: "紐西蘭航空",
-  EK: "阿聯酋航空",
-  QR: "卡達航空",
-  TK: "土耳其航空",
-};
-
 const manualDetailOverrides = new Map([
   [
     "https://www.everfuntravel.com/globaltour/detail/ENG26D24BR08TA",
@@ -550,127 +443,6 @@ function isBlockedDetailPage(html) {
   return /Incapsula|Request unsuccessful|NOINDEX, NOFOLLOW|main-iframe|Access Denied|Cloudflare/i.test(
     html,
   );
-}
-
-function decodeEmbeddedJsonText(value) {
-  return clean(value)
-    .replace(/\\u003c/g, "<")
-    .replace(/\\u003e/g, ">")
-    .replace(/\\u0026/g, "&")
-    .replace(/\\"/g, '"')
-    .replace(/\\r|\\n|\\t/g, " ");
-}
-
-function getJsonField(segment, field) {
-  return clean(segment.match(new RegExp(`"${field}"\\s*:\\s*"([^"]*)"`, "i"))?.[1] || "");
-}
-
-function formatFlightSegment(segment) {
-  const airline = getJsonField(segment, "Airline_Name");
-  const code = getJsonField(segment, "Airline_Code");
-  const date = getJsonField(segment, "Flight_Date");
-  const departTime = getJsonField(segment, "Departure_Time");
-  const departCity = getJsonField(segment, "City_Name_D");
-  const arriveTime = getJsonField(segment, "Arrival_Time");
-  const arriveCity = getJsonField(segment, "City_Name_A");
-  if (!airline && !code && !departCity && !arriveCity) return "";
-
-  return `${airline || airlineNameByCode[code] || "航空公司未公布"}${code ? ` ${code}` : ""}：${date} ${departTime} ${departCity} → ${arriveTime} ${arriveCity}`;
-}
-
-function extractColatourFlight(html) {
-  const normalized = decodeEmbeddedJsonText(html);
-  const goBlock = normalized.match(/"FlightData_GoList"\s*:\s*\[\{([\s\S]*?)\}\]/)?.[1] || "";
-  const backBlock = normalized.match(/"FlightData_BackList"\s*:\s*\[\{([\s\S]*?)\}\]/)?.[1] || "";
-  const go = formatFlightSegment(goBlock);
-  const back = formatFlightSegment(backBlock);
-  return [go ? `去程 ${go}` : "", back ? `回程 ${back}` : ""].filter(Boolean).join("；");
-}
-
-function extractTravel4uFlight(text) {
-  const flightSection = text.match(/航班\s+參考航班([\s\S]{0,900}?)(?:※|行程特色|商品明細)/)?.[1] || "";
-  if (!flightSection) return "";
-
-  const segments = [];
-  const segmentRegex =
-    /Day\s+\d+\s+(長榮航空|中華航空|星宇航空|國泰航空|泰國航空|紐西蘭航空|阿聯酋航空|卡達航空|土耳其航空)\s+((?:BR|CI|JX|CX|TG|NZ|EK|QR|TK)\s?\d{1,4})\s+Departure\s+(.+?)\s+(\d{1,2}:\d{2}(?:\+\d)?)\s+Arrival\s+(.+?)\s+(\d{1,2}:\d{2}(?:\+\d)?)/g;
-  for (const match of flightSection.matchAll(segmentRegex)) {
-    const [, airline, flightCode, departureAirport, departureTime, arrivalAirport, arrivalTime] = match;
-    segments.push(
-      `${airline} ${flightCode.replace(/\s+/g, "")}：${departureAirport} ${departureTime} → ${arrivalAirport} ${arrivalTime}`,
-    );
-  }
-
-  if (!segments.length) return "";
-  return [segments[0] ? `去程 ${segments[0]}` : "", segments[1] ? `回程 ${segments[1]}` : ""]
-    .filter(Boolean)
-    .join("；");
-}
-
-function extractPhoenixFlight(html) {
-  const modal = html.match(/id=["']myPlane["'][\s\S]*?id=["']myHotel["']/i)?.[0] || "";
-  if (!modal) return "";
-
-  const segments = [];
-  const rowRegex =
-    /<div Class=["']row myTable["'][\s\S]*?<p>\s*<strong>([^<]+)<\/strong><small>([^<]*)<\/small>\s*----\s*<strong>([^<]+)<\/strong><small>([^<]*)<\/small>\s*((?:BR|CI|JX|CX|TG|NZ|EK|QR|TK)\s*\d{1,4})\s*<\/p>[\s\S]*?出發[\s\S]*?<div Class=["']col-xs-10 text-center["']>([^<]*?\d{1,2}:\d{2})<\/div>[\s\S]*?抵達[\s\S]*?<div Class=["']col-xs-10 text-center["']>([^<]*?\d{1,2}:\d{2})<\/div>/gi;
-
-  for (const match of modal.matchAll(rowRegex)) {
-    const [, departureCity, departureAirport, arrivalCity, arrivalAirport, flightCode, departureTime, arrivalTime] =
-      match.map((value) => clean(stripHtml(value)));
-    const code = flightCode.match(/^(BR|CI|JX|CX|TG|NZ|EK|QR|TK)/i)?.[1]?.toUpperCase() || "";
-    segments.push(
-      `${airlineNameByCode[code] || "航空公司未公布"} ${flightCode.replace(/\s+/g, "")}：${departureTime} ${departureCity}${departureAirport ? `(${departureAirport})` : ""} → ${arrivalTime} ${arrivalCity}${arrivalAirport ? `(${arrivalAirport})` : ""}`,
-    );
-  }
-
-  if (!segments.length) return "";
-  return [segments[0] ? `去程 ${segments[0]}` : "", segments[1] ? `回程 ${segments[1]}` : ""]
-    .filter(Boolean)
-    .join("；");
-}
-
-function extractAirlineHintFromText(value) {
-  const text = clean(value);
-  const codeMatch = text.match(/\b(BR|CI|JX|CX|TG|NZ|EK|QR|TK)\b/i);
-  if (codeMatch) {
-    const code = codeMatch[1].toUpperCase();
-    return `${airlineNameByCode[code] || ""}${airlineNameByCode[code] ? " " : ""}${code}`;
-  }
-
-  return (
-    text.match(/長榮航空|中華航空|星宇航空|國泰航空|泰國航空|紐西蘭航空|阿聯酋航空|卡達航空|土耳其航空|加拿大航空|Air Canada|WestJet/)?.[0] ||
-    ""
-  );
-}
-
-function extractGenericFlight(html, text, row) {
-  const manual = getManualDetailOverride(row?.["訂購/來源網址"]);
-  if (manual?.flight) return manual.flight;
-
-  const colatourFlight = extractColatourFlight(html);
-  if (colatourFlight) return `${colatourFlight}；實際以行前說明資料為準`;
-
-  const travel4uFlight = extractTravel4uFlight(text);
-  if (travel4uFlight) return `${travel4uFlight}；實際以行前說明資料為準`;
-
-  const phoenixFlight = extractPhoenixFlight(html);
-  if (phoenixFlight) return `${phoenixFlight}；實際以行前說明資料為準`;
-
-  const productAirline = extractAirlineHintFromText(row?.產品名稱);
-  if (productAirline) return `${productAirline}；產品名稱可讀航空線索，完整航段需進商品頁確認`;
-
-  const focusedText =
-    text.match(/(?:交通資訊|多元交通體驗|五星級航空)[\s\S]{0,360}/)?.[0] ||
-    text.match(/(?:長榮航空|中華航空|星宇航空|紐西蘭航空|阿聯酋航空|卡達航空|土耳其航空)[\s\S]{0,160}/)?.[0] ||
-    "";
-  const focusedAirline = extractAirlineHintFromText(focusedText);
-  if (focusedAirline) return `${focusedAirline}；官方頁可讀航空線索，完整航段需進商品頁確認`;
-
-  const flightCodes = uniqueMatches(text, /\b(?:BR|CI|JX|CX|TG|NZ|EK|QR|TK)\s?\d{2,4}\b/g, 4);
-  if (flightCodes.length) return `參考航班：${flightCodes.join("、")}；完整航段需進商品頁確認`;
-
-  return "";
 }
 
 function extractAttribute(tag, attribute) {
@@ -759,7 +531,12 @@ function extractGenericDetail(html, row = null) {
   const text = stripHtml(html);
   return {
     title: extractPageTitle(html),
-    flight: extractGenericFlight(html, text, row),
+    flight: extractAgencyFlight({
+      html,
+      text,
+      productName: row?.產品名稱,
+      manualFlight: getManualDetailOverride(row?.["訂購/來源網址"])?.flight,
+    }),
     blocked: isBlockedDetailPage(html),
     dates: uniqueMatches(
       text,

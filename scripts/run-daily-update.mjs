@@ -1,6 +1,13 @@
 import { copyFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import { basename, join } from "node:path";
 import { spawnSync } from "node:child_process";
+import {
+  DEFAULT_MAX_SOURCE_AGE_DAYS,
+  EXPECTED_SOURCE_COUNT,
+  getSourceAgeDays,
+  inspectSourceCoverage,
+} from "./pipeline/source-manifest.mjs";
+import { compareDatasetQuality } from "./pipeline/quality-gate.mjs";
 
 const root = process.cwd();
 const backupDir = join(root, ".daily-update-backup");
@@ -12,6 +19,10 @@ const trackedDataFiles = [
 ];
 const maxHighRisk = Number(process.env.DAILY_MAX_HIGH_RISK ?? "0");
 const allowMissingAgency = process.env.DAILY_ALLOW_MISSING_AGENCY === "1";
+const maxSourceAgeDays = Number(
+  process.env.DAILY_MAX_SOURCE_AGE_DAYS ?? String(DEFAULT_MAX_SOURCE_AGE_DAYS),
+);
+const maxQualityDropRate = Number(process.env.DAILY_MAX_QUALITY_DROP_RATE ?? "0.05");
 
 function runStep(command, args) {
   const result = spawnSync(command, args, {
@@ -74,8 +85,19 @@ function summarizeAudit() {
   };
 }
 
-function printDailySummary({ auditPath, summary, highRows }, sources) {
+function compareWithPreviousDataset() {
+  const previousPath = join(backupDir, "tour-products.latest.json");
+  const nextPath = join(publicDataDir, "tour-products.latest.json");
+  if (!existsSync(previousPath) || !existsSync(nextPath)) {
+    throw new Error("Cannot compare dataset quality because the previous or next dataset is missing");
+  }
+  return compareDatasetQuality(readJson(previousPath), readJson(nextPath), maxQualityDropRate);
+}
+
+function printDailySummary({ auditPath, summary, highRows }, sources, qualityComparison) {
   const missingSources = sources.filter((source) => source.status !== "updated");
+  const coverage = inspectSourceCoverage(sources);
+  const sourceAgeDays = getSourceAgeDays(summary.sourceCheckedAt);
   const highRisk = summary.byIssueLevel?.high ?? 0;
 
   console.log(
@@ -87,6 +109,11 @@ function printDailySummary({ auditPath, summary, highRows }, sources) {
         issueLevel: summary.byIssueLevel,
         flightStatus: summary.byFlightStatus,
         sourceCount: sources.length,
+        expectedSourceCount: EXPECTED_SOURCE_COUNT,
+        sourceAgeDays,
+        maxSourceAgeDays,
+        coverage,
+        qualityComparison,
         missingSources: missingSources.map((source) => ({
           agency: source.agency,
           status: source.status,
@@ -108,7 +135,7 @@ function printDailySummary({ auditPath, summary, highRows }, sources) {
     ),
   );
 
-  return { highRisk, missingSources };
+  return { coverage, highRisk, missingSources, sourceAgeDays };
 }
 
 copyDataFiles(publicDataDir, backupDir);
@@ -119,17 +146,39 @@ try {
 
   const sources = summarizeSourceStatus();
   const audit = summarizeAudit();
-  const { highRisk, missingSources } = printDailySummary(audit, sources);
+  const qualityComparison = compareWithPreviousDataset();
+  const { coverage, highRisk, missingSources, sourceAgeDays } = printDailySummary(
+    audit,
+    sources,
+    qualityComparison,
+  );
+
+  if (qualityComparison.regressions.length > 0) {
+    restorePublicData();
+    throw new Error(
+      `Daily update rejected: dataset quality regressed in ${qualityComparison.regressions.map(({ metric }) => metric).join(", ")}`,
+    );
+  }
 
   if (highRisk > maxHighRisk) {
     restorePublicData();
     throw new Error(`Daily update rejected: high risk rows ${highRisk} exceed limit ${maxHighRisk}`);
   }
 
-  if (!allowMissingAgency && missingSources.length > 0) {
+  if (
+    !allowMissingAgency &&
+    (missingSources.length > 0 || coverage.missingAgencies.length > 0)
+  ) {
     restorePublicData();
     throw new Error(
-      `Daily update rejected: ${missingSources.length} source(s) did not produce concrete products`,
+      `Daily update rejected: source coverage is incomplete (${coverage.missingAgencies.length} expected agencies missing)`,
+    );
+  }
+
+  if (sourceAgeDays > maxSourceAgeDays) {
+    restorePublicData();
+    throw new Error(
+      `Daily update rejected: source data is ${sourceAgeDays} days old; limit is ${maxSourceAgeDays}`,
     );
   }
 

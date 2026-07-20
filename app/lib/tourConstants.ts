@@ -1,11 +1,12 @@
-import type { FilterState, Product } from "./tourTypes";
+import type { FilterState, FlightCompleteness, Product } from "./tourTypes";
 
 export const ALL_DESTINATIONS = "全部目的地";
 export const ALL_AGENCIES = "全部旅行社";
+export const PRIMARY_DESTINATION = "黃刀鎮";
 
 export const DEFAULT_FILTERS: FilterState = {
   budget: 150000,
-  destination: ALL_DESTINATIONS,
+  destination: PRIMARY_DESTINATION,
   agency: ALL_AGENCIES,
   month: 0,
   minimumNights: 0,
@@ -31,8 +32,15 @@ export const dataStatusLabel: Record<Product["dataStatus"], string> = {
 };
 
 export const sourceVerificationLabel = {
-  verified: "來源已驗證",
+  verified: "來源頁身分已核對",
   mismatch: "來源疑似不一致",
-  unchecked: "來源待查核",
+  unchecked: "來源頁身分待核對",
   unavailable: "未提供來源",
 } as const;
+
+export const flightCompletenessLabel: Record<FlightCompleteness, string> = {
+  complete: "已取得航段與時間",
+  partial: "僅有部分航班資訊",
+  "official-not-disclosed": "官方尚未完整公開",
+  unavailable: "尚未取得航班資訊",
+};

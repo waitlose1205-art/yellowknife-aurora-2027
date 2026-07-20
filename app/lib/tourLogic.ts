@@ -1,8 +1,15 @@
 import {
   ALL_AGENCIES,
   ALL_DESTINATIONS,
+  PRIMARY_DESTINATION,
 } from "./tourConstants";
-import type { AgencyGroup, FilterState, Product, SourceVerificationStatus } from "./tourTypes";
+import type {
+  AgencyGroup,
+  FilterState,
+  FlightCompleteness,
+  Product,
+  SourceVerificationStatus,
+} from "./tourTypes";
 
 export function formatCurrency(value: number) {
   return `NT$${value.toLocaleString("zh-TW")}`;
@@ -10,28 +17,29 @@ export function formatCurrency(value: number) {
 
 export function getScore(product: Product, budget: number) {
   if (product.priceTwd === null || product.priceTwd > budget) return -1;
-  if (product.sourceVerificationStatus === "mismatch") return -1;
+  if (product.sourceVerificationStatus !== "verified") return -1;
+  if (product.dataStatus !== "available") return -1;
+  if (getFlightCompleteness(product.flightSummary) !== "complete") return -1;
 
   let score = 0;
-  if (product.dataStatus === "available") score += 40;
-  if (product.dataStatus === "partial") score += 26;
+  score += 40;
   if (product.bookingStatusType === "bookable") score += 30;
-  if (product.bookingStatusType === "needs-check") score += 10;
-  if (product.auroraNights && product.auroraNights >= 3) score += 10;
-  if (product.sourceVerificationStatus === "verified") score += 12;
-  if (product.sourceVerificationStatus === "unchecked") score -= 6;
+  if (product.bookingStatusType === "limited") score += 8;
+  if (product.auroraNights) score += Math.min(product.auroraNights * 5, 20);
+  score += 10;
 
-  const budgetUseRate = Math.min(product.priceTwd / budget, 1);
-  score += Math.round(budgetUseRate * 30);
-  if (budget - product.priceTwd >= 10000) score += 5;
+  const savingsRate = Math.max((budget - product.priceTwd) / budget, 0);
+  score += Math.round(savingsRate * 20);
 
   return score;
 }
 
 export function getDestinationOptions(products: Product[]) {
+  const destinations = Array.from(new Set(products.map((product) => product.destination))).sort();
   return [
+    PRIMARY_DESTINATION,
     ALL_DESTINATIONS,
-    ...Array.from(new Set(products.map((product) => product.destination))).sort(),
+    ...destinations.filter((destination) => destination !== PRIMARY_DESTINATION),
   ];
 }
 
@@ -45,6 +53,17 @@ export function getSourceVerificationStatus(product: Product): SourceVerificatio
 
 export function isMissing(value: string) {
   return /未取得|未揭露|需進商品頁確認|來源列表未揭露/.test(value);
+}
+
+export function getFlightCompleteness(value: string): FlightCompleteness {
+  if (/官方商品頁目前未公開完整航班|官方頁目前未公開完整航班/.test(value)) {
+    return "official-not-disclosed";
+  }
+  if (!value || /未取得|來源列表未揭露|需進商品頁確認|動態載入/.test(value)) {
+    return "unavailable";
+  }
+  if (/\d{1,2}:\d{2}/.test(value) && /→|->|至|到/.test(value)) return "complete";
+  return "partial";
 }
 
 export function filtersAreChanged(draftFilters: FilterState, appliedFilters: FilterState) {
@@ -68,9 +87,31 @@ export function filterProducts(products: Product[], filters: FilterState) {
     .filter((product) =>
       filters.minimumNights === 0 ? true : (product.auroraNights ?? 0) >= filters.minimumNights,
     )
-    .filter((product) => (filters.onlyConcrete ? product.dataStatus !== "unavailable" : true))
-    .filter((product) => product.priceTwd !== null && product.priceTwd <= filters.budget)
+    .filter((product) =>
+      filters.onlyConcrete
+        ? product.dataStatus !== "unavailable" &&
+          Boolean(product.productName && product.sourceUrl && product.priceTwd !== null)
+        : true,
+    )
+    .filter((product) => product.priceTwd === null || product.priceTwd <= filters.budget)
     .sort((first, second) => sortByRecommendation(first, second, filters.budget));
+}
+
+export function getRecommendationReasons(product: Product, budget: number) {
+  const reasons: string[] = [];
+  if (product.sourceVerificationStatus === "verified") reasons.push("來源頁身分已核對");
+  if (product.dataStatus === "available") reasons.push("主要比較欄位完整");
+  if (getFlightCompleteness(product.flightSummary) === "complete") reasons.push("已取得航段與時間");
+  if (product.bookingStatusType === "bookable") reasons.push("目前標示可報名或可售");
+  if (product.auroraNights) reasons.push(`包含 ${product.auroraNights} 晚/次極光安排`);
+  if (product.priceTwd !== null) {
+    reasons.push(
+      budget - product.priceTwd >= 10000
+        ? `較預算上限節省 ${formatCurrency(budget - product.priceTwd)}`
+        : "價格在預算範圍內",
+    );
+  }
+  return reasons;
 }
 
 export function groupProductsByAgency(products: Product[], budget: number): AgencyGroup[] {

@@ -4,6 +4,14 @@
     "sourceCheckedAt": "2026-07-17",
     "generatedAt": "2026-07-20T01:10:09.065Z",
     "totalProducts": 175,
+    "availableProducts": 72,
+    "recommendableProducts": 63,
+    "sourceCount": 8,
+    "expectedSourceCount": 8,
+    "sourceCoverage": {
+      "missingAgencies": [],
+      "unexpectedAgencies": []
+    },
     "byIssueLevel": {
       "ok": 63,
       "medium": 55,

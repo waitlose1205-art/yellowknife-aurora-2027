@@ -1,5 +1,5 @@
 {
-  "name": "site-creator-vinext-starter",
+  "name": "yellowknife-aurora-tour-guide",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -8,11 +8,11 @@
   "scripts": {
     "dev": "vinext dev",
     "build": "vinext build",
-    "data:build": "node scripts/build-tour-data.mjs",
-    "data:daily": "node scripts/build-tour-data.mjs --live-detail-check",
+    "data:build": "node scripts/build-tour-data.mjs --output-dir=work/data-preview",
+    "data:daily": "node scripts/run-daily-update.mjs",
     "data:update:guarded": "node scripts/run-daily-update.mjs",
     "start": "vinext start",
-    "test": "npm run build && node --test tests/rendered-html.test.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate"
   },

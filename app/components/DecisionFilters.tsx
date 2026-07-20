@@ -118,7 +118,7 @@ export function DecisionFilters({
           }
           type="checkbox"
         />
-        只顯示已取得具體商品的來源
+        只顯示已取得商品名稱、價格與來源的商品
       </label>
 
       <button
@@ -138,7 +138,7 @@ export function DecisionFilters({
         <span>篩選結果摘要</span>
         <strong>{filteredCount} 筆商品</strong>
         <small>{agencyGroups.length} 家旅行社方案卡</small>
-        <small>{withinBudgetCount} 筆低於目前預算上限</small>
+        <small>{withinBudgetCount} 筆已有價格且低於目前預算上限</small>
       </div>
     </aside>
   );

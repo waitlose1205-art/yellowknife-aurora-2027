@@ -1,5 +1,11 @@
-import { dataStatusLabel, sourceVerificationLabel } from "../lib/tourConstants";
 import {
+  dataStatusLabel,
+  flightCompletenessLabel,
+  sourceVerificationLabel,
+} from "../lib/tourConstants";
+import {
+  getFlightCompleteness,
+  getRecommendationReasons,
   getSourceVerificationStatus,
   isMissing,
 } from "../lib/tourLogic";
@@ -11,6 +17,7 @@ type RecommendationResultsProps = {
   error: string;
   payloadLoaded: boolean;
   topAgencyGroups: AgencyGroup[];
+  budget: number;
 };
 
 export function RecommendationResults({
@@ -19,6 +26,7 @@ export function RecommendationResults({
   error,
   payloadLoaded,
   topAgencyGroups,
+  budget,
 }: RecommendationResultsProps) {
   return (
     <div className="resultPanel">
@@ -29,12 +37,19 @@ export function RecommendationResults({
       ) : (
         <>
           <div className="recommendation">
-            <span>目前最適合旅行社方案</span>
+            <span>目前綜合排序第一</span>
             <strong>
               {bestAgencyGroup ? `${bestAgencyGroup.agency}方案` : "沒有符合條件的旅行社方案"}
             </strong>
             {bestProduct ? (
               <p className="recommendationProduct">代表商品：{bestProduct.productName}</p>
+            ) : null}
+            {bestProduct ? (
+              <ul className="recommendationReasons">
+                {getRecommendationReasons(bestProduct, budget).map((reason) => (
+                  <li key={reason}>{reason}</li>
+                ))}
+              </ul>
             ) : null}
             {bestProduct ? (
               <a href={bestProduct.sourceUrl} rel="noreferrer" target="_blank">
@@ -44,7 +59,7 @@ export function RecommendationResults({
           </div>
 
           <p className="agencyUnitNote">
-            一張卡只代表一家旅行社；卡片內才展開該旅行社符合條件的旅行團。
+            排序只會推薦來源頁身分已核對、主要欄位完整且在預算內的商品；其他資料仍可展開查閱。
           </p>
 
           {topAgencyGroups.length === 0 ? (
@@ -100,7 +115,7 @@ function AgencyOptionCard({ group }: { group: AgencyGroup }) {
                 }`}
                 key={agencyProduct.id}
               >
-                {isRecommended ? <span className="recommendBadge">推薦</span> : null}
+                {isRecommended ? <span className="recommendBadge">綜合排序第一</span> : null}
                 {agencySourceStatus === "mismatch" ? (
                   <span className="recommendBadge warningBadge">來源待修正</span>
                 ) : null}
@@ -121,6 +136,8 @@ function ProductDisclosure({
   product: Product;
   sourceStatus: ReturnType<typeof getSourceVerificationStatus>;
 }) {
+  const flightCompleteness = getFlightCompleteness(product.flightSummary);
+
   return (
     <details>
       <summary>
@@ -148,6 +165,20 @@ function ProductDisclosure({
           </dd>
         </div>
         <div>
+          <dt>航班完整度</dt>
+          <dd>{flightCompletenessLabel[flightCompleteness]}</dd>
+        </div>
+        <div>
+          <dt>住宿資料</dt>
+          <dd className={product.hotelOptions?.length ? "" : "muted"}>
+            {product.hotelOptions?.length
+              ? product.hotelOptions
+                  .map((hotel) => `${hotel.city}｜${hotel.hotelName}${hotel.nights ? `｜${hotel.nights} 晚` : ""}`)
+                  .join("；")
+              : "官方商品尚未形成可跨旅行社比較的結構化住宿欄位"}
+          </dd>
+        </div>
+        <div>
           <dt>行程計畫表</dt>
           <dd>{product.itinerarySummary}</dd>
         </div>
@@ -156,11 +187,19 @@ function ProductDisclosure({
           <dd>{product.bookingStatus}</dd>
         </div>
         <div>
-          <dt>來源查核</dt>
+          <dt>來源頁身分</dt>
           <dd className={sourceStatus === "mismatch" ? "sourceMismatchText" : ""}>
             {sourceVerificationLabel[sourceStatus]}
             {product.sourceVerificationNote ? `；${product.sourceVerificationNote}` : ""}
           </dd>
+        </div>
+        <div>
+          <dt>欄位完整度</dt>
+          <dd>{dataStatusLabel[product.dataStatus]}</dd>
+        </div>
+        <div>
+          <dt>商品查核日</dt>
+          <dd>{product.checkedAt}</dd>
         </div>
         <div>
           <dt>官方頁標題</dt>

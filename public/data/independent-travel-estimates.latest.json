@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "status": "not-ready",
+  "checkedAt": null,
+  "generatedAt": "2026-07-20T00:00:00.000Z",
+  "estimates": [],
+  "missingDependencies": [
+    "可追溯的月份機票價格",
+    "可追溯的黃刀鎮住宿價格",
+    "當地極光活動官方價格",
+    "保險、冬衣、行李與匯率資料"
+  ],
+  "publicationRule": "必要分項未具備來源、查核日與證據等級前，不產生或公開自由行總價。"
+}

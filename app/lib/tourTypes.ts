@@ -20,6 +20,30 @@ export type Product = {
   sourceVerificationNote?: string;
   checkedAt: string;
   dataStatus: "available" | "partial" | "needs-check" | "unavailable";
+  flightSegments?: FlightSegment[];
+  hotelOptions?: HotelOption[];
+  hotelDisclosureStatus?: "official" | "partial" | "not-disclosed" | "not-structured";
+};
+
+export type EvidenceLevel = "official" | "third-party" | "historical-estimate";
+
+export type FlightSegment = {
+  airline: string;
+  flightNumber: string;
+  departureAirport: string;
+  departureAt: string;
+  arrivalAirport: string;
+  arrivalAt: string;
+  evidenceLevel: EvidenceLevel;
+};
+
+export type HotelOption = {
+  hotelName: string;
+  city: string;
+  nights: number | null;
+  month: number | null;
+  priceTwd: number | null;
+  evidenceLevel: EvidenceLevel;
 };
 
 export type ProductPayload = {
@@ -71,3 +95,9 @@ export type AgencyGroup = {
 };
 
 export type SourceVerificationStatus = NonNullable<Product["sourceVerificationStatus"]>;
+
+export type FlightCompleteness =
+  | "complete"
+  | "partial"
+  | "official-not-disclosed"
+  | "unavailable";

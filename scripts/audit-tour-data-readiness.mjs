@@ -1,8 +1,12 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { summarizeDataset } from "./pipeline/quality-gate.mjs";
+import { EXPECTED_SOURCE_COUNT, inspectSourceCoverage } from "./pipeline/source-manifest.mjs";
+import { classifyFlight } from "./pipeline/flight-quality.mjs";
 
 const inputPath = join(process.cwd(), "public", "data", "tour-products.latest.json");
 const outputDir = join(process.cwd(), "exports");
+const sourceStatusPath = join(process.cwd(), "public", "data", "source-status.json");
 const checkedAt = new Date().toISOString().slice(0, 10);
 
 function clean(value) {
@@ -21,38 +25,6 @@ function isMissingLike(value) {
       text,
     )
   );
-}
-
-function classifyFlight(value) {
-  const text = clean(value);
-
-  if (/^[A-Z]{2}$/.test(text)) return "code-only";
-
-  if (/官方商品頁目前未公開完整航班|官方頁目前未公開完整航班/.test(text)) {
-    return "official-not-disclosed";
-  }
-
-  if (/喜鴻官方頁採動態載入/.test(text)) {
-    return "dynamic-page-not-read";
-  }
-
-  if (/完整航段與飛行時間需進商品頁確認|完整航段仍以商品頁為準|完整航段需進商品頁確認/.test(text)) {
-    return "airline-or-partial-only";
-  }
-
-  if (!text || /未取得|來源列表未揭露|需進商品頁確認/.test(text)) {
-    return "missing-flight";
-  }
-
-  if (/參考航班/.test(text) && !/\d{1,2}:\d{2}/.test(text)) {
-    return "reference-route-no-time";
-  }
-
-  if (/\d{1,2}:\d{2}/.test(text) && /→|->|至|到/.test(text)) {
-    return "has-flight-times";
-  }
-
-  return "partial-flight-text";
 }
 
 function getMissingFields(product) {
@@ -113,6 +85,11 @@ if (!existsSync(inputPath)) {
 mkdirSync(outputDir, { recursive: true });
 
 const dataset = JSON.parse(readFileSync(inputPath, "utf8"));
+const datasetSummary = summarizeDataset(dataset);
+const sourcePayload = existsSync(sourceStatusPath)
+  ? JSON.parse(readFileSync(sourceStatusPath, "utf8"))
+  : { sources: [] };
+const sourceCoverage = inspectSourceCoverage(sourcePayload.sources ?? []);
 const rows = dataset.products.map((product) => {
   const flightStatus = classifyFlight(product.flightSummary);
   const missingFields = getMissingFields(product);
@@ -142,6 +119,11 @@ const summary = {
   sourceCheckedAt: dataset.checkedAt,
   generatedAt: dataset.generatedAt,
   totalProducts: rows.length,
+  availableProducts: datasetSummary.availableProducts,
+  recommendableProducts: datasetSummary.recommendableProducts,
+  sourceCount: sourcePayload.sources?.length ?? 0,
+  expectedSourceCount: EXPECTED_SOURCE_COUNT,
+  sourceCoverage,
   byIssueLevel: {},
   byFlightStatus: {},
   byAgency: {},
@@ -207,6 +189,9 @@ const summaryLines = [
   `資料基準日：${dataset.checkedAt}`,
   `資料產生時間：${dataset.generatedAt}`,
   `商品總數：${summary.totalProducts}`,
+  `主要欄位完整：${summary.availableProducts}`,
+  `具推薦資格：${summary.recommendableProducts}`,
+  `來源覆蓋：${summary.sourceCount}/${summary.expectedSourceCount}`,
   "",
   "## 問題等級",
   "",

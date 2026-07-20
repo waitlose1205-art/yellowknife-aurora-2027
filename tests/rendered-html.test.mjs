@@ -29,14 +29,16 @@ test("server-renders the aurora recommendation shell", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /<title>極光旅行團靜態推薦系統<\/title>/i);
-  assert.match(html, /極光旅行團靜態資料推薦系統/);
-  assert.match(html, /決策選項列表/);
+  assert.match(html, /<title>黃刀鎮極光旅行團｜行程推薦與比較<\/title>/i);
+  assert.match(html, /黃刀鎮極光旅行團比較/);
+  assert.match(html, /依需求比較旅行團/);
   assert.match(html, /預算上限/);
   assert.match(html, /最低極光夜數/);
   assert.match(html, /確認篩選/);
-  assert.match(html, /資料來源與更新時間/);
+  assert.match(html, /資料來源、完整度與更新時間/);
   assert.match(html, /Source Freshness/);
+  assert.match(html, /og\.png/);
+  assert.match(html, /summary_large_image/);
   assert.doesNotMatch(html, /Backlog|後續啟用方式|Low Resource Mode|Next Actions/);
 });
 
@@ -64,11 +66,16 @@ test("keeps the site split into page, component, and domain modules", async () =
   assert.match(decisionFilters, /最低極光夜數/);
   assert.match(results, /AgencyOptionCard/);
   assert.match(results, /ProductDisclosure/);
-  assert.match(sourceStatus, /資料來源與更新時間/);
+  assert.match(sourceStatus, /資料來源、完整度與更新時間/);
   assert.match(constants, /DEFAULT_FILTERS/);
+  assert.match(constants, /PRIMARY_DESTINATION = "黃刀鎮"/);
   assert.match(logic, /getScore/);
   assert.match(logic, /filterProducts/);
   assert.match(logic, /groupProductsByAgency/);
+  assert.match(logic, /sourceVerificationStatus !== "verified"/);
+  assert.match(logic, /dataStatus !== "available"/);
+  assert.match(logic, /savingsRate/);
+  assert.doesNotMatch(logic, /budgetUseRate/);
   assert.match(types, /export type Product/);
 
   assert.match(workstreams, /每日更新/);
