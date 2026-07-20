@@ -8,65 +8,46 @@ async function render() {
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request("http://localhost/", {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
+    new Request("http://localhost/", { headers: { accept: "text/html" } }),
+    { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
+    { waitUntil() {}, passThroughOnException() {} },
   );
 }
 
-test("server-renders the aurora recommendation shell", async () => {
+test("server-renders the comparison workbench shell", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
   assert.match(html, /<title>黃刀鎮極光旅行團｜行程推薦與比較<\/title>/i);
-  assert.match(html, /黃刀鎮極光旅行團比較/);
-  assert.match(html, /依需求比較旅行團/);
+  assert.match(html, /YK/);
+  assert.match(html, /AURORA/);
+  assert.match(html, /方案行程比較/);
   assert.match(html, /預算上限/);
   assert.match(html, /最低極光夜數/);
-  assert.match(html, /確認篩選/);
-  assert.match(html, /資料來源、完整度與更新時間/);
-  assert.match(html, /Source Freshness/);
+  assert.match(html, /更新比較/);
+  assert.match(html, /資料狀態/);
   assert.match(html, /og\.png/);
   assert.match(html, /summary_large_image/);
-  assert.doesNotMatch(html, /Backlog|後續啟用方式|Low Resource Mode|Next Actions/);
+  assert.doesNotMatch(html, /Backlog|低資源模式|Low Resource Mode|Next Actions/);
 });
 
-test("keeps the site split into page, component, and domain modules", async () => {
-  const [page, decisionFilters, results, sourceStatus, constants, logic, types, workstreams] =
-    await Promise.all([
-      readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
-      readFile(new URL("../app/components/DecisionFilters.tsx", import.meta.url), "utf8"),
-      readFile(new URL("../app/components/RecommendationResults.tsx", import.meta.url), "utf8"),
-      readFile(new URL("../app/components/SourceStatusSection.tsx", import.meta.url), "utf8"),
-      readFile(new URL("../app/lib/tourConstants.ts", import.meta.url), "utf8"),
-      readFile(new URL("../app/lib/tourLogic.ts", import.meta.url), "utf8"),
-      readFile(new URL("../app/lib/tourTypes.ts", import.meta.url), "utf8"),
-      readFile(new URL("../docs/optimization-workstreams.md", import.meta.url), "utf8"),
-    ]);
+test("keeps workbench presentation separate from domain logic", async () => {
+  const [page, constants, logic, types, workstreams] = await Promise.all([
+    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/lib/tourConstants.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/lib/tourLogic.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/lib/tourTypes.ts", import.meta.url), "utf8"),
+    readFile(new URL("../docs/optimization-workstreams.md", import.meta.url), "utf8"),
+  ]);
 
-  assert.match(page, /DecisionFilters/);
-  assert.match(page, /RecommendationResults/);
-  assert.match(page, /SourceStatusSection/);
+  assert.match(page, /className="workbench"/);
+  assert.match(page, /comparisonTable/);
   assert.match(page, /filterProducts/);
   assert.match(page, /groupProductsByAgency/);
   assert.doesNotMatch(page, /type Product =|function getScore|function isMissing/);
 
-  assert.match(decisionFilters, /預算上限/);
-  assert.match(decisionFilters, /最低極光夜數/);
-  assert.match(results, /AgencyOptionCard/);
-  assert.match(results, /ProductDisclosure/);
-  assert.match(sourceStatus, /資料來源、完整度與更新時間/);
   assert.match(constants, /DEFAULT_FILTERS/);
   assert.match(constants, /PRIMARY_DESTINATION = "黃刀鎮"/);
   assert.match(logic, /getScore/);
@@ -78,11 +59,7 @@ test("keeps the site split into page, component, and domain modules", async () =
   assert.doesNotMatch(logic, /budgetUseRate/);
   assert.match(types, /export type Product/);
 
-  assert.match(workstreams, /每日更新/);
-  assert.match(workstreams, /多旅行社解析/);
-  assert.match(workstreams, /航班住宿補全/);
-  assert.match(workstreams, /自由行估算/);
-  assert.doesNotMatch(`${page}\n${decisionFilters}\n${results}`, /Backlog|enabledFeatures/);
-
+  assert.match(workstreams, /資料品質/);
+  assert.doesNotMatch(page, /Backlog|enabledFeatures/);
   await assert.rejects(access(new URL("../app/_sites-preview", import.meta.url)));
 });
