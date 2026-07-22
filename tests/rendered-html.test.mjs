@@ -29,6 +29,7 @@ test("server-renders the general tour search and comparison shell", async () => 
   assert.match(html, /搜尋旅行團/);
   assert.match(html, /部分收錄/);
   assert.match(html, /不宣稱收錄台灣所有旅行團/);
+  assert.match(html, /本次核對/);
   assert.match(html, /og\.png/);
   assert.match(html, /summary_large_image/);
   assert.doesNotMatch(html, /Backlog|低資源模式|Low Resource Mode|Next Actions/);

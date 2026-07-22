@@ -31,6 +31,18 @@ const formatCheckedTime = (value: string | undefined) =>
       }).format(new Date(value))
     : "未標示";
 
+const formatCheckDate = (value: string | undefined) => {
+  if (!value) return undefined;
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    day: "2-digit",
+    month: "2-digit",
+    timeZone: "Asia/Taipei",
+    year: "numeric",
+  }).formatToParts(new Date(value));
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+};
+
 const scopeLabel = (scope: Product["travelScope"] | string) =>
   scope === ALL_SCOPES
     ? scope
@@ -94,6 +106,9 @@ export default function Home() {
   );
   const lowestPrice = Math.min(...matchingProducts.map((product) => product.priceTwd ?? Infinity));
   const partialSources = sourcePayload?.sources.filter((source) => source.coverageStatus !== "complete").length ?? 0;
+  const latestCheckDate = formatCheckDate(
+    payload?.generatedAt ?? sourcePayload?.generatedAt ?? payload?.checkedAt ?? sourcePayload?.checkedAt,
+  );
 
   function applyFilters() {
     setAppliedFilters(draftFilters);
@@ -211,7 +226,7 @@ export default function Home() {
           <section className="coverageNotice" id="sources" aria-label="資料收錄範圍">
             <strong>部分收錄</strong>
             <p>目前接入 {sourcePayload?.sources.length ?? 0} 家旅行社、{products.length} 筆商品；{partialSources} 個來源仍屬主題或分頁部分覆蓋。本站不宣稱收錄台灣所有旅行團。</p>
-            <small>原始資料日期：{payload?.checkedAt ?? sourcePayload?.checkedAt ?? "未標示"}；本機產生時間：{formatCheckedTime(payload?.generatedAt ?? sourcePayload?.generatedAt)}</small>
+            <small aria-label="資料更新資訊">本次核對：<time dateTime={latestCheckDate}>{latestCheckDate ?? "未標示"}</time>；資料產生時間：{formatCheckedTime(payload?.generatedAt ?? sourcePayload?.generatedAt)}</small>
           </section>
 
           {error ? <p className="workbenchMessage">{error}</p> : null}
