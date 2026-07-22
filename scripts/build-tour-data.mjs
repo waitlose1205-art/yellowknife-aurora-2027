@@ -144,6 +144,25 @@ function inferDestination(row) {
   return "其他極光";
 }
 
+function inferRegions(destination) {
+  if (["黃刀鎮", "阿拉斯加", "加拿大"].includes(destination)) return ["北美洲"];
+  if (["芬蘭", "冰島"].includes(destination)) return ["歐洲"];
+  if (destination === "紐西蘭南極光") return ["大洋洲"];
+  return [];
+}
+
+function inferCountries(destination) {
+  const countryMap = {
+    黃刀鎮: ["加拿大"],
+    阿拉斯加: ["美國"],
+    芬蘭: ["芬蘭"],
+    冰島: ["冰島"],
+    紐西蘭南極光: ["紐西蘭"],
+    加拿大: ["加拿大"],
+  };
+  return countryMap[destination] ?? [];
+}
+
 function inferAuroraNights(row) {
   const text = `${row.產品名稱} ${row.行程計畫表}`;
   const match = text.match(/(?:極光|追光|賞極光)[^\d]{0,8}(\d)\s*(?:晚|次)/);
@@ -720,14 +739,22 @@ const products = publishableRows.map((row, index) => {
   const priceTwd = parsePriceTwd(row.金額);
   const sourceUrl = clean(row["訂購/來源網址"]);
   const sourceVerification = getSourceVerification(row);
+  const destination = inferDestination(row);
   return {
     id: `${clean(row.旅行社名稱)}-${index + 1}`,
     agency: clean(row.旅行社名稱),
     productName: name,
-    destination: inferDestination(row),
+    destination,
     selectableDates: clean(row.可選擇日期),
     months: parseMonths(row.可選擇日期),
     days: parseDays(name) || parseDays(row.行程計畫表),
+    travelScope: "outbound",
+    category: "主題旅遊",
+    themes: ["極光"],
+    regions: inferRegions(destination),
+    countries: inferCountries(destination),
+    departureLocations: [],
+    transportModes: ["flight"],
     auroraNights: inferAuroraNights(row),
     flightSummary: clean(row.航班),
     itinerarySummary: clean(row.行程計畫表),
@@ -750,6 +777,7 @@ const sourceStatus = agencies.map((agency) => {
   const rows = products.filter((product) => product.agency === agency);
   const concreteRows = rows.filter((product) => product.dataStatus !== "unavailable");
   const availableRows = rows.filter((product) => product.dataStatus === "available");
+  const manifestEntry = SOURCE_MANIFEST.find((source) => source.agency === agency);
   return {
     agency,
     checkedAt,
@@ -759,6 +787,12 @@ const sourceStatus = agencies.map((agency) => {
     concreteRows: concreteRows.length,
     availableRows: availableRows.length,
     status: concreteRows.length ? "updated" : "no-concrete-product",
+    coverageStatus: concreteRows.length ? "partial" : "unavailable",
+    declaredScope: manifestEntry?.declaredScope ?? "未定義",
+    paginationComplete: null,
+    coverageNote: concreteRows.length
+      ? "目前只證實極光主題資料已匯入；尚未證實該旅行社所有分類與分頁皆已收錄"
+      : "尚未取得目前宣告範圍內的具體商品",
     nextStep: concreteRows.length
       ? "下次排程或手動查核時重新產生靜態資料檔"
       : "需改用站內搜尋 UI、客服或分類頁再次確認",
@@ -766,7 +800,7 @@ const sourceStatus = agencies.map((agency) => {
 });
 
 const payload = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   checkedAt,
   generatedAt,
   sourceFile: basename(inputPath),
@@ -789,6 +823,9 @@ writeFileSync(
 const csvHeaders = [
   "agency",
   "productName",
+  "travelScope",
+  "category",
+  "themes",
   "destination",
   "selectableDates",
   "flightSummary",

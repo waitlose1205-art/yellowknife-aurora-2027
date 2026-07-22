@@ -1,12 +1,12 @@
 export const SOURCE_MANIFEST = [
-  { agency: "山富旅遊", adapter: "generic-html", minimumProducts: 1 },
-  { agency: "東南旅遊", adapter: "generic-html", minimumProducts: 1 },
-  { agency: "雄獅旅遊", adapter: "liontravel-json", minimumProducts: 1 },
-  { agency: "可樂旅遊", adapter: "colatour-html", minimumProducts: 1 },
-  { agency: "五福旅遊", adapter: "generic-html", minimumProducts: 1 },
-  { agency: "喜鴻旅遊", adapter: "browser-rendered", minimumProducts: 1 },
-  { agency: "鳳凰旅遊", adapter: "generic-html", minimumProducts: 1 },
-  { agency: "長汎旅遊", adapter: "generic-html", minimumProducts: 1 },
+  { agency: "山富旅遊", adapter: "generic-html", minimumProducts: 1, declaredScope: "極光主題公開商品" },
+  { agency: "東南旅遊", adapter: "generic-html", minimumProducts: 1, declaredScope: "極光主題公開商品" },
+  { agency: "雄獅旅遊", adapter: "liontravel-json", minimumProducts: 1, declaredScope: "極光主題公開商品" },
+  { agency: "可樂旅遊", adapter: "colatour-html", minimumProducts: 1, declaredScope: "極光主題公開商品" },
+  { agency: "五福旅遊", adapter: "generic-html", minimumProducts: 1, declaredScope: "極光主題公開商品" },
+  { agency: "喜鴻旅遊", adapter: "browser-rendered", minimumProducts: 1, declaredScope: "極光主題公開商品" },
+  { agency: "鳳凰旅遊", adapter: "generic-html", minimumProducts: 1, declaredScope: "極光主題公開商品" },
+  { agency: "長汎旅遊", adapter: "generic-html", minimumProducts: 1, declaredScope: "極光主題公開商品" },
 ];
 
 export const EXPECTED_SOURCE_COUNT = SOURCE_MANIFEST.length;
@@ -22,7 +22,11 @@ export function inspectSourceCoverage(sources) {
     .filter((source) => !SOURCE_MANIFEST.some(({ agency }) => agency === source.agency))
     .map((source) => source.agency);
 
-  return { missingAgencies, unexpectedAgencies };
+  const partialAgencies = sources
+    .filter((source) => source.coverageStatus !== "complete")
+    .map((source) => source.agency);
+
+  return { missingAgencies, unexpectedAgencies, partialAgencies };
 }
 
 export function getSourceAgeDays(checkedAt, now = new Date()) {

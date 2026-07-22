@@ -10,7 +10,8 @@ export function summarizeDataset(dataset) {
         product.dataStatus === "available" &&
         product.sourceVerificationStatus === "verified" &&
         product.priceTwd !== null &&
-        classifyFlight(product.flightSummary) === "has-flight-times",
+        (!product.transportModes?.includes("flight") ||
+          classifyFlight(product.flightSummary) === "has-flight-times"),
     ).length,
   };
 }

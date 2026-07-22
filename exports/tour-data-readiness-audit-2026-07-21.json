@@ -2,7 +2,7 @@
   "summary": {
     "checkedAt": "2026-07-21",
     "sourceCheckedAt": "2026-07-17",
-    "generatedAt": "2026-07-21T12:49:40.839Z",
+    "generatedAt": "2026-07-21T14:35:34.622Z",
     "totalProducts": 175,
     "availableProducts": 72,
     "recommendableProducts": 63,
@@ -10,7 +10,17 @@
     "expectedSourceCount": 8,
     "sourceCoverage": {
       "missingAgencies": [],
-      "unexpectedAgencies": []
+      "unexpectedAgencies": [],
+      "partialAgencies": [
+        "山富旅遊",
+        "東南旅遊",
+        "雄獅旅遊",
+        "可樂旅遊",
+        "五福旅遊",
+        "喜鴻旅遊",
+        "鳳凰旅遊",
+        "長汎旅遊"
+      ]
     },
     "byIssueLevel": {
       "ok": 63,

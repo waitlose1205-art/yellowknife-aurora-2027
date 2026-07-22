@@ -20,10 +20,11 @@ test("source manifest recognizes complete and incomplete agency coverage", () =>
     "喜鴻旅遊",
     "鳳凰旅遊",
     "長汎旅遊",
-  ].map((agency) => ({ agency, concreteRows: 1 }));
+  ].map((agency) => ({ agency, concreteRows: 1, coverageStatus: "partial" }));
 
   assert.equal(completeSources.length, EXPECTED_SOURCE_COUNT);
   assert.deepEqual(inspectSourceCoverage(completeSources).missingAgencies, []);
+  assert.deepEqual(inspectSourceCoverage(completeSources).partialAgencies, completeSources.map(({ agency }) => agency));
 
   const incomplete = inspectSourceCoverage(completeSources.slice(1));
   assert.deepEqual(incomplete.missingAgencies.map((source) => source.agency), ["山富旅遊"]);

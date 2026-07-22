@@ -14,20 +14,21 @@ async function render() {
   );
 }
 
-test("server-renders the comparison workbench shell", async () => {
+test("server-renders the general tour search and comparison shell", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /<title>黃刀鎮極光旅行團｜行程推薦與比較<\/title>/i);
-  assert.match(html, /YK/);
-  assert.match(html, /AURORA/);
-  assert.match(html, /方案行程比較/);
+  assert.match(html, /<title>台灣旅行團搜尋與比較｜透明收錄範圍<\/title>/i);
+  assert.match(html, /TAIWAN/);
+  assert.match(html, /TOURS/);
+  assert.match(html, /台灣旅行團搜尋與比較/);
   assert.match(html, /預算上限/);
-  assert.match(html, /最低極光夜數/);
-  assert.match(html, /更新比較/);
-  assert.match(html, /資料狀態/);
+  assert.match(html, /旅遊範圍/);
+  assert.match(html, /搜尋旅行團/);
+  assert.match(html, /部分收錄/);
+  assert.match(html, /不宣稱收錄台灣所有旅行團/);
   assert.match(html, /og\.png/);
   assert.match(html, /summary_large_image/);
   assert.doesNotMatch(html, /Backlog|低資源模式|Low Resource Mode|Next Actions/);
@@ -45,14 +46,15 @@ test("keeps workbench presentation separate from domain logic", async () => {
   assert.match(page, /className="workbench"/);
   assert.match(page, /comparisonTable/);
   assert.match(page, /filterProducts/);
-  assert.match(page, /groupProductsByAgency/);
+  assert.match(page, /selectedIds/);
   assert.doesNotMatch(page, /type Product =|function getScore|function isMissing/);
 
   assert.match(constants, /DEFAULT_FILTERS/);
-  assert.match(constants, /PRIMARY_DESTINATION = "黃刀鎮"/);
+  assert.match(constants, /ALL_SCOPES/);
+  assert.match(constants, /ALL_THEMES/);
   assert.match(logic, /getScore/);
   assert.match(logic, /filterProducts/);
-  assert.match(logic, /groupProductsByAgency/);
+  assert.match(logic, /getThemeOptions/);
   assert.match(logic, /sourceVerificationStatus !== "verified"/);
   assert.match(logic, /dataStatus !== "available"/);
   assert.match(logic, /savingsRate/);

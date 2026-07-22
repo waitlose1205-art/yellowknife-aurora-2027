@@ -1,7 +1,8 @@
 import {
   ALL_AGENCIES,
   ALL_DESTINATIONS,
-  PRIMARY_DESTINATION,
+  ALL_SCOPES,
+  ALL_THEMES,
 } from "./tourConstants";
 import type {
   AgencyGroup,
@@ -19,14 +20,17 @@ export function getScore(product: Product, budget: number) {
   if (product.priceTwd === null || product.priceTwd > budget) return -1;
   if (product.sourceVerificationStatus !== "verified") return -1;
   if (product.dataStatus !== "available") return -1;
-  if (getFlightCompleteness(product.flightSummary) !== "complete") return -1;
+  if (
+    product.transportModes?.includes("flight") &&
+    getFlightCompleteness(product.flightSummary) !== "complete"
+  ) return -1;
 
   let score = 0;
   score += 40;
   if (product.bookingStatusType === "bookable") score += 30;
   if (product.bookingStatusType === "limited") score += 8;
-  if (product.auroraNights) score += Math.min(product.auroraNights * 5, 20);
-  score += 10;
+  if (product.days) score += 5;
+  if (product.months.length) score += 5;
 
   const savingsRate = Math.max((budget - product.priceTwd) / budget, 0);
   score += Math.round(savingsRate * 20);
@@ -36,15 +40,21 @@ export function getScore(product: Product, budget: number) {
 
 export function getDestinationOptions(products: Product[]) {
   const destinations = Array.from(new Set(products.map((product) => product.destination))).sort();
-  return [
-    PRIMARY_DESTINATION,
-    ALL_DESTINATIONS,
-    ...destinations.filter((destination) => destination !== PRIMARY_DESTINATION),
-  ];
+  return [ALL_DESTINATIONS, ...destinations];
 }
 
 export function getAgencyOptions(products: Product[]) {
   return [ALL_AGENCIES, ...Array.from(new Set(products.map((product) => product.agency))).sort()];
+}
+
+export function getThemeOptions(products: Product[]) {
+  const themes = Array.from(new Set(products.flatMap((product) => product.themes ?? []))).sort();
+  return [ALL_THEMES, ...themes];
+}
+
+export function getTravelScopeOptions(products: Product[]) {
+  const scopes = Array.from(new Set(products.map((product) => product.travelScope))).sort();
+  return [ALL_SCOPES, ...scopes];
 }
 
 export function getSourceVerificationStatus(product: Product): SourceVerificationStatus {
@@ -68,24 +78,45 @@ export function getFlightCompleteness(value: string): FlightCompleteness {
 
 export function filtersAreChanged(draftFilters: FilterState, appliedFilters: FilterState) {
   return (
+    draftFilters.query !== appliedFilters.query ||
     draftFilters.budget !== appliedFilters.budget ||
     draftFilters.destination !== appliedFilters.destination ||
     draftFilters.agency !== appliedFilters.agency ||
+    draftFilters.travelScope !== appliedFilters.travelScope ||
+    draftFilters.theme !== appliedFilters.theme ||
     draftFilters.month !== appliedFilters.month ||
-    draftFilters.minimumNights !== appliedFilters.minimumNights ||
+    draftFilters.maximumDays !== appliedFilters.maximumDays ||
     draftFilters.onlyConcrete !== appliedFilters.onlyConcrete
   );
 }
 
 export function filterProducts(products: Product[], filters: FilterState) {
+  const query = filters.query.trim().toLocaleLowerCase("zh-Hant");
   return products
+    .filter((product) => {
+      if (!query) return true;
+      return [
+        product.productName,
+        product.agency,
+        product.destination,
+        product.category,
+        ...(product.themes ?? []),
+        ...(product.countries ?? []),
+      ].join(" ").toLocaleLowerCase("zh-Hant").includes(query);
+    })
     .filter((product) =>
       filters.destination === ALL_DESTINATIONS ? true : product.destination === filters.destination,
     )
     .filter((product) => (filters.agency === ALL_AGENCIES ? true : product.agency === filters.agency))
+    .filter((product) =>
+      filters.travelScope === ALL_SCOPES ? true : product.travelScope === filters.travelScope,
+    )
+    .filter((product) =>
+      filters.theme === ALL_THEMES ? true : (product.themes ?? []).includes(filters.theme),
+    )
     .filter((product) => (filters.month === 0 ? true : product.months.includes(filters.month)))
     .filter((product) =>
-      filters.minimumNights === 0 ? true : (product.auroraNights ?? 0) >= filters.minimumNights,
+      filters.maximumDays === 0 ? true : product.days !== null && product.days <= filters.maximumDays,
     )
     .filter((product) =>
       filters.onlyConcrete
@@ -101,9 +132,10 @@ export function getRecommendationReasons(product: Product, budget: number) {
   const reasons: string[] = [];
   if (product.sourceVerificationStatus === "verified") reasons.push("來源頁身分已核對");
   if (product.dataStatus === "available") reasons.push("主要比較欄位完整");
-  if (getFlightCompleteness(product.flightSummary) === "complete") reasons.push("已取得航段與時間");
+  if (!product.transportModes?.includes("flight") || getFlightCompleteness(product.flightSummary) === "complete") {
+    reasons.push("已取得適用的交通資訊");
+  }
   if (product.bookingStatusType === "bookable") reasons.push("目前標示可報名或可售");
-  if (product.auroraNights) reasons.push(`包含 ${product.auroraNights} 晚/次極光安排`);
   if (product.priceTwd !== null) {
     reasons.push(
       budget - product.priceTwd >= 10000

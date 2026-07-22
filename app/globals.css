@@ -1169,6 +1169,15 @@ summary:focus-visible {
   width: 100%;
 }
 
+.workbenchField input[type="search"] {
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid #cbd1cb;
+  border-radius: 3px;
+  background: #fff;
+  color: #202a27;
+}
+
 .workbenchField input[type="range"] {
   accent-color: #3e6758;
 }
@@ -1472,6 +1481,171 @@ summary:focus-visible {
   font-weight: 900;
 }
 
+.coverageNotice {
+  margin-bottom: 20px;
+  padding: 16px 18px;
+  border: 1px solid #d4c79d;
+  border-left: 4px solid #9a7829;
+  background: #fffaf0;
+}
+
+.coverageNotice strong {
+  color: #755817;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.coverageNotice p {
+  margin: 6px 0;
+  color: #3d443f;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.coverageNotice small {
+  color: #746d5b;
+}
+
+.resultSummary {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 14px;
+  color: #65716d;
+  font-size: 0.8rem;
+}
+
+.resultSummary strong {
+  color: #202a27;
+  font-size: 0.92rem;
+}
+
+.tourResultGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.tourResultCard {
+  display: grid;
+  align-content: start;
+  padding: 18px;
+  border: 1px solid #d9dcd6;
+  background: #fff;
+}
+
+.tourResultCard.selected {
+  border-color: #3e6758;
+  box-shadow: inset 0 0 0 1px #3e6758;
+}
+
+.tourResultMeta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tourResultMeta span {
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: #edf2ee;
+  color: #3e6758;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.tourResultCard h2 {
+  margin: 12px 0 6px;
+  color: #202a27;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.08rem;
+  line-height: 1.4;
+}
+
+.tourResultCard p {
+  margin: 3px 0;
+  color: #65716d;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.tourResultPrice {
+  margin: 14px 0 7px;
+  color: #3e6758;
+  font-size: 1.08rem;
+  font-weight: 900;
+}
+
+.tourResultActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.tourResultActions label {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  color: #35433e;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.tourResultActions input {
+  width: 17px;
+  height: 17px;
+  accent-color: #3e6758;
+}
+
+.loadMoreButton,
+.comparisonArea header button {
+  min-height: 40px;
+  padding: 8px 16px;
+  border: 1px solid #9eaaa3;
+  background: transparent;
+  color: #35433e;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.loadMoreButton {
+  display: block;
+  margin: 20px auto 0;
+}
+
+.comparisonArea {
+  margin: 34px 0;
+  padding-top: 24px;
+  border-top: 1px solid #d9dcd6;
+}
+
+.comparisonArea > header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: end;
+  margin-bottom: 14px;
+}
+
+.comparisonArea header span {
+  color: #3e6758;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.comparisonArea h2 {
+  margin: 4px 0 0;
+  color: #202a27;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.4rem;
+}
+
 @media (max-width: 800px) {
   .workbenchNav,
   .workbenchLayout {
@@ -1503,11 +1677,15 @@ summary:focus-visible {
   }
 
   .comparisonTableWrap {
-    display: none;
+    overflow-x: auto;
   }
 
   .comparisonMobileList {
     display: grid;
+  }
+
+  .tourResultGrid {
+    grid-template-columns: 1fr;
   }
 
   .comparisonMobileCard {

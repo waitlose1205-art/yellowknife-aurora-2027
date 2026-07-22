@@ -7,7 +7,7 @@ async function loadJson(path) {
   return JSON.parse(await readFile(new URL(path, import.meta.url), "utf8"));
 }
 
-test("published tour data has unique sources and a recommendable Yellowknife set", async () => {
+test("published tour data has generic fields, unique sources, and no mismatches", async () => {
   const payload = await loadJson("../public/data/tour-products.latest.json");
   const sourcePayload = await loadJson("../public/data/source-status.json");
 
@@ -19,16 +19,23 @@ test("published tour data has unique sources and a recommendable Yellowknife set
   assert.ok(sourceUrls.every((sourceUrl) => /^https:\/\//.test(sourceUrl)));
   assert.ok(payload.products.every((product) => product.sourceVerificationStatus !== "mismatch"));
 
-  const recommendableYellowknife = payload.products.filter(
+  assert.equal(payload.schemaVersion, 2);
+  assert.ok(payload.products.every((product) => product.travelScope));
+  assert.ok(payload.products.every((product) => product.category));
+  assert.ok(payload.products.every((product) => Array.isArray(product.themes)));
+  assert.ok(payload.products.every((product) => Array.isArray(product.transportModes)));
+  assert.ok(sourcePayload.sources.every((source) => source.coverageStatus === "partial"));
+  assert.ok(sourcePayload.sources.every((source) => source.declaredScope));
+
+  const recommendableProducts = payload.products.filter(
     (product) =>
-      product.destination === "黃刀鎮" &&
       product.sourceVerificationStatus === "verified" &&
       product.dataStatus === "available" &&
       product.priceTwd !== null &&
       /\d{1,2}:\d{2}/.test(product.flightSummary) &&
       /→|->|至|到/.test(product.flightSummary),
   );
-  assert.ok(recommendableYellowknife.length > 0);
+  assert.ok(recommendableProducts.length > 0);
 });
 
 test("available products do not contain known missing-value markers", async () => {

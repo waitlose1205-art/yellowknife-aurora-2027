@@ -6,7 +6,14 @@ export type Product = {
   selectableDates: string;
   months: number[];
   days: number | null;
-  auroraNights: number | null;
+  travelScope: "domestic" | "outbound" | "inbound" | "cruise" | "other";
+  category: string;
+  themes: string[];
+  regions: string[];
+  countries: string[];
+  departureLocations: string[];
+  transportModes: Array<"flight" | "rail" | "coach" | "cruise" | "self-drive" | "other">;
+  auroraNights?: number | null;
   flightSummary: string;
   itinerarySummary: string;
   bookingStatus: string;
@@ -64,6 +71,10 @@ export type SourceStatus = {
   concreteRows: number;
   availableRows: number;
   status: "updated" | "no-concrete-product";
+  coverageStatus: "complete" | "partial" | "unavailable";
+  declaredScope: string;
+  paginationComplete: boolean | null;
+  coverageNote: string;
   nextStep: string;
 };
 
@@ -74,11 +85,14 @@ export type SourcePayload = {
 };
 
 export type FilterState = {
+  query: string;
   budget: number;
   destination: string;
   agency: string;
+  travelScope: string;
+  theme: string;
   month: number;
-  minimumNights: number;
+  maximumDays: number;
   onlyConcrete: boolean;
 };
 

@@ -8,8 +8,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = forwardedHost ?? requestHeaders.get("host") ?? "localhost";
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const metadataBase = new URL(`${protocol}://${host}`);
-  const title = "黃刀鎮極光旅行團｜行程推薦與比較";
-  const description = "比較台灣旅行社黃刀鎮極光行程，依來源、航班、預算與極光夜數篩選。";
+  const title = "台灣旅行團搜尋與比較｜透明收錄範圍";
+  const description = "搜尋與比較已接入台灣旅行社的公開團體旅遊商品，清楚揭露來源、更新時間與收錄範圍。";
 
   return {
     metadataBase,
