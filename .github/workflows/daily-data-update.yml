@@ -3,8 +3,8 @@ name: Daily tour data update
 on:
   workflow_dispatch:
   schedule:
-    # 06:30 Asia/Taipei.
-    - cron: "30 22 * * *"
+    # 20:35 Asia/Taipei.
+    - cron: "35 12 * * *"
 
 permissions:
   contents: write
